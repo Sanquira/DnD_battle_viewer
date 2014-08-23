@@ -1,5 +1,5 @@
 #!/bin/bash
 git add src/*
-git commit -m "adding $1"
+git commit -a -m "adding $1"
 echo "Nezapomen ze jako \$1 davas co chces dat do commitu!!!"
 git push origin master
