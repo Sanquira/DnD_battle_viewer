@@ -184,7 +184,8 @@ public class Hex {
 				List<Postava> t=new ArrayList<>();
 				t.add(crh);
 				t.add(btn);
-				SaveFile x=new SaveFile(a);	
+				Postava[] p={};
+				SaveFile x=new SaveFile(t);	
 				
 			}
 
