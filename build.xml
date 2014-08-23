@@ -3,13 +3,13 @@
               Any modifications will be overwritten.
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. --><project basedir="." default="build" name="Deserd-BV">
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="DnD_battle_viewer">
     <property environment="env"/>
     <property name="ECLIPSE_HOME" value="../../../Downloads/eclipse-standard-luna-R-win32-x86_64/eclipse/"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.7"/>
     <property name="source" value="1.7"/>
-    <path id="Deserd-BV.classpath">
+    <path id="DnD_battle_viewer.classpath">
         <pathelement location="bin"/>
         <pathelement location="lib/gson-2.3.jar"/>
         <pathelement location="lib/json-simple-1.1.1.jar"/>
@@ -34,7 +34,7 @@
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
             <src path="src"/>
-            <classpath refid="Deserd-BV.classpath"/>
+            <classpath refid="DnD_battle_viewer.classpath"/>
         </javac>
     </target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
@@ -51,14 +51,9 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
-    <target name="hexapaper">
-        <java classname="hexapaper.hexapaper" failonerror="true" fork="yes">
-            <classpath refid="Deserd-BV.classpath"/>
-        </java>
-    </target>
-    <target name="Hex (1)">
-        <java classname="hexapaper.source.Hex" failonerror="true" fork="yes">
-            <classpath refid="Deserd-BV.classpath"/>
+    <target name="Hex (3)">
+        <java classname="hexapaper.Hex" failonerror="true" fork="yes">
+            <classpath refid="DnD_battle_viewer.classpath"/>
         </java>
     </target>
 </project>
