@@ -49,6 +49,7 @@ public class PraveMenu extends JPanel {
 	Entity vlastnosti = null;
 	boolean isPostava = false, isDel = false;
 	ArrayList<PropPair> param = new ArrayList<PropPair>();
+	Properties p=new Properties();
 
 	public PraveMenu() {
 		praveMenu();
@@ -245,103 +246,104 @@ public class PraveMenu extends JPanel {
 		if (vlastnosti == null) {
 			return VP;
 		}
-		GridBagLayout gbl = new GridBagLayout();
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.BOTH;
-		VP.setLayout(gbl);
-		VP.setBorder(new TitledBorder(Strings.vytvorPostavu));
-
-		JPanel prvni = new JPanel(new GridLayout(1, 1, 10, 0));
-		String name = "";
-
-		if (isPostava && ((Postava) vlastnosti).isPJ()) {
-			name = "(NPC) ";
-		}
-		name = name.concat(vlastnosti.getNick());
-		JLabel nameLabel = new JLabel(name);
-		prvni.add(nameLabel);
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.weightx = 1;
-		gbl.setConstraints(prvni, gbc);
-		VP.add(prvni);
-		gbc.weightx = 0;
-
-		JScrollPane druhySc = new JScrollPane();
-		int sizeParam;
-		JScrollBar vert = druhySc.getVerticalScrollBar();
-		if (isPostava) {
-			param = ((Postava) vlastnosti).getParam();
-		} else {
-			param = ((Artefact) vlastnosti).getParam();
-		}
-
-		if (param.size() < 6) {
-			sizeParam = 6;
-			vert.setEnabled(false);
-			druhySc.setVerticalScrollBar(vert);
-		} else {
-			sizeParam = param.size();
-			vert.setEnabled(true);
-			druhySc.setVerticalScrollBar(vert);
-		}
-		JPanel druhyIn = new JPanel(new GridLayout(sizeParam, 1));
-		MouseListener m = new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				if (isDel) {
-					for (int i = 0; i < param.size(); i++) {
-						if (param.get(i).name == e.getComponent().getParent().getName() &&
-								e.getComponent().getParent().getName() != Strings.name) {
-							param.remove(i);
-							updateCreate();
-							break;
-						}
-					}
-				}
-			}
-		};
-		for (PropPair prv : param) {
-			JPanel druhy = new JPanel(new GridLayout(1, 2, 10, 0));
-			druhy.setPreferredSize(new Dimension(0, 30));
-			druhy.setName(prv.name);
-			EditableJLabel lblName = new EditableJLabel(prv.name);
-			lblName.addMouseListener(m);
-			JTextField tfldValue = new JTextField(prv.value);
-			tfldValue.addMouseListener(m);
-			druhy.add(lblName);
-			druhy.add(tfldValue);
-			druhyIn.add(druhy);
-		}
-		druhySc.setViewportView(druhyIn);
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.weightx = 0;
-		gbc.weighty = 1;
-		gbc.gridheight = 5;
-		gbl.setConstraints(druhySc, gbc);
-		VP.add(druhySc);
-
-		JPanel treti = new JPanel(new GridLayout(1, 2, 10, 0));
-		JButton add = new JButton(Strings.addPropBut);
-		add.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				readParam();
-				param.add(new PropPair("<>", ""));
-				isDel = false;
-				updateCreate();
-			}
-		});
-		JToggleButton del = new JToggleButton(Strings.delPropBut, isDel);
-		del.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				isDel = ((JToggleButton) e.getSource()).isSelected();
-			}
-		});
+		VP.add(p);
+		// GridBagLayout gbl = new GridBagLayout();
+		// GridBagConstraints gbc = new GridBagConstraints();
+		// gbc.fill = GridBagConstraints.BOTH;
+		// VP.setLayout(gbl);
+		// VP.setBorder(new TitledBorder(Strings.vytvorPostavu));
+		//
+		// JPanel prvni = new JPanel(new GridLayout(1, 1, 10, 0));
+		// String name = "";
+		//
+		// if (isPostava && ((Postava) vlastnosti).isPJ()) {
+		// name = "(NPC) ";
+		// }
+		// name = name.concat(vlastnosti.getNick());
+		// JLabel nameLabel = new JLabel(name);
+		// prvni.add(nameLabel);
+		// gbc.gridx = 0;
+		// gbc.gridy = 0;
+		// gbc.weightx = 1;
+		// gbl.setConstraints(prvni, gbc);
+		// VP.add(prvni);
+		// gbc.weightx = 0;
+		//
+		// JScrollPane druhySc = new JScrollPane();
+		// int sizeParam;
+		// JScrollBar vert = druhySc.getVerticalScrollBar();
+		// if (isPostava) {
+		// param = ((Postava) vlastnosti).getParam();
+		// } else {
+		// param = ((Artefact) vlastnosti).getParam();
+		// }
+		//
+		// if (param.size() < 6) {
+		// sizeParam = 6;
+		// vert.setEnabled(false);
+		// druhySc.setVerticalScrollBar(vert);
+		// } else {
+		// sizeParam = param.size();
+		// vert.setEnabled(true);
+		// druhySc.setVerticalScrollBar(vert);
+		// }
+		// JPanel druhyIn = new JPanel(new GridLayout(sizeParam, 1));
+		// MouseListener m = new MouseAdapter() {
+		// @Override
+		// public void mousePressed(MouseEvent e) {
+		// if (isDel) {
+		// for (int i = 0; i < param.size(); i++) {
+		// if (param.get(i).name == e.getComponent().getParent().getName() &&
+		// e.getComponent().getParent().getName() != Strings.name) {
+		// param.remove(i);
+		// updateCreate();
+		// break;
+		// }
+		// }
+		// }
+		// }
+		// };
+		// for (PropPair prv : param) {
+		// JPanel druhy = new JPanel(new GridLayout(1, 2, 10, 0));
+		// druhy.setPreferredSize(new Dimension(0, 30));
+		// druhy.setName(prv.name);
+		// EditableJLabel lblName = new EditableJLabel(prv.name);
+		// lblName.addMouseListener(m);
+		// JTextField tfldValue = new JTextField(prv.value);
+		// tfldValue.addMouseListener(m);
+		// druhy.add(lblName);
+		// druhy.add(tfldValue);
+		// druhyIn.add(druhy);
+		// }
+		// druhySc.setViewportView(druhyIn);
+		// gbc.gridx = 0;
+		// gbc.gridy = 1;
+		// gbc.weightx = 0;
+		// gbc.weighty = 1;
+		// gbc.gridheight = 5;
+		// gbl.setConstraints(druhySc, gbc);
+		// VP.add(druhySc);
+		//
+		// JPanel treti = new JPanel(new GridLayout(1, 2, 10, 0));
+		// JButton add = new JButton(Strings.addPropBut);
+		// add.addActionListener(new ActionListener() {
+		//
+		// @Override
+		// public void actionPerformed(ActionEvent arg0) {
+		// readParam();
+		// param.add(new PropPair("<>", ""));
+		// isDel = false;
+		// updateCreate();
+		// }
+		// });
+		// JToggleButton del = new JToggleButton(Strings.delPropBut, isDel);
+		// del.addActionListener(new ActionListener() {
+		//
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// isDel = ((JToggleButton) e.getSource()).isSelected();
+		// }
+		// });
 		// treti.add(add);
 		// treti.add(del);
 		// gbc.gridx = 0;
@@ -385,7 +387,7 @@ public class PraveMenu extends JPanel {
 			param.set(i, new PropPair(name, value));
 		}
 	}
-
+	
 	public void redrawProperities(prvekkNN prvekkNN) {
 		Entity ent = sk.souradky.get(prvekkNN.getIdx());
 		if (ent.getClass() == hexapaper.entity.Postava.class ||

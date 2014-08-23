@@ -83,6 +83,7 @@ public class Listenery {
 			double x = e.getX();
 			double y = e.getY();
 			ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
+			System.out.println(idx.get(0).getIdx());
 			if (e.getButton() == MouseEvent.BUTTON3) {
 				HraciPlocha t = (HraciPlocha) e.getComponent();
 				t.rotateEntity(idx);

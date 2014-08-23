@@ -142,11 +142,9 @@ public class HraciPlocha extends JPanel {
 		for (Entity ent : sk.souradky) {
 			if (ent.loc.getX() == idx.get(0).getX1() && ent.loc.getY() == idx.get(0).getY1()
 					&& (ent.isColidable || hard)) {
-				sk.souradky.remove(ent);
 				type.loc = ent.loc;
 				type.recreateGraphics();
-				sk.souradky.add(type.clone());
-				// TODO opravit vicenasobne vkladani
+				sk.souradky.set(idx.get(0).getIdx(), type.clone());
 				if (!sk.repeatableInsert) {
 					type = null;
 					sk.setupInserting(null, false);
@@ -161,9 +159,9 @@ public class HraciPlocha extends JPanel {
 	}
 
 	public void insertEntity(int idx, Entity type) {
-		Location loc = sk.souradky.remove(idx).loc;
+		Location loc = sk.souradky.get(idx).loc;
 		type.loc = loc;
-		sk.souradky.add(type);
+		sk.souradky.set(idx, type);
 		type.recreateGraphics();
 		repaint();
 	}

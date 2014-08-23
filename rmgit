@@ -1,5 +1,12 @@
 #!/bin/bash
-git rm $1
-git commit -m "deleting $2"
-echo " Param \$1 je to co chces smazat, param \$2 je to co chces do commitu!!!"
-git push origin master
+if [ -e "$1" ]; then
+	if [ -e "$2" ]; then
+		git rm $1
+		git commit -m "deleting $2"
+		git push origin master
+	else
+		echo "Nezadal jsi commit!!"
+	fi
+else
+	echo "Nezadal jsi co smazat!!";
+fi

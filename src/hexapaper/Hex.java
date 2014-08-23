@@ -8,17 +8,15 @@ import hexapaper.source.Location;
 import hexapaper.source.Sklad.PropPair;
 
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.ScrollPaneConstants;
 
 public class Hex {
 
@@ -61,68 +59,20 @@ public class Hex {
 		final Properties p=new Properties();
 		p.setBounds(202, 0, 201, 261);
 		frame.getContentPane().add(p);
-		MouseListener al=new MouseListener(){
-
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+		MouseListener al=new MouseAdapter() {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
 				p.update((Artefact) e.getSource());
 				
 			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
 			
 		};
-		MouseListener al2=new MouseListener(){
-
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+		MouseListener al2=new MouseAdapter(){
 
 			@Override
 			public void mousePressed(MouseEvent e) {
 				p.update((Postava) e.getSource());
-				
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 			
@@ -159,25 +109,7 @@ public class Hex {
 
 		JButton newchar = new JButton("New button");
 		newchar.setBounds(65, 238, 89, 23);
-		newchar.addMouseListener(new MouseListener(){
-
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
+		newchar.addMouseListener(new MouseAdapter(){
 
 			@Override
 			public void mousePressed(MouseEvent arg0) {
@@ -185,12 +117,6 @@ public class Hex {
 				t.add(crh);
 				t.add(btn);
 				SaveFile x=new SaveFile(a);	
-				
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				// TODO Auto-generated method stub
 				
 			}
 			
