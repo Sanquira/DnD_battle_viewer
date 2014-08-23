@@ -52,7 +52,7 @@ public class Gprvky {
 		ArrayList<BPolygon> arr = new ArrayList<BPolygon>();
 		arr.add(emptyHexagon(loc));
 		Polygon sprite = new Polygon();
-		double newRadius = sk.RADIUS * Math.sqrt(3) / 2;
+		double newRadius = sk.RADIUS *0.85;
 		for (int i = 0; i < 6; i++) {
 			sprite.addPoint((int) Math.round(loc.getX() + Math.cos(Math.toRadians(60 * i)) * newRadius),
 					(int) Math.round(loc.getY() + Math.sin(Math.toRadians(60 * i)) * newRadius));

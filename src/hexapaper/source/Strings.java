@@ -12,6 +12,7 @@ public class Strings {
 	public static String ano = "Ano";
 	public static String ne = "Ne";
 	public static String NPC = "NPC";
+	public static String artefakt = "Artefakt";
 	public static String polomerHexu = "Poloměr Hexu";
 	public static String pocetRadku = "Počet řádků";
 	public static String pocetSloupcu = "Počet sloupců";

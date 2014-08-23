@@ -164,7 +164,7 @@ public class ArtefactAddFrame extends JPanel {
 					return;
 				}
 				Artefact man = new Artefact(param.remove(0).value, sk.LocDontCare, param);
-				sk.databazeArtefaktu.add(man);
+				sk.databazeArtefaktu.add(man.clone());
 				updateDatabaze();
 
 				clearChar();
@@ -188,7 +188,7 @@ public class ArtefactAddFrame extends JPanel {
 
 	protected void updateDatabaze() {
 		updateCreate();
-		sk.RMenu.update();
+		sk.RMenu.updateDatabase();
 
 	}
 
@@ -267,7 +267,7 @@ public class ArtefactAddFrame extends JPanel {
 
 	protected void readParam() {
 		for (int i = 0; i < param.size(); i++) {
-			String name = param.get(i).name;
+			String name = ((EditableJLabel) ((JPanel) ((JPanel) ((JViewport) ((JScrollPane) vpg.getComponent(0)).getComponent(0)).getComponent(0)).getComponent(i)).getComponent(0)).getText();
 			String value = ((JTextField) ((JPanel) ((JPanel) ((JViewport) ((JScrollPane) vpg.getComponent(0)).getComponent(0)).getComponent(0)).getComponent(i)).getComponent(1)).getText();
 			param.set(i, new PropPair(name, value));
 		}

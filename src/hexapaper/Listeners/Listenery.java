@@ -1,12 +1,15 @@
-package hexapaper.source;
+package hexapaper.Listeners;
 
 import hexapaper.entity.Artefact;
-import hexapaper.entity.Entity;
+import hexapaper.entity.Postava;
 import hexapaper.entity.Wall;
 import hexapaper.gui.ArtefactAddFrame;
 import hexapaper.gui.HraciPlocha;
-import hexapaper.gui.NewPaper;
+import hexapaper.gui.NewPaperFrame;
 import hexapaper.gui.PostavaAddFrame;
+import hexapaper.source.Sklad;
+import hexapaper.source.kNN;
+import hexapaper.source.Sklad.PropPair;
 import hexapaper.source.Sklad.prvekkNN;
 
 import java.awt.event.ActionEvent;
@@ -15,8 +18,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-import javax.swing.Action;
-
 public class Listenery {
 
 	Sklad sk = Sklad.getInstance();
@@ -24,7 +25,7 @@ public class Listenery {
 	public class NovaListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new NewPaper();
+			new NewPaperFrame();
 		}
 	}
 
@@ -83,7 +84,7 @@ public class Listenery {
 			double x = e.getX();
 			double y = e.getY();
 			ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
-			System.out.println(idx.get(0).getIdx());
+			// System.out.println(idx.get(0).getIdx());
 			if (e.getButton() == MouseEvent.BUTTON3) {
 				HraciPlocha t = (HraciPlocha) e.getComponent();
 				t.rotateEntity(idx);
@@ -93,6 +94,8 @@ public class Listenery {
 				t.insertEntity(idx, sk.insertedEntity, true);
 			}
 			if (e.getButton() == MouseEvent.BUTTON1 && !sk.insertingEntity) {
+//				System.out.println(((Postava) sk.souradky.get(idx.get(0).getIdx())).getParam().toString());
+
 				sk.RMenu.redrawProperities(idx.get(0));
 			}
 		}

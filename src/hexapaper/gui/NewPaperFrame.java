@@ -16,12 +16,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-public class NewPaper extends JPanel {
+public class NewPaperFrame extends JPanel {
 
 	Sklad sk = Sklad.getInstance();
 	JFrame frame;
 
-	public NewPaper() {
+	public NewPaperFrame() {
 		frame = new JFrame(Strings.vytvorPaper);
 		frame.setSize(300, 200);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

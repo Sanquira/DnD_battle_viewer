@@ -65,6 +65,19 @@ public class Artefact extends Entity {
 		param.remove(pos);
 	}
 
+	public Artefact clone() {
+		Artefact cloned = (Artefact) super.clone();
+		cloned.param = (ArrayList<PropPair>) cloned.param.clone();
+		for (int i = 0; i < cloned.param.size(); i++) {
+			try {
+				cloned.param.set(i, cloned.param.get(i).clone());
+			} catch (CloneNotSupportedException e) {
+				e.printStackTrace();
+			}
+		}
+		return cloned;
+	}
+
 	public String toString() {
 		return getNick();
 	}

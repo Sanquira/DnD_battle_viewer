@@ -1,6 +1,6 @@
 package hexapaper.gui;
 
-import hexapaper.source.ValueChangedListener;
+import hexapaper.Listeners.ValueChangedListener;
 
 import java.awt.CardLayout;
 import java.awt.GridLayout;

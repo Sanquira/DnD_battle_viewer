@@ -177,14 +177,14 @@ public class PostavaAddFrame extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent paramActionEvent) {
 				readParam();
-				// System.out.println(param.toString());
+//				System.out.println(param.toString());
 
 				if (param.get(0).value.trim().isEmpty()) {
 					JOptionPane.showMessageDialog(vpg, Strings.warningNameIsEmpty, Strings.varovani, JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 				Postava man = new Postava(param.remove(0).value, sk.LocDontCare, isNPSCB.isSelected(), param);
-				sk.databazePostav.add(man);
+				sk.databazePostav.add(man.clone());
 				updateDatabaze();
 				clearChar();
 			}
@@ -208,7 +208,7 @@ public class PostavaAddFrame extends JPanel {
 
 	protected void updateDatabaze() {
 		updateCreate();
-		sk.RMenu.update();
+		sk.RMenu.updateDatabase();
 
 	}
 
@@ -286,11 +286,13 @@ public class PostavaAddFrame extends JPanel {
 	}
 
 	protected void readParam() {
+		// ArrayList<PropPair> tmp = new ArrayList<>();
 		for (int i = 0; i < param.size(); i++) {
-			String name = param.get(i).name;
+			String name = ((EditableJLabel) ((JPanel) ((JPanel) ((JViewport) ((JScrollPane) vpg.getComponent(1)).getComponent(0)).getComponent(0)).getComponent(i)).getComponent(0)).getText();
 			String value = ((JTextField) ((JPanel) ((JPanel) ((JViewport) ((JScrollPane) vpg.getComponent(1)).getComponent(0)).getComponent(0)).getComponent(i)).getComponent(1)).getText();
 			param.set(i, new PropPair(name, value));
 		}
+		// param = new ArrayList<>(tmp);
 	}
 
 }
