@@ -2,8 +2,8 @@ package hexapaper;
 
 import hexapaper.entity.Artefact;
 import hexapaper.entity.Postava;
+import hexapaper.file.LoadFile;
 import hexapaper.file.SaveFile;
-import hexapaper.gui.Properties;
 import hexapaper.source.Location;
 import hexapaper.source.Sklad.PropPair;
 
@@ -56,28 +56,6 @@ public class Hex {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-
-		final Properties p = new Properties();
-		p.setBounds(202, 0, 201, 261);
-		frame.getContentPane().add(p);
-		MouseListener al = new MouseAdapter() {
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				p.update((Artefact) e.getSource());
-
-			}
-
-		};
-		MouseListener al2 = new MouseAdapter() {
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				p.update((Postava) e.getSource());
-
-			}
-
-		};
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setBounds(27, 10, 89, 14);
 		frame.getContentPane().add(lblNewLabel);
@@ -90,12 +68,10 @@ public class Hex {
 		t.add(new PropPair("Zbroj", "Plate Armor"));
 		t.add(new PropPair("Health", "8"));
 		final Postava btn = new Postava("Sprt", new Location(5, 4, 0), false, t);
-		btn.addMouseListener(al2);
 		btn.setBounds(27, 35, 89, 23);
 		frame.getContentPane().add(btn);
 
 		final Postava crh = new Postava("Deserd", new Location(5, 4, 0), true, null);
-		crh.addMouseListener(al2);
 		crh.addParam("sexy", "ano");
 		crh.setBounds(27, 62, 89, 23);
 		frame.getContentPane().add(crh);
@@ -103,7 +79,6 @@ public class Hex {
 		ArrayList<PropPair> x = new ArrayList<>();
 		x.add(new PropPair("sexy", "ano"));
 		final Artefact a = new Artefact("Object", new Location(5, 4, 0), x);
-		a.addMouseListener(al);
 		a.setBounds(27, 104, 89, 23);
 		frame.getContentPane().add(a);
 
@@ -117,7 +92,7 @@ public class Hex {
 				t.add(crh);
 				t.add(btn);
 				Postava[] p = {};
-				SaveFile x = new SaveFile(t);
+				new LoadFile();
 
 			}
 

@@ -58,12 +58,14 @@ public class SaveFile {
 	private JSONObject saveChar(Postava c) {
 		JSONObject p=new JSONObject();
 		p.put("Artefact", false);
+		p.put("PJ", c.isPJ());
 		p.put("List", c.getParam());		
 		return p;
 	}
 	private JSONObject saveChar(Artefact c) {
 		JSONObject p=new JSONObject();
 		p.put("Artefact", true);
+		p.put("PJ", true);
 		p.put("List", c.getParam());		
 		return p;
 	}
