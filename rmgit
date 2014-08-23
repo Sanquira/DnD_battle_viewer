@@ -1,0 +1,4 @@
+#!/bin/bash
+git rm $1
+git commit -m "deleting $2"
+git push origin master
