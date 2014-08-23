@@ -1,8 +1,10 @@
-package hexapaper.source;
+package hexapaper;
 
 import hexapaper.entity.Artefact;
 import hexapaper.entity.Postava;
 import hexapaper.gui.Properties;
+import hexapaper.source.Location;
+import hexapaper.source.SaveFile;
 import hexapaper.source.Sklad.PropPair;
 
 import java.awt.EventQueue;
