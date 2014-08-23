@@ -2,9 +2,9 @@ package hexapaper;
 
 import hexapaper.entity.Artefact;
 import hexapaper.entity.Postava;
+import hexapaper.file.SaveFile;
 import hexapaper.gui.Properties;
 import hexapaper.source.Location;
-import hexapaper.source.SaveFile;
 import hexapaper.source.Sklad.PropPair;
 
 import java.awt.EventQueue;
@@ -151,7 +151,7 @@ public class Hex {
 		
 		ArrayList<PropPair> x=new ArrayList<>();
 		x.add(new PropPair("sexy","ano"));		
-		Artefact a = new Artefact("Object", new Location(5,4, 0), x);
+		final Artefact a = new Artefact("Object", new Location(5,4, 0), x);
 		a.addMouseListener(al);
 		a.setBounds(27, 104, 89, 23);
 		frame.getContentPane().add(a);
@@ -184,7 +184,7 @@ public class Hex {
 				List<Postava> t=new ArrayList<>();
 				t.add(crh);
 				t.add(btn);
-				SaveFile x=new SaveFile(btn);	
+				SaveFile x=new SaveFile(a);	
 				
 			}
 
