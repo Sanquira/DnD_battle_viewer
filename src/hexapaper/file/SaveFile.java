@@ -68,7 +68,7 @@ public class SaveFile {
 		return p;
 	}
 	public void save(String ext,String desc){
-		JFileChooser fc = new JFileChooser();
+		JFileChooser fc = new JFileChooser();	
 		fc.setFileFilter(new FileNameExtensionFilter(desc+" (*."+ext+")", ext));
 		FileWriter fileWriter;
 		gson = new GsonBuilder().setPrettyPrinting().create();
