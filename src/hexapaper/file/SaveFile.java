@@ -77,7 +77,14 @@ public class SaveFile {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             try {
-				fileWriter=new FileWriter(new File(file.getAbsolutePath()+"."+ext));
+            	String name="";
+				if(!file.getAbsolutePath().contains("."+ext)){
+					name=file.getAbsolutePath()+"."+ext;
+				}
+				else{
+					name=file.getAbsolutePath();
+				}
+            	fileWriter=new FileWriter(new File(name));
 				fileWriter.write(jsonOutput);
             	fileWriter.flush();
             	fileWriter.close();
