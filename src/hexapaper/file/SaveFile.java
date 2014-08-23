@@ -1,4 +1,4 @@
-package hexapaper.source;
+package hexapaper.file;
 
 import hexapaper.entity.Artefact;
 import hexapaper.entity.Postava;
@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.filechooser.FileFilter;
 
 import org.json.simple.JSONObject;
 
@@ -48,8 +49,7 @@ public class SaveFile {
 		FileWriter fileWriter;
 		gson = new GsonBuilder().setPrettyPrinting().create();
 		String jsonOutput = gson.toJson(j);
-//		int returnVal = fc.showOpenDialog(new JFrame());	
-		int returnVal = fc.showSaveDialog(new JFrame());
+		int returnVal = fc.showSaveDialog(new JFrame());		 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             try {
