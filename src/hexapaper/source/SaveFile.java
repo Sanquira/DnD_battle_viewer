@@ -48,7 +48,8 @@ public class SaveFile {
 		FileWriter fileWriter;
 		gson = new GsonBuilder().setPrettyPrinting().create();
 		String jsonOutput = gson.toJson(j);
-		int returnVal = fc.showOpenDialog(new JFrame());		 
+//		int returnVal = fc.showOpenDialog(new JFrame());	
+		int returnVal = fc.showSaveDialog(new JFrame());
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             try {
