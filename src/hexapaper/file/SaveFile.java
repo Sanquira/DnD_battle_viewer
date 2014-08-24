@@ -2,6 +2,7 @@ package hexapaper.file;
 
 import hexapaper.entity.Artefact;
 import hexapaper.entity.Entity;
+import hexapaper.entity.FreeSpace;
 import hexapaper.entity.Postava;
 import hexapaper.entity.Wall;
 import hexapaper.source.Sklad;
@@ -39,7 +40,9 @@ public class SaveFile {
 	public SaveFile(ArrayList<Entity>  man,int Radius, int gridSl,int gridRA){
 		JSONObject entity=new JSONObject();
 		for(int i=0;i<man.size();i++){
-			entity.put(i, saveChar(man.get(i)));
+			if(!(man.get(i) instanceof FreeSpace)){
+				entity.put(i, saveChar(man.get(i)));
+			}	
 		}
 		j.put("GridSl", gridSl);
 		j.put("Radius", Radius);
