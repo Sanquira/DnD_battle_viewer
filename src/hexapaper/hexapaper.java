@@ -6,9 +6,10 @@ import hexapaper.source.Strings;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 
 public class hexapaper extends JFrame {
@@ -20,14 +21,15 @@ public class hexapaper extends JFrame {
 	public static JFrame frm;
 	Listenery lis = new Listenery();
 	static Sklad sk = Sklad.getInstance();
-	private JMenuBar HlavniMenu = new JMenuBar();
 
 	private JScrollPane hraciplsc = new JScrollPane();
 
 	public hexapaper() {
 		setTitle("Hexapapír " + sk.VERSION);
 		setSize(800, 600);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+		addWindowListener(lis.new KonecHardListener());
 
 		setLayout(new BorderLayout());
 		initializace();
@@ -36,38 +38,76 @@ public class hexapaper extends JFrame {
 
 	private void initializace() {
 
-		menu();
 		hraciPlocha();
 
-		add(HlavniMenu, BorderLayout.NORTH);
+		add(menu(), BorderLayout.NORTH);
 		add(hraciplsc);
 		add(sk.RMenu, BorderLayout.EAST);
 	}
 
-	private void menu() {
-		JButton novaHra = new JButton(Strings.newPaper);
-		JButton ulozHru = new JButton(Strings.savePaper);
-		JButton nactiHru = new JButton(Strings.loadPaper);
-		JButton pridejArt = new JButton(Strings.addArt);
-		JButton pridejPost = new JButton(Strings.addPost);
-		JButton konecHry = new JButton(Strings.konec);
+	private JMenuBar menu() {
+		JMenuBar HlavniMenu = new JMenuBar();
 
-		novaHra.addActionListener(lis.new NovaListener());
-		ulozHru.addActionListener(lis.new UlozListener());
-		nactiHru.addActionListener(lis.new NactiListener());
+		JMenu hraMenu = new JMenu(Strings.hra);
+		JMenuItem novyPaper = new JMenuItem(Strings.newPaper);
+		JMenuItem nactiPaper = new JMenuItem(Strings.loadPaper);
+		JMenuItem ulozPaper = new JMenuItem(Strings.savePaper);
+		JMenuItem konec = new JMenuItem(Strings.konec);
+
+		novyPaper.addActionListener(lis.new NovaListener());
+		nactiPaper.addActionListener(lis.new NactiListener());
+		ulozPaper.addActionListener(lis.new UlozListener());
+		konec.addActionListener(lis.new KonecListener());
+
+		hraMenu.add(novyPaper);
+		hraMenu.add(nactiPaper);
+		hraMenu.add(ulozPaper);
+		hraMenu.add(konec);
+
+		JMenu upravy = new JMenu(Strings.upravy);
+		JMenuItem pridejArt = new JMenuItem(Strings.addArt);
+		JMenuItem pridejPost = new JMenuItem(Strings.addPost);
+		JMenu exportAP = new JMenu(Strings.exportAP);
+		JMenuItem exportArtDat = new JMenuItem(Strings.exportArtDat);
+		JMenuItem exportPostDat = new JMenuItem(Strings.exportPostDat);
+		JMenuItem exportArtOne = new JMenuItem(Strings.exportArtOne);
+		JMenuItem exportPostOne = new JMenuItem(Strings.exportPostOne);
+
+		JMenuItem importAP = new JMenuItem(Strings.importAP);
+
 		pridejArt.addActionListener(lis.new PridejArtefakt());
 		pridejPost.addActionListener(lis.new PridejPostavu());
-		konecHry.addActionListener(lis.new KonecListener());
 
-		ulozHru.setEnabled(false);
-		nactiHru.setEnabled(false);
+		exportArtDat.addActionListener(lis.new ExportArtDat());
+		exportArtOne.addActionListener(lis.new ExportArtOne());
+		exportPostDat.addActionListener(lis.new ExportPostDat());
+		exportPostOne.addActionListener(lis.new ExportPostOne());
 
-		HlavniMenu.add(novaHra);
-		HlavniMenu.add(ulozHru);
-		HlavniMenu.add(nactiHru);
-		HlavniMenu.add(pridejArt);
-		HlavniMenu.add(pridejPost);
-		HlavniMenu.add(konecHry);
+		importAP.addActionListener(lis.new ImportAP());
+
+		upravy.add(pridejArt);
+		upravy.add(pridejPost);
+
+		exportAP.add(exportArtOne);
+		exportAP.add(exportArtDat);
+		exportAP.add(exportPostOne);
+		exportAP.add(exportPostDat);
+		upravy.add(exportAP);
+
+		upravy.add(importAP);
+
+		JMenu addons = new JMenu(Strings.addons);
+
+		JMenuItem kostka = new JMenuItem(Strings.kostka);
+
+		kostka.addActionListener(lis.new KostkaListener());
+
+		addons.add(kostka);
+
+		HlavniMenu.add(hraMenu);
+		HlavniMenu.add(upravy);
+		HlavniMenu.add(addons);
+		return HlavniMenu;
 	}
 
 	private void hraciPlocha() {

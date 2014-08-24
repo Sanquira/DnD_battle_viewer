@@ -321,11 +321,6 @@ public class PraveMenu extends JPanel {
 
 				}
 			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				readParam();
-			}
 		};
 		boolean skryj = false;
 		if (isPostava) {

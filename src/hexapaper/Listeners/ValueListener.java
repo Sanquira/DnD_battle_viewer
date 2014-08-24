@@ -52,10 +52,10 @@ public class ValueListener implements ValueChangedListener, DocumentListener {
 		}
 		// System.out.println(t);
 		if (man != null) {
-			man.setParamName(pos, t);
+			man.setParamValue(pos, t);
 			return;
 		}
-		art.setParamName(pos, t);
+		art.setParamValue(pos, t);
 
 	}
 

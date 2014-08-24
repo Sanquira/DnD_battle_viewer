@@ -1,13 +1,15 @@
 package hexapaper.Listeners;
 
-import hexapaper.entity.Artefact;
-import hexapaper.entity.Wall;
+import hexapaper.hexapaper;
+import hexapaper.file.LoadFile;
+import hexapaper.file.SaveFile;
 import hexapaper.gui.ArtefactAddFrame;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.NewPaperFrame;
 import hexapaper.gui.PostavaAddFrame;
 import hexapaper.source.Sklad;
 import hexapaper.source.Sklad.prvekkNN;
+import hexapaper.source.Strings;
 import hexapaper.source.kNN;
 
 import java.awt.event.ActionEvent;
@@ -15,8 +17,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
+import javax.swing.Action;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 public class Listenery {
@@ -33,18 +40,14 @@ public class Listenery {
 	public class NactiListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			sk.insertedEntity = new Wall(sk.LocDontCare);
-			sk.insertingEntity = true;
-
+			System.err.println("NactiListener");
 		}
 	}
 
 	public class UlozListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			sk.insertedEntity = new Artefact("A", sk.LocDontCare, null);
-			sk.insertingEntity = true;
-
+			System.err.println("UlozListener");
 		}
 	}
 
@@ -68,10 +71,43 @@ public class Listenery {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.exit(0);
+			Object[] opt = { Strings.ano, Strings.ne };
+			int t = JOptionPane.showOptionDialog(hexapaper.frm, Strings.zpravaZtrataDat, Strings.ztrataDat, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
+			if (t == JOptionPane.OK_OPTION) {
+				System.exit(0);
+			}
+		}
+	}
 
+	public class KonecHardListener implements WindowListener {
+		@Override
+		public void windowClosing(WindowEvent paramWindowEvent) {
+			new KonecListener().actionPerformed(null);
 		}
 
+		@Override
+		public void windowOpened(WindowEvent paramWindowEvent) {
+		}
+
+		@Override
+		public void windowClosed(WindowEvent paramWindowEvent) {
+		}
+
+		@Override
+		public void windowIconified(WindowEvent paramWindowEvent) {
+		}
+
+		@Override
+		public void windowDeiconified(WindowEvent paramWindowEvent) {
+		}
+
+		@Override
+		public void windowActivated(WindowEvent paramWindowEvent) {
+		}
+
+		@Override
+		public void windowDeactivated(WindowEvent paramWindowEvent) {
+		}
 	}
 
 	boolean ins = false;
@@ -149,4 +185,53 @@ public class Listenery {
 
 	}
 
+	public class ExportArtDat implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent paramActionEvent) {
+			new SaveFile(sk.databazeArtefaktu);
+		}
+	}
+
+	public class ExportArtOne implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent paramActionEvent) {
+			System.err.println("ExportArtOne");
+		}
+	}
+
+	public class ExportPostDat implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent paramActionEvent) {
+			new SaveFile(sk.databazePostav);
+		}
+	}
+
+	public class ExportPostOne implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent paramActionEvent) {
+			System.err.println("ExportPostOne");
+		}
+	}
+
+	public class ImportAP implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent paramActionEvent) {
+			new LoadFile();
+			sk.RMenu.updateDatabase();
+		}
+	}
+
+	public class KostkaListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent paramActionEvent) {
+			System.err.println("KostkaListener");
+		}
+
+	}
 }

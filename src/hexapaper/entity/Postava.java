@@ -13,18 +13,6 @@ public class Postava extends Entity {
 	private boolean PJ;
 	private ArrayList<PropPair> param = new ArrayList<PropPair>();
 
-	// TODO
-	// private MouseListener mList = new MouseAdapter() {
-	//
-	// @Override
-	// public void mouseClicked(MouseEvent arg0) {
-	// properties.update(t);
-	//
-	// }
-	// };
-	// private Properties properties;
-	// private final Postava t = this;
-
 	/**
 	 * 
 	 * @param name
@@ -35,8 +23,6 @@ public class Postava extends Entity {
 	public Postava(String name, Location loc, boolean PJ, ArrayList<PropPair> prop) {
 		// super(name, loc, Rotatable, Colidable, prvek);
 		super(name, new Location(0, 0, 0), true, false, new Gprvky().entity(loc));
-		System.err.println("Postava - Opravit listener na kliknuti");
-		// this.addMouseListener(mList);
 		if (prop != null) {
 			this.param = prop;
 		}

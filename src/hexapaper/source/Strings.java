@@ -42,4 +42,20 @@ public class Strings {
 	public static String addPropBut = "Přidej";
 	public static String delPropBut = "Odeber";
 
+	public static String hra = "Hra";
+	public static String upravy = "Úpravy";
+	public static String exportAP = "Export ...";
+	public static String importAP = "Import";
+	public static String exportArtDat = "... databáze artefaktů";
+	public static String exportPostDat = "... databáze postav";
+	public static String exportArtOne = "... jednoho artefaktu";
+	public static String exportPostOne = "... jedné postavy";
+	public static String addons = "Addony";
+	public static String kostka = "Kostka";
+
+	public static String ztrataDat = "Ztráta dat";
+	public static String zpravaZtrataDat = "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVšechny neuložené změny budou ztraceny. \nChcete opravdu skončit?";
+
+	// public static String
+
 }
