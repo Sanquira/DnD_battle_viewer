@@ -3,12 +3,10 @@ package hexapaper.source;
 import hexapaper.entity.Artefact;
 import hexapaper.entity.Entity;
 import hexapaper.entity.Postava;
-import hexapaper.entity.Wall;
 import hexapaper.gui.Gprvky;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.PraveMenu;
 
-import java.awt.Polygon;
 import java.util.ArrayList;
 
 public class Sklad {
@@ -20,8 +18,8 @@ public class Sklad {
 	public PraveMenu RMenu;
 
 	public int RADIUS = 25;
-	public int gridSl = 10;
-	public int gridRa = 10;
+	public int gridSl = 0;
+	public int gridRa = 0;
 	public ArrayList<Entity> souradky;
 	public boolean insertingEntity = false;
 	public Location LocDontCare = new Location(RADIUS, RADIUS, 0);
@@ -38,39 +36,42 @@ public class Sklad {
 	}
 
 	public void init() {
+		gridSl = 10;
+		gridRa = 10;
+		
 		hraciPlocha = new HraciPlocha();
 		prvky = new Gprvky();
 
-		 // //////////////////////////////////////////////
-		 ArrayList<PropPair> prp = new ArrayList<>();
-		 prp.add(new PropPair("Obsah", "temné nic"));
-		 databazeArtefaktu.add(new Artefact("Truhla", LocDontCare, prp));
-		
-		 prp = new ArrayList<>();
-		 prp.add(new PropPair("Epickost", "HOOOOODNE"));
-		 databazeArtefaktu.add(new Artefact("Meč", LocDontCare, prp));
-		
-		 prp = new ArrayList<>();
-		 prp.add(new PropPair("Rasa", "Elf"));
-		 prp.add(new PropPair("Zbran", "Tank"));
-		 databazePostav.add(new Postava("Gold", LocDontCare, false, prp));
-		
-		 prp = new ArrayList<>();
-		 prp.add(new PropPair("Rasa", "Trpajzlik"));
-		 prp.add(new PropPair("Zbran", "Sekera"));
-		 databazePostav.add(new Postava("Ragnar", LocDontCare, true, prp));
-		 int i = 0, j = 0, k = 90;
-		 for (i = k; i < k + databazeArtefaktu.size(); i++) {
-		 hraciPlocha.insertEntity(i, databazeArtefaktu.get(j).clone());
-		 j++;
-		 }
-		 k = i;
-		 j = 0;
-		 for (; i < k + databazePostav.size(); i++) {
-		 hraciPlocha.insertEntity(i, databazePostav.get(j).clone());
-		 j++;
-		 }
-		 // ////////////////////////////////////////////////////////
+		// //////////////////////////////////////////////
+		ArrayList<PropPair> prp = new ArrayList<>();
+		prp.add(new PropPair("Obsah", "temné nic"));
+		databazeArtefaktu.add(new Artefact("Truhla", LocDontCare, prp));
+
+		prp = new ArrayList<>();
+		prp.add(new PropPair("Epickost", "HOOOOODNE"));
+		databazeArtefaktu.add(new Artefact("Meč", LocDontCare, prp));
+
+		prp = new ArrayList<>();
+		prp.add(new PropPair("Rasa", "Elf"));
+		prp.add(new PropPair("Zbran", "Tank"));
+		databazePostav.add(new Postava("Gold", LocDontCare, false, prp));
+
+		prp = new ArrayList<>();
+		prp.add(new PropPair("Rasa", "Trpajzlik"));
+		prp.add(new PropPair("Zbran", "Sekera"));
+		databazePostav.add(new Postava("Ragnar", LocDontCare, true, prp));
+		int i = 0, j = 0, k = 90;
+		for (i = k; i < k + databazeArtefaktu.size(); i++) {
+			hraciPlocha.insertEntity(i, databazeArtefaktu.get(j).clone());
+			j++;
+		}
+		k = i;
+		j = 0;
+		for (; i < k + databazePostav.size(); i++) {
+			hraciPlocha.insertEntity(i, databazePostav.get(j).clone());
+			j++;
+		}
+		// ////////////////////////////////////////////////////////
 
 		RMenu = new PraveMenu();
 	}
@@ -92,11 +93,6 @@ public class Sklad {
 			insertingEntity = true;
 			repeatableInsert = repeat;
 		}
-		updateCursor();
-	}
-
-	public void updateCursor() {
-		hraciPlocha.setCursor(prvky.zmenKurzor(insertedEntity));
 	}
 
 	public static class prvekkNN implements Cloneable {

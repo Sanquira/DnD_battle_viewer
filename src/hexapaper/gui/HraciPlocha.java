@@ -9,7 +9,6 @@ import hexapaper.source.Sklad.prvekkNN;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -21,18 +20,15 @@ import javax.swing.JPanel;
 
 public class HraciPlocha extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Sklad sk = Sklad.getInstance();
+	Entity cursor = null;
 
 	public HraciPlocha() {
 		init();
-		// // Vkladani "na tvrdo"
-		// Entity sprt = new Postava("Šprt", new Location(0, 0, 0), true, null);
-		// insertEntity(5, sprt);
-		//
-		// // Vkladani "na mekko"
-		// sk.insertedEntity = new Postava("Deserd134", sk.LocDontCare,
-		// false, null);
-		// sk.insertingEntity = true;
 	}
 
 	public void init() {
@@ -89,6 +85,21 @@ public class HraciPlocha extends JPanel {
 				}
 			}
 		}
+		if (cursor != null) {
+			g2.setColor(cursor.background);
+			g2.fillPolygon(new Gprvky().emptyHexagon(cursor.loc));
+			g2.setColor(Color.black);
+			g2.drawString(cursor.tag, Math.round(cursor.loc.getX() - (fm.getStringBounds(cursor.tag, g).getWidth() / 2)),
+					Math.round(cursor.loc.getY() + (fm.getStringBounds(cursor.tag, g).getHeight() / 3)));
+			fm.getStringBounds(cursor.tag, g).getWidth();
+			for (BPolygon poly : cursor.prvek) {
+				if (!poly.isFilled) {
+					g2.drawPolygon(poly);
+				} else {
+					g2.fillPolygon(poly);
+				}
+			}
+		}
 	}
 
 	public int countDir(ArrayList<prvekkNN> prvky) {
@@ -124,7 +135,6 @@ public class HraciPlocha extends JPanel {
 
 	public void rotateEntity(ArrayList<prvekkNN> idx) {
 		int smer = countDir(idx);
-		// System.out.println(smer);
 		for (Entity ent : sk.souradky) {
 			if (ent.loc.getX() == idx.get(0).getX1() && ent.loc.getY() == idx.get(0).getY1() && ent.isRotateable) {
 				ent.loc.setDir(smer);
@@ -142,7 +152,8 @@ public class HraciPlocha extends JPanel {
 		for (Entity ent : sk.souradky) {
 			if (ent.loc.getX() == idx.get(0).getX1() && ent.loc.getY() == idx.get(0).getY1()
 					&& (ent.isColidable || hard)) {
-				type.loc = ent.loc;
+				type.loc.setX(ent.loc.getX());
+				type.loc.setY(ent.loc.getY());
 				type.recreateGraphics();
 				sk.souradky.set(idx.get(0).getIdx(), type.clone());
 				if (!sk.repeatableInsert) {
@@ -153,16 +164,39 @@ public class HraciPlocha extends JPanel {
 				break;
 			}
 		}
-		// for (Entity ent : sk.souradky) {
-		// System.out.println(ent.loc.toString());
-		// }
 	}
 
 	public void insertEntity(int idx, Entity type) {
 		Location loc = sk.souradky.get(idx).loc;
-		type.loc = loc;
+		type.loc.setX(loc.getX());
+		type.loc.setY(loc.getY());
 		sk.souradky.set(idx, type);
 		type.recreateGraphics();
 		repaint();
+	}
+
+	public void drawCursor(int x, int y) {
+		if (sk.insertingEntity) {
+			cursor = sk.insertedEntity.clone();
+			cursor.loc = new Location(x, y, cursor.loc.getDir());
+			cursor.recreateGraphics();
+		} else {
+			cursor = null;
+		}
+		repaint();
+	}
+
+	public void saveEntity(int idx) {
+		sk.setupInserting(sk.souradky.get(idx).clone(), false);
+		Location loc = sk.souradky.get(idx).clone().loc;
+		insertEntity(idx, new FreeSpace(loc));
+		drawCursor(loc.getX(), loc.getY());
+
+	}
+
+	public void releaseEntity(int idx) {
+		insertEntity(idx, sk.insertedEntity.clone());
+		sk.setupInserting(null, false);
+
 	}
 }

@@ -1,22 +1,23 @@
 package hexapaper.Listeners;
 
 import hexapaper.entity.Artefact;
-import hexapaper.entity.Postava;
 import hexapaper.entity.Wall;
 import hexapaper.gui.ArtefactAddFrame;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.NewPaperFrame;
 import hexapaper.gui.PostavaAddFrame;
 import hexapaper.source.Sklad;
-import hexapaper.source.kNN;
-import hexapaper.source.Sklad.PropPair;
 import hexapaper.source.Sklad.prvekkNN;
+import hexapaper.source.kNN;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+
+import javax.swing.SwingUtilities;
 
 public class Listenery {
 
@@ -34,7 +35,6 @@ public class Listenery {
 		public void actionPerformed(ActionEvent e) {
 			sk.insertedEntity = new Wall(sk.LocDontCare);
 			sk.insertingEntity = true;
-			sk.updateCursor();
 
 		}
 	}
@@ -44,7 +44,6 @@ public class Listenery {
 		public void actionPerformed(ActionEvent e) {
 			sk.insertedEntity = new Artefact("A", sk.LocDontCare, null);
 			sk.insertingEntity = true;
-			sk.updateCursor();
 
 		}
 	}
@@ -75,7 +74,10 @@ public class Listenery {
 
 	}
 
-	public class HraciPlochaListener implements MouseListener {
+	boolean ins = false;
+	boolean ins2 = false;
+
+	public class HraciPlochaListener implements MouseListener, MouseMotionListener {
 
 		private kNN NN = new kNN();
 
@@ -84,7 +86,6 @@ public class Listenery {
 			double x = e.getX();
 			double y = e.getY();
 			ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
-			// System.out.println(idx.get(0).getIdx());
 			if (e.getButton() == MouseEvent.BUTTON3) {
 				HraciPlocha t = (HraciPlocha) e.getComponent();
 				t.rotateEntity(idx);
@@ -94,22 +95,48 @@ public class Listenery {
 				t.insertEntity(idx, sk.insertedEntity, true);
 			}
 			if (e.getButton() == MouseEvent.BUTTON1 && !sk.insertingEntity) {
-//				System.out.println(((Postava) sk.souradky.get(idx.get(0).getIdx())).getParam().toString());
-
 				sk.RMenu.redrawProperities(idx.get(0));
 			}
 		}
 
 		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
+		public void mouseMoved(MouseEvent e) {
+			HraciPlocha t = (HraciPlocha) e.getComponent();
+			t.drawCursor(e.getX(), e.getY());
+		}
 
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			if (SwingUtilities.isLeftMouseButton(e)) {
+				ins2 = true;
+				HraciPlocha t = (HraciPlocha) e.getComponent();
+				t.drawCursor(e.getX(), e.getY());
+			}
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			if (!sk.insertingEntity && e.getButton() == MouseEvent.BUTTON1) {
+				ins = true;
+				double x = e.getX();
+				double y = e.getY();
+				ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
+				HraciPlocha t = (HraciPlocha) e.getComponent();
+				t.saveEntity(idx.get(0).getIdx());
+			}
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-
+			if (ins && ins2 && e.getButton() == MouseEvent.BUTTON1) {
+				ins = false;
+				ins2 = false;
+				double x = e.getX();
+				double y = e.getY();
+				ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
+				HraciPlocha t = (HraciPlocha) e.getComponent();
+				t.releaseEntity(idx.get(0).getIdx());
+			}
 		}
 
 		@Override
