@@ -1,6 +1,7 @@
 package hexapaper.file;
 
 import hexapaper.entity.Artefact;
+import hexapaper.entity.Entity;
 import hexapaper.entity.Postava;
 import hexapaper.entity.Wall;
 import hexapaper.source.Location;
@@ -22,10 +23,15 @@ import org.json.simple.parser.JSONParser;
 
 public class LoadFile {
 	private Sklad s = Sklad.getInstance();
-
-	public LoadFile() {
-		JFileChooser fc = new JFileChooser();
-		fc.setFileFilter(new FileNameExtensionFilter(Strings.desc + " (*." + Strings.File_ext + "," + Strings.Db_ext + "," + Strings.Hex_ext + ")", Strings.File_ext, Strings.Db_ext, Strings.Hex_ext));
+	private ArrayList<Entity> souradky=new ArrayList<>();
+	private JFileChooser fc = new JFileChooser();
+	public LoadFile(String desce, String... ext) {
+		String desc=desce + " (*.";
+		for(int i=0;i<ext.length-1;i++){
+			desc+=ext[i]+",";
+		}
+		desc+=ext[ext.length];
+		fc.setFileFilter(new FileNameExtensionFilter(desc, ext));
 		int returnVal = fc.showOpenDialog(new JFrame());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
@@ -46,7 +52,6 @@ public class LoadFile {
 			}
 		}
 	}
-
 	public ArrayList<PropPair> loadList(JSONObject j) {
 		ArrayList<PropPair> props = new ArrayList<>();
 		JSONArray array = (JSONArray) j.get("List");
@@ -72,19 +77,18 @@ public class LoadFile {
 	}
 
 	public void loadHexEntities(JSONObject j) {
-		s.souradky = new ArrayList<>();
 		for (Object t : j.values()) {
 			JSONObject value = (JSONObject) t;
 			if ((String) value.get("Type") == "Artefact") {
-				s.souradky.add(new Artefact((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), loadList(value)));
+				souradky.add(new Artefact((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), loadList(value)));
 				continue;
 			}
 			if ((String) value.get("Type") == "Postava") {
-				s.souradky.add(new Postava((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), (boolean) value.get("PJ"), loadList(value)));
+				souradky.add(new Postava((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), (boolean) value.get("PJ"), loadList(value)));
 				continue;
 			}
 			if ((String) value.get("Type") == "Wall") {
-				s.souradky.add(new Wall(loadLoc((JSONObject) value.get("Location"))));
+				souradky.add(new Wall(loadLoc((JSONObject) value.get("Location"))));
 				continue;
 			}
 		}
