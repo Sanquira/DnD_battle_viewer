@@ -23,8 +23,8 @@ public class Sklad {
 	public ArrayList<Entity> souradky;
 	public boolean insertingEntity = false;
 	public Location LocDontCare = new Location(RADIUS, RADIUS, 0);
-	public ArrayList<Postava> databazePostav = new ArrayList<>();
-	public ArrayList<Artefact> databazeArtefaktu = new ArrayList<>();
+	public ArrayList<Entity> databazePostav = new ArrayList<>();
+	public ArrayList<Entity> databazeArtefaktu = new ArrayList<>();
 	public Entity insertedEntity;
 	public boolean hidePlayerColor = false;
 	public boolean hideNPCColor = false;

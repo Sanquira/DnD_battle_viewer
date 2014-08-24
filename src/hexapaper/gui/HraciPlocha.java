@@ -34,7 +34,7 @@ public class HraciPlocha extends JPanel {
 	public void init() {
 		setPreferredSize(new Dimension((int) Math.round((Math.round(sk.gridSl / 2.0) * 2 + ((int) sk.gridSl / 2.5) + 2) * sk.RADIUS),
 				(int) Math.round(Math.cos(Math.toRadians(30)) * sk.RADIUS * 2 * (sk.gridRa + 0.5))));
-		setBackground(Color.yellow);
+		setBackground(Color.black);
 		sk.souradky = genGrid(sk.gridSl, sk.gridRa);
 	}
 

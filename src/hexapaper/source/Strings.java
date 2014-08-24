@@ -2,7 +2,7 @@ package hexapaper.source;
 
 public class Strings {
 
-	public static String varovani = "Varování";
+	public static String varovani = "Varování­";
 	public static String warningNameIsEmpty = "Hodnota jméno nesmí být prázdná!!!";
 	public static String vytvorPostavu = "Vytvoř postavu";
 	public static String vytvorenePostavy = "Vytvořené postavy";
@@ -13,13 +13,21 @@ public class Strings {
 	public static String ne = "Ne";
 	public static String NPC = "NPC";
 	public static String artefakt = "Artefakt";
-	public static String polomerHexu = "Poloměr Hexu";
+	public static String polomerHexu = "Polomšr Hexu";
 	public static String pocetRadku = "Počet řádků";
 	public static String pocetSloupcu = "Počet sloupců";
+	
+	public static String Hex_ext="hex";
+	public static String Hex_text="Hexovy papir";
+	public static String Db_ext="entd";
+	public static String Db_text="Database entit";
+	public static String File_ext="ent";
+	public static String File_text="Soubory entit";
+	public static String desc="HexaPaper soubory";
 
-	public static String newPaper = "Nový paper";
-	public static String savePaper = "Ulož paper";
-	public static String loadPaper = "Načti paper";
+	public static String newPaper = "Nový papír";
+	public static String savePaper = "Ulož papír";
+	public static String loadPaper = "Načti papír";
 	public static String addArt = "Přidej artefakt";
 	public static String addPost = "Přidej postavu";
 	public static String konec = "Konec";
@@ -27,7 +35,7 @@ public class Strings {
 	public static String ovladaniBitvy = "Ovládání bitvy";
 	public static String vlastnostiObj = "Vlastnosti objektu";
 	public static String showPlayerColor = "Skrýt hráče";
-	public static String showNPCColor = "Skrýt NCP";
+	public static String showNPCColor = "Skrýt NPC";
 	public static String addWall = "Přidej zeď";
 	public static String addFreeSpace = "Odeber";
 
@@ -54,7 +62,7 @@ public class Strings {
 	public static String kostka = "Kostka";
 
 	public static String ztrataDat = "Ztráta dat";
-	public static String zpravaZtrataDat = "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVšechny neuložené změny budou ztraceny. \nChcete opravdu skončit?";
+	public static String zpravaZtrataDat = "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVěechny neuložené změny budou ztraceny. \nChcete opravdu skončit?";
 
 	// public static String
 

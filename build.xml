@@ -13,7 +13,6 @@
         <pathelement location="bin"/>
         <pathelement location="lib/gson-2.3.jar"/>
         <pathelement location="lib/json-simple-1.1.1.jar"/>
-        <pathelement location="lib/zt-zip-1.8.jar"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
@@ -53,6 +52,11 @@
     </target>
     <target name="Hex (3)">
         <java classname="hexapaper.Hex" failonerror="true" fork="yes">
+            <classpath refid="DnD_battle_viewer.classpath"/>
+        </java>
+    </target>
+    <target name="hexapaper (1)">
+        <java classname="hexapaper.hexapaper" failonerror="true" fork="yes">
             <classpath refid="DnD_battle_viewer.classpath"/>
         </java>
     </target>

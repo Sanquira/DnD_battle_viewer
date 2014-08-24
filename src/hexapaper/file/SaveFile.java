@@ -3,13 +3,15 @@ package hexapaper.file;
 import hexapaper.entity.Artefact;
 import hexapaper.entity.Entity;
 import hexapaper.entity.Postava;
+import hexapaper.entity.Wall;
+import hexapaper.source.Sklad;
+import hexapaper.source.Strings;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -23,31 +25,28 @@ import com.google.gson.GsonBuilder;
 public class SaveFile {
 	private JSONObject j=new JSONObject();
 	private Gson gson;
-	private String File_ext="ent";
-	private String Db_ext="entd";
-	private String Db_txt="Entity Database files";
-	private String File_txt="Entity files";	
-	public SaveFile(Postava man){
-		j.put(man.getNick(), saveChar(man));
-		save(File_ext,File_txt);
+	public SaveFile(Entity e){
+		j.put("1", saveChar(e));
+		save(Strings.File_ext,Strings.File_text);
 	}
-	public SaveFile(Artefact man){
-		j.put(man.getNick(), saveChar(man));
-		save(File_ext,File_txt);
-	}	
 
-	public SaveFile(ArrayList<Postava> man){
-		for(Postava e:man){
-			j.put(e.getNick(), saveChar(e));
+	public SaveFile(ArrayList<Entity> man){
+		for(int i=0;i<man.size();i++){
+			j.put(i, saveChar(man.get(i)));
 		}
-		save(Db_ext,Db_txt);
+		save(Strings.Db_ext,Strings.Db_text);
 	}
-	public SaveFile(ArrayList<Artefact>  man){
-		for(Artefact e:man){
-			j.put(e.getNick(), saveChar(e));
+	public SaveFile(ArrayList<Entity>  man,int Radius, int gridSl,int gridRA){
+		JSONObject entity=new JSONObject();
+		for(int i=0;i<man.size();i++){
+			entity.put(i, saveChar(man.get(i)));
 		}
-		save(Db_ext,Db_txt);
-	}
+		j.put("GridSl", gridSl);
+		j.put("Radius", Radius);
+		j.put("GridRA", gridRA);
+		j.put("Entity", entity);
+		save(Strings.Hex_ext,Strings.Hex_text);
+	}	
 	public SaveFile(List<Postava> man,List<Artefact> art){
 		for(Artefact e:art){
 			j.put(e.getNick(), saveChar(e));
@@ -55,20 +54,27 @@ public class SaveFile {
 		for(Postava e:man){
 			j.put(e.getNick(), saveChar(e));
 		}
-		save(Db_ext,Db_txt);
+		save(Strings.Db_ext,Strings.Db_text);
 	}
-	private JSONObject saveChar(Postava c) {
+	private JSONObject saveChar(Entity c) {
 		JSONObject p=new JSONObject();
-		p.put("Artefact", false);
-		p.put("PJ", c.isPJ());
-		p.put("List", c.getParam());		
-		return p;
-	}
-	private JSONObject saveChar(Artefact c) {
-		JSONObject p=new JSONObject();
-		p.put("Artefact", true);
-		p.put("PJ", true);
-		p.put("List", c.getParam());		
+		p.put("Location",c.loc);
+		if(c instanceof Postava){
+			Postava m=(Postava) c;
+			p.put("Type", "Postava");
+			p.put("Name", m.getNick());
+			p.put("PJ", m.isPJ());
+			p.put("List", m.getParam());
+		}
+		if(c instanceof Artefact){
+			Artefact m=(Artefact) c;
+			p.put("Type", "Artefact");
+			p.put("Name", m.getNick());
+			p.put("List", m.getParam());
+		}
+		if(c instanceof Wall){
+			p.put("Type", "Wall");
+		}	
 		return p;
 	}
 	public void save(String ext,String desc){
