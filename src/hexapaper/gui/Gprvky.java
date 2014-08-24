@@ -52,45 +52,13 @@ public class Gprvky {
 		ArrayList<BPolygon> arr = new ArrayList<BPolygon>();
 		arr.add(emptyHexagon(loc));
 		Polygon sprite = new Polygon();
-		double newRadius = sk.RADIUS *0.85;
+		double newRadius = sk.RADIUS * 0.85;
 		for (int i = 0; i < 6; i++) {
 			sprite.addPoint((int) Math.round(loc.getX() + Math.cos(Math.toRadians(60 * i)) * newRadius),
 					(int) Math.round(loc.getY() + Math.sin(Math.toRadians(60 * i)) * newRadius));
 		}
 		arr.add(new BPolygon(sprite));
 		return arr;
-	}
-
-	public Cursor zmenKurzor(Entity tvar) {
-		if (tvar == null) {
-			return Cursor.getDefaultCursor();
-		}
-		Location loc = new Location(sk.RADIUS, sk.RADIUS, 0);
-		Toolkit kit = Toolkit.getDefaultToolkit();
-		Dimension dim = kit.getBestCursorSize(sk.RADIUS * 2, sk.RADIUS * 2);
-		BufferedImage buffered = new BufferedImage(dim.width, dim.height, BufferedImage.TRANSLUCENT);
-		Graphics2D g = buffered.createGraphics();
-		g.setFont(g.getFont().deriveFont((float) sk.RADIUS).deriveFont(Font.BOLD));
-		FontMetrics fm = g.getFontMetrics();
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setStroke(new BasicStroke(2));
-		// g2.setColor(tvar.background);
-		// g2.fillPolygon(new Gprvky().emptyHexagon(Sklad.LocDontCare).poly);
-		g2.setColor(Color.black);
-		g2.drawString(tvar.tag, Math.round(loc.getX() - (fm.getStringBounds(tvar.tag, g).getWidth() / 2)),
-				Math.round(loc.getY() + (fm.getStringBounds(tvar.tag, g).getHeight() / 3)));
-		fm.getStringBounds(tvar.getText(), g).getWidth();
-		for (BPolygon poly : tvar.prvek) {
-			if (!poly.isFilled) {
-				g2.drawPolygon(poly);
-			} else {
-				g2.fillPolygon(poly);
-			}
-		}
-		int centerX = (dim.width - 1) / 2;
-		int centerY = (dim.height - 1) / 2;
-		Cursor cursor = kit.createCustomCursor(buffered, new Point(centerX, centerY), "myCursor");
-		return cursor;
 	}
 
 	private int pol2kar(int uh, int rad, int xy) {

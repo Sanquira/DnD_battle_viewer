@@ -72,6 +72,7 @@ public class hexapaper extends JFrame {
 
 	private void hraciPlocha() {
 		sk.hraciPlocha.addMouseListener(lis.new HraciPlochaListener());
+		sk.hraciPlocha.addMouseMotionListener(lis.new HraciPlochaListener());
 		hraciplsc.getVerticalScrollBar().setUnitIncrement(16);
 		hraciplsc.getHorizontalScrollBar().setUnitIncrement(16);
 		hraciplsc.setViewportView(sk.hraciPlocha);
