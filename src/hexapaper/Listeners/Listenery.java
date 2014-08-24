@@ -42,14 +42,15 @@ public class Listenery {
 	public class NactiListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.err.println("NactiListener");
+			new LoadFile();
+			sk.init();
 		}
 	}
 
 	public class UlozListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.err.println("UlozListener");
+			new SaveFile(sk.souradky, sk.RADIUS, sk.gridSl, sk.gridRa);
 		}
 	}
 
@@ -73,11 +74,14 @@ public class Listenery {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//			Object[] opt = { Strings.ano, Strings.ne };
-//			int t = JOptionPane.showOptionDialog(hexapaper.frm, Strings.zpravaZtrataDat, Strings.ztrataDat, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
-//			if (t == JOptionPane.OK_OPTION) {
-				System.exit(0);
-//			}
+			// Object[] opt = { Strings.ano, Strings.ne };
+			// int t = JOptionPane.showOptionDialog(hexapaper.frm,
+			// Strings.zpravaZtrataDat, Strings.ztrataDat,
+			// JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null,
+			// opt, opt[0]);
+			// if (t == JOptionPane.OK_OPTION) {
+			System.exit(0);
+			// }
 		}
 	}
 

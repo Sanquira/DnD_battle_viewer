@@ -9,13 +9,8 @@ import hexapaper.source.Sklad.PropPair;
 import hexapaper.source.Strings;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -24,18 +19,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 public class LoadFile {
-	private String desc = "Entity files";
-	private String ext = "ent";
-	private String Db_ext = "entd";
-	private String Hex_ext = "hex";
 	private Sklad s = Sklad.getInstance();
 
 	public LoadFile() {
@@ -46,10 +31,10 @@ public class LoadFile {
 			File file = fc.getSelectedFile();
 			try {
 				JSONObject a = (JSONObject) new JSONParser().parse(new FileReader(file));
-				if (file.getName().contains("." + Hex_ext)) {
-					s.gridRa = (int) a.get("GridRA");
-					s.gridSl = (int) a.get("GridSl");
-					s.RADIUS = (int) a.get("Radius");
+				if (file.getName().contains("." + Strings.Hex_ext)) {
+					s.gridRa = Integer.valueOf((String) a.get("GridRA"));
+					s.gridSl = Integer.valueOf((String) a.get("GridSl"));
+					s.RADIUS = Integer.valueOf((String) a.get("Radius"));
 					loadHexEntities((JSONObject) a.get("Entity"));
 				}
 				else {
@@ -75,14 +60,12 @@ public class LoadFile {
 	public void loadEntities(JSONObject j) {
 		for (Object t : j.values()) {
 			JSONObject value = (JSONObject) t;
-			System.out.println(value.get("Type"));
 			if (((String) value.get("Type")).equals("Artefact")) {
-				System.out.println("jsem tu");
-				s.databazeArtefaktu.add(new Artefact((String) value.get("Name"), s.LocDontCare, loadList(j)));
+				s.databazeArtefaktu.add(new Artefact((String) value.get("Name"), s.LocDontCare, loadList(value)));
 				continue;
 			}
-			if ((String) value.get("Type") == "Postava") {
-				s.databazePostav.add(new Postava((String) value.get("Name"), s.LocDontCare, (boolean) value.get("PJ"), loadList(j)));
+			if (((String) value.get("Type")).equals("Postava")) {
+				s.databazePostav.add(new Postava((String) value.get("Name"), s.LocDontCare, (boolean) value.get("PJ"), loadList(value)));
 				continue;
 			}
 		}
@@ -93,11 +76,11 @@ public class LoadFile {
 		for (Object t : j.values()) {
 			JSONObject value = (JSONObject) t;
 			if ((String) value.get("Type") == "Artefact") {
-				s.souradky.add(new Artefact((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), loadList(j)));
+				s.souradky.add(new Artefact((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), loadList(value)));
 				continue;
 			}
 			if ((String) value.get("Type") == "Postava") {
-				s.souradky.add(new Postava((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), (boolean) value.get("PJ"), loadList(j)));
+				s.souradky.add(new Postava((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), (boolean) value.get("PJ"), loadList(value)));
 				continue;
 			}
 			if ((String) value.get("Type") == "Wall") {

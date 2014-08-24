@@ -36,42 +36,42 @@ public class Sklad {
 	}
 
 	public void init() {
-		gridSl = 10;
-		gridRa = 10;
+//		gridSl = 10;
+//		gridRa = 10;
 		
 		hraciPlocha = new HraciPlocha();
 		prvky = new Gprvky();
 
-		// //////////////////////////////////////////////
-		ArrayList<PropPair> prp = new ArrayList<>();
-		prp.add(new PropPair("Obsah", "temné nic"));
-		databazeArtefaktu.add(new Artefact("Truhla", LocDontCare, prp));
-
-		prp = new ArrayList<>();
-		prp.add(new PropPair("Epickost", "HOOOOODNE"));
-		databazeArtefaktu.add(new Artefact("Meč", LocDontCare, prp));
-
-		prp = new ArrayList<>();
-		prp.add(new PropPair("Rasa", "Elf"));
-		prp.add(new PropPair("Zbran", "Tank"));
-		databazePostav.add(new Postava("Gold", LocDontCare, false, prp));
-
-		prp = new ArrayList<>();
-		prp.add(new PropPair("Rasa", "Trpajzlik"));
-		prp.add(new PropPair("Zbran", "Sekera"));
-		databazePostav.add(new Postava("Ragnar", LocDontCare, true, prp));
-		int i = 0, j = 0, k = 90;
-		for (i = k; i < k + databazeArtefaktu.size(); i++) {
-			hraciPlocha.insertEntity(i, databazeArtefaktu.get(j).clone());
-			j++;
-		}
-		k = i;
-		j = 0;
-		for (; i < k + databazePostav.size(); i++) {
-			hraciPlocha.insertEntity(i, databazePostav.get(j).clone());
-			j++;
-		}
-		// ////////////////////////////////////////////////////////
+		// // //////////////////////////////////////////////
+		// ArrayList<PropPair> prp = new ArrayList<>();
+		// prp.add(new PropPair("Obsah", "temné nic"));
+		// databazeArtefaktu.add(new Artefact("Truhla", LocDontCare, prp));
+		//
+		// prp = new ArrayList<>();
+		// prp.add(new PropPair("Epickost", "HOOOOODNE"));
+		// databazeArtefaktu.add(new Artefact("Meč", LocDontCare, prp));
+		//
+		// prp = new ArrayList<>();
+		// prp.add(new PropPair("Rasa", "Elf"));
+		// prp.add(new PropPair("Zbran", "Tank"));
+		// databazePostav.add(new Postava("Gold", LocDontCare, false, prp));
+		//
+		// prp = new ArrayList<>();
+		// prp.add(new PropPair("Rasa", "Trpajzlik"));
+		// prp.add(new PropPair("Zbran", "Sekera"));
+		// databazePostav.add(new Postava("Ragnar", LocDontCare, true, prp));
+		// int i = 0, j = 0, k = 90;
+		// for (i = k; i < k + databazeArtefaktu.size(); i++) {
+		// hraciPlocha.insertEntity(i, databazeArtefaktu.get(j).clone());
+		// j++;
+		// }
+		// k = i;
+		// j = 0;
+		// for (; i < k + databazePostav.size(); i++) {
+		// hraciPlocha.insertEntity(i, databazePostav.get(j).clone());
+		// j++;
+		// }
+		// // ////////////////////////////////////////////////////////
 
 		RMenu = new PraveMenu();
 	}
