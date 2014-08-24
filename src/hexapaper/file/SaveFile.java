@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -34,7 +35,7 @@ public class SaveFile {
 		save(File_ext,File_txt);
 	}	
 
-	public SaveFile(List<Postava> man){
+	public SaveFile(ArrayList<Postava> man){
 		for(Postava e:man){
 			j.put(e.getNick(), saveChar(e));
 		}
