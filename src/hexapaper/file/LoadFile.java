@@ -32,9 +32,9 @@ public class LoadFile {
 			try {
 				JSONObject a = (JSONObject) new JSONParser().parse(new FileReader(file));
 				if (file.getName().contains("." + Strings.Hex_ext)) {
-					s.gridRa = Integer.valueOf((String) a.get("GridRA"));
-					s.gridSl = Integer.valueOf((String) a.get("GridSl"));
-					s.RADIUS = Integer.valueOf((String) a.get("Radius"));
+					s.gridRa = ((Long) a.get("GridRA")).intValue();
+					s.gridSl = ((Long) a.get("GridSl")).intValue();
+					s.RADIUS = ((Long) a.get("Radius")).intValue();
 					loadHexEntities((JSONObject) a.get("Entity"));
 				}
 				else {
