@@ -102,6 +102,6 @@ public class LoadFile {
     	}	
 	}
 	private Location loadLoc(JSONObject j) {
-		return new Location((int) j.get("x"),(int)j.get("y"),(int)j.get("dir"));
+		return new Location((int) j.get("x"),(int)j.get("y"),(int)j.get("direction"));
 	}
 }
