@@ -7,6 +7,7 @@ import hexapaper.entity.Postava;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFileChooser;
@@ -40,7 +41,7 @@ public class SaveFile {
 		}
 		save(Db_ext,Db_txt);
 	}
-	public SaveFile(List<Artefact>  man){
+	public SaveFile(ArrayList<Artefact>  man){
 		for(Artefact e:man){
 			j.put(e.getNick(), saveChar(e));
 		}
