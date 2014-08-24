@@ -73,11 +73,11 @@ public class Listenery {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Object[] opt = { Strings.ano, Strings.ne };
-			int t = JOptionPane.showOptionDialog(hexapaper.frm, Strings.zpravaZtrataDat, Strings.ztrataDat, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
-			if (t == JOptionPane.OK_OPTION) {
+//			Object[] opt = { Strings.ano, Strings.ne };
+//			int t = JOptionPane.showOptionDialog(hexapaper.frm, Strings.zpravaZtrataDat, Strings.ztrataDat, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
+//			if (t == JOptionPane.OK_OPTION) {
 				System.exit(0);
-			}
+//			}
 		}
 	}
 

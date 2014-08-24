@@ -59,6 +59,7 @@ public class SaveFile {
 		}
 		save(Strings.Db_ext,Strings.Db_text);
 	}
+
 	private JSONObject saveChar(Entity c) {
 		JSONObject p=new JSONObject();
 		p.put("Location",c.loc);
