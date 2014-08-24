@@ -26,6 +26,8 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import addons.dice.Dice;
+
 public class Listenery {
 
 	Sklad sk = Sklad.getInstance();
@@ -230,7 +232,7 @@ public class Listenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			System.err.println("KostkaListener");
+			new Dice();
 		}
 
 	}
