@@ -40,7 +40,6 @@ public class ArtefactAddFrame extends JPanel {
 	protected ArrayList<PropPair> param = new ArrayList<PropPair>();
 	JPanel vpg;
 	JPanel spg;
-	// boolean delete = false;
 	boolean isDel = false, isDelD = false;
 
 	public ArtefactAddFrame() {
