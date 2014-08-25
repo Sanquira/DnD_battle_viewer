@@ -2,12 +2,15 @@ package hexapaper.source;
 
 import hexapaper.entity.Artefact;
 import hexapaper.entity.Entity;
+import hexapaper.entity.FreeSpace;
 import hexapaper.entity.Postava;
 import hexapaper.gui.Gprvky;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.PraveMenu;
 
 import java.util.ArrayList;
+
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 public class Sklad {
 
@@ -97,9 +100,15 @@ public class Sklad {
 
 	public void initLoad(ArrayList<Entity> souradky) {
 		init();
-		for (Entity entity : souradky) {
-			
+		for (int i = 0; i < souradky.size(); i++) {
+			if (souradky.get(i) instanceof FreeSpace) {
+			} else {
+				System.out.println(souradky.get(i).toString());
+				this.souradky.set(i, souradky.get(i));
+			}
 		}
+		hraciPlocha.revalidate();
+		hraciPlocha.repaint();
 	}
 
 	public static class prvekkNN implements Cloneable {

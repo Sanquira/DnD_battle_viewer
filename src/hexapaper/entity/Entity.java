@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 
-public abstract class Entity extends JLabel implements Cloneable {
+public abstract class Entity implements Cloneable {
 
 	/**
 	 * 
@@ -20,9 +20,10 @@ public abstract class Entity extends JLabel implements Cloneable {
 	public ArrayList<BPolygon> prvek = new ArrayList<>();
 	public Color background = Color.white;
 	public String tag;
+	protected String name;
 
 	public Entity(String name, Location loc, boolean Rotatable, boolean Colidable, ArrayList<BPolygon> prvek) {
-		super(name);
+		this.name=name;
 		this.loc = loc;
 		this.isRotateable = Rotatable;
 		this.isColidable = Colidable;
@@ -31,7 +32,7 @@ public abstract class Entity extends JLabel implements Cloneable {
 	}
 
 	public Entity(String name, Location loc, boolean Rotatable, boolean Colidable, BPolygon prvek) {
-		super(name);
+		this.name=name;
 		this.loc = loc;
 		this.isRotateable = Rotatable;
 		this.isColidable = Colidable;
@@ -74,7 +75,7 @@ public abstract class Entity extends JLabel implements Cloneable {
 	}
 
 	public String getNick() {
-		return this.getText();
+		return name;
 	}
 
 	abstract public void recreateGraphics();

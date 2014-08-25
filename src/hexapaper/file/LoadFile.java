@@ -2,6 +2,7 @@ package hexapaper.file;
 
 import hexapaper.entity.Artefact;
 import hexapaper.entity.Entity;
+import hexapaper.entity.FreeSpace;
 import hexapaper.entity.Postava;
 import hexapaper.entity.Wall;
 import hexapaper.source.Location;
@@ -80,19 +81,22 @@ public class LoadFile {
 	}
 
 	public void loadHexEntities(JSONObject j) {
+		for (int i = 0; i < s.gridRa * s.gridSl; i++) {
+			souradky.add(new FreeSpace(s.LocDontCare));
+		}
 		for (Object t : j.keySet()) {
-			int i=((Long) t).intValue();
+			int i = Integer.valueOf((String) t);
 			JSONObject value = (JSONObject) j.get(t);
 			if (((String) value.get("Type")).equals("Artefact")) {
-				souradky.set(i,new Artefact((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), loadList(value)));
+				souradky.set(i, new Artefact((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), loadList(value)));
 				continue;
 			}
 			if (((String) value.get("Type")).equals("Postava")) {
-				souradky.set(i,new Postava((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), (boolean) value.get("PJ"), loadList(value)));
+				souradky.set(i, new Postava((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), (boolean) value.get("PJ"), loadList(value)));
 				continue;
 			}
 			if (((String) value.get("Type")).equals("Wall")) {
-				souradky.add(i,new Wall(loadLoc((JSONObject) value.get("Location"))));
+				souradky.set(i, new Wall(loadLoc((JSONObject) value.get("Location"))));
 				continue;
 			}
 		}

@@ -42,11 +42,11 @@ public class Artefact extends Entity {
 	}
 
 	public String getNick() {
-		return this.getText();
+		return name;
 	}
 
 	public void setNick(String name) {
-		this.setText(name);
+		this.name = name;
 	}
 
 	public ArrayList<PropPair> getParam() {

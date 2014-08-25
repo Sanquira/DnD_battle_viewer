@@ -65,7 +65,7 @@ public class Postava extends Entity {
 	}
 
 	public void setNick(String name) {
-		this.setText(name);
+		this.name = name;
 	}
 
 	public ArrayList<PropPair> getParam() {
@@ -98,16 +98,16 @@ public class Postava extends Entity {
 	}
 
 	public String toString() {
-//		 String ret = "name: " + this.getText() + ", Loc: " + loc.toString() +
-//		 ", PJ: " + PJ + ", Param: ";
-//		 if (param != null) {
-//		 for (int i = 0; i < param.size(); i++) {
-//		 ret = ret.concat(param.get(i).toString()).concat(", ");
-//		 }
-//		 } else {
-//		 ret = ret.concat("<null>");
-//		 }
-//		 return ret;
+		// String ret = "name: " + this.getText() + ", Loc: " + loc.toString() +
+		// ", PJ: " + PJ + ", Param: ";
+		// if (param != null) {
+		// for (int i = 0; i < param.size(); i++) {
+		// ret = ret.concat(param.get(i).toString()).concat(", ");
+		// }
+		// } else {
+		// ret = ret.concat("<null>");
+		// }
+		// return ret;
 		String ispj;
 		if (isPJ()) {
 			ispj = "(NPC)";

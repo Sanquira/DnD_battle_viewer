@@ -204,4 +204,5 @@ public class HraciPlocha extends JPanel {
 		}
 		drawCursor(-1, -1);
 	}
+
 }
