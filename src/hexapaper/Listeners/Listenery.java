@@ -1,5 +1,6 @@
 package hexapaper.Listeners;
 
+import hexapaper.hexapaper;
 import hexapaper.file.LoadFile;
 import hexapaper.file.SaveFile;
 import hexapaper.gui.ArtefactAddFrame;
@@ -21,6 +22,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import addons.dice.Dice;
@@ -71,14 +73,11 @@ public class Listenery {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// Object[] opt = { Strings.ano, Strings.ne };
-			// int t = JOptionPane.showOptionDialog(hexapaper.frm,
-			// Strings.zpravaZtrataDat, Strings.ztrataDat,
-			// JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null,
-			// opt, opt[0]);
-			// if (t == JOptionPane.OK_OPTION) {
-			System.exit(0);
-			// }
+			Object[] opt = { Strings.ano, Strings.ne };
+			int t = JOptionPane.showOptionDialog(hexapaper.frm, Strings.zpravaZtrataDat, Strings.ztrataDat, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
+			if (t == JOptionPane.OK_OPTION) {
+				System.exit(0);
+			}
 		}
 	}
 
@@ -157,9 +156,7 @@ public class Listenery {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			System.out.println(sk.canEvent);
 			if (!sk.insertingEntity && e.getButton() == MouseEvent.BUTTON1 && sk.canEvent) {
-				System.out.println("klik");
 				ins = true;
 				double x = e.getX();
 				double y = e.getY();

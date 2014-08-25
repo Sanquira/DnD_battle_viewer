@@ -1,19 +1,13 @@
 package hexapaper.entity;
 
-import hexapaper.source.Location;
 import hexapaper.source.BPolygon;
+import hexapaper.source.Location;
 
 import java.awt.Color;
 import java.util.ArrayList;
 
-import javax.swing.JLabel;
-
 public abstract class Entity implements Cloneable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	public boolean isColidable;
 	public boolean isRotateable;
 	public Location loc;
@@ -23,7 +17,7 @@ public abstract class Entity implements Cloneable {
 	protected String name;
 
 	public Entity(String name, Location loc, boolean Rotatable, boolean Colidable, ArrayList<BPolygon> prvek) {
-		this.name=name;
+		this.name = name;
 		this.loc = loc;
 		this.isRotateable = Rotatable;
 		this.isColidable = Colidable;
@@ -32,7 +26,7 @@ public abstract class Entity implements Cloneable {
 	}
 
 	public Entity(String name, Location loc, boolean Rotatable, boolean Colidable, BPolygon prvek) {
-		this.name=name;
+		this.name = name;
 		this.loc = loc;
 		this.isRotateable = Rotatable;
 		this.isColidable = Colidable;
