@@ -65,6 +65,7 @@ public class NewPaperFrame extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent paramActionEvent) {
 				vytvorHexu();
+				sk.odblokujListenery();
 			}
 		});
 

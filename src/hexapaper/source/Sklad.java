@@ -1,17 +1,13 @@
 package hexapaper.source;
 
 import hexapaper.hexapaper;
-import hexapaper.entity.Artefact;
 import hexapaper.entity.Entity;
 import hexapaper.entity.FreeSpace;
-import hexapaper.entity.Postava;
 import hexapaper.gui.Gprvky;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.PraveMenu;
 
 import java.util.ArrayList;
-
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 public class Sklad {
 
@@ -33,6 +29,7 @@ public class Sklad {
 	public boolean hidePlayerColor = false;
 	public boolean hideNPCColor = false;
 	public boolean repeatableInsert = false;
+	public boolean canEvent = false;
 
 	public final String VERSION = "v0.1";
 
@@ -40,43 +37,9 @@ public class Sklad {
 	}
 
 	public void init() {
-		// gridSl = 10;
-		// gridRa = 10;
-
 		hraciPlocha = new HraciPlocha();
+
 		prvky = new Gprvky();
-
-		// // //////////////////////////////////////////////
-		// ArrayList<PropPair> prp = new ArrayList<>();
-		// prp.add(new PropPair("Obsah", "temné nic"));
-		// databazeArtefaktu.add(new Artefact("Truhla", LocDontCare, prp));
-		//
-		// prp = new ArrayList<>();
-		// prp.add(new PropPair("Epickost", "HOOOOODNE"));
-		// databazeArtefaktu.add(new Artefact("Meč", LocDontCare, prp));
-		//
-		// prp = new ArrayList<>();
-		// prp.add(new PropPair("Rasa", "Elf"));
-		// prp.add(new PropPair("Zbran", "Tank"));
-		// databazePostav.add(new Postava("Gold", LocDontCare, false, prp));
-		//
-		// prp = new ArrayList<>();
-		// prp.add(new PropPair("Rasa", "Trpajzlik"));
-		// prp.add(new PropPair("Zbran", "Sekera"));
-		// databazePostav.add(new Postava("Ragnar", LocDontCare, true, prp));
-		// int i = 0, j = 0, k = 90;
-		// for (i = k; i < k + databazeArtefaktu.size(); i++) {
-		// hraciPlocha.insertEntity(i, databazeArtefaktu.get(j).clone(), true);
-		// j++;
-		// }
-		// k = i;
-		// j = 0;
-		// for (; i < k + databazePostav.size(); i++) {
-		// hraciPlocha.insertEntity(i, databazePostav.get(j).clone(), true);
-		// j++;
-		// }
-		// // ////////////////////////////////////////////////////////
-
 		RMenu = new PraveMenu();
 	}
 
@@ -100,15 +63,20 @@ public class Sklad {
 	}
 
 	public void initLoad(ArrayList<Entity> souradky) {
-		init();
+		hraciPlocha = new HraciPlocha();
 		for (int i = 0; i < souradky.size(); i++) {
 			if (souradky.get(i) instanceof FreeSpace) {
 			} else {
-//				System.out.println(souradky.get(i).getNick() + ", " + souradky.get(i).loc.toString());
-				this.souradky.set(i, souradky.get(i));
+				System.out.println(i);
+				hraciPlocha.insertEntity(i, souradky.get(i), true);
 			}
 		}
+		odblokujListenery();
 		hexapaper.frm.repaint();
+	}
+
+	public void odblokujListenery() {
+		canEvent = true;
 	}
 
 	public static class prvekkNN implements Cloneable {

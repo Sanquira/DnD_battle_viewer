@@ -3,6 +3,7 @@ package hexapaper.Listeners;
 import hexapaper.file.LoadFile;
 import hexapaper.file.SaveFile;
 import hexapaper.gui.ArtefactAddFrame;
+import hexapaper.gui.ExportOneFrame;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.NewPaperFrame;
 import hexapaper.gui.PostavaAddFrame;
@@ -121,19 +122,21 @@ public class Listenery {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			double x = e.getX();
-			double y = e.getY();
-			ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
-			if (e.getButton() == MouseEvent.BUTTON3) {
-				HraciPlocha t = (HraciPlocha) e.getComponent();
-				t.rotateEntity(idx);
-			}
-			if (e.getButton() == MouseEvent.BUTTON1 && sk.insertingEntity) {
-				HraciPlocha t = (HraciPlocha) e.getComponent();
-				t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
-			}
-			if (e.getButton() == MouseEvent.BUTTON1 && !sk.insertingEntity) {
-				sk.RMenu.redrawProperities(idx.get(0));
+			if (sk.canEvent) {
+				double x = e.getX();
+				double y = e.getY();
+				ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
+				if (e.getButton() == MouseEvent.BUTTON3) {
+					HraciPlocha t = (HraciPlocha) e.getComponent();
+					t.rotateEntity(idx);
+				}
+				if (e.getButton() == MouseEvent.BUTTON1 && sk.insertingEntity) {
+					HraciPlocha t = (HraciPlocha) e.getComponent();
+					t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
+				}
+				if (e.getButton() == MouseEvent.BUTTON1 && !sk.insertingEntity) {
+					sk.RMenu.redrawProperities(idx.get(0));
+				}
 			}
 		}
 
@@ -154,7 +157,9 @@ public class Listenery {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			if (!sk.insertingEntity && e.getButton() == MouseEvent.BUTTON1) {
+			System.out.println(sk.canEvent);
+			if (!sk.insertingEntity && e.getButton() == MouseEvent.BUTTON1 && sk.canEvent) {
+				System.out.println("klik");
 				ins = true;
 				double x = e.getX();
 				double y = e.getY();
@@ -166,7 +171,7 @@ public class Listenery {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			if (ins && ins2 && e.getButton() == MouseEvent.BUTTON1) {
+			if (ins && ins2 && e.getButton() == MouseEvent.BUTTON1 && sk.canEvent) {
 				ins = false;
 				ins2 = false;
 				double x = e.getX();
@@ -199,7 +204,7 @@ public class Listenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			System.err.println("ExportArtOne");
+			new ExportOneFrame(sk.databazeArtefaktu);
 		}
 	}
 
@@ -215,7 +220,7 @@ public class Listenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			System.err.println("ExportPostOne");
+			new ExportOneFrame(sk.databazePostav);
 		}
 	}
 

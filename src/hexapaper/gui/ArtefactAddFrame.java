@@ -34,8 +34,8 @@ import javax.swing.event.ListSelectionListener;
 
 public class ArtefactAddFrame extends JPanel {
 
-	Sklad sk = Sklad.getInstance();
 	JFrame frame;
+	Sklad sk = Sklad.getInstance();
 	protected String[] defaultProp = { Strings.name, Strings.type };
 	protected ArrayList<PropPair> param = new ArrayList<PropPair>();
 	JPanel vpg;

@@ -16,14 +16,14 @@ public class Strings {
 	public static String polomerHexu = "Polomšr Hexu";
 	public static String pocetRadku = "Počet řádků";
 	public static String pocetSloupcu = "Počet sloupců";
-	
-	public static String Hex_ext="hex";
-	public static String Hex_text="Hexovy papir";
-	public static String Db_ext="entd";
-	public static String Db_text="Database entit";
-	public static String File_ext="ent";
-	public static String File_text="Soubory entit";
-	public static String desc="HexaPaper soubory";
+
+	public static String Hex_ext = "hex";
+	public static String Hex_text = "Hexovy papir";
+	public static String Db_ext = "entd";
+	public static String Db_text = "Database entit";
+	public static String File_ext = "ent";
+	public static String File_text = "Soubory entit";
+	public static String desc = "HexaPaper soubory";
 
 	public static String newPaper = "Nový papír";
 	public static String savePaper = "Ulož papír";
@@ -52,6 +52,7 @@ public class Strings {
 
 	public static String hra = "Hra";
 	public static String upravy = "Úpravy";
+	public static String export = "Export";
 	public static String exportAP = "Export ...";
 	public static String importAP = "Import";
 	public static String exportArtDat = "... databáze artefaktů";

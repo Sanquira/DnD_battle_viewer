@@ -35,8 +35,8 @@ import javax.swing.event.ListSelectionListener;
 
 public class PostavaAddFrame extends JPanel {
 
-	Sklad sk = Sklad.getInstance();
 	JFrame frame;
+	Sklad sk = Sklad.getInstance();
 	protected String[] defaultProp = { Strings.name, Strings.race, Strings.health, Strings.mags, Strings.weapon, Strings.armor };
 	protected ArrayList<PropPair> param = new ArrayList<PropPair>();
 	JPanel vpg;
@@ -177,7 +177,7 @@ public class PostavaAddFrame extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent paramActionEvent) {
 				readParam();
-//				System.out.println(param.toString());
+				// System.out.println(param.toString());
 
 				if (param.get(0).value.trim().isEmpty()) {
 					JOptionPane.showMessageDialog(vpg, Strings.warningNameIsEmpty, Strings.varovani, JOptionPane.WARNING_MESSAGE);

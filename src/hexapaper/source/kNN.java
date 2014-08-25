@@ -15,7 +15,12 @@ public class kNN {
 	}
 
 	public ArrayList<prvekkNN> getkNNindexes(double xp, double yp) {
+
 		ArrayList<prvekkNN> dists = new ArrayList<>();
+		if (sk.souradky.size() == 0) {
+			dists.add(new prvekkNN(-1, 0, 0, 0));
+			return dists;
+		}
 		for (int i = 0; i < sk.souradky.size(); i++) {
 			double x1 = sk.souradky.get(i).loc.getX();
 			double y1 = sk.souradky.get(i).loc.getY();
