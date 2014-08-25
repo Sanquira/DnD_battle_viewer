@@ -22,7 +22,7 @@ public class Postava extends Entity {
 	 */
 	public Postava(String name, Location loc, boolean PJ, ArrayList<PropPair> prop) {
 		// super(name, loc, Rotatable, Colidable, prvek);
-		super(name, new Location(0, 0, 0), true, false, new Gprvky().entity(loc));
+		super(name, loc, true, false, new Gprvky().entity(loc));
 		if (prop != null) {
 			this.param = prop;
 		}

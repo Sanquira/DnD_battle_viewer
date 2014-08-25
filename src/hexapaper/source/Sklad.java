@@ -1,5 +1,6 @@
 package hexapaper.source;
 
+import hexapaper.hexapaper;
 import hexapaper.entity.Artefact;
 import hexapaper.entity.Entity;
 import hexapaper.entity.FreeSpace;
@@ -103,12 +104,11 @@ public class Sklad {
 		for (int i = 0; i < souradky.size(); i++) {
 			if (souradky.get(i) instanceof FreeSpace) {
 			} else {
-				System.out.println(souradky.get(i).toString());
+//				System.out.println(souradky.get(i).getNick() + ", " + souradky.get(i).loc.toString());
 				this.souradky.set(i, souradky.get(i));
 			}
 		}
-		hraciPlocha.revalidate();
-		hraciPlocha.repaint();
+		hexapaper.frm.repaint();
 	}
 
 	public static class prvekkNN implements Cloneable {
