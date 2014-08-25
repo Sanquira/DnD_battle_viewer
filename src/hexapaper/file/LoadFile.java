@@ -80,18 +80,19 @@ public class LoadFile {
 	}
 
 	public void loadHexEntities(JSONObject j) {
-		for (Object t : j.values()) {
-			JSONObject value = (JSONObject) t;
+		for (Object t : j.keySet()) {
+			int i=((Long) t).intValue();
+			JSONObject value = (JSONObject) j.get(t);
 			if (((String) value.get("Type")).equals("Artefact")) {
-				souradky.add(new Artefact((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), loadList(value)));
+				souradky.set(i,new Artefact((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), loadList(value)));
 				continue;
 			}
 			if (((String) value.get("Type")).equals("Postava")) {
-				souradky.add(new Postava((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), (boolean) value.get("PJ"), loadList(value)));
+				souradky.set(i,new Postava((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), (boolean) value.get("PJ"), loadList(value)));
 				continue;
 			}
 			if (((String) value.get("Type")).equals("Wall")) {
-				souradky.add(new Wall(loadLoc((JSONObject) value.get("Location"))));
+				souradky.add(i,new Wall(loadLoc((JSONObject) value.get("Location"))));
 				continue;
 			}
 		}
