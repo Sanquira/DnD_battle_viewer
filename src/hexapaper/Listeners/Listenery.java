@@ -1,6 +1,5 @@
 package hexapaper.Listeners;
 
-import hexapaper.hexapaper;
 import hexapaper.file.LoadFile;
 import hexapaper.file.SaveFile;
 import hexapaper.gui.ArtefactAddFrame;
@@ -21,9 +20,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
-import javax.swing.Action;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import addons.dice.Dice;
@@ -42,8 +38,8 @@ public class Listenery {
 	public class NactiListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new LoadFile();
-			sk.init();
+			LoadFile load = new LoadFile(Strings.Hex_text, Strings.Hex_ext);
+			sk.initLoad(load.getSouradky());
 		}
 	}
 
@@ -134,7 +130,7 @@ public class Listenery {
 			}
 			if (e.getButton() == MouseEvent.BUTTON1 && sk.insertingEntity) {
 				HraciPlocha t = (HraciPlocha) e.getComponent();
-				t.insertEntity(idx, sk.insertedEntity, true);
+				t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
 			}
 			if (e.getButton() == MouseEvent.BUTTON1 && !sk.insertingEntity) {
 				sk.RMenu.redrawProperities(idx.get(0));
@@ -227,7 +223,7 @@ public class Listenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			new LoadFile();
+			new LoadFile(Strings.desc, Strings.File_ext, Strings.Db_ext);
 			sk.RMenu.updateDatabase();
 		}
 	}

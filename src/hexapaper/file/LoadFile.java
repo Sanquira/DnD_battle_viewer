@@ -23,14 +23,16 @@ import org.json.simple.parser.JSONParser;
 
 public class LoadFile {
 	private Sklad s = Sklad.getInstance();
-	private ArrayList<Entity> souradky=new ArrayList<>();
+	private ArrayList<Entity> souradky = new ArrayList<>();
 	private JFileChooser fc = new JFileChooser();
+
 	public LoadFile(String desce, String... ext) {
-		String desc=desce + " (*.";
-		for(int i=0;i<ext.length-1;i++){
-			desc+=ext[i]+",";
+		String desc = desce + " (*.";
+		for (int i = 0; i < ext.length - 1; i++) {
+			desc += ext[i] + ",";
 		}
-		desc+=ext[ext.length];
+		desc += ext[ext.length - 1];
+		desc += ")";
 		fc.setFileFilter(new FileNameExtensionFilter(desc, ext));
 		int returnVal = fc.showOpenDialog(new JFrame());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -52,6 +54,7 @@ public class LoadFile {
 			}
 		}
 	}
+
 	public ArrayList<PropPair> loadList(JSONObject j) {
 		ArrayList<PropPair> props = new ArrayList<>();
 		JSONArray array = (JSONArray) j.get("List");
@@ -79,22 +82,26 @@ public class LoadFile {
 	public void loadHexEntities(JSONObject j) {
 		for (Object t : j.values()) {
 			JSONObject value = (JSONObject) t;
-			if ((String) value.get("Type") == "Artefact") {
+			if (((String) value.get("Type")).equals("Artefact")) {
 				souradky.add(new Artefact((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), loadList(value)));
 				continue;
 			}
-			if ((String) value.get("Type") == "Postava") {
+			if (((String) value.get("Type")).equals("Postava")) {
 				souradky.add(new Postava((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), (boolean) value.get("PJ"), loadList(value)));
 				continue;
 			}
-			if ((String) value.get("Type") == "Wall") {
+			if (((String) value.get("Type")).equals("Wall")) {
 				souradky.add(new Wall(loadLoc((JSONObject) value.get("Location"))));
 				continue;
 			}
 		}
 	}
 
-	private Location loadLoc(JSONObject j) {
-		return new Location((int) j.get("x"), (int) j.get("y"), (int) j.get("direction"));
+	public ArrayList<Entity> getSouradky() {
+		return souradky;
+	}
+
+	private Location loadLoc(JSONObject a) {
+		return new Location(((Long) a.get("x")).intValue(), ((Long) a.get("y")).intValue(), ((Long) a.get("direction")).intValue());
 	}
 }

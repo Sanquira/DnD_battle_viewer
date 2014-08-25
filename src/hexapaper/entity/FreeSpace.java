@@ -7,7 +7,6 @@ public class FreeSpace extends Entity {
 
 	public FreeSpace(Location loc) {
 		super("", loc, false, true, new Gprvky().emptyHexagon(loc));
-
 	}
 
 	@Override

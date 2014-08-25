@@ -80,8 +80,8 @@ public class NewPaperFrame extends JPanel {
 		sk.gridSl = Integer.valueOf(numColValue.getText());
 		frame.dispose();
 		sk.hraciPlocha.init();
-		sk.hraciPlocha.getParent().revalidate();
-		sk.hraciPlocha.getParent().repaint();
+		sk.hraciPlocha.revalidate();
+		sk.hraciPlocha.repaint();
 	}
 
 	private class Listener extends FocusAdapter {

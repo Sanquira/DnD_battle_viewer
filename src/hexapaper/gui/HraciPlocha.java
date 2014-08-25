@@ -26,6 +26,7 @@ public class HraciPlocha extends JPanel {
 	private static final long serialVersionUID = 1L;
 	Sklad sk = Sklad.getInstance();
 	Entity cursor = null;
+	int oldIdx = -1;
 
 	public HraciPlocha() {
 		init();
@@ -145,34 +146,33 @@ public class HraciPlocha extends JPanel {
 		this.repaint();
 	}
 
-	public void insertEntity(ArrayList<prvekkNN> idx, Entity type, boolean hard) {
+	public boolean insertEntity(int idx, Entity type, boolean hard) {
 		if (type == null) {
-			return;
+			return false;
 		}
-		for (Entity ent : sk.souradky) {
-			if (ent.loc.getX() == idx.get(0).getX1() && ent.loc.getY() == idx.get(0).getY1()
-					&& (ent.isColidable || hard)) {
-				type.loc.setX(ent.loc.getX());
-				type.loc.setY(ent.loc.getY());
-				type.recreateGraphics();
-				sk.souradky.set(idx.get(0).getIdx(), type.clone());
-				if (!sk.repeatableInsert) {
-					type = null;
-					sk.setupInserting(null, false);
-				}
-				repaint();
-				break;
+		Entity ent = sk.souradky.get(idx).clone();
+		if (ent.isColidable || hard) {
+			Location loc = ent.loc;
+			type.loc.setX(loc.getX());
+			type.loc.setY(loc.getY());
+			type.recreateGraphics();
+			sk.souradky.set(idx, type.clone());
+			repaint();
+			if (!sk.repeatableInsert) {
+				type = null;
+				sk.setupInserting(null, false);
+			}
+			return true;
+
+		} else {
+			if (oldIdx != -1) {
+				insertEntity(oldIdx, type.clone(), true);
+				oldIdx = -1;
+				return false;
 			}
 		}
-	}
+		return false;
 
-	public void insertEntity(int idx, Entity type) {
-		Location loc = sk.souradky.get(idx).loc;
-		type.loc.setX(loc.getX());
-		type.loc.setY(loc.getY());
-		sk.souradky.set(idx, type);
-		type.recreateGraphics();
-		repaint();
 	}
 
 	public void drawCursor(int x, int y) {
@@ -187,16 +187,21 @@ public class HraciPlocha extends JPanel {
 	}
 
 	public void saveEntity(int idx) {
+		if (sk.souradky.get(idx) instanceof FreeSpace) {
+			sk.setupInserting(null, false);
+			return;
+		}
 		sk.setupInserting(sk.souradky.get(idx).clone(), false);
 		Location loc = sk.souradky.get(idx).clone().loc;
-		insertEntity(idx, new FreeSpace(loc));
+		oldIdx = idx;
 		drawCursor(loc.getX(), loc.getY());
 
 	}
 
 	public void releaseEntity(int idx) {
-		insertEntity(idx, sk.insertedEntity.clone());
-		sk.setupInserting(null, false);
-
+		if (insertEntity(idx, sk.insertedEntity, false) && idx != oldIdx) {
+			insertEntity(oldIdx, new FreeSpace(sk.souradky.get(oldIdx).clone().loc), true);
+		}
+		drawCursor(-1, -1);
 	}
 }
