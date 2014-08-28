@@ -1,12 +1,10 @@
 package hexapaper.entity;
 
 import hexapaper.gui.Gprvky;
-import hexapaper.source.BPolygon;
 import hexapaper.source.Location;
 import hexapaper.source.Sklad.PropPair;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Postava extends Entity {
 

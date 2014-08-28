@@ -67,7 +67,7 @@ public class Sklad {
 		for (int i = 0; i < souradky.size(); i++) {
 			if (souradky.get(i) instanceof FreeSpace) {
 			} else {
-				System.out.println(i);
+				//System.out.println(i);
 				hraciPlocha.insertEntity(i, souradky.get(i), true);
 			}
 		}

@@ -35,6 +35,10 @@ import javax.swing.event.ListSelectionListener;
 
 public class PostavaAddFrame extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JFrame frame;
 	Sklad sk = Sklad.getInstance();
 	protected String[] defaultProp = { Strings.name, Strings.race, Strings.health, Strings.mags, Strings.weapon, Strings.armor };

@@ -26,6 +26,10 @@ import javax.swing.event.ListSelectionListener;
 
 public class ExportOneFrame extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JFrame frame;
 	JPanel spg;
 	Entity beExported;

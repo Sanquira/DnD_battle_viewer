@@ -3,11 +3,6 @@ package hexapaper.Listeners;
 import hexapaper.entity.Artefact;
 import hexapaper.entity.Postava;
 
-import java.awt.Component;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.List;
-
 import javax.swing.JComponent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;

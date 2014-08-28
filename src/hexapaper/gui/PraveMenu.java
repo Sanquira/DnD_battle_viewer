@@ -238,7 +238,9 @@ public class PraveMenu extends JPanel {
 	private void osetriAddAB() {
 		wall.setSelected(false);
 		freespace.setSelected(false);
-		sk.setupInserting(((Artefact) addAC.getSelectedItem()).clone(), false);
+		if(addAC.getSelectedItem()!=null){
+			sk.setupInserting(((Artefact) addAC.getSelectedItem()).clone(), false);
+		};	
 	}
 
 	private void osetriAddPB() {
@@ -352,6 +354,7 @@ public class PraveMenu extends JPanel {
 				druhy.add(lblName);
 				druhy.add(tfldValue);
 				druhyIn.add(druhy);
+				i+=1;
 			}
 		}
 		druhySc.setViewportView(druhyIn);

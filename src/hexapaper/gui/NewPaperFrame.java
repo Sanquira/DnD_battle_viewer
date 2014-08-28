@@ -18,6 +18,10 @@ import javax.swing.border.TitledBorder;
 
 public class NewPaperFrame extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Sklad sk = Sklad.getInstance();
 	JFrame frame;
 

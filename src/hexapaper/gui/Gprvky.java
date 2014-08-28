@@ -1,21 +1,10 @@
 package hexapaper.gui;
 
-import hexapaper.entity.Entity;
 import hexapaper.source.BPolygon;
 import hexapaper.source.Location;
 import hexapaper.source.Sklad;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Gprvky {
