@@ -1,5 +1,7 @@
 package hexapaper.gui;
 
+import hexapaper.hexapaper;
+import hexapaper.Listeners.DocumentAdapter;
 import hexapaper.Listeners.ValueListener;
 import hexapaper.entity.Artefact;
 import hexapaper.entity.Entity;
@@ -36,6 +38,8 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JViewport;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.text.BadLocationException;
 
 public class PraveMenu extends JPanel {
 
@@ -238,9 +242,10 @@ public class PraveMenu extends JPanel {
 	private void osetriAddAB() {
 		wall.setSelected(false);
 		freespace.setSelected(false);
-		if(addAC.getSelectedItem()!=null){
+		if (addAC.getSelectedItem() != null) {
 			sk.setupInserting(((Artefact) addAC.getSelectedItem()).clone(), false);
-		};	
+		}
+		;
 	}
 
 	private void osetriAddPB() {
@@ -261,30 +266,86 @@ public class PraveMenu extends JPanel {
 		VP.setLayout(gbl);
 		VP.setBorder(new TitledBorder(Strings.vytvorPostavu));
 
-		JPanel prvni = new JPanel(new GridLayout(1, 1, 10, 0));
+		JPanel prvni = new JPanel(new BorderLayout(10, 10));
+
 		String name = "";
 		if (isPostava) {
 			if (((Postava) vlastnosti).isPJ()) {
-				name = "(" + Strings.NPC + ") ";
+				name = Strings.NPC;
 			} else {
-				name = "(" + Strings.player + ") ";
+				name = Strings.player;
 			}
 		} else {
-			name = "(" + Strings.artefakt + ") ";
+			name = Strings.artefakt;
 		}
-		name = name.concat(vlastnosti.getNick());
-		JLabel nameLabel = new JLabel();
-		nameLabel.setPreferredSize(new Dimension(-1, 35));
-		nameLabel.setHorizontalAlignment(JLabel.CENTER);
-		nameLabel.setFont(nameLabel.getFont().deriveFont(15F));
-		nameLabel.setText(name);
-		prvni.add(nameLabel);
+		JLabel nameLabel = new JLabel(name);
+		JLabel tag = new JLabel(Strings.tag);
+		tag.setPreferredSize(new Dimension(35, -1));
+		prvni.add(nameLabel, BorderLayout.CENTER);
+		prvni.add(tag, BorderLayout.EAST);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weightx = 1;
 		gbl.setConstraints(prvni, gbc);
 		VP.add(prvni);
 		gbc.weightx = 0;
+
+		name = vlastnosti.getNick();
+		JPanel nameatag = new JPanel(new BorderLayout(10, 10));
+
+		EditableJLabel nameL = new EditableJLabel(vlastnosti.getNick());
+		nameL.setPreferredSize(new Dimension(-1, 35));
+		nameL.getTextField().getDocument().addDocumentListener(new DocumentAdapter() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				String chtag = "";
+				try {
+					chtag = e.getDocument().getText(0, e.getDocument().getLength());
+				} catch (BadLocationException er) {
+					er.printStackTrace();
+				}
+				vlastnosti.setNick(chtag);
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				insertUpdate(e);
+			}
+		});
+
+		EditableJLabel tagL = new EditableJLabel(vlastnosti.tag);
+		tagL.setPreferredSize(new Dimension(35, 35));
+		tagL.getTextField().getDocument().addDocumentListener(new DocumentAdapter() {
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				String chtag = vlastnosti.tag;
+				try {
+					if (arg0.getDocument().getLength() <= 2) {
+						chtag = arg0.getDocument().getText(0, arg0.getDocument().getLength());
+
+					}
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
+				vlastnosti.setTag(chtag);
+				hexapaper.frm.repaint();
+
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				insertUpdate(e);
+			}
+		});
+
+		nameatag.add(nameL, BorderLayout.CENTER);
+		nameatag.add(tagL, BorderLayout.EAST);
+
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbl.setConstraints(nameatag, gbc);
+		VP.add(nameatag);
 
 		JScrollPane druhySc = new JScrollPane();
 		int sizeParam;
@@ -354,12 +415,12 @@ public class PraveMenu extends JPanel {
 				druhy.add(lblName);
 				druhy.add(tfldValue);
 				druhyIn.add(druhy);
-				i+=1;
+				i += 1;
 			}
 		}
 		druhySc.setViewportView(druhyIn);
 		gbc.gridx = 0;
-		gbc.gridy = 1;
+		gbc.gridy = 2;
 		gbc.weightx = 0;
 		gbc.weighty = 1;
 		gbc.gridheight = 5;
@@ -420,10 +481,10 @@ public class PraveMenu extends JPanel {
 
 	public void redrawProperities(prvekkNN prvekkNN) {
 		Entity ent = sk.souradky.get(prvekkNN.getIdx());
-		if (ent.getClass() == hexapaper.entity.Postava.class ||
-				ent.getClass() == hexapaper.entity.Artefact.class) {
+		if (ent instanceof Postava ||
+				ent instanceof Artefact) {
 			vlastnosti = sk.souradky.get(prvekkNN.getIdx());
-			if (vlastnosti.getClass() == hexapaper.entity.Postava.class) {
+			if (vlastnosti instanceof Postava) {
 				isPostava = true;
 			} else {
 				isPostava = false;

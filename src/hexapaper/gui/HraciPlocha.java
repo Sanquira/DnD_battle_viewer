@@ -28,6 +28,8 @@ public class HraciPlocha extends JPanel {
 	Entity cursor = null;
 	int oldIdx = -1;
 
+	int fontSize = (int) Math.round(sk.RADIUS * 0.75);
+
 	public HraciPlocha() {
 		init();
 	}
@@ -67,7 +69,7 @@ public class HraciPlocha extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setFont(getFont().deriveFont((float) sk.RADIUS).deriveFont(Font.BOLD));
+		g.setFont(getFont().deriveFont((float) fontSize).deriveFont(Font.BOLD));
 		FontMetrics fm = g.getFontMetrics();
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(2));

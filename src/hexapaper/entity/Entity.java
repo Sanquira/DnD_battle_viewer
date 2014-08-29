@@ -13,7 +13,7 @@ public abstract class Entity implements Cloneable {
 	public Location loc;
 	public ArrayList<BPolygon> prvek = new ArrayList<>();
 	public Color background = Color.white;
-	public String tag;
+	public String tag = null;
 	protected String name;
 
 	public Entity(String name, Location loc, boolean Rotatable, boolean Colidable, ArrayList<BPolygon> prvek) {
@@ -61,15 +61,23 @@ public abstract class Entity implements Cloneable {
 	}
 
 	public void setTag(String tag) {
-		try {
-			this.tag = tag.substring(0, 1);
-		} catch (StringIndexOutOfBoundsException e) {
-			this.tag = "";
+		if (this.tag == null) {
+			try {
+				this.tag = name.substring(0, 2);
+			} catch (StringIndexOutOfBoundsException e) {
+				this.tag = "";
+			}
+		} else {
+			this.tag = tag;
 		}
 	}
 
 	public String getNick() {
 		return name;
+	}
+
+	public void setNick(String nick) {
+		this.name = nick;
 	}
 
 	abstract public void recreateGraphics();

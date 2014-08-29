@@ -49,6 +49,7 @@ public class Strings {
 	public static String type = "Typ";
 	public static String addPropBut = "Přidej";
 	public static String delPropBut = "Odeber";
+	public static String tag = "Tag";
 
 	public static String hra = "Hra";
 	public static String upravy = "Úpravy";

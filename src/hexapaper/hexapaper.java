@@ -119,7 +119,7 @@ public class hexapaper extends JFrame {
 	}
 
 	public static void main(String[] args) throws CloneNotSupportedException {
-		sk.init();
-		frm = new hexapaper();
+		 sk.init();
+		 frm = new hexapaper();
 	}
 }

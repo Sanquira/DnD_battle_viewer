@@ -47,6 +47,7 @@ public class PostavaAddFrame extends JPanel {
 	JPanel spg;
 	// boolean delete = false;
 	boolean isNPC = false, isDel = false, isDelD = false;
+	JList<Object> list;
 
 	public PostavaAddFrame() {
 		frame = new JFrame(Strings.vytvorPostavu);
@@ -225,7 +226,7 @@ public class PostavaAddFrame extends JPanel {
 		SP.setLayout(gbl);
 		JScrollPane datPo = new JScrollPane();
 		datPo.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		JList<Object> list = new JList<>(sk.databazePostav.toArray());
+		list = new JList<>(sk.databazePostav.toArray());
 
 		list.addListSelectionListener(new ListSelectionListener() {
 
@@ -233,10 +234,7 @@ public class PostavaAddFrame extends JPanel {
 			public void valueChanged(ListSelectionEvent e) {
 				JList<PropPair> lsm = (JList) e.getSource();
 				boolean isAdjusting = e.getValueIsAdjusting();
-				if (lsm.isSelectionEmpty()) {
-					System.err.println("PostavaAddFrame.list.ListSelectionListener.valueChanged - " +
-							"Neco je spatne. Neni vybran zadny prvek");
-				} else {
+				if (!lsm.isSelectionEmpty()) {
 					int minIndex = lsm.getMinSelectionIndex();
 					int maxIndex = lsm.getMaxSelectionIndex();
 					if (minIndex == maxIndex && lsm.isSelectedIndex(minIndex) && isDelD && isAdjusting) {
@@ -265,6 +263,7 @@ public class PostavaAddFrame extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				list.clearSelection();
 				isDelD = ((JToggleButton) e.getSource()).isSelected();
 			}
 		});
