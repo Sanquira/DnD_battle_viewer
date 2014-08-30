@@ -41,7 +41,7 @@ public class PostavaAddFrame extends JPanel {
 	private static final long serialVersionUID = 1L;
 	JFrame frame;
 	Sklad sk = Sklad.getInstance();
-	protected String[] defaultProp = { Strings.name, Strings.race, Strings.health, Strings.mags, Strings.weapon, Strings.armor };
+	protected String[] defaultProp = { Strings.get("name"), Strings.get("race"), Strings.get("health"), Strings.get("mags"), Strings.get("weapon"), Strings.get("armor") };
 	protected ArrayList<PropPair> param = new ArrayList<PropPair>();
 	JPanel vpg;
 	JPanel spg;
@@ -50,7 +50,7 @@ public class PostavaAddFrame extends JPanel {
 	JList<Object> list;
 
 	public PostavaAddFrame() {
-		frame = new JFrame(Strings.vytvorPostavu);
+		frame = new JFrame(Strings.get("vytvorPostavu"));
 		frame.setSize(450, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(new GridLayout(1, 2, 0, 10));
@@ -72,10 +72,10 @@ public class PostavaAddFrame extends JPanel {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		VP.setLayout(gbl);
-		VP.setBorder(new TitledBorder(Strings.vytvorPostavu));
+		VP.setBorder(new TitledBorder(Strings.get("vytvorPostavu")));
 
 		JPanel prvni = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel isNPCL = new JLabel(Strings.NPC);
+		JLabel isNPCL = new JLabel(Strings.get("NPC"));
 		final JCheckBox isNPSCB = new JCheckBox();
 		isNPSCB.setSelected(isNPC);
 		isNPSCB.addActionListener(new ActionListener() {
@@ -113,7 +113,7 @@ public class PostavaAddFrame extends JPanel {
 			public void mousePressed(MouseEvent e) {
 				if (isDel) {
 					for (int i = 0; i < param.size(); i++) {
-						if (param.get(i).name == e.getComponent().getParent().getName() && e.getComponent().getParent().getName() != Strings.name) {
+						if (param.get(i).name == e.getComponent().getParent().getName() && e.getComponent().getParent().getName() != Strings.get("name")) {
 							readParam();
 							param.remove(i);
 							updateCreate();
@@ -148,7 +148,7 @@ public class PostavaAddFrame extends JPanel {
 		VP.add(druhySc);
 
 		JPanel treti = new JPanel(new GridLayout(1, 2, 10, 0));
-		JButton add = new JButton(Strings.addPropBut);
+		JButton add = new JButton(Strings.get("addPropBut"));
 		add.addActionListener(new ActionListener() {
 
 			@Override
@@ -159,7 +159,7 @@ public class PostavaAddFrame extends JPanel {
 				updateCreate();
 			}
 		});
-		JToggleButton del = new JToggleButton(Strings.delPropBut, isDel);
+		JToggleButton del = new JToggleButton(Strings.get("delPropBut"), isDel);
 		del.addActionListener(new ActionListener() {
 
 			@Override
@@ -176,7 +176,7 @@ public class PostavaAddFrame extends JPanel {
 		gbl.setConstraints(treti, gbc);
 		VP.add(treti);
 
-		JButton hotovo = new JButton(Strings.vytvorPostavu);
+		JButton hotovo = new JButton(Strings.get("vytvorPostavu"));
 		hotovo.addActionListener(new ActionListener() {
 
 			@Override
@@ -185,7 +185,7 @@ public class PostavaAddFrame extends JPanel {
 				// System.out.println(param.toString());
 
 				if (param.get(0).value.trim().isEmpty()) {
-					JOptionPane.showMessageDialog(vpg, Strings.warningNameIsEmpty, Strings.varovani, JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(vpg, Strings.get("warningNameIsEmpty"), Strings.get("varovani"), JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 				Postava man = new Postava(param.remove(0).value, sk.LocDontCare, isNPSCB.isSelected(), param);
@@ -219,7 +219,7 @@ public class PostavaAddFrame extends JPanel {
 
 	private JPanel databazePostav() {
 		JPanel SP = new JPanel();
-		SP.setBorder(new TitledBorder(Strings.vytvorenePostavy));
+		SP.setBorder(new TitledBorder(Strings.get("vytvorenePostavy")));
 		GridBagLayout gbl = new GridBagLayout();
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
@@ -258,7 +258,7 @@ public class PostavaAddFrame extends JPanel {
 		gbl.setConstraints(datPo, gbc);
 		SP.add(datPo);
 
-		JToggleButton del = new JToggleButton(Strings.delPropBut, isDelD);
+		JToggleButton del = new JToggleButton(Strings.get("delPropBut"), isDelD);
 		del.addActionListener(new ActionListener() {
 
 			@Override

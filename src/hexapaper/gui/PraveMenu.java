@@ -92,11 +92,11 @@ public class PraveMenu extends JPanel {
 	private JPanel ovladani() {
 		JPanel prvni = new JPanel();
 		prvni.setPreferredSize(new Dimension(-1, 180));
-		prvni.setBorder(new TitledBorder(Strings.ovladaniBitvy));
+		prvni.setBorder(new TitledBorder(Strings.get("ovladaniBitvy")));
 		prvni.setLayout(new GridLayout(5, 1, 0, 10));
 
 		JPanel showP = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel showL = new JLabel(Strings.showPlayerColor);
+		JLabel showL = new JLabel(Strings.get("showPlayerColor"));
 		showB = new JCheckBox();
 		showB.setSelected(sk.hidePlayerColor);
 		osetriShowColor();
@@ -112,7 +112,7 @@ public class PraveMenu extends JPanel {
 		showP.add(showB);
 
 		JPanel showN = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel showLn = new JLabel(Strings.showNPCColor);
+		JLabel showLn = new JLabel(Strings.get("showNPCColor"));
 		showBn = new JCheckBox();
 		showBn.setSelected(sk.hideNPCColor);
 		osetriShowNPC();
@@ -129,7 +129,7 @@ public class PraveMenu extends JPanel {
 
 		JPanel wallFreeSpace = new JPanel(new GridLayout(1, 2, 10, 0));
 
-		wall = new JToggleButton(Strings.addWall);
+		wall = new JToggleButton(Strings.get("addWall"));
 		wall.addActionListener(new ActionListener() {
 
 			@Override
@@ -138,7 +138,7 @@ public class PraveMenu extends JPanel {
 			}
 		});
 
-		freespace = new JToggleButton(Strings.addFreeSpace);
+		freespace = new JToggleButton(Strings.get("addFreeSpace"));
 		freespace.addActionListener(new ActionListener() {
 
 			@Override
@@ -204,18 +204,18 @@ public class PraveMenu extends JPanel {
 	private void osetriShowColor() {
 		sk.hidePlayerColor = showB.isSelected();
 		if (showB.isSelected()) {
-			showB.setText(Strings.ano);
+			showB.setText(Strings.get("ano"));
 		} else {
-			showB.setText(Strings.ne);
+			showB.setText(Strings.get("ne"));
 		}
 	}
 
 	private void osetriShowNPC() {
 		sk.hideNPCColor = showBn.isSelected();
 		if (showBn.isSelected()) {
-			showBn.setText(Strings.ano);
+			showBn.setText(Strings.get("ano"));
 		} else {
-			showBn.setText(Strings.ne);
+			showBn.setText(Strings.get("ne"));
 		}
 	}
 
@@ -256,7 +256,7 @@ public class PraveMenu extends JPanel {
 
 	private JPanel vlastnosti() {
 		JPanel VP = new JPanel();
-		VP.setBorder(new TitledBorder(Strings.vlastnostiObj));
+		VP.setBorder(new TitledBorder(Strings.get("vlastnostiObj")));
 		if (vlastnosti == null) {
 			return VP;
 		}
@@ -264,22 +264,22 @@ public class PraveMenu extends JPanel {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		VP.setLayout(gbl);
-		VP.setBorder(new TitledBorder(Strings.vytvorPostavu));
+		VP.setBorder(new TitledBorder(Strings.get("vytvorPostavu")));
 
 		JPanel prvni = new JPanel(new BorderLayout(10, 10));
 
 		String name = "";
 		if (isPostava) {
 			if (((Postava) vlastnosti).isPJ()) {
-				name = Strings.NPC;
+				name = Strings.get("NPC");
 			} else {
-				name = Strings.player;
+				name = Strings.get("player");
 			}
 		} else {
-			name = Strings.artefakt;
+			name = Strings.get("artefakt");
 		}
 		JLabel nameLabel = new JLabel(name);
-		JLabel tag = new JLabel(Strings.tag);
+		JLabel tag = new JLabel(Strings.get("Tag"));
 		tag.setPreferredSize(new Dimension(35, -1));
 		prvni.add(nameLabel, BorderLayout.CENTER);
 		prvni.add(tag, BorderLayout.EAST);
@@ -428,7 +428,7 @@ public class PraveMenu extends JPanel {
 		VP.add(druhySc);
 
 		JPanel treti = new JPanel(new GridLayout(1, 2, 10, 0));
-		JButton add = new JButton(Strings.addPropBut);
+		JButton add = new JButton(Strings.get("addPropBut"));
 		add.addActionListener(new ActionListener() {
 
 			@Override
@@ -440,7 +440,7 @@ public class PraveMenu extends JPanel {
 			}
 		});
 		add.setEnabled(!skryj);
-		JToggleButton del = new JToggleButton(Strings.delPropBut, isDel);
+		JToggleButton del = new JToggleButton(Strings.get("delPropBut"), isDel);
 		del.addActionListener(new ActionListener() {
 
 			@Override

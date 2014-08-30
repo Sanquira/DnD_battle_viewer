@@ -36,7 +36,7 @@ public class ArtefactAddFrame extends JPanel {
 
 	JFrame frame;
 	Sklad sk = Sklad.getInstance();
-	protected String[] defaultProp = { Strings.name, Strings.type };
+	protected String[] defaultProp = { Strings.get("name"), Strings.get("type") };
 	protected ArrayList<PropPair> param = new ArrayList<PropPair>();
 	JPanel vpg;
 	JPanel spg;
@@ -44,7 +44,7 @@ public class ArtefactAddFrame extends JPanel {
 	JList<Object> list;
 
 	public ArtefactAddFrame() {
-		frame = new JFrame(Strings.vytvorArtefakt);
+		frame = new JFrame(Strings.get("vytvorArtefakt"));
 		frame.setSize(450, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(new GridLayout(1, 2, 0, 10));
@@ -66,7 +66,7 @@ public class ArtefactAddFrame extends JPanel {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		VP.setLayout(gbl);
-		VP.setBorder(new TitledBorder(Strings.vytvorArtefakt));
+		VP.setBorder(new TitledBorder(Strings.get("vytvorArtefakt")));
 
 		JScrollPane druhySc = new JScrollPane();
 		druhySc.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -87,7 +87,7 @@ public class ArtefactAddFrame extends JPanel {
 			public void mousePressed(MouseEvent e) {
 				if (isDel) {
 					for (int i = 0; i < param.size(); i++) {
-						if (param.get(i).name == e.getComponent().getParent().getName() && e.getComponent().getParent().getName() != Strings.name) {
+						if (param.get(i).name == e.getComponent().getParent().getName() && e.getComponent().getParent().getName() != Strings.get("name")) {
 							readParam();
 							param.remove(i);
 							updateCreate();
@@ -123,7 +123,7 @@ public class ArtefactAddFrame extends JPanel {
 		gbc.weightx = 0;
 
 		JPanel treti = new JPanel(new GridLayout(1, 2, 10, 0));
-		JButton add = new JButton(Strings.addPropBut);
+		JButton add = new JButton(Strings.get("addPropBut"));
 		add.addActionListener(new ActionListener() {
 
 			@Override
@@ -134,7 +134,7 @@ public class ArtefactAddFrame extends JPanel {
 				updateCreate();
 			}
 		});
-		JToggleButton del = new JToggleButton(Strings.delPropBut, isDel);
+		JToggleButton del = new JToggleButton(Strings.get("delPropBut"), isDel);
 		del.addActionListener(new ActionListener() {
 
 			@Override
@@ -151,7 +151,7 @@ public class ArtefactAddFrame extends JPanel {
 		gbl.setConstraints(treti, gbc);
 		VP.add(treti);
 
-		JButton hotovo = new JButton(Strings.vytvorArtefakt);
+		JButton hotovo = new JButton(Strings.get("vytvorArtefakt"));
 		hotovo.addActionListener(new ActionListener() {
 
 			@Override
@@ -160,7 +160,7 @@ public class ArtefactAddFrame extends JPanel {
 				// System.out.println(param.toString());
 
 				if (param.get(0).value.trim().isEmpty()) {
-					JOptionPane.showMessageDialog(vpg, Strings.warningNameIsEmpty, Strings.varovani, JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(vpg, Strings.get("warningNameIsEmpty"), Strings.get("varovani"), JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 				Artefact man = new Artefact(param.remove(0).value, sk.LocDontCare, param);
@@ -194,7 +194,7 @@ public class ArtefactAddFrame extends JPanel {
 
 	private JPanel databazeArtefactu() {
 		JPanel SP = new JPanel();
-		SP.setBorder(new TitledBorder(Strings.vytvoreneArtefakty));
+		SP.setBorder(new TitledBorder(Strings.get("vytvoreneArtefakty")));
 		GridBagLayout gbl = new GridBagLayout();
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
@@ -233,7 +233,7 @@ public class ArtefactAddFrame extends JPanel {
 		gbl.setConstraints(datPo, gbc);
 		SP.add(datPo);
 
-		JToggleButton del = new JToggleButton(Strings.delPropBut, isDelD);
+		JToggleButton del = new JToggleButton(Strings.get("delPropBut"), isDelD);
 		del.addActionListener(new ActionListener() {
 
 			@Override

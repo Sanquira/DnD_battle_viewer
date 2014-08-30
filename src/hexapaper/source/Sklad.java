@@ -3,6 +3,7 @@ package hexapaper.source;
 import hexapaper.hexapaper;
 import hexapaper.entity.Entity;
 import hexapaper.entity.FreeSpace;
+import hexapaper.file.LoadFile;
 import hexapaper.gui.Gprvky;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.PraveMenu;
@@ -37,10 +38,12 @@ public class Sklad {
 	}
 
 	public void init() {
+		new LoadFile();
 		hraciPlocha = new HraciPlocha();
-
+		
 		prvky = new Gprvky();
 		RMenu = new PraveMenu();
+		
 	}
 
 	public static Sklad getInstance() {

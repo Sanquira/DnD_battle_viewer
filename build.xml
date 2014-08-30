@@ -18,6 +18,9 @@
         <mkdir dir="bin"/>
         <copy includeemptydirs="false" todir="bin">
             <fileset dir="src">
+                <include name="addons/"/>
+                <include name="hexapaper/"/>
+                <include name="lang.json"/>
                 <exclude name="**/*.launch"/>
                 <exclude name="**/*.java"/>
             </fileset>
@@ -33,6 +36,9 @@
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
             <src path="src"/>
+            <include name="addons/"/>
+            <include name="hexapaper/"/>
+            <include name="lang.json"/>
             <classpath refid="DnD_battle_viewer.classpath"/>
         </javac>
     </target>
@@ -50,12 +56,7 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
-    <target name="Hex (3)">
-        <java classname="hexapaper.Hex" failonerror="true" fork="yes">
-            <classpath refid="DnD_battle_viewer.classpath"/>
-        </java>
-    </target>
-    <target name="hexapaper (1)">
+    <target name="Main">
         <java classname="hexapaper.hexapaper" failonerror="true" fork="yes">
             <classpath refid="DnD_battle_viewer.classpath"/>
         </java>

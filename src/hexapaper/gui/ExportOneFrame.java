@@ -36,7 +36,7 @@ public class ExportOneFrame extends JPanel {
 	ArrayList<Entity> exportList;
 
 	public ExportOneFrame(ArrayList<Entity> exportList) {
-		frame = new JFrame(Strings.export);
+		frame = new JFrame(Strings.get("export"));
 		frame.setSize(225, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(new GridLayout(1, 2, 0, 10));
@@ -52,13 +52,13 @@ public class ExportOneFrame extends JPanel {
 
 	private JPanel databazeArtefactu() {
 		JPanel SP = new JPanel();
-		String title = Strings.export;
+		String title = Strings.get("export");
 		if (exportList.size() != 0) {
 			if (exportList.get(0) instanceof Artefact) {
-				title = Strings.vytvoreneArtefakty;
+				title = Strings.get("vytvoreneArtefakty");
 			}
 			if (exportList.get(0) instanceof Postava) {
-				title = Strings.vytvorenePostavy;
+				title = Strings.get("vytvorenePostavy");
 			}
 		}
 		SP.setBorder(new TitledBorder(title));
@@ -100,7 +100,7 @@ public class ExportOneFrame extends JPanel {
 		gbl.setConstraints(datPo, gbc);
 		SP.add(datPo);
 
-		JButton del = new JButton(Strings.export);
+		JButton del = new JButton(Strings.get("export"));
 		del.addActionListener(new ActionListener() {
 
 			@Override

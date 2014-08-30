@@ -1,5 +1,9 @@
 package hexapaper.source;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Strings {
 
 	public static String varovani = "Varování­";
@@ -49,7 +53,6 @@ public class Strings {
 	public static String type = "Typ";
 	public static String addPropBut = "Přidej";
 	public static String delPropBut = "Odeber";
-	public static String tag = "Tag";
 
 	public static String hra = "Hra";
 	public static String upravy = "Úpravy";
@@ -66,6 +69,30 @@ public class Strings {
 	public static String ztrataDat = "Ztráta dat";
 	public static String zpravaZtrataDat = "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVěechny neuložené změny budou ztraceny. \nChcete opravdu skončit?";
 
-	// public static String
-
+	private static Map<String,String> strings=new HashMap<String, String>();
+	
+	public static void set(String key, String value){
+		strings.put(key, value);
+	}
+	public static String get(String key){
+		if(strings.containsKey(key)){
+			return strings.get(key);
+		}
+		//System.out.println(key);
+		return getVariable(key);
+	}
+	private static String getVariable(String key) {
+		String value="";
+		for(Field field : Strings.class.getFields()){
+			if(field.getName().equals(key)){
+				try {
+					value=(String) field.get(String.class);
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return value;
+	}
 }

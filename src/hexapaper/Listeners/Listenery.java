@@ -41,7 +41,7 @@ public class Listenery {
 	public class NactiListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			LoadFile load = new LoadFile(Strings.Hex_text, Strings.Hex_ext);
+			LoadFile load = new LoadFile(Strings.get("Hex_text"), Strings.get("Hex_ext"));
 			sk.initLoad(load.getSouradky());
 		}
 	}
@@ -73,8 +73,8 @@ public class Listenery {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Object[] opt = { Strings.ano, Strings.ne };
-			int t = JOptionPane.showOptionDialog(hexapaper.frm, Strings.zpravaZtrataDat, Strings.ztrataDat, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
+			Object[] opt = { Strings.get("ano"), Strings.get("ne") };
+			int t = JOptionPane.showOptionDialog(hexapaper.frm, Strings.get("zpravaZtrataDat"), Strings.get("ztrataDat"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
 			if (t == JOptionPane.OK_OPTION) {
 				System.exit(0);
 			}
@@ -225,7 +225,7 @@ public class Listenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			new LoadFile(Strings.desc, Strings.File_ext, Strings.Db_ext);
+			new LoadFile(Strings.get("desc"), Strings.get("File_ext"), Strings.get("Db_ext"));
 			sk.RMenu.updateDatabase();
 		}
 	}

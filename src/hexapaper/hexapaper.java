@@ -48,11 +48,11 @@ public class hexapaper extends JFrame {
 	private JMenuBar menu() {
 		JMenuBar HlavniMenu = new JMenuBar();
 
-		JMenu hraMenu = new JMenu(Strings.hra);
-		JMenuItem novyPaper = new JMenuItem(Strings.newPaper);
-		JMenuItem nactiPaper = new JMenuItem(Strings.loadPaper);
-		JMenuItem ulozPaper = new JMenuItem(Strings.savePaper);
-		JMenuItem konec = new JMenuItem(Strings.konec);
+		JMenu hraMenu = new JMenu(Strings.get("hra"));
+		JMenuItem novyPaper = new JMenuItem(Strings.get("newPaper"));
+		JMenuItem nactiPaper = new JMenuItem(Strings.get("loadPaper"));
+		JMenuItem ulozPaper = new JMenuItem(Strings.get("savePaper"));
+		JMenuItem konec = new JMenuItem(Strings.get("konec"));
 
 		novyPaper.addActionListener(lis.new NovaListener());
 		nactiPaper.addActionListener(lis.new NactiListener());
@@ -64,16 +64,16 @@ public class hexapaper extends JFrame {
 		hraMenu.add(ulozPaper);
 		hraMenu.add(konec);
 
-		JMenu upravy = new JMenu(Strings.upravy);
-		JMenuItem pridejArt = new JMenuItem(Strings.addArt);
-		JMenuItem pridejPost = new JMenuItem(Strings.addPost);
-		JMenu exportAP = new JMenu(Strings.exportAP);
-		JMenuItem exportArtDat = new JMenuItem(Strings.exportArtDat);
-		JMenuItem exportPostDat = new JMenuItem(Strings.exportPostDat);
-		JMenuItem exportArtOne = new JMenuItem(Strings.exportArtOne);
-		JMenuItem exportPostOne = new JMenuItem(Strings.exportPostOne);
+		JMenu upravy = new JMenu(Strings.get("upravy"));
+		JMenuItem pridejArt = new JMenuItem(Strings.get("addArt"));
+		JMenuItem pridejPost = new JMenuItem(Strings.get("addPost"));
+		JMenu exportAP = new JMenu(Strings.get("exportAP"));
+		JMenuItem exportArtDat = new JMenuItem(Strings.get("exportArtDat"));
+		JMenuItem exportPostDat = new JMenuItem(Strings.get("exportPostDat"));
+		JMenuItem exportArtOne = new JMenuItem(Strings.get("exportArtOne"));
+		JMenuItem exportPostOne = new JMenuItem(Strings.get("exportPostOne"));
 
-		JMenuItem importAP = new JMenuItem(Strings.importAP);
+		JMenuItem importAP = new JMenuItem(Strings.get("importAP"));
 
 		pridejArt.addActionListener(lis.new PridejArtefakt());
 		pridejPost.addActionListener(lis.new PridejPostavu());
@@ -96,9 +96,9 @@ public class hexapaper extends JFrame {
 
 		upravy.add(importAP);
 
-		JMenu addons = new JMenu(Strings.addons);
+		JMenu addons = new JMenu(Strings.get("addons"));
 
-		JMenuItem kostka = new JMenuItem(Strings.kostka);
+		JMenuItem kostka = new JMenuItem(Strings.get("kostka"));
 
 		kostka.addActionListener(lis.new KostkaListener());
 

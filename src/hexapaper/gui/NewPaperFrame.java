@@ -26,12 +26,12 @@ public class NewPaperFrame extends JPanel {
 	JFrame frame;
 
 	public NewPaperFrame() {
-		frame = new JFrame(Strings.vytvorPaper);
+		frame = new JFrame(Strings.get("vytvorPaper"));
 		frame.setSize(300, 200);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setResizable(false);
 		setLayout(new GridLayout(4, 1, 0, 10));
-		setBorder(new TitledBorder(Strings.vytvorPaper));
+		setBorder(new TitledBorder(Strings.get("vytvorPaper")));
 		init();
 		frame.add(this);
 		frame.setVisible(true);
@@ -43,27 +43,27 @@ public class NewPaperFrame extends JPanel {
 
 	protected void init() {
 		JPanel prvni = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel polhex = new JLabel(Strings.polomerHexu);
+		JLabel polhex = new JLabel(Strings.get("polomerHexu"));
 		polhexvalue = new JTextField("25");
 		polhexvalue.addFocusListener(new Listener());
 		prvni.add(polhex);
 		prvni.add(polhexvalue);
 
 		JPanel druhy = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel numRow = new JLabel(Strings.pocetRadku);
+		JLabel numRow = new JLabel(Strings.get("pocetRadku"));
 		numRowValue = new JTextField("25");
 		numRowValue.addFocusListener(new Listener());
 		druhy.add(numRow);
 		druhy.add(numRowValue);
 
 		JPanel treti = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel numCol = new JLabel(Strings.pocetSloupcu);
+		JLabel numCol = new JLabel(Strings.get("pocetSloupcu"));
 		numColValue = new JTextField("25");
 		numColValue.addFocusListener(new Listener());
 		treti.add(numCol);
 		treti.add(numColValue);
 
-		JButton hotovo = new JButton(Strings.vytvorPaper);
+		JButton hotovo = new JButton(Strings.get("vytvorPaper"));
 		hotovo.addActionListener(new ActionListener() {
 
 			@Override
