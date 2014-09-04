@@ -1,6 +1,5 @@
-package hexapaper.gui;
+package core;
 
-import hexapaper.Listeners.ValueChangedListener;
 
 import java.awt.CardLayout;
 import java.awt.GridLayout;
@@ -15,6 +14,7 @@ import java.util.LinkedList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 
 /**
  * Create a JPanel with a CardLayout which switches to another JPanel on hover

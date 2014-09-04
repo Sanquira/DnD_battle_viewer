@@ -1,11 +1,10 @@
 package hexapaper.gui;
 
-import hexapaper.entity.Entity;
+import hexapaper.entity.HPEntity;
 import hexapaper.entity.FreeSpace;
 import hexapaper.source.BPolygon;
-import hexapaper.source.Location;
-import hexapaper.source.Sklad;
-import hexapaper.source.Sklad.prvekkNN;
+import hexapaper.source.HPSklad;
+import hexapaper.source.HPSklad.prvekkNN;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -18,14 +17,16 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import core.Location;
+
 public class HraciPlocha extends JPanel {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	Sklad sk = Sklad.getInstance();
-	Entity cursor = null;
+	HPSklad sk = HPSklad.getInstance();
+	HPEntity cursor = null;
 	int oldIdx = -1;
 
 	int fontSize = (int) Math.round(sk.RADIUS * 0.75);
@@ -41,8 +42,8 @@ public class HraciPlocha extends JPanel {
 		sk.souradky = genGrid(sk.gridSl, sk.gridRa);
 	}
 
-	private ArrayList<Entity> genGrid(int sloupcu, int radku) {
-		ArrayList<Entity> grid = new ArrayList<Entity>();
+	private ArrayList<HPEntity> genGrid(int sloupcu, int radku) {
+		ArrayList<HPEntity> grid = new ArrayList<HPEntity>();
 		int[][] souradky = new int[sloupcu * radku][2];
 		int l = 0;
 		for (int i = 0; i < sloupcu; i++) {
@@ -73,7 +74,7 @@ public class HraciPlocha extends JPanel {
 		FontMetrics fm = g.getFontMetrics();
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(2));
-		for (Entity ent : sk.souradky) {
+		for (HPEntity ent : sk.souradky) {
 			g2.setColor(ent.background);
 			g2.fillPolygon(new Gprvky().emptyHexagon(ent.loc));
 			g2.setColor(Color.black);
@@ -138,7 +139,7 @@ public class HraciPlocha extends JPanel {
 
 	public void rotateEntity(ArrayList<prvekkNN> idx) {
 		int smer = countDir(idx);
-		for (Entity ent : sk.souradky) {
+		for (HPEntity ent : sk.souradky) {
 			if (ent.loc.getX() == idx.get(0).getX1() && ent.loc.getY() == idx.get(0).getY1() && ent.isRotateable) {
 				ent.loc.setDir(smer);
 				ent.recreateGraphics();
@@ -148,11 +149,11 @@ public class HraciPlocha extends JPanel {
 		this.repaint();
 	}
 
-	public boolean insertEntity(int idx, Entity type, boolean hard) {
+	public boolean insertEntity(int idx, HPEntity type, boolean hard) {
 		if (type == null) {
 			return false;
 		}
-		Entity ent = sk.souradky.get(idx).clone();
+		HPEntity ent = sk.souradky.get(idx).clone();
 		if (ent.isColidable || hard) {
 			Location loc = ent.loc;
 			type.loc.setX(loc.getX());

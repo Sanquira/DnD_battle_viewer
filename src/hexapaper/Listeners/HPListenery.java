@@ -8,10 +8,9 @@ import hexapaper.gui.ExportOneFrame;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.NewPaperFrame;
 import hexapaper.gui.PostavaAddFrame;
-import hexapaper.source.Sklad;
-import hexapaper.source.Sklad.prvekkNN;
-import hexapaper.source.Strings;
-import hexapaper.source.kNN;
+import hexapaper.source.HPSklad;
+import hexapaper.source.HPSklad.prvekkNN;
+import hexapaper.source.HPStrings;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,11 +24,13 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import core.kNN;
+
 import addons.dice.Dice;
 
-public class Listenery {
+public class HPListenery {
 
-	Sklad sk = Sklad.getInstance();
+	HPSklad sk = HPSklad.getInstance();
 
 	public class NovaListener implements ActionListener {
 		@Override
@@ -41,7 +42,7 @@ public class Listenery {
 	public class NactiListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			LoadFile load = new LoadFile(Strings.get("Hex_text"), Strings.get("Hex_ext"));
+			LoadFile load = new LoadFile(HPStrings.get("Hex_text"), HPStrings.get("Hex_ext"));
 			sk.initLoad(load.getSouradky());
 		}
 	}
@@ -73,8 +74,8 @@ public class Listenery {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Object[] opt = { Strings.get("ano"), Strings.get("ne") };
-			int t = JOptionPane.showOptionDialog(hexapaper.frm, Strings.get("zpravaZtrataDat"), Strings.get("ztrataDat"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
+			Object[] opt = { HPStrings.get("ano"), HPStrings.get("ne") };
+			int t = JOptionPane.showOptionDialog(hexapaper.frm, HPStrings.get("zpravaZtrataDat"), HPStrings.get("ztrataDat"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
 			if (t == JOptionPane.OK_OPTION) {
 				System.exit(0);
 			}
@@ -220,7 +221,7 @@ public class Listenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			new LoadFile(Strings.get("desc"), Strings.get("File_ext"), Strings.get("Db_ext"));
+			new LoadFile(HPStrings.get("desc"), HPStrings.get("File_ext"), HPStrings.get("Db_ext"));
 			sk.RMenu.updateDatabase();
 		}
 	}

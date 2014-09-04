@@ -1,6 +1,7 @@
-package hexapaper.source;
+package core;
 
-import hexapaper.source.Sklad.prvekkNN;
+import hexapaper.source.HPSklad;
+import hexapaper.source.HPSklad.prvekkNN;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,7 +9,7 @@ import java.util.Comparator;
 
 public class kNN {
 
-	Sklad sk = Sklad.getInstance();
+	HPSklad sk = HPSklad.getInstance();
 
 	private double eucDistSqr(double x1, double y1, double x2, double y2) {
 		return Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2);

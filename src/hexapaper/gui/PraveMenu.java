@@ -1,17 +1,16 @@
 package hexapaper.gui;
 
 import hexapaper.hexapaper;
-import hexapaper.Listeners.DocumentAdapter;
 import hexapaper.Listeners.ValueListener;
 import hexapaper.entity.Artefact;
-import hexapaper.entity.Entity;
+import hexapaper.entity.HPEntity;
 import hexapaper.entity.FreeSpace;
 import hexapaper.entity.Postava;
 import hexapaper.entity.Wall;
-import hexapaper.source.Sklad;
-import hexapaper.source.Sklad.PropPair;
-import hexapaper.source.Sklad.prvekkNN;
-import hexapaper.source.Strings;
+import hexapaper.source.HPSklad;
+import hexapaper.source.HPSklad.PropPair;
+import hexapaper.source.HPSklad.prvekkNN;
+import hexapaper.source.HPStrings;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -41,9 +40,12 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.BadLocationException;
 
+import core.DocumentAdapter;
+import core.EditableJLabel;
+
 public class PraveMenu extends JPanel {
 
-	Sklad sk = Sklad.getInstance();
+	HPSklad sk = HPSklad.getInstance();
 
 	JPanel prop, ovladani;
 	JCheckBox showB, showBn;
@@ -51,7 +53,7 @@ public class PraveMenu extends JPanel {
 	JComboBox<Object> addPC;
 	boolean isAddingWall = false, isAddingFreeSpace = false;
 	JToggleButton freespace, wall;
-	Entity vlastnosti = null;
+	HPEntity vlastnosti = null;
 	boolean isPostava = false, isDel = false;
 	ArrayList<PropPair> param = new ArrayList<PropPair>();
 
@@ -92,11 +94,11 @@ public class PraveMenu extends JPanel {
 	private JPanel ovladani() {
 		JPanel prvni = new JPanel();
 		prvni.setPreferredSize(new Dimension(-1, 180));
-		prvni.setBorder(new TitledBorder(Strings.get("ovladaniBitvy")));
+		prvni.setBorder(new TitledBorder(HPStrings.get("ovladaniBitvy")));
 		prvni.setLayout(new GridLayout(5, 1, 0, 10));
 
 		JPanel showP = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel showL = new JLabel(Strings.get("showPlayerColor"));
+		JLabel showL = new JLabel(HPStrings.get("showPlayerColor"));
 		showB = new JCheckBox();
 		showB.setSelected(sk.hidePlayerColor);
 		osetriShowColor();
@@ -112,7 +114,7 @@ public class PraveMenu extends JPanel {
 		showP.add(showB);
 
 		JPanel showN = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel showLn = new JLabel(Strings.get("showNPCColor"));
+		JLabel showLn = new JLabel(HPStrings.get("showNPCColor"));
 		showBn = new JCheckBox();
 		showBn.setSelected(sk.hideNPCColor);
 		osetriShowNPC();
@@ -129,7 +131,7 @@ public class PraveMenu extends JPanel {
 
 		JPanel wallFreeSpace = new JPanel(new GridLayout(1, 2, 10, 0));
 
-		wall = new JToggleButton(Strings.get("addWall"));
+		wall = new JToggleButton(HPStrings.get("addWall"));
 		wall.addActionListener(new ActionListener() {
 
 			@Override
@@ -138,7 +140,7 @@ public class PraveMenu extends JPanel {
 			}
 		});
 
-		freespace = new JToggleButton(Strings.get("addFreeSpace"));
+		freespace = new JToggleButton(HPStrings.get("addFreeSpace"));
 		freespace.addActionListener(new ActionListener() {
 
 			@Override
@@ -204,18 +206,18 @@ public class PraveMenu extends JPanel {
 	private void osetriShowColor() {
 		sk.hidePlayerColor = showB.isSelected();
 		if (showB.isSelected()) {
-			showB.setText(Strings.get("ano"));
+			showB.setText(HPStrings.get("ano"));
 		} else {
-			showB.setText(Strings.get("ne"));
+			showB.setText(HPStrings.get("ne"));
 		}
 	}
 
 	private void osetriShowNPC() {
 		sk.hideNPCColor = showBn.isSelected();
 		if (showBn.isSelected()) {
-			showBn.setText(Strings.get("ano"));
+			showBn.setText(HPStrings.get("ano"));
 		} else {
-			showBn.setText(Strings.get("ne"));
+			showBn.setText(HPStrings.get("ne"));
 		}
 	}
 
@@ -256,7 +258,7 @@ public class PraveMenu extends JPanel {
 
 	private JPanel vlastnosti() {
 		JPanel VP = new JPanel();
-		VP.setBorder(new TitledBorder(Strings.get("vlastnostiObj")));
+		VP.setBorder(new TitledBorder(HPStrings.get("vlastnostiObj")));
 		if (vlastnosti == null) {
 			return VP;
 		}
@@ -264,22 +266,22 @@ public class PraveMenu extends JPanel {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		VP.setLayout(gbl);
-		VP.setBorder(new TitledBorder(Strings.get("vytvorPostavu")));
+		VP.setBorder(new TitledBorder(HPStrings.get("vytvorPostavu")));
 
 		JPanel prvni = new JPanel(new BorderLayout(10, 10));
 
 		String name = "";
 		if (isPostava) {
 			if (((Postava) vlastnosti).isPJ()) {
-				name = Strings.get("NPC");
+				name = HPStrings.get("NPC");
 			} else {
-				name = Strings.get("player");
+				name = HPStrings.get("player");
 			}
 		} else {
-			name = Strings.get("artefakt");
+			name = HPStrings.get("artefakt");
 		}
 		JLabel nameLabel = new JLabel(name);
-		JLabel tag = new JLabel(Strings.get("Tag"));
+		JLabel tag = new JLabel(HPStrings.get("Tag"));
 		tag.setPreferredSize(new Dimension(35, -1));
 		prvni.add(nameLabel, BorderLayout.CENTER);
 		prvni.add(tag, BorderLayout.EAST);
@@ -428,7 +430,7 @@ public class PraveMenu extends JPanel {
 		VP.add(druhySc);
 
 		JPanel treti = new JPanel(new GridLayout(1, 2, 10, 0));
-		JButton add = new JButton(Strings.get("addPropBut"));
+		JButton add = new JButton(HPStrings.get("addPropBut"));
 		add.addActionListener(new ActionListener() {
 
 			@Override
@@ -440,7 +442,7 @@ public class PraveMenu extends JPanel {
 			}
 		});
 		add.setEnabled(!skryj);
-		JToggleButton del = new JToggleButton(Strings.get("delPropBut"), isDel);
+		JToggleButton del = new JToggleButton(HPStrings.get("delPropBut"), isDel);
 		del.addActionListener(new ActionListener() {
 
 			@Override
@@ -480,7 +482,7 @@ public class PraveMenu extends JPanel {
 	}
 
 	public void redrawProperities(prvekkNN prvekkNN) {
-		Entity ent = sk.souradky.get(prvekkNN.getIdx());
+		HPEntity ent = sk.souradky.get(prvekkNN.getIdx());
 		if (ent instanceof Postava ||
 				ent instanceof Artefact) {
 			vlastnosti = sk.souradky.get(prvekkNN.getIdx());

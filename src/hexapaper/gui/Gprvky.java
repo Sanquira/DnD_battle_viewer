@@ -1,15 +1,16 @@
 package hexapaper.gui;
 
 import hexapaper.source.BPolygon;
-import hexapaper.source.Location;
-import hexapaper.source.Sklad;
+import hexapaper.source.HPSklad;
 
 import java.awt.Polygon;
 import java.util.ArrayList;
 
+import core.Location;
+
 public class Gprvky {
 
-	Sklad sk = Sklad.getInstance();
+	HPSklad sk = HPSklad.getInstance();
 
 	public BPolygon emptyHexagon(Location loc) {
 		Polygon sprite = new Polygon();

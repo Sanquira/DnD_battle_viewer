@@ -1,4 +1,5 @@
-package hexapaper.source;
+package core;
+
 
 public class Location implements Cloneable {
 	private int x = 0;

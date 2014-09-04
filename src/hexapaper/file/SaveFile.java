@@ -1,12 +1,12 @@
 package hexapaper.file;
 
 import hexapaper.entity.Artefact;
-import hexapaper.entity.Entity;
+import hexapaper.entity.HPEntity;
 import hexapaper.entity.FreeSpace;
 import hexapaper.entity.Postava;
 import hexapaper.entity.Wall;
-import hexapaper.source.Sklad;
-import hexapaper.source.Strings;
+import hexapaper.source.HPSklad;
+import hexapaper.source.HPStrings;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -30,19 +30,19 @@ public class SaveFile {
 	private JSONObject j = new JSONObject();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-	private String Db_ext = Strings.get("Db_ext");
-	private String Db_text = Strings.get("Db_text");
-	private String File_ext = Strings.get("File_ext");
-	private String File_text = Strings.get("FIle_text");
-	private String Hex_ext = Strings.get("Hex_ext");
-	private String Hex_text = Strings.get("Hex_text");
+	private String Db_ext = HPStrings.get("Db_ext");
+	private String Db_text = HPStrings.get("Db_text");
+	private String File_ext = HPStrings.get("File_ext");
+	private String File_text = HPStrings.get("FIle_text");
+	private String Hex_ext = HPStrings.get("Hex_ext");
+	private String Hex_text = HPStrings.get("Hex_text");
 
-	public SaveFile(Entity e) {
+	public SaveFile(HPEntity e) {
 		j.put("1", saveChar(e));
 		save(File_ext, File_text);
 	}
 
-	public SaveFile(ArrayList<Entity> man) {
+	public SaveFile(ArrayList<HPEntity> man) {
 		for (int i = 0; i < man.size(); i++) {
 			j.put(i, saveChar(man.get(i)));
 		}
@@ -50,7 +50,7 @@ public class SaveFile {
 	}
 
 	public SaveFile() {
-		Strings s = new Strings();
+		HPStrings s = new HPStrings();
 		Field[] t = s.getClass().getFields();
 		for (Field o : t) {
 			String strValue = null;
@@ -78,7 +78,7 @@ public class SaveFile {
 		}
 	}
 
-	public SaveFile(ArrayList<Entity> man, int Radius, int gridSl, int gridRA) {
+	public SaveFile(ArrayList<HPEntity> man, int Radius, int gridSl, int gridRA) {
 		JSONObject entity = new JSONObject();
 		for (int i = 0; i < man.size(); i++) {
 			if (!(man.get(i) instanceof FreeSpace)) {
@@ -102,7 +102,7 @@ public class SaveFile {
 		save(Db_ext, Db_text);
 	}
 
-	private JSONObject saveChar(Entity c) {
+	private JSONObject saveChar(HPEntity c) {
 		JSONObject p = new JSONObject();
 		p.put("Location", c.loc);
 		if (c instanceof Postava) {

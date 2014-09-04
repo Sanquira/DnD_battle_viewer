@@ -1,9 +1,9 @@
 package hexapaper.entity;
 
+import core.Location;
 import hexapaper.gui.Gprvky;
-import hexapaper.source.Location;
 
-public class FreeSpace extends Entity {
+public class FreeSpace extends HPEntity {
 
 	public FreeSpace(Location loc) {
 		super("", loc, false, true, new Gprvky().emptyHexagon(loc));

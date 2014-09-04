@@ -1,7 +1,7 @@
 package hexapaper.gui;
 
-import hexapaper.source.Sklad;
-import hexapaper.source.Strings;
+import hexapaper.source.HPSklad;
+import hexapaper.source.HPStrings;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -22,16 +22,16 @@ public class NewPaperFrame extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	Sklad sk = Sklad.getInstance();
+	HPSklad sk = HPSklad.getInstance();
 	JFrame frame;
 
 	public NewPaperFrame() {
-		frame = new JFrame(Strings.get("vytvorPaper"));
+		frame = new JFrame(HPStrings.get("vytvorPaper"));
 		frame.setSize(300, 200);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setResizable(false);
 		setLayout(new GridLayout(4, 1, 0, 10));
-		setBorder(new TitledBorder(Strings.get("vytvorPaper")));
+		setBorder(new TitledBorder(HPStrings.get("vytvorPaper")));
 		init();
 		frame.add(this);
 		frame.setVisible(true);
@@ -43,27 +43,27 @@ public class NewPaperFrame extends JPanel {
 
 	protected void init() {
 		JPanel prvni = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel polhex = new JLabel(Strings.get("polomerHexu"));
+		JLabel polhex = new JLabel(HPStrings.get("polomerHexu"));
 		polhexvalue = new JTextField("25");
 		polhexvalue.addFocusListener(new Listener());
 		prvni.add(polhex);
 		prvni.add(polhexvalue);
 
 		JPanel druhy = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel numRow = new JLabel(Strings.get("pocetRadku"));
+		JLabel numRow = new JLabel(HPStrings.get("pocetRadku"));
 		numRowValue = new JTextField("25");
 		numRowValue.addFocusListener(new Listener());
 		druhy.add(numRow);
 		druhy.add(numRowValue);
 
 		JPanel treti = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel numCol = new JLabel(Strings.get("pocetSloupcu"));
+		JLabel numCol = new JLabel(HPStrings.get("pocetSloupcu"));
 		numColValue = new JTextField("25");
 		numColValue.addFocusListener(new Listener());
 		treti.add(numCol);
 		treti.add(numColValue);
 
-		JButton hotovo = new JButton(Strings.get("vytvorPaper"));
+		JButton hotovo = new JButton(HPStrings.get("vytvorPaper"));
 		hotovo.addActionListener(new ActionListener() {
 
 			@Override

@@ -1,14 +1,13 @@
 package hexapaper.file;
 
 import hexapaper.entity.Artefact;
-import hexapaper.entity.Entity;
+import hexapaper.entity.HPEntity;
 import hexapaper.entity.FreeSpace;
 import hexapaper.entity.Postava;
 import hexapaper.entity.Wall;
-import hexapaper.source.Location;
-import hexapaper.source.Sklad;
-import hexapaper.source.Sklad.PropPair;
-import hexapaper.source.Strings;
+import hexapaper.source.HPSklad;
+import hexapaper.source.HPSklad.PropPair;
+import hexapaper.source.HPStrings;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,9 +28,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import core.Location;
+
 public class LoadFile {
-	private Sklad s = Sklad.getInstance();
-	private ArrayList<Entity> souradky = new ArrayList<>();
+	private HPSklad s = HPSklad.getInstance();
+	private ArrayList<HPEntity> souradky = new ArrayList<>();
 	private JFileChooser fc = new JFileChooser();
 
 	public LoadFile(String desce, String... ext) {
@@ -47,7 +48,7 @@ public class LoadFile {
 			File file = fc.getSelectedFile();
 			try {
 				JSONObject a = (JSONObject) new JSONParser().parse(new FileReader(file));
-				if (file.getName().contains("." + Strings.get("Hex_ext"))) {
+				if (file.getName().contains("." + HPStrings.get("Hex_ext"))) {
 					s.gridRa = ((Long) a.get("GridRA")).intValue();
 					s.gridSl = ((Long) a.get("GridSl")).intValue();
 					s.RADIUS = ((Long) a.get("Radius")).intValue();
@@ -77,7 +78,7 @@ public class LoadFile {
 				for(Object o:a.keySet()){
 					String key=(String) o;
 					String value=(String) a.get(o);
-					Strings.set(key, value);
+					HPStrings.set(key, value);
 				}
 			}
 //			else{
@@ -137,7 +138,7 @@ public class LoadFile {
 		}
 	}
 
-	public ArrayList<Entity> getSouradky() {
+	public ArrayList<HPEntity> getSouradky() {
 		return souradky;
 	}
 

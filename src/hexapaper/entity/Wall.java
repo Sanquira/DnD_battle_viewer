@@ -2,10 +2,11 @@ package hexapaper.entity;
 
 import java.awt.Color;
 
-import hexapaper.gui.Gprvky;
-import hexapaper.source.Location;
+import core.Location;
 
-public class Wall extends Entity {
+import hexapaper.gui.Gprvky;
+
+public class Wall extends HPEntity {
 
 	public Wall(Location loc) {
 		super("", loc, false, false, new Gprvky().wall(loc));

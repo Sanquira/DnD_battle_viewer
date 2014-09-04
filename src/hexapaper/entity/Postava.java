@@ -1,12 +1,13 @@
 package hexapaper.entity;
 
 import hexapaper.gui.Gprvky;
-import hexapaper.source.Location;
-import hexapaper.source.Sklad.PropPair;
+import hexapaper.source.HPSklad.PropPair;
 
 import java.util.ArrayList;
 
-public class Postava extends Entity {
+import core.Location;
+
+public class Postava extends HPEntity {
 
 	private boolean PJ;
 	private ArrayList<PropPair> param = new ArrayList<PropPair>();

@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Strings {
+public class HPStrings {
 
 	public static String varovani = "Varování­";
 	public static String warningNameIsEmpty = "Hodnota jméno nesmí být prázdná!!!";
@@ -83,7 +83,7 @@ public class Strings {
 	}
 	private static String getVariable(String key) {
 		String value="";
-		for(Field field : Strings.class.getFields()){
+		for(Field field : HPStrings.class.getFields()){
 			if(field.getName().equals(key)){
 				try {
 					value=(String) field.get(String.class);

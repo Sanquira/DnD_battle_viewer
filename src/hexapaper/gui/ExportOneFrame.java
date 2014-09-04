@@ -1,11 +1,11 @@
 package hexapaper.gui;
 
 import hexapaper.entity.Artefact;
-import hexapaper.entity.Entity;
+import hexapaper.entity.HPEntity;
 import hexapaper.entity.Postava;
 import hexapaper.file.SaveFile;
-import hexapaper.source.Sklad.PropPair;
-import hexapaper.source.Strings;
+import hexapaper.source.HPSklad.PropPair;
+import hexapaper.source.HPStrings;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -32,11 +32,11 @@ public class ExportOneFrame extends JPanel {
 	private static final long serialVersionUID = 1L;
 	JFrame frame;
 	JPanel spg;
-	Entity beExported;
-	ArrayList<Entity> exportList;
+	HPEntity beExported;
+	ArrayList<HPEntity> exportList;
 
-	public ExportOneFrame(ArrayList<Entity> exportList) {
-		frame = new JFrame(Strings.get("export"));
+	public ExportOneFrame(ArrayList<HPEntity> exportList) {
+		frame = new JFrame(HPStrings.get("export"));
 		frame.setSize(225, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(new GridLayout(1, 2, 0, 10));
@@ -52,13 +52,13 @@ public class ExportOneFrame extends JPanel {
 
 	private JPanel databazeArtefactu() {
 		JPanel SP = new JPanel();
-		String title = Strings.get("export");
+		String title = HPStrings.get("export");
 		if (exportList.size() != 0) {
 			if (exportList.get(0) instanceof Artefact) {
-				title = Strings.get("vytvoreneArtefakty");
+				title = HPStrings.get("vytvoreneArtefakty");
 			}
 			if (exportList.get(0) instanceof Postava) {
-				title = Strings.get("vytvorenePostavy");
+				title = HPStrings.get("vytvorenePostavy");
 			}
 		}
 		SP.setBorder(new TitledBorder(title));
@@ -100,7 +100,7 @@ public class ExportOneFrame extends JPanel {
 		gbl.setConstraints(datPo, gbc);
 		SP.add(datPo);
 
-		JButton del = new JButton(Strings.get("export"));
+		JButton del = new JButton(HPStrings.get("export"));
 		del.addActionListener(new ActionListener() {
 
 			@Override

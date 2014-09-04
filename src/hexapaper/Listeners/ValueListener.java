@@ -8,6 +8,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
+import core.ValueChangedListener;
+
 public class ValueListener implements ValueChangedListener, DocumentListener {
 	private int pos;
 	private Postava man = null;

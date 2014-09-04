@@ -1,12 +1,13 @@
 package hexapaper.entity;
 
 import hexapaper.source.BPolygon;
-import hexapaper.source.Location;
 
 import java.awt.Color;
 import java.util.ArrayList;
 
-public abstract class Entity implements Cloneable {
+import core.Location;
+
+public abstract class HPEntity implements Cloneable {
 
 	public boolean isColidable;
 	public boolean isRotateable;
@@ -16,7 +17,7 @@ public abstract class Entity implements Cloneable {
 	public String tag = null;
 	protected String name;
 
-	public Entity(String name, Location loc, boolean Rotatable, boolean Colidable, ArrayList<BPolygon> prvek) {
+	public HPEntity(String name, Location loc, boolean Rotatable, boolean Colidable, ArrayList<BPolygon> prvek) {
 		this.name = name;
 		this.loc = loc;
 		this.isRotateable = Rotatable;
@@ -25,7 +26,7 @@ public abstract class Entity implements Cloneable {
 		setTag(name);
 	}
 
-	public Entity(String name, Location loc, boolean Rotatable, boolean Colidable, BPolygon prvek) {
+	public HPEntity(String name, Location loc, boolean Rotatable, boolean Colidable, BPolygon prvek) {
 		this.name = name;
 		this.loc = loc;
 		this.isRotateable = Rotatable;
@@ -36,9 +37,9 @@ public abstract class Entity implements Cloneable {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Entity clone() {
+	public HPEntity clone() {
 		try {
-			Entity cloned = (Entity) super.clone();
+			HPEntity cloned = (HPEntity) super.clone();
 			cloned.loc = cloned.loc.clone();
 			cloned.prvek = (ArrayList<BPolygon>) cloned.prvek.clone();
 			for (int i = 0; i < cloned.prvek.size(); i++) {
@@ -55,7 +56,7 @@ public abstract class Entity implements Cloneable {
 		return background;
 	}
 
-	public Entity setBcg(Color clr) {
+	public HPEntity setBcg(Color clr) {
 		this.background = clr;
 		return this;
 	}

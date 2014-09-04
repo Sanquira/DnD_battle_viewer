@@ -1,7 +1,7 @@
 package hexapaper.source;
 
 import hexapaper.hexapaper;
-import hexapaper.entity.Entity;
+import hexapaper.entity.HPEntity;
 import hexapaper.entity.FreeSpace;
 import hexapaper.file.LoadFile;
 import hexapaper.gui.Gprvky;
@@ -10,9 +10,11 @@ import hexapaper.gui.PraveMenu;
 
 import java.util.ArrayList;
 
-public class Sklad {
+import core.Location;
 
-	private static Sklad instance = null;
+public class HPSklad {
+
+	private static HPSklad instance = null;
 
 	public Gprvky prvky;
 	public HraciPlocha hraciPlocha;
@@ -21,12 +23,12 @@ public class Sklad {
 	public int RADIUS = 25;
 	public int gridSl = 0;
 	public int gridRa = 0;
-	public ArrayList<Entity> souradky;
+	public ArrayList<HPEntity> souradky;
 	public boolean insertingEntity = false;
 	public Location LocDontCare = new Location(RADIUS, RADIUS, 0);
-	public ArrayList<Entity> databazePostav = new ArrayList<>();
-	public ArrayList<Entity> databazeArtefaktu = new ArrayList<>();
-	public Entity insertedEntity;
+	public ArrayList<HPEntity> databazePostav = new ArrayList<>();
+	public ArrayList<HPEntity> databazeArtefaktu = new ArrayList<>();
+	public HPEntity insertedEntity;
 	public boolean hidePlayerColor = false;
 	public boolean hideNPCColor = false;
 	public boolean repeatableInsert = false;
@@ -34,7 +36,7 @@ public class Sklad {
 
 	public final String VERSION = "v0.1";
 
-	protected Sklad() {
+	protected HPSklad() {
 	}
 
 	public void init() {
@@ -46,14 +48,14 @@ public class Sklad {
 		
 	}
 
-	public static Sklad getInstance() {
+	public static HPSklad getInstance() {
 		if (instance == null) {
-			instance = new Sklad();
+			instance = new HPSklad();
 		}
 		return instance;
 	}
 
-	public void setupInserting(Entity insert, boolean repeat) {
+	public void setupInserting(HPEntity insert, boolean repeat) {
 		if (insert == null) {
 			insertedEntity = null;
 			insertingEntity = false;
@@ -65,7 +67,7 @@ public class Sklad {
 		}
 	}
 
-	public void initLoad(ArrayList<Entity> souradky) {
+	public void initLoad(ArrayList<HPEntity> souradky) {
 		hraciPlocha = new HraciPlocha();
 		for (int i = 0; i < souradky.size(); i++) {
 			if (souradky.get(i) instanceof FreeSpace) {

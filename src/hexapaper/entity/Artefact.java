@@ -2,11 +2,12 @@ package hexapaper.entity;
 
 import java.util.ArrayList;
 
-import hexapaper.gui.Gprvky;
-import hexapaper.source.Location;
-import hexapaper.source.Sklad.PropPair;
+import core.Location;
 
-public class Artefact extends Entity {
+import hexapaper.gui.Gprvky;
+import hexapaper.source.HPSklad.PropPair;
+
+public class Artefact extends HPEntity {
 
 	private ArrayList<PropPair> param = new ArrayList<PropPair>();
 

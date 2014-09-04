@@ -1,8 +1,8 @@
 package hexapaper;
 
-import hexapaper.Listeners.Listenery;
-import hexapaper.source.Sklad;
-import hexapaper.source.Strings;
+import hexapaper.Listeners.HPListenery;
+import hexapaper.source.HPSklad;
+import hexapaper.source.HPStrings;
 
 import java.awt.BorderLayout;
 
@@ -19,13 +19,15 @@ public class hexapaper extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	public static JFrame frm;
-	Listenery lis = new Listenery();
-	static Sklad sk = Sklad.getInstance();
+	HPListenery lis = new HPListenery();
+	static HPSklad sk = HPSklad.getInstance();
 
 	private JScrollPane hraciplsc = new JScrollPane();
 
 	public hexapaper() {
-		setTitle("Hexapapír " + sk.VERSION);
+		sk.init();
+		frm = this;
+		setTitle("Hexapaper " + sk.VERSION);
 		setSize(800, 600);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
@@ -48,11 +50,11 @@ public class hexapaper extends JFrame {
 	private JMenuBar menu() {
 		JMenuBar HlavniMenu = new JMenuBar();
 
-		JMenu hraMenu = new JMenu(Strings.get("hra"));
-		JMenuItem novyPaper = new JMenuItem(Strings.get("newPaper"));
-		JMenuItem nactiPaper = new JMenuItem(Strings.get("loadPaper"));
-		JMenuItem ulozPaper = new JMenuItem(Strings.get("savePaper"));
-		JMenuItem konec = new JMenuItem(Strings.get("konec"));
+		JMenu hraMenu = new JMenu(HPStrings.get("hra"));
+		JMenuItem novyPaper = new JMenuItem(HPStrings.get("newPaper"));
+		JMenuItem nactiPaper = new JMenuItem(HPStrings.get("loadPaper"));
+		JMenuItem ulozPaper = new JMenuItem(HPStrings.get("savePaper"));
+		JMenuItem konec = new JMenuItem(HPStrings.get("konec"));
 
 		novyPaper.addActionListener(lis.new NovaListener());
 		nactiPaper.addActionListener(lis.new NactiListener());
@@ -64,16 +66,16 @@ public class hexapaper extends JFrame {
 		hraMenu.add(ulozPaper);
 		hraMenu.add(konec);
 
-		JMenu upravy = new JMenu(Strings.get("upravy"));
-		JMenuItem pridejArt = new JMenuItem(Strings.get("addArt"));
-		JMenuItem pridejPost = new JMenuItem(Strings.get("addPost"));
-		JMenu exportAP = new JMenu(Strings.get("exportAP"));
-		JMenuItem exportArtDat = new JMenuItem(Strings.get("exportArtDat"));
-		JMenuItem exportPostDat = new JMenuItem(Strings.get("exportPostDat"));
-		JMenuItem exportArtOne = new JMenuItem(Strings.get("exportArtOne"));
-		JMenuItem exportPostOne = new JMenuItem(Strings.get("exportPostOne"));
+		JMenu upravy = new JMenu(HPStrings.get("upravy"));
+		JMenuItem pridejArt = new JMenuItem(HPStrings.get("addArt"));
+		JMenuItem pridejPost = new JMenuItem(HPStrings.get("addPost"));
+		JMenu exportAP = new JMenu(HPStrings.get("exportAP"));
+		JMenuItem exportArtDat = new JMenuItem(HPStrings.get("exportArtDat"));
+		JMenuItem exportPostDat = new JMenuItem(HPStrings.get("exportPostDat"));
+		JMenuItem exportArtOne = new JMenuItem(HPStrings.get("exportArtOne"));
+		JMenuItem exportPostOne = new JMenuItem(HPStrings.get("exportPostOne"));
 
-		JMenuItem importAP = new JMenuItem(Strings.get("importAP"));
+		JMenuItem importAP = new JMenuItem(HPStrings.get("importAP"));
 
 		pridejArt.addActionListener(lis.new PridejArtefakt());
 		pridejPost.addActionListener(lis.new PridejPostavu());
@@ -96,9 +98,9 @@ public class hexapaper extends JFrame {
 
 		upravy.add(importAP);
 
-		JMenu addons = new JMenu(Strings.get("addons"));
+		JMenu addons = new JMenu(HPStrings.get("addons"));
 
-		JMenuItem kostka = new JMenuItem(Strings.get("kostka"));
+		JMenuItem kostka = new JMenuItem(HPStrings.get("kostka"));
 
 		kostka.addActionListener(lis.new KostkaListener());
 
@@ -116,10 +118,5 @@ public class hexapaper extends JFrame {
 		hraciplsc.getVerticalScrollBar().setUnitIncrement(16);
 		hraciplsc.getHorizontalScrollBar().setUnitIncrement(16);
 		hraciplsc.setViewportView(sk.hraciPlocha);
-	}
-
-	public static void main(String[] args) throws CloneNotSupportedException {
-		 sk.init();
-		 frm = new hexapaper();
 	}
 }
