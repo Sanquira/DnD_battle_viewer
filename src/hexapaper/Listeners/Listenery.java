@@ -121,22 +121,6 @@ public class Listenery {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			if (sk.canEvent) {
-				double x = e.getX();
-				double y = e.getY();
-				ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
-				if (e.getButton() == MouseEvent.BUTTON3) {
-					HraciPlocha t = (HraciPlocha) e.getComponent();
-					t.rotateEntity(idx);
-				}
-				if (e.getButton() == MouseEvent.BUTTON1 && sk.insertingEntity) {
-					HraciPlocha t = (HraciPlocha) e.getComponent();
-					t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
-				}
-				if (e.getButton() == MouseEvent.BUTTON1 && !sk.insertingEntity) {
-					sk.RMenu.redrawProperities(idx.get(0));
-				}
-			}
 		}
 
 		@Override
@@ -156,13 +140,24 @@ public class Listenery {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			if (!sk.insertingEntity && e.getButton() == MouseEvent.BUTTON1 && sk.canEvent) {
-				ins = true;
+			if (sk.canEvent) {
 				double x = e.getX();
 				double y = e.getY();
 				ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
-				HraciPlocha t = (HraciPlocha) e.getComponent();
-				t.saveEntity(idx.get(0).getIdx());
+				if (e.getButton() == MouseEvent.BUTTON3) {
+					HraciPlocha t = (HraciPlocha) e.getComponent();
+					t.rotateEntity(idx);
+				}
+				if (e.getButton() == MouseEvent.BUTTON1 && sk.insertingEntity) {
+					HraciPlocha t = (HraciPlocha) e.getComponent();
+					t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
+				}
+				if (e.getButton() == MouseEvent.BUTTON1 && !sk.insertingEntity) {
+					ins = true;
+					sk.RMenu.redrawProperities(idx.get(0));
+					HraciPlocha t = (HraciPlocha) e.getComponent();
+					t.saveEntity(idx.get(0).getIdx());
+				}
 			}
 		}
 
