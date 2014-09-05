@@ -19,8 +19,9 @@
         <copy includeemptydirs="false" todir="bin">
             <fileset dir="src">
                 <include name="addons/"/>
+                <include name="core/"/>
+                <include name="dungeonmapper/"/>
                 <include name="hexapaper/"/>
-                <include name="lang.json"/>
                 <exclude name="**/*.launch"/>
                 <exclude name="**/*.java"/>
             </fileset>
@@ -37,8 +38,9 @@
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
             <src path="src"/>
             <include name="addons/"/>
+            <include name="core/"/>
+            <include name="dungeonmapper/"/>
             <include name="hexapaper/"/>
-            <include name="lang.json"/>
             <classpath refid="DnD_battle_viewer.classpath"/>
         </javac>
     </target>
