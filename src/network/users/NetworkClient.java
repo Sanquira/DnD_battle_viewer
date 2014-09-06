@@ -34,12 +34,12 @@ public class NetworkClient extends AbstractNetworkUser{
             o=new ObjectOutputStream(socket.getOutputStream());
             Thread t=new Thread(new PacketReceiveHandler(i,socket));
             t.start();
-            //o.writeObject(null);
-            //o.writeObject(new MessagePacket(nick, "initial"));
-            send("initial");
+            o.writeObject(null);
+            o.writeObject(new MessagePacket(nick, "initial"));
             sk.callConnectEvent(socket);
         } catch (IOException e) {
             close();
+            e.printStackTrace();
         }
 	    }
 	    public void close() throws IOException{
