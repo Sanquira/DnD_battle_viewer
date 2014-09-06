@@ -21,12 +21,11 @@ public class PacketReceiveHandler implements Runnable{
         catch(IOException e){
        		if(socket!=null){
        			sk.callDisconnectEvent(socket);
-       			System.out.println("Odpojen od serveru");
        		}
        		else{
        			ClientInfo c=sk.clients.get(pos);
-       			sk.callClientDisconnectEvent(c);
-       			System.out.println("Client Odpojen: "+c.getNick());
+       			sk.clients.remove(c);
+       			sk.callClientDisconnectEvent(c);       			
        		}
         }
 		catch(ClassNotFoundException e){

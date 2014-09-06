@@ -19,7 +19,6 @@ public class MessagePacket implements Serializable{
 	public MessagePacket(String nick,Object object){
 		this.nick=nick;
 		this.object=object;
-		System.out.println((String) getObject());
 	}
 	public Object getObject() {
 		return object;

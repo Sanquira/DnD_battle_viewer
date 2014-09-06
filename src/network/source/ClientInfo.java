@@ -1,5 +1,6 @@
 package network.source;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -19,6 +20,7 @@ public class ClientInfo {
 		this.setSocket(socket);
 		this.inputStream=i;
 		this.outputStream=o;
+		
 	}
 	public String getNick() {
 		return nick;
@@ -55,5 +57,8 @@ public class ClientInfo {
 	}
 	public void setInputStream(ObjectInputStream inputStream) {
 		this.inputStream = inputStream;
+	}
+	public void send(Object o) throws IOException{
+		outputStream.writeObject(new MessagePacket("Server",o));
 	}
 }

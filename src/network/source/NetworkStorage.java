@@ -1,7 +1,5 @@
 package network.source;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +14,6 @@ import network.interfaces.PacketReceiveListener;
 public class NetworkStorage {
 	private static NetworkStorage instance;
 	public List<ClientInfo> clients=new ArrayList<>();
-	public List<ObjectOutputStream> Ostreams=new ArrayList<>();
-	public List<ObjectInputStream> Istreams=new ArrayList<>();
 	public CopyOnWriteArrayList<PacketReceiveListener> receiveListeners=new CopyOnWriteArrayList<>();
 	public CopyOnWriteArrayList<ClientConnectListener> clientconnectListeners=new CopyOnWriteArrayList<>();
 	public CopyOnWriteArrayList<ConnectListener> connectListeners=new CopyOnWriteArrayList<>();

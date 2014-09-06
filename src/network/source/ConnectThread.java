@@ -1,7 +1,5 @@
 package network.source;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -22,13 +20,15 @@ public class ConnectThread implements Runnable{
 
 		@Override
 		public void packetReceive(MessagePacket p) {
-			sk.receiveListeners.remove(this);
-			System.out.println("Client připojen "+(String) p.getNick());
-			ClientInfo c=new ClientInfo(client.getRemoteSocketAddress().toString(), client.getLocalPort(),p.getNick() , client, IStream, OStream);
-			sk.clients.add(c);
-			sk.Istreams.add(IStream);
-			sk.Ostreams.add(OStream);
-			sk.callClientConnectEvent(c);			
+			if(p.getObject() instanceof String){
+				if(((String) p.getObject()).equals("initial")){
+					sk.receiveListeners.remove(this);
+					ClientInfo c=null;
+					c = new ClientInfo(client.getRemoteSocketAddress().toString(), client.getLocalPort(),p.getNick() , client,IStream,OStream);
+					sk.clients.add(c);			
+					sk.callClientConnectEvent(c);
+				}
+			}	
 		}
 		
 	};
@@ -38,12 +38,12 @@ public class ConnectThread implements Runnable{
 		try {
 			client=server.accept();
 			OStream=new ObjectOutputStream(client.getOutputStream());
-			IStream=new ObjectInputStream(client.getInputStream());
+			IStream=new ObjectInputStream(client.getInputStream());;
 			sk.receiveListeners.add(main);
+			OStream.writeObject(null);
 			Thread t=new Thread(new PacketReceiveHandler(IStream,pos)); 
 			pos+=1;
 		    t.start();
-	
             
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
