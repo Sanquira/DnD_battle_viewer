@@ -5,12 +5,17 @@ import hexapaper.source.HPSklad;
 import hexapaper.source.HPStrings;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
+
+import dungeonmapper.source.DMSklad;
 
 public class hexapaper extends JFrame {
 
@@ -18,7 +23,7 @@ public class hexapaper extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static JFrame frm;
+	public static JFrame HPfrm;
 	HPListenery lis = new HPListenery();
 	static HPSklad sk = HPSklad.getInstance();
 
@@ -26,7 +31,7 @@ public class hexapaper extends JFrame {
 
 	public hexapaper() {
 		sk.init();
-		frm = this;
+		HPfrm = this;
 		setTitle("Hexapaper " + sk.VERSION);
 		setSize(800, 600);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -50,11 +55,11 @@ public class hexapaper extends JFrame {
 	private JMenuBar menu() {
 		JMenuBar HlavniMenu = new JMenuBar();
 
-		JMenu hraMenu = new JMenu(HPStrings.get("hra"));
-		JMenuItem novyPaper = new JMenuItem(HPStrings.get("newPaper"));
-		JMenuItem nactiPaper = new JMenuItem(HPStrings.get("loadPaper"));
-		JMenuItem ulozPaper = new JMenuItem(HPStrings.get("savePaper"));
-		JMenuItem konec = new JMenuItem(HPStrings.get("konec"));
+		JMenu hraMenu = new JMenu(sk.str.get("hra"));
+		JMenuItem novyPaper = new JMenuItem(sk.str.get("newPaper"));
+		JMenuItem nactiPaper = new JMenuItem(sk.str.get("loadPaper"));
+		JMenuItem ulozPaper = new JMenuItem(sk.str.get("savePaper"));
+		JMenuItem konec = new JMenuItem(sk.str.get("konec"));
 
 		novyPaper.addActionListener(lis.new NovaListener());
 		nactiPaper.addActionListener(lis.new NactiListener());
@@ -66,16 +71,16 @@ public class hexapaper extends JFrame {
 		hraMenu.add(ulozPaper);
 		hraMenu.add(konec);
 
-		JMenu upravy = new JMenu(HPStrings.get("upravy"));
-		JMenuItem pridejArt = new JMenuItem(HPStrings.get("addArt"));
-		JMenuItem pridejPost = new JMenuItem(HPStrings.get("addPost"));
-		JMenu exportAP = new JMenu(HPStrings.get("exportAP"));
-		JMenuItem exportArtDat = new JMenuItem(HPStrings.get("exportArtDat"));
-		JMenuItem exportPostDat = new JMenuItem(HPStrings.get("exportPostDat"));
-		JMenuItem exportArtOne = new JMenuItem(HPStrings.get("exportArtOne"));
-		JMenuItem exportPostOne = new JMenuItem(HPStrings.get("exportPostOne"));
+		JMenu upravy = new JMenu(sk.str.get("upravy"));
+		JMenuItem pridejArt = new JMenuItem(sk.str.get("addArt"));
+		JMenuItem pridejPost = new JMenuItem(sk.str.get("addPost"));
+		JMenu exportAP = new JMenu(sk.str.get("exportAP"));
+		JMenuItem exportArtDat = new JMenuItem(sk.str.get("exportArtDat"));
+		JMenuItem exportPostDat = new JMenuItem(sk.str.get("exportPostDat"));
+		JMenuItem exportArtOne = new JMenuItem(sk.str.get("exportArtOne"));
+		JMenuItem exportPostOne = new JMenuItem(sk.str.get("exportPostOne"));
 
-		JMenuItem importAP = new JMenuItem(HPStrings.get("importAP"));
+		JMenuItem importAP = new JMenuItem(sk.str.get("importAP"));
 
 		pridejArt.addActionListener(lis.new PridejArtefakt());
 		pridejPost.addActionListener(lis.new PridejPostavu());
@@ -98,9 +103,9 @@ public class hexapaper extends JFrame {
 
 		upravy.add(importAP);
 
-		JMenu addons = new JMenu(HPStrings.get("addons"));
+		JMenu addons = new JMenu(sk.str.get("addons"));
 
-		JMenuItem kostka = new JMenuItem(HPStrings.get("kostka"));
+		JMenuItem kostka = new JMenuItem(sk.str.get("kostka"));
 
 		kostka.addActionListener(lis.new KostkaListener());
 
@@ -109,6 +114,22 @@ public class hexapaper extends JFrame {
 		HlavniMenu.add(hraMenu);
 		HlavniMenu.add(upravy);
 		HlavniMenu.add(addons);
+
+		// TODO Ostranit tohle tlacitko
+		System.err.println("Nezapomen odstranit tlacitko v hexapaper u TODO");
+		JButton ulozLangy = new JButton("Uloz langy DOCASNE");
+		ulozLangy.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				sk.str.saveLang();
+				DMSklad sk1 = DMSklad.getInstance();
+				sk1.init();
+				sk1.str.saveLang();
+			}
+		});
+		HlavniMenu.add(ulozLangy);
+
 		return HlavniMenu;
 	}
 

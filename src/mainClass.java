@@ -5,7 +5,7 @@ public class mainClass {
 
 	public static void main(String[] args) throws CloneNotSupportedException {
 		// TODO Vlastni vlakno pro kazdou aplikaci (mozna)
-		new hexapaper();
+//		new hexapaper();
 		new dungeonMapper();
 	}
 

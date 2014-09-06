@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ -n "$1" ]; then
-	git add src/*
+	git add *
 	git commit -a -m "$1"
 	echo "Nezapomen ze jako \$1 davas co chces dat do commitu!!!"
 	git push origin master

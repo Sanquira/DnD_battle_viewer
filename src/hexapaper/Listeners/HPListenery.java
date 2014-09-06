@@ -10,7 +10,6 @@ import hexapaper.gui.NewPaperFrame;
 import hexapaper.gui.PostavaAddFrame;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.prvekkNN;
-import hexapaper.source.HPStrings;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,9 +23,8 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import core.kNN;
-
 import addons.dice.Dice;
+import core.kNN;
 
 public class HPListenery {
 
@@ -42,7 +40,7 @@ public class HPListenery {
 	public class NactiListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			LoadFile load = new LoadFile(HPStrings.get("Hex_text"), HPStrings.get("Hex_ext"));
+			LoadFile load = new LoadFile(sk.str.get("Hex_text"), sk.str.get("Hex_ext"));
 			sk.initLoad(load.getSouradky());
 		}
 	}
@@ -74,18 +72,18 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Object[] opt = { HPStrings.get("ano"), HPStrings.get("ne") };
-			int t = JOptionPane.showOptionDialog(hexapaper.frm, HPStrings.get("zpravaZtrataDat"), HPStrings.get("ztrataDat"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
-			if (t == JOptionPane.OK_OPTION) {
-				System.exit(0);
-			}
+			new KonecHardListener().windowClosing(new WindowEvent(hexapaper.HPfrm, 1));
 		}
 	}
 
 	public class KonecHardListener implements WindowListener {
 		@Override
 		public void windowClosing(WindowEvent paramWindowEvent) {
-			new KonecListener().actionPerformed(null);
+			Object[] opt = { sk.str.get("ano"), sk.str.get("ne") };
+			int t = JOptionPane.showOptionDialog(paramWindowEvent.getComponent(), sk.str.get("zpravaZtrataDat"), sk.str.get("ztrataDat"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
+			if (t == JOptionPane.OK_OPTION) {
+				System.exit(0);
+			}
 		}
 
 		@Override
@@ -221,7 +219,7 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			new LoadFile(HPStrings.get("desc"), HPStrings.get("File_ext"), HPStrings.get("Db_ext"));
+			new LoadFile(sk.str.get("desc"), sk.str.get("File_ext"), sk.str.get("Db_ext"));
 			sk.RMenu.updateDatabase();
 		}
 	}

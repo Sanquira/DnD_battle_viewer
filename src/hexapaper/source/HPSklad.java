@@ -1,15 +1,15 @@
 package hexapaper.source;
 
 import hexapaper.hexapaper;
-import hexapaper.entity.HPEntity;
 import hexapaper.entity.FreeSpace;
-import hexapaper.file.LoadFile;
+import hexapaper.entity.HPEntity;
 import hexapaper.gui.Gprvky;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.PraveMenu;
 
 import java.util.ArrayList;
 
+import core.LangFile;
 import core.Location;
 
 public class HPSklad {
@@ -33,6 +33,7 @@ public class HPSklad {
 	public boolean hideNPCColor = false;
 	public boolean repeatableInsert = false;
 	public boolean canEvent = false;
+	public LangFile str;
 
 	public final String VERSION = "v0.1";
 
@@ -40,12 +41,14 @@ public class HPSklad {
 	}
 
 	public void init() {
-		new LoadFile();
+		str = new LangFile(HPStrings.class);
+		str.loadLang();
+
 		hraciPlocha = new HraciPlocha();
-		
+
 		prvky = new Gprvky();
 		RMenu = new PraveMenu();
-		
+
 	}
 
 	public static HPSklad getInstance() {
@@ -72,12 +75,12 @@ public class HPSklad {
 		for (int i = 0; i < souradky.size(); i++) {
 			if (souradky.get(i) instanceof FreeSpace) {
 			} else {
-				//System.out.println(i);
+				// System.out.println(i);
 				hraciPlocha.insertEntity(i, souradky.get(i), true);
 			}
 		}
 		odblokujListenery();
-		hexapaper.frm.repaint();
+		hexapaper.HPfrm.repaint();
 	}
 
 	public void odblokujListenery() {

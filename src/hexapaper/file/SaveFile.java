@@ -29,13 +29,14 @@ import com.google.gson.GsonBuilder;
 public class SaveFile {
 	private JSONObject j = new JSONObject();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	HPSklad sk = HPSklad.getInstance();
 
-	private String Db_ext = HPStrings.get("Db_ext");
-	private String Db_text = HPStrings.get("Db_text");
-	private String File_ext = HPStrings.get("File_ext");
-	private String File_text = HPStrings.get("FIle_text");
-	private String Hex_ext = HPStrings.get("Hex_ext");
-	private String Hex_text = HPStrings.get("Hex_text");
+	private String Db_ext = sk.str.get("Db_ext");
+	private String Db_text = sk.str.get("Db_text");
+	private String File_ext = sk.str.get("File_ext");
+	private String File_text = sk.str.get("FIle_text");
+	private String Hex_ext = sk.str.get("Hex_ext");
+	private String Hex_text = sk.str.get("Hex_text");
 
 	public SaveFile(HPEntity e) {
 		j.put("1", saveChar(e));
@@ -47,35 +48,6 @@ public class SaveFile {
 			j.put(i, saveChar(man.get(i)));
 		}
 		save(Db_ext, Db_text);
-	}
-
-	public SaveFile() {
-		HPStrings s = new HPStrings();
-		Field[] t = s.getClass().getFields();
-		for (Field o : t) {
-			String strValue = null;
-			try {
-				strValue = (String) o.get(s);
-				j.put(o.getName(), strValue);
-			} catch (IllegalArgumentException | IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		File f = null;
-		String jsonOutput = gson.toJson(j);
-		FileWriter fileWriter;
-		try {
-			fileWriter = new FileWriter(new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath() + "lang.json"));
-			fileWriter.write(jsonOutput);
-			fileWriter.flush();
-			fileWriter.close();
-			System.out.println("export jazyku kompletní");
-			System.out.println(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath() + "lang.json");
-		} catch (IOException | URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public SaveFile(ArrayList<HPEntity> man, int Radius, int gridSl, int gridRA) {

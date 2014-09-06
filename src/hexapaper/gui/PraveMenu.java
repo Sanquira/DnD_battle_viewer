@@ -94,11 +94,11 @@ public class PraveMenu extends JPanel {
 	private JPanel ovladani() {
 		JPanel prvni = new JPanel();
 		prvni.setPreferredSize(new Dimension(-1, 180));
-		prvni.setBorder(new TitledBorder(HPStrings.get("ovladaniBitvy")));
+		prvni.setBorder(new TitledBorder(sk.str.get("ovladaniBitvy")));
 		prvni.setLayout(new GridLayout(5, 1, 0, 10));
 
 		JPanel showP = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel showL = new JLabel(HPStrings.get("showPlayerColor"));
+		JLabel showL = new JLabel(sk.str.get("showPlayerColor"));
 		showB = new JCheckBox();
 		showB.setSelected(sk.hidePlayerColor);
 		osetriShowColor();
@@ -114,7 +114,7 @@ public class PraveMenu extends JPanel {
 		showP.add(showB);
 
 		JPanel showN = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel showLn = new JLabel(HPStrings.get("showNPCColor"));
+		JLabel showLn = new JLabel(sk.str.get("showNPCColor"));
 		showBn = new JCheckBox();
 		showBn.setSelected(sk.hideNPCColor);
 		osetriShowNPC();
@@ -131,7 +131,7 @@ public class PraveMenu extends JPanel {
 
 		JPanel wallFreeSpace = new JPanel(new GridLayout(1, 2, 10, 0));
 
-		wall = new JToggleButton(HPStrings.get("addWall"));
+		wall = new JToggleButton(sk.str.get("addWall"));
 		wall.addActionListener(new ActionListener() {
 
 			@Override
@@ -140,7 +140,7 @@ public class PraveMenu extends JPanel {
 			}
 		});
 
-		freespace = new JToggleButton(HPStrings.get("addFreeSpace"));
+		freespace = new JToggleButton(sk.str.get("addFreeSpace"));
 		freespace.addActionListener(new ActionListener() {
 
 			@Override
@@ -206,18 +206,18 @@ public class PraveMenu extends JPanel {
 	private void osetriShowColor() {
 		sk.hidePlayerColor = showB.isSelected();
 		if (showB.isSelected()) {
-			showB.setText(HPStrings.get("ano"));
+			showB.setText(sk.str.get("ano"));
 		} else {
-			showB.setText(HPStrings.get("ne"));
+			showB.setText(sk.str.get("ne"));
 		}
 	}
 
 	private void osetriShowNPC() {
 		sk.hideNPCColor = showBn.isSelected();
 		if (showBn.isSelected()) {
-			showBn.setText(HPStrings.get("ano"));
+			showBn.setText(sk.str.get("ano"));
 		} else {
-			showBn.setText(HPStrings.get("ne"));
+			showBn.setText(sk.str.get("ne"));
 		}
 	}
 
@@ -258,7 +258,7 @@ public class PraveMenu extends JPanel {
 
 	private JPanel vlastnosti() {
 		JPanel VP = new JPanel();
-		VP.setBorder(new TitledBorder(HPStrings.get("vlastnostiObj")));
+		VP.setBorder(new TitledBorder(sk.str.get("vlastnostiObj")));
 		if (vlastnosti == null) {
 			return VP;
 		}
@@ -266,22 +266,22 @@ public class PraveMenu extends JPanel {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		VP.setLayout(gbl);
-		VP.setBorder(new TitledBorder(HPStrings.get("vytvorPostavu")));
+		VP.setBorder(new TitledBorder(sk.str.get("vytvorPostavu")));
 
 		JPanel prvni = new JPanel(new BorderLayout(10, 10));
 
 		String name = "";
 		if (isPostava) {
 			if (((Postava) vlastnosti).isPJ()) {
-				name = HPStrings.get("NPC");
+				name = sk.str.get("NPC");
 			} else {
-				name = HPStrings.get("player");
+				name = sk.str.get("player");
 			}
 		} else {
-			name = HPStrings.get("artefakt");
+			name = sk.str.get("artefakt");
 		}
 		JLabel nameLabel = new JLabel(name);
-		JLabel tag = new JLabel(HPStrings.get("Tag"));
+		JLabel tag = new JLabel(sk.str.get("Tag"));
 		tag.setPreferredSize(new Dimension(35, -1));
 		prvni.add(nameLabel, BorderLayout.CENTER);
 		prvni.add(tag, BorderLayout.EAST);
@@ -331,7 +331,7 @@ public class PraveMenu extends JPanel {
 					e.printStackTrace();
 				}
 				vlastnosti.setTag(chtag);
-				hexapaper.frm.repaint();
+				hexapaper.HPfrm.repaint();
 
 			}
 
@@ -430,7 +430,7 @@ public class PraveMenu extends JPanel {
 		VP.add(druhySc);
 
 		JPanel treti = new JPanel(new GridLayout(1, 2, 10, 0));
-		JButton add = new JButton(HPStrings.get("addPropBut"));
+		JButton add = new JButton(sk.str.get("addPropBut"));
 		add.addActionListener(new ActionListener() {
 
 			@Override
@@ -442,7 +442,7 @@ public class PraveMenu extends JPanel {
 			}
 		});
 		add.setEnabled(!skryj);
-		JToggleButton del = new JToggleButton(HPStrings.get("delPropBut"), isDel);
+		JToggleButton del = new JToggleButton(sk.str.get("delPropBut"), isDel);
 		del.addActionListener(new ActionListener() {
 
 			@Override

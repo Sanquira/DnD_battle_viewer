@@ -43,7 +43,7 @@ public class PostavaAddFrame extends JPanel {
 	private static final long serialVersionUID = 1L;
 	JFrame frame;
 	HPSklad sk = HPSklad.getInstance();
-	protected String[] defaultProp = { HPStrings.get("name"), HPStrings.get("race"), HPStrings.get("health"), HPStrings.get("mags"), HPStrings.get("weapon"), HPStrings.get("armor") };
+	protected String[] defaultProp = { sk.str.get("name"), sk.str.get("race"), sk.str.get("health"), sk.str.get("mags"), sk.str.get("weapon"), sk.str.get("armor") };
 	protected ArrayList<PropPair> param = new ArrayList<PropPair>();
 	JPanel vpg;
 	JPanel spg;
@@ -52,7 +52,7 @@ public class PostavaAddFrame extends JPanel {
 	JList<Object> list;
 
 	public PostavaAddFrame() {
-		frame = new JFrame(HPStrings.get("vytvorPostavu"));
+		frame = new JFrame(sk.str.get("vytvorPostavu"));
 		frame.setSize(450, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(new GridLayout(1, 2, 0, 10));
@@ -74,10 +74,10 @@ public class PostavaAddFrame extends JPanel {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		VP.setLayout(gbl);
-		VP.setBorder(new TitledBorder(HPStrings.get("vytvorPostavu")));
+		VP.setBorder(new TitledBorder(sk.str.get("vytvorPostavu")));
 
 		JPanel prvni = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel isNPCL = new JLabel(HPStrings.get("NPC"));
+		JLabel isNPCL = new JLabel(sk.str.get("NPC"));
 		final JCheckBox isNPSCB = new JCheckBox();
 		isNPSCB.setSelected(isNPC);
 		isNPSCB.addActionListener(new ActionListener() {
@@ -115,7 +115,7 @@ public class PostavaAddFrame extends JPanel {
 			public void mousePressed(MouseEvent e) {
 				if (isDel) {
 					for (int i = 0; i < param.size(); i++) {
-						if (param.get(i).name == e.getComponent().getParent().getName() && e.getComponent().getParent().getName() != HPStrings.get("name")) {
+						if (param.get(i).name == e.getComponent().getParent().getName() && e.getComponent().getParent().getName() != sk.str.get("name")) {
 							readParam();
 							param.remove(i);
 							updateCreate();
@@ -150,7 +150,7 @@ public class PostavaAddFrame extends JPanel {
 		VP.add(druhySc);
 
 		JPanel treti = new JPanel(new GridLayout(1, 2, 10, 0));
-		JButton add = new JButton(HPStrings.get("addPropBut"));
+		JButton add = new JButton(sk.str.get("addPropBut"));
 		add.addActionListener(new ActionListener() {
 
 			@Override
@@ -161,7 +161,7 @@ public class PostavaAddFrame extends JPanel {
 				updateCreate();
 			}
 		});
-		JToggleButton del = new JToggleButton(HPStrings.get("delPropBut"), isDel);
+		JToggleButton del = new JToggleButton(sk.str.get("delPropBut"), isDel);
 		del.addActionListener(new ActionListener() {
 
 			@Override
@@ -178,7 +178,7 @@ public class PostavaAddFrame extends JPanel {
 		gbl.setConstraints(treti, gbc);
 		VP.add(treti);
 
-		JButton hotovo = new JButton(HPStrings.get("vytvorPostavu"));
+		JButton hotovo = new JButton(sk.str.get("vytvorPostavu"));
 		hotovo.addActionListener(new ActionListener() {
 
 			@Override
@@ -187,7 +187,7 @@ public class PostavaAddFrame extends JPanel {
 				// System.out.println(param.toString());
 
 				if (param.get(0).value.trim().isEmpty()) {
-					JOptionPane.showMessageDialog(vpg, HPStrings.get("warningNameIsEmpty"), HPStrings.get("varovani"), JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(vpg, sk.str.get("warningNameIsEmpty"), sk.str.get("varovani"), JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 				Postava man = new Postava(param.remove(0).value, sk.LocDontCare, isNPSCB.isSelected(), param);
@@ -221,7 +221,7 @@ public class PostavaAddFrame extends JPanel {
 
 	private JPanel databazePostav() {
 		JPanel SP = new JPanel();
-		SP.setBorder(new TitledBorder(HPStrings.get("vytvorenePostavy")));
+		SP.setBorder(new TitledBorder(sk.str.get("vytvorenePostavy")));
 		GridBagLayout gbl = new GridBagLayout();
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
@@ -260,7 +260,7 @@ public class PostavaAddFrame extends JPanel {
 		gbl.setConstraints(datPo, gbc);
 		SP.add(datPo);
 
-		JToggleButton del = new JToggleButton(HPStrings.get("delPropBut"), isDelD);
+		JToggleButton del = new JToggleButton(sk.str.get("delPropBut"), isDelD);
 		del.addActionListener(new ActionListener() {
 
 			@Override

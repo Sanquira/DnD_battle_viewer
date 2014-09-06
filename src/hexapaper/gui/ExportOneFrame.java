@@ -4,6 +4,7 @@ import hexapaper.entity.Artefact;
 import hexapaper.entity.HPEntity;
 import hexapaper.entity.Postava;
 import hexapaper.file.SaveFile;
+import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.PropPair;
 import hexapaper.source.HPStrings;
 
@@ -34,9 +35,10 @@ public class ExportOneFrame extends JPanel {
 	JPanel spg;
 	HPEntity beExported;
 	ArrayList<HPEntity> exportList;
+	HPSklad sk = HPSklad.getInstance();
 
 	public ExportOneFrame(ArrayList<HPEntity> exportList) {
-		frame = new JFrame(HPStrings.get("export"));
+		frame = new JFrame(sk.str.get("export"));
 		frame.setSize(225, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(new GridLayout(1, 2, 0, 10));
@@ -52,17 +54,16 @@ public class ExportOneFrame extends JPanel {
 
 	private JPanel databazeArtefactu() {
 		JPanel SP = new JPanel();
-		String title = HPStrings.get("export");
+		String title = sk.str.get("export");
 		if (exportList.size() != 0) {
 			if (exportList.get(0) instanceof Artefact) {
-				title = HPStrings.get("vytvoreneArtefakty");
+				title = sk.str.get("vytvoreneArtefakty");
 			}
 			if (exportList.get(0) instanceof Postava) {
-				title = HPStrings.get("vytvorenePostavy");
+				title = sk.str.get("vytvorenePostavy");
 			}
 		}
 		SP.setBorder(new TitledBorder(title));
-		// TODO
 		GridBagLayout gbl = new GridBagLayout();
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
@@ -100,7 +101,7 @@ public class ExportOneFrame extends JPanel {
 		gbl.setConstraints(datPo, gbc);
 		SP.add(datPo);
 
-		JButton del = new JButton(HPStrings.get("export"));
+		JButton del = new JButton(sk.str.get("export"));
 		del.addActionListener(new ActionListener() {
 
 			@Override

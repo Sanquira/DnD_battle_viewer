@@ -1,22 +1,15 @@
 package hexapaper.file;
 
 import hexapaper.entity.Artefact;
-import hexapaper.entity.HPEntity;
 import hexapaper.entity.FreeSpace;
+import hexapaper.entity.HPEntity;
 import hexapaper.entity.Postava;
 import hexapaper.entity.Wall;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.PropPair;
-import hexapaper.source.HPStrings;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
@@ -26,7 +19,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import core.Location;
 
@@ -48,7 +40,7 @@ public class LoadFile {
 			File file = fc.getSelectedFile();
 			try {
 				JSONObject a = (JSONObject) new JSONParser().parse(new FileReader(file));
-				if (file.getName().contains("." + HPStrings.get("Hex_ext"))) {
+				if (file.getName().contains("." + s.str.get("Hex_ext"))) {
 					s.gridRa = ((Long) a.get("GridRA")).intValue();
 					s.gridSl = ((Long) a.get("GridSl")).intValue();
 					s.RADIUS = ((Long) a.get("Radius")).intValue();
@@ -63,35 +55,7 @@ public class LoadFile {
 			}
 		}
 	}
-	public LoadFile(){
-		File f;
-		FileReader fr;
-		try {
-			File jar=new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-			String joinedPath = new File(jar.getParent(), "lang.json").getAbsolutePath();
-			f=new File(joinedPath);
-			//System.out.println(f.getAbsolutePath());
-			if(f.exists() && !f.isDirectory()){
-				//System.out.println("Soubor nalezen");
-				fr=new FileReader(f);
-				JSONObject a = (JSONObject) new JSONParser().parse(new BufferedReader(new InputStreamReader(new FileInputStream(f) , "UTF-8")));
-				for(Object o:a.keySet()){
-					String key=(String) o;
-					String value=(String) a.get(o);
-					HPStrings.set(key, value);
-				}
-			}
-//			else{
-//				ClassLoader classLoader = getClass().getClassLoader();
-//				System.out.println(classLoader.getResource("lang.json").toURI().getPath());
-//				fr=new FileReader(new File(classLoader.getResource("lang.json").toURI().getPath()));				
-//			}
 
-		} catch (IOException | ParseException | URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-	}
 	public ArrayList<PropPair> loadList(JSONObject j) {
 		ArrayList<PropPair> props = new ArrayList<>();
 		JSONArray array = (JSONArray) j.get("List");

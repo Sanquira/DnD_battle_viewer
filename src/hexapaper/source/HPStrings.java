@@ -68,31 +68,4 @@ public class HPStrings {
 
 	public static String ztrataDat = "Ztráta dat";
 	public static String zpravaZtrataDat = "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVěechny neuložené změny budou ztraceny. \nChcete opravdu skončit?";
-
-	private static Map<String,String> strings=new HashMap<String, String>();
-	
-	public static void set(String key, String value){
-		strings.put(key, value);
-	}
-	public static String get(String key){
-		if(strings.containsKey(key)){
-			return strings.get(key);
-		}
-		//System.out.println(key);
-		return getVariable(key);
-	}
-	private static String getVariable(String key) {
-		String value="";
-		for(Field field : HPStrings.class.getFields()){
-			if(field.getName().equals(key)){
-				try {
-					value=(String) field.get(String.class);
-				} catch (IllegalArgumentException | IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-		return value;
-	}
 }
