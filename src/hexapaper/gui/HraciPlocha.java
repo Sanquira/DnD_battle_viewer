@@ -1,7 +1,7 @@
 package hexapaper.gui;
 
-import hexapaper.entity.HPEntity;
 import hexapaper.entity.FreeSpace;
+import hexapaper.entity.HPEntity;
 import hexapaper.source.BPolygon;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.prvekkNN;
@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import core.Grids;
 import core.Location;
 
 public class HraciPlocha extends JPanel {
@@ -44,21 +45,7 @@ public class HraciPlocha extends JPanel {
 
 	private ArrayList<HPEntity> genGrid(int sloupcu, int radku) {
 		ArrayList<HPEntity> grid = new ArrayList<HPEntity>();
-		int[][] souradky = new int[sloupcu * radku][2];
-		int l = 0;
-		for (int i = 0; i < sloupcu; i++) {
-			for (int j = 0; j < radku; j++) {
-				if (i % 2 == 0) {
-					souradky[l][0] = (i / 2) * 3 * sk.RADIUS;
-					souradky[l][1] = (int) Math.round(j * 2 * Math.cos(Math.toRadians(30)) * sk.RADIUS);
-				} else {
-					souradky[l][0] = (int) ((1.5 + (i / 2) * 3) * sk.RADIUS);
-					souradky[l][1] = (int) Math.round(sk.RADIUS * Math.cos(Math.toRadians(30)) +
-							j * 2 * Math.cos(Math.toRadians(30)) * sk.RADIUS);
-				}
-				l++;
-			}
-		}
+		int[][] souradky = Grids.gridHexa(sloupcu,radku,sk.RADIUS);
 		for (int i = 0; i < souradky.length; i++) {
 			souradky[i][0] += sk.RADIUS;
 			souradky[i][1] += Math.round(sk.RADIUS * Math.cos(Math.toRadians(30)));

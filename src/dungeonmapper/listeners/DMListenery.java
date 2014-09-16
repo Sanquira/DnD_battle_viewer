@@ -1,10 +1,13 @@
 package dungeonmapper.listeners;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JOptionPane;
 
+import dungeonmapper.dungeonMapper;
 import dungeonmapper.source.DMSklad;
 
 public class DMListenery {
@@ -15,7 +18,11 @@ public class DMListenery {
 		@Override
 		public void windowClosing(WindowEvent paramWindowEvent) {
 			Object[] opt = { sk.str.get("ano"), sk.str.get("ne") };
-//			int t = JOptionPane.showOptionDialog(paramWindowEvent.getComponent(), sk.str.get("zpravaZtrataDat"), sk.str.get("ztrataDat"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
+			// int t =
+			// JOptionPane.showOptionDialog(paramWindowEvent.getComponent(),
+			// sk.str.get("zpravaZtrataDat"), sk.str.get("ztrataDat"),
+			// JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null,
+			// opt, opt[0]);
 			int t = JOptionPane.OK_OPTION;
 			if (t == JOptionPane.OK_OPTION) {
 				System.exit(0);
@@ -46,4 +53,15 @@ public class DMListenery {
 		public void windowDeactivated(WindowEvent paramWindowEvent) {
 		}
 	}
+
+	public class KonecListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new KonecHardListener().windowClosing(new WindowEvent(dungeonMapper.DMfrm, 1));
+		}
+
+	}
+	
+	
 }

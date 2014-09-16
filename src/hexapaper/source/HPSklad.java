@@ -5,7 +5,7 @@ import hexapaper.entity.FreeSpace;
 import hexapaper.entity.HPEntity;
 import hexapaper.gui.Gprvky;
 import hexapaper.gui.HraciPlocha;
-import hexapaper.gui.PraveMenu;
+import hexapaper.gui.HPRightMenu;
 
 import java.util.ArrayList;
 
@@ -18,7 +18,7 @@ public class HPSklad {
 
 	public Gprvky prvky;
 	public HraciPlocha hraciPlocha;
-	public PraveMenu RMenu;
+	public HPRightMenu RMenu;
 
 	public int RADIUS = 25;
 	public int gridSl = 0;
@@ -47,7 +47,7 @@ public class HPSklad {
 		hraciPlocha = new HraciPlocha();
 
 		prvky = new Gprvky();
-		RMenu = new PraveMenu();
+		RMenu = new HPRightMenu();
 
 	}
 

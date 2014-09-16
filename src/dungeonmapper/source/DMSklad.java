@@ -1,12 +1,20 @@
 package dungeonmapper.source;
 
 import core.LangFile;
-import dungeonmapper.file.LoadFile;
 
 public class DMSklad {
 
+	public int COLS = 60;
+	public int ROWS = 42;
+	public int CSIZE = 20;
 	public String VERSION = "0.1";
 	public LangFile str;
+
+	public String[] drawShapes = { "rect", "circ", "pen" };
+	public String[] drawOrders = { "draw", "erase", "negate" };
+	public String drawShape = "null";
+	public String drawOrder = "null";
+	
 
 	private static DMSklad instance = null;
 

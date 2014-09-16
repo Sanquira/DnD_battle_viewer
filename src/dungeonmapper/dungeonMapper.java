@@ -2,12 +2,20 @@ package dungeonmapper;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
+import core.Grids;
+
+import dungeonmapper.gui.DMRightMenu;
+import dungeonmapper.gui.DrawPlane;
 import dungeonmapper.listeners.DMListenery;
 import dungeonmapper.source.DMSklad;
 
@@ -45,18 +53,32 @@ public class dungeonMapper extends JFrame {
 
 	private JMenuBar menu() {
 		JMenuBar MB = new JMenuBar();
+		JMenu hra = new JMenu(sk.str.get("gameMenu"));
+		MB.add(hra);
+
+		JMenuItem konec = new JMenuItem(sk.str.get("endGame"));
+		konec.addActionListener(lis.new KonecListener());
+		MB.add(konec);
 		// TODO Dodelat menu
 		return MB;
 	}
 
-	private JPanel RMenu() {
-		JPanel RM = new JPanel();
+	private Component RMenu() {
+		JScrollPane RMSP = new JScrollPane();
 		// TODO Dodelat prave menu
-		return RM;
+		RMSP.setViewportView(new DMRightMenu());
+		RMSP.setPreferredSize(new Dimension(250, 100));
+		RMSP.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		RMSP.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		return RMSP;
 	}
 
 	private JScrollPane drawPanel() {
 		JScrollPane DPSC = new JScrollPane();
+		JPanel drawPlane = new DrawPlane();
+		DPSC.setViewportView(drawPlane);
+		DPSC.getVerticalScrollBar().setUnitIncrement(8);
+		DPSC.getHorizontalScrollBar().setUnitIncrement(8);
 		return DPSC;
 	}
 }
