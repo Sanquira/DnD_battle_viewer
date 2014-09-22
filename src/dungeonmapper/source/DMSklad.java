@@ -10,11 +10,10 @@ public class DMSklad {
 	public String VERSION = "0.1";
 	public LangFile str;
 
-	public String[] drawShapes = { "rect", "circ", "pen" };
+	public String[] drawShapes = { "pen", "rect", "circ", "SU", "SD", "hole" };
 	public String[] drawOrders = { "draw", "erase", "negate" };
 	public String drawShape = "null";
 	public String drawOrder = "null";
-	
 
 	private static DMSklad instance = null;
 

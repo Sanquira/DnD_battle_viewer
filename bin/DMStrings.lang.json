@@ -1,3 +1,12 @@
 {
-  "test": "prvni"
+  "DMm_text": "Mapa dungeonu",
+  "gameMenu": "Hra",
+  "ztrataDat": "Ztráta dat",
+  "zpravaZtrataDat": "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVěechny neuložené změny budou ztraceny. \nChcete opravdu skončit?",
+  "endGame": "Konec",
+  "ne": "Ne",
+  "drawShape": "Nástroj kreslení",
+  "drawOrder": "Způsob kreslení",
+  "ano": "Ano",
+  "DMm_ext": "map"
 }

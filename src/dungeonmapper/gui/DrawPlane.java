@@ -1,15 +1,11 @@
 package dungeonmapper.gui;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -22,7 +18,8 @@ import dungeonmapper.source.DMSklad;
 public class DrawPlane extends JPanel implements MouseMotionListener, MouseListener {
 
 	private DMSklad sk = DMSklad.getInstance();
-	private ArrayList<DMGridElement> grid = new ArrayList<>();
+	private ArrayList<ArrayList<DMGridElement>> layers = new ArrayList<>();
+	private int chsnLay = 0;
 	private int[] startCoor = new int[2];
 	private int[] endCoorTmp = new int[2];
 	private ArrayList<int[]> drawTrajectory = new ArrayList<>();
@@ -30,15 +27,16 @@ public class DrawPlane extends JPanel implements MouseMotionListener, MouseListe
 
 	public DrawPlane() {
 		setBackground(Color.gray);
-		genDefaultGrid();
+		genDefaultGrid(chsnLay);
 		setPreferredSize(new Dimension(sk.COLS * sk.CSIZE, sk.ROWS * sk.CSIZE));
 		addMouseMotionListener(this);
 		addMouseListener(this);
 	}
 
-	private void genDefaultGrid() {
+	private void genDefaultGrid(int lay) {
 		// sk.COLS = 10;
 		// sk.ROWS = 5;
+		ArrayList<DMGridElement> grid = new ArrayList<>();
 		int[][] coor = Grids.gridSqr(sk.COLS, sk.ROWS, sk.CSIZE);
 		for (int[] is : coor) {
 			grid.add(new DMGridElement(is[0], is[1], "W"));
@@ -48,13 +46,15 @@ public class DrawPlane extends JPanel implements MouseMotionListener, MouseListe
 		grid.get(3).setType(DMMapTypesEnum.s);
 		grid.get(4).setType(DMMapTypesEnum.S);
 
+		layers.add(lay, grid);
+
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		int[] shapeParam = getShapeParam();
-		for (DMGridElement gridEl : grid) {
+		for (DMGridElement gridEl : layers.get(chsnLay)) {
 			g.setColor(setColorInsideShape(gridEl, shapeParam));
 			g.fillRect(gridEl.getX(), gridEl.getY(), sk.CSIZE - 1, sk.CSIZE - 1);
 		}
@@ -70,13 +70,6 @@ public class DrawPlane extends JPanel implements MouseMotionListener, MouseListe
 			g.drawPolyline(getCol(drawTrajectory, 0), getCol(drawTrajectory, 1), drawTrajectory.size());
 		}
 
-		drawCursor(g);
-
-	}
-
-	private void drawCursor(Graphics g) {
-		BufferedImage buf = new Icons().makeCircleEmpty(16, 16);
-		g.drawImage(buf.getScaledInstance(16, 16, 8), cursCoor[0], cursCoor[1], this);
 	}
 
 	private int[] getCol(ArrayList<int[]> matrix, int col) {
@@ -145,7 +138,7 @@ public class DrawPlane extends JPanel implements MouseMotionListener, MouseListe
 
 	private void changeElementByShape() {
 		ArrayList<DMGridElement> insideShapeList = new ArrayList<>();
-		for (DMGridElement dmGridElement : grid) {
+		for (DMGridElement dmGridElement : layers.get(chsnLay)) {
 			if (isInsideOfShape(dmGridElement, getShapeParam())) {
 				insideShapeList.add(dmGridElement);
 			}
@@ -196,18 +189,10 @@ public class DrawPlane extends JPanel implements MouseMotionListener, MouseListe
 
 	@Override
 	public void mouseEntered(MouseEvent paramMouseEvent) {
-		// Transparent 16 x 16 pixel cursor image.
-		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-		// Create a new blank cursor.
-		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
-				cursorImg, new Point(0, 0), "blank cursor");
-		setCursor(blankCursor);
-		repaint();
 	}
 
 	@Override
 	public void mouseExited(MouseEvent paramMouseEvent) {
-		setCursor(Cursor.getDefaultCursor());
 	}
 
 	@Override

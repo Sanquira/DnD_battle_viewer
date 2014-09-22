@@ -67,7 +67,7 @@ public class dungeonMapper extends JFrame {
 		JScrollPane RMSP = new JScrollPane();
 		// TODO Dodelat prave menu
 		RMSP.setViewportView(new DMRightMenu());
-		RMSP.setPreferredSize(new Dimension(250, 100));
+		RMSP.setPreferredSize(new Dimension(260, 100));
 		RMSP.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		RMSP.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		return RMSP;
