@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ClientInfo {
 	private int port;
@@ -12,6 +14,7 @@ public class ClientInfo {
 	private Socket socket;
 	private ObjectInputStream inputStream;
 	private ObjectOutputStream outputStream;
+	private Map<String,Object> atributes=new HashMap<String,Object>();
 	
 	public ClientInfo(String hostName, int port, String nick, Socket socket, ObjectInputStream i, ObjectOutputStream o){
 		this.port=port;
@@ -61,11 +64,20 @@ public class ClientInfo {
 	public void send(Object o) throws IOException{
 		outputStream.writeObject(new MessagePacket("Server",o));
 	}
+	public void send(Object o,String header) throws IOException{
+		outputStream.writeObject(new MessagePacket("Server",header,o));
+	}
 	public void send(String nick,Object o) throws IOException{
-		outputStream.writeObject(new MessagePacket(nick,o));
+		outputStream.writeObject(new MessagePacket(nick,"none",o));
+	}
+	public void send(String nick,Object o,String header) throws IOException{
+		outputStream.writeObject(new MessagePacket(nick,header,o));
 	}
 	public void kick() throws IOException{
 		inputStream.close();
 		outputStream.close();
 	}
+	public Map<String,Object> getAtributes() {
+		return atributes;
+	}	
 }

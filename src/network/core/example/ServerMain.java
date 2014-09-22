@@ -37,7 +37,7 @@ public class ServerMain {
 			public void packetReceive(MessagePacket p) {
 				System.out.println(p.getNick()+":"+(String) p.getObject());
 				try {
-					s.broadcast(p.getNick(),p.getObject());
+					s.broadcast(p.getNick()+":"+(String) p.getObject());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -52,7 +52,7 @@ public class ServerMain {
 		s.addClientDisconnectListener(d);
 		try {
 			s.create("localhost",1055);
-			s.addReceiveListener(p);
+			s.addReceiveListener(p,"re-broadcast");
             String userInput;
 			while ((userInput = stdIn.readLine()) != null) {
                 s.broadcast(userInput);

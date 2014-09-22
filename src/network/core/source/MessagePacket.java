@@ -15,10 +15,17 @@ public class MessagePacket implements Serializable{
 	 */
 	private String nick;
 	private Object object;
-	
+	private String header;
+		
 	public MessagePacket(String nick,Object object){
 		this.nick=nick;
 		this.object=object;
+		this.setHeader("none");
+	}
+	public MessagePacket(String nick,String header,Object object){
+		this.nick=nick;
+		this.object=object;
+		this.setHeader(header);
 	}
 	public Object getObject() {
 		return object;
@@ -43,5 +50,11 @@ public class MessagePacket implements Serializable{
     	   ) throws ClassNotFoundException, IOException {
     	     //always perform the default de-serialization first
     	     aInputStream.defaultReadObject();
-    	  } 
+    	  }
+	public String getHeader() {
+		return header;
+	}
+	public void setHeader(String header) {
+		this.header = header;
+	} 
 }

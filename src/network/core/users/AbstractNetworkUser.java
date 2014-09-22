@@ -1,17 +1,23 @@
 package network.core.users;
 
-import java.util.List;
+import java.util.Map;
 
 import network.core.interfaces.PacketReceiveListener;
 import network.core.source.NetworkStorage;
 
 public class AbstractNetworkUser {
-	public NetworkStorage sk=NetworkStorage.getInstance();
+	NetworkStorage sk=NetworkStorage.getInstance();
 	
-	public List<PacketReceiveListener> getReceiveListeners(){
+	public Map<PacketReceiveListener,String> getReceiveListeners(){
 		return sk.receiveListeners;
 	}
+	public void addReceiveListener(PacketReceiveListener l,String header){
+		sk.receiveListeners.put(l,header);
+	}
 	public void addReceiveListener(PacketReceiveListener l){
-		sk.receiveListeners.add(l);
+		sk.receiveListeners.put(l,"none");
+	}
+	public NetworkStorage getNetworkStorage(){
+		return sk;
 	}
 }

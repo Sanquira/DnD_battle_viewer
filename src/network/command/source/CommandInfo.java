@@ -1,5 +1,7 @@
 package network.command.source;
 
+import java.util.List;
+
 import network.command.interfaces.CommandListener;
 
 public class CommandInfo {
@@ -64,6 +66,9 @@ public class CommandInfo {
 	}
 	public void setMax(int max) {
 		this.max = max;
+	}
+	public void execute(List<String> args){
+		listener.CommandExecuted(args);
 	}
 	
 }

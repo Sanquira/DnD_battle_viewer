@@ -6,10 +6,11 @@ import network.command.interfaces.CommandListener;
 import network.command.source.CommandHandler;
 import network.command.source.CommandInfo;
 import network.command.source.CommandStorage;
+import network.core.source.ClientInfo;
 import network.core.users.NetworkServer;
 
 public class CommandServer extends NetworkServer {
-	private CommandStorage cmd=CommandStorage.getInstance();
+	CommandStorage cmd=CommandStorage.getInstance();
 	public void registerCommand(String name,int arguments,String usage, CommandListener listener){
 		cmd.cmdlisteners.add(new CommandInfo(name, arguments,usage,listener));
 	}
@@ -23,5 +24,15 @@ public class CommandServer extends NetworkServer {
 	public void create(int port) throws IOException{
 		super.create(port);
 		new Thread(new CommandHandler()).start();
+	}
+	public CommandStorage getCommandStorage(){
+		return cmd;
+	}
+	public void rebroadcast(String sender, Object o) throws IOException{
+		for(ClientInfo c:getNetworkStorage().clients){
+			if(!c.getNick().equals(sender)){
+				c.send(sender,o);
+			}
+		}
 	}
 }

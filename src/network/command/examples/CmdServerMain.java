@@ -37,13 +37,9 @@ public class CmdServerMain {
 			@Override
 			public void packetReceive(MessagePacket p) {
 				System.out.println(p.getNick()+":"+(String) p.getObject());
-				ClientInfo c=s.sk.getClientByName(p.getNick());
+				ClientInfo c=s.getNetworkStorage().getClientByName(p.getNick());
 				try {
-					for(ClientInfo ci:s.sk.clients){
-						if(!(ci.getNick()==c.getNick())){
-							ci.send(p.getNick(),p.getObject());
-						}
-					}
+					s.rebroadcast(c.getNick(), p.getObject());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -60,11 +56,12 @@ public class CmdServerMain {
 				@Override
 				public void CommandExecuted(List<String> args) {
 					try {
-						String b = "";
-						for(String x:args){
-							b+=" "+x;
-						}
-						s.broadcast(b);
+//						String b = "";
+//						for(String x:args){
+//							b+=" "+x;
+//						}
+						
+						s.broadcast(s.getCommandStorage().ArgsString(0, args));
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -78,12 +75,8 @@ public class CmdServerMain {
 			@Override
 			public void CommandExecuted(List<String> args) {
 				try {					
-					ClientInfo client=s.sk.clients.get(Integer.valueOf(args.get(0)));
-					String b = "";
-					for(String x:args){
-						b+=" "+x;
-					}
-					client.send(b);
+					ClientInfo client=s.getNetworkStorage().getClientByName(args.get(0));;
+					client.send(s.getCommandStorage().ArgsString(1, args));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -96,7 +89,7 @@ public class CmdServerMain {
 			@Override
 			public void CommandExecuted(List<String> args) {
 				try {					
-					ClientInfo ci = s.sk.getClientByName(args.get(0));
+					ClientInfo ci = s.getNetworkStorage().getClientByName(args.get(0));
 					ci.kick();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

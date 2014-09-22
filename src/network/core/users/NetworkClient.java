@@ -35,7 +35,7 @@ public class NetworkClient extends AbstractNetworkUser{
             Thread t=new Thread(new PacketReceiveHandler(i,socket));
             t.start();
             o.writeObject(null);
-            o.writeObject(new MessagePacket(nick, "initial"));
+            o.writeObject(new MessagePacket(nick,"connect", null));
             sk.callConnectEvent(socket);
         } catch (IOException e) {
             close();
@@ -50,6 +50,9 @@ public class NetworkClient extends AbstractNetworkUser{
 	    }
 	    public void send(Object ob) throws IOException{
 	    	o.writeObject(new MessagePacket(nick, ob));
+	    }
+	    public void send(Object ob,String header) throws IOException{
+	    	o.writeObject(new MessagePacket(nick,header, ob));
 	    }
 	    public void disconnect() throws IOException{
 			i.close();

@@ -3,8 +3,10 @@ package network.core.source;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-
 import network.core.interfaces.ClientConnectListener;
 import network.core.interfaces.ClientDisconnectListener;
 import network.core.interfaces.ConnectListener;
@@ -14,7 +16,7 @@ import network.core.interfaces.PacketReceiveListener;
 public class NetworkStorage {
 	private static NetworkStorage instance;
 	public List<ClientInfo> clients=new ArrayList<>();
-	public CopyOnWriteArrayList<PacketReceiveListener> receiveListeners=new CopyOnWriteArrayList<>();
+	public ConcurrentMap<PacketReceiveListener,String> receiveListeners=new ConcurrentHashMap<PacketReceiveListener,String>();
 	public CopyOnWriteArrayList<ClientConnectListener> clientconnectListeners=new CopyOnWriteArrayList<>();
 	public CopyOnWriteArrayList<ConnectListener> connectListeners=new CopyOnWriteArrayList<>();
 	public CopyOnWriteArrayList<DisconnectListener> disconnectListeners=new CopyOnWriteArrayList<>();
@@ -28,8 +30,12 @@ public class NetworkStorage {
 		return instance;
 	}
 	public void callReceiveEvent(MessagePacket inputLine) {
-		for(PacketReceiveListener l:receiveListeners){
-			l.packetReceive(inputLine);
+		for(Entry<PacketReceiveListener, String> entry :receiveListeners.entrySet()){
+			PacketReceiveListener l=entry.getKey();
+			String header=entry.getValue();
+			if(inputLine.getHeader()=="none"||inputLine.getHeader().equals(header)){
+				l.packetReceive(inputLine);
+			}
 		}
 		
 	}

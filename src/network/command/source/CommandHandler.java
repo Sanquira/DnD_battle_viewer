@@ -3,8 +3,6 @@ package network.command.source;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class CommandHandler implements Runnable {
 	private CommandStorage cs=CommandStorage.getInstance();

@@ -23,7 +23,7 @@ public class CommandStorage {
 		for(CommandInfo c:cmdlisteners){
 			if(c.getName().equals(name)){
 				if(checkSize(c.getMin(),c.getMax(),list.size())){
-					c.getListener().CommandExecuted(list);
+					c.execute(list);
 					return true;
 				}
 				System.out.println(Language.usage+c.getUsage());
@@ -54,6 +54,14 @@ public class CommandStorage {
 			builder+=" "+args.get(i);
 		}
 		return builder;
+	}
+	public CommandInfo getCommand(String name){
+		for(CommandInfo c:cmdlisteners){
+			if(c.getName().equals(name)){
+				return c;
+			}
+		}
+		return null;
 	}
 	
 }

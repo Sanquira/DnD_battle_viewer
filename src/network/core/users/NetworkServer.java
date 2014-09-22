@@ -46,15 +46,14 @@ public class NetworkServer extends AbstractNetworkUser{
 	public void addClientConnectListener(ClientConnectListener l){
 		sk.clientconnectListeners.add(l);
 	}
+	public void broadcast(Object o,String header) throws IOException{
+		for(ClientInfo c:sk.clients){
+			c.send(o,header);
+		}
+	}
 	public void broadcast(Object o) throws IOException{
 		for(ClientInfo c:sk.clients){
 			c.send(o);
 		}
 	}
-	public void broadcast(String nick,Object o) throws IOException{
-		for(ClientInfo c:sk.clients){
-			c.send(nick,o);
-		}
-	}
-
 }

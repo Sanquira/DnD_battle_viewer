@@ -33,7 +33,7 @@ public class ConnectThread implements Runnable{
 			client=server.accept();
 			OStream=new ObjectOutputStream(client.getOutputStream());
 			IStream=new ObjectInputStream(client.getInputStream());;
-			sk.receiveListeners.add(main);
+			sk.receiveListeners.put(main,"connect");
 			OStream.writeObject(null);
 			Thread t=new Thread(new PacketReceiveHandler(IStream,sk.clients.size())); 
 		    t.start();
