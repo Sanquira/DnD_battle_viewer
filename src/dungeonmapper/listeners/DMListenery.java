@@ -4,8 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.Arrays;
 
 import javax.swing.JOptionPane;
+import javax.swing.JToggleButton;
 
 import dungeonmapper.dungeonMapper;
 import dungeonmapper.source.DMSklad;
@@ -62,6 +64,28 @@ public class DMListenery {
 		}
 
 	}
-	
-	
+
+	public class RMToggleButListener implements ActionListener {
+
+		String but = "null";
+
+		public RMToggleButListener(String name) {
+			but = name;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			if (Arrays.toString(sk.drawOrders).contains(but)) {
+				sk.drawOrder = but;
+			}
+			if (Arrays.toString(sk.drawShapes).contains(but)) {
+				if (!((JToggleButton) arg0.getSource()).isSelected()) {
+					sk.drawShape = "null";
+				} else {
+					sk.drawShape = but;
+				}
+			}
+		}
+	}
+
 }

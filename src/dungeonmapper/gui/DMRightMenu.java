@@ -19,6 +19,7 @@ import javax.swing.JToggleButton;
 import javax.swing.border.TitledBorder;
 
 import core.DeselectButtonGroup;
+import dungeonmapper.listeners.DMListenery;
 import dungeonmapper.source.DMSklad;
 
 public class DMRightMenu extends JPanel {
@@ -68,6 +69,7 @@ public class DMRightMenu extends JPanel {
 		}
 
 		grpOrder.setSelected(grpOrder.getElements().nextElement().getModel(), true);
+		sk.drawOrder = sk.drawOrders[0];
 
 		return PDO;
 	}
@@ -95,6 +97,7 @@ public class DMRightMenu extends JPanel {
 		tmp.setPreferredSize(new Dimension(icons.get("icon" + name).getIconHeight(),
 				icons.get("icon" + name).getIconWidth()));
 		tmp.setUI(new MyUI(Color.white));
+		tmp.addActionListener(new DMListenery().new RMToggleButListener(name));
 		return tmp;
 	}
 
@@ -106,8 +109,8 @@ public class DMRightMenu extends JPanel {
 			icons.put("iconrect", new ImageIcon(ImageIO.read(DMRightMenu.class.getResourceAsStream("/images/rect.png"))));
 			icons.put("iconcirc", new ImageIcon(ImageIO.read(DMRightMenu.class.getResourceAsStream("/images/circ.png"))));
 			icons.put("iconpen", new ImageIcon(ImageIO.read(DMRightMenu.class.getResourceAsStream("/images/pen.png"))));
-			icons.put("iconSU", new ImageIcon(ImageIO.read(DMRightMenu.class.getResourceAsStream("/images/stairUP.png"))));
-			icons.put("iconSD", new ImageIcon(ImageIO.read(DMRightMenu.class.getResourceAsStream("/images/stairDown.png"))));
+			icons.put("iconSU", new ImageIcon(ImageIO.read(DMRightMenu.class.getResourceAsStream("/images/stairup.png"))));
+			icons.put("iconSD", new ImageIcon(ImageIO.read(DMRightMenu.class.getResourceAsStream("/images/stairdown.png"))));
 			icons.put("iconhole", new ImageIcon(ImageIO.read(DMRightMenu.class.getResourceAsStream("/images/hole.png"))));
 
 		} catch (IOException e) {
