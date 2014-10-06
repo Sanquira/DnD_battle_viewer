@@ -6,22 +6,22 @@ import network.command.interfaces.CommandListener;
 
 public class CommandInfo {
 	private CommandListener listener;
-	private String name;
+	private String name,help,usage;
 	private int arguments=0;
-	private int min=0;
-	private int max=0;
-	private String usage="";
-	public CommandInfo(String name,int arguments, String usage, CommandListener list){
+	private int min,max;
+	public CommandInfo(String name,int arguments, String usage,String help, CommandListener list){
 		this.name=name;
 		this.listener=list;
+		this.setHelp(help);
 		this.setArguments(arguments);
 		this.setMax(arguments);
 		this.setMin(arguments);
 		this.setUsage(usage);
 	}
-	public CommandInfo(String name,int min,int max, String usage, CommandListener list){
+	public CommandInfo(String name,int min,int max, String usage,String help, CommandListener list){
 		this.name=name;
 		this.listener=list;
+		this.setHelp(help);
 		this.setArguments(arguments);
 		this.setMax(max);
 		this.setMin(min);
@@ -69,6 +69,12 @@ public class CommandInfo {
 	}
 	public void execute(List<String> args){
 		listener.CommandExecuted(args);
+	}
+	public String getHelp() {
+		return help;
+	}
+	public void setHelp(String help) {
+		this.help = help;
 	}
 	
 }

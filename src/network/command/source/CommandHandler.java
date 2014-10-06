@@ -16,7 +16,7 @@ public class CommandHandler implements Runnable {
 		try {
 			while ((userInput = stdIn.readLine()) != null) {
 				if(!cs.checkCommand(userInput)){
-					unknownCommand();
+					unknownCommand(userInput);
 				};
 			}
 		} catch (IOException e) {
@@ -25,8 +25,10 @@ public class CommandHandler implements Runnable {
 		}
 	}
 
-	private void unknownCommand() {
-		System.out.println(Language.unknownCommand);		
+	private void unknownCommand(String input) {
+		if(cs.defaultCommand!=null){
+			cs.defaultCommand.getListener().CommandExecuted(cs.cutString(input));
+		}
 	}
 
 

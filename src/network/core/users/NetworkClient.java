@@ -36,6 +36,7 @@ public class NetworkClient extends AbstractNetworkUser{
             t.start();
             o.writeObject(null);
             o.writeObject(new MessagePacket(nick,"connect", null));
+            o.writeObject(null);            
             sk.callConnectEvent(socket);
         } catch (IOException e) {
             close();

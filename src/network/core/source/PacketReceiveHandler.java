@@ -7,7 +7,7 @@ import java.net.Socket;
 public class PacketReceiveHandler implements Runnable{
 	private ObjectInputStream input;
 	private NetworkStorage sk=NetworkStorage.getInstance();
-	private int pos=0;
+	private String nick;
 	private Socket socket;
 	@Override
 	public void run() {
@@ -23,9 +23,11 @@ public class PacketReceiveHandler implements Runnable{
        			sk.callDisconnectEvent(socket);
        		}
        		else{
-       			ClientInfo c=sk.clients.get(pos);
-       			sk.clients.remove(c);
-       			sk.callClientDisconnectEvent(c);       			
+       			if(sk.clients.containsKey(nick)){
+           			ClientInfo c=sk.clients.get(nick);
+       				sk.clients.remove(c.getNick());
+           			sk.callClientDisconnectEvent(c); 
+       			}	      			
        		}
         }
 		catch(ClassNotFoundException e){
@@ -36,8 +38,8 @@ public class PacketReceiveHandler implements Runnable{
 		this.input=input;
 		this.socket=s;		
 	}
-	public PacketReceiveHandler(ObjectInputStream input,int pos){
+	public PacketReceiveHandler(ObjectInputStream input,String nick){
 		this.input=input;
-		this.pos=pos;
+		this.nick=nick;
 	}
 }

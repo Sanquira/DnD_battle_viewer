@@ -69,7 +69,7 @@ public class HexaServer {
 	}
 	private static void registerInitialEvents(CommandServer s) {
 		s.addClientConnectListener(connect);
-		s.registerCommand("PJ", 2, "PJ <Player> <True/False>", setPJ);
-		s.registerCommand("isPJ",1,"isPJ <Player>",isPJ);
+		s.registerCommand("PJ", 2, "PJ <Player> <True/False>","Nastaví PJ", setPJ);
+		s.registerCommand("isPJ",1,"isPJ <Player>","Zjistí PJ",isPJ);
 	}
 }

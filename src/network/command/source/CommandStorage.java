@@ -4,10 +4,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import network.command.interfaces.CommandListener;
+
 public class CommandStorage {
 	private static CommandStorage instance;
+	public CommandListener help=new CommandListener(){
+		@Override
+		public void CommandExecuted(List<String> args) {
+			System.out.println(Language.helpText);
+			for(CommandInfo cmd:cmdlisteners){
+				System.out.println(cmd.getName()+":"+cmd.getHelp());
+			}
+		}		
+	};
 	public static int UNLIMITED=Integer.MAX_VALUE;
 	public List<CommandInfo> cmdlisteners=new ArrayList<>();
+	public CommandInfo defaultCommand=null;
 	
 	public static CommandStorage getInstance(){
 		if(instance==null){
@@ -62,6 +74,16 @@ public class CommandStorage {
 			}
 		}
 		return null;
+	}
+	public void setDefaultCommand(CommandInfo c){
+		defaultCommand=c;
+	}
+	public void removeDefaultCommand(){
+		defaultCommand=null;
+	}
+	public ArrayList<String> cutString(String userInput){
+		String[] str=userInput.split("\\s");
+		return new ArrayList<String>(Arrays.asList(str));
 	}
 	
 }

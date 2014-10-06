@@ -1,12 +1,11 @@
 package network.core.source;
 
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+
 import network.core.interfaces.ClientConnectListener;
 import network.core.interfaces.ClientDisconnectListener;
 import network.core.interfaces.ConnectListener;
@@ -15,7 +14,7 @@ import network.core.interfaces.PacketReceiveListener;
 
 public class NetworkStorage {
 	private static NetworkStorage instance;
-	public List<ClientInfo> clients=new ArrayList<>();
+	public ConcurrentMap<String,ClientInfo> clients=new ConcurrentHashMap<String,ClientInfo>();
 	public ConcurrentMap<PacketReceiveListener,String> receiveListeners=new ConcurrentHashMap<PacketReceiveListener,String>();
 	public CopyOnWriteArrayList<ClientConnectListener> clientconnectListeners=new CopyOnWriteArrayList<>();
 	public CopyOnWriteArrayList<ConnectListener> connectListeners=new CopyOnWriteArrayList<>();
@@ -60,9 +59,11 @@ public class NetworkStorage {
 		}
 	}
 	public ClientInfo getClientByName(String nick){
-		for(ClientInfo c:clients){
-			if(c.getNick().equals(nick)){
-				return c;
+		for(Entry<String, ClientInfo> c:clients.entrySet()){
+			String clientNick=c.getKey();
+			ClientInfo client=c.getValue();	
+			if(clientNick.equals(nick)){
+				return client;
 			}
 		}
 		return null;
