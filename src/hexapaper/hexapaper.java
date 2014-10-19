@@ -5,6 +5,7 @@ import hexapaper.source.HPSklad;
 import hexapaper.source.HPStrings;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,6 +17,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 
 import dungeonmapper.source.DMSklad;
+
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.JPanel;
+import java.awt.FlowLayout;
 
 public class hexapaper extends JFrame {
 
@@ -38,7 +44,7 @@ public class hexapaper extends JFrame {
 
 		addWindowListener(lis.new KonecHardListener());
 
-		setLayout(new BorderLayout());
+		getContentPane().setLayout(new BorderLayout());
 		initializace();
 		setVisible(true);
 	}
@@ -47,9 +53,9 @@ public class hexapaper extends JFrame {
 
 		hraciPlocha();
 
-		add(menu(), BorderLayout.NORTH);
-		add(hraciplsc);
-		add(sk.RMenu, BorderLayout.EAST);
+		getContentPane().add(menu(), BorderLayout.NORTH);
+		getContentPane().add(hraciplsc);
+		getContentPane().add(sk.RMenu, BorderLayout.EAST);
 	}
 
 	private JMenuBar menu() {
@@ -134,6 +140,22 @@ public class hexapaper extends JFrame {
 			}
 		});
 		HlavniMenu.add(ulozLangy);
+		
+		JPanel panel = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
+		flowLayout.setAlignment(FlowLayout.RIGHT);
+		HlavniMenu.add(panel);
+		
+		JLabel connected = new JLabel(sk.str.get("ConnectLabel")+"{"+sk.isConnected+","+sk.PJ+"}");
+		panel.add(connected);
+		connected.setForeground (Color.red);
+		
+		sk.connected=connected;
+		
+		JLabel position = new JLabel();
+		panel.add(position);
+		position.setHorizontalAlignment(SwingConstants.RIGHT);
+		sk.position=position;
 
 		return HlavniMenu;
 	}

@@ -27,7 +27,7 @@ public class HexaServer extends CommandServer {
 		s=new CommandServer();
 		new ServerListeners(s);
 		try {
-			s.create("192.168.0.102",10055);
+			s.create(args[0],Integer.parseInt(args[1]));
 		} catch (NumberFormatException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

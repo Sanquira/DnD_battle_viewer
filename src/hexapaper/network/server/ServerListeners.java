@@ -17,6 +17,7 @@ import network.core.source.MessagePacket;
 public class ServerListeners {
 	private CommandServer server;
 	private Object[] hexapaperList=null;
+	private int gridSl,gridRa,RADIUS;
 	private ArrayList<HPEntity> souradky=null;
 	private ArrayList<HPEntity> DBArtefact=null;
 	private ArrayList<HPEntity> DBCharacter=null;
@@ -50,13 +51,27 @@ public class ServerListeners {
 		}		
 	};
 	//ReceiveListeners
-	PacketReceiveListener hexapaper=new PacketReceiveListener(){
+	PacketReceiveListener RadiusHexapaper=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
-			System.out.println("Hexapaper přijat"); 
-			hexapaperList=(Object[]) p.getObject();
-			souradky=(ArrayList<HPEntity>) hexapaperList[3];
+			System.out.println("Radius Hexapaperu přijaty"); 
+			Object[] List = (Object[]) p.getObject();
+			gridSl=(int) List[0];
+			gridRa=(int) List[1];
+			RADIUS=(int) List[2];
 			try {
-				server.rebroadcast(p.getNick(), hexapaperList,"hexapaper");
+				server.rebroadcast(p.getNick(), List,"RadiusHexapaper");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}		
+	};
+	PacketReceiveListener EntityHexapaper=new PacketReceiveListener(){
+		public void packetReceive(MessagePacket p) {
+			System.out.println("Entity Hexapaperu přijaty"); 
+			souradky=(ArrayList<HPEntity>) p.getObject();
+			try {
+				server.rebroadcast(p.getNick(), souradky,"EntityHexapaper");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -155,7 +170,8 @@ public class ServerListeners {
 		this.server=s;
 		s.addClientConnectListener(connect);
 		s.addClientDisconnectListener(disconnect);
-		s.addReceiveListener(hexapaper, "hexapaper");
+		s.addReceiveListener(EntityHexapaper, "EntityHexapaper");
+		s.addReceiveListener(RadiusHexapaper, "RadiusHexapaper");
 		s.addReceiveListener(DBa, "DBartefact");
 		s.addReceiveListener(DBc, "DBcharacter");
 		s.addReceiveListener(rotateEnt, "rotateEnt");

@@ -137,7 +137,7 @@ public class HraciPlocha extends JPanel {
 					ent.recreateGraphics();
 					try {
 						Integer[] obj={ent.loc.getX(),ent.loc.getY(),ent.loc.getDir()};
-						System.out.println(obj[0]+":"+obj[1]+":"+obj[2]);
+						//System.out.println(obj[0]+":"+obj[1]+":"+obj[2]);
 						sk.send(obj, "rotateEnt");
 						//System.out.println(ent.loc.getDir());
 					} catch (IOException e) {

@@ -20,9 +20,18 @@ public class HexaClient extends CommandClient{
 		}
 	}
 	public void updateHexapaper() {
-		Object[] hexapaper={storage.gridRa,storage.gridSl,storage.RADIUS,storage.souradky};
+		//Object[] hexapaper={storage.souradky};
 		try {
-			send(hexapaper, "hexapaper");
+			send(storage.souradky, "EntityHexapaper");
+		} catch (IOException e) {
+			System.out.println("Failed to send Hexapaper");
+			e.printStackTrace();
+		}
+	}
+	public void radiusHexapaper(){
+		Object[] hexapaper={storage.gridRa,storage.gridSl,storage.RADIUS};
+		try {
+			send(hexapaper, "RadiusHexapaper");
 		} catch (IOException e) {
 			System.out.println("Failed to send Hexapaper");
 			e.printStackTrace();

@@ -4,9 +4,13 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import hexapaper.entity.HPEntity;
+import hexapaper.gui.HraciPlocha;
 import hexapaper.source.HPSklad;
 import network.core.interfaces.ConnectListener;
+import network.core.interfaces.DisconnectListener;
 import network.core.interfaces.PacketReceiveListener;
 import network.core.source.ClientInfo;
 import network.core.source.MessagePacket;
@@ -23,15 +27,32 @@ public class ClientListeners {
 		}		
 	};
 	//Disconnect Listeners
+	private DisconnectListener dsc=new DisconnectListener(){
+		public void Disconnect(Socket s) {
+			storage.isConnected=false;
+			storage.PJ=false;
+			storage.updateConnect();
+			JOptionPane.showMessageDialog(storage.hraciPlocha,
+				    storage.str.get("DisconnectMessage"),
+				    storage.str.get("DisconnectWindow"),
+				    JOptionPane.PLAIN_MESSAGE);	
+		}		
+	};	
 	//Receive Listeners
-	private PacketReceiveListener hexaPaper=new PacketReceiveListener(){
+	private PacketReceiveListener RadiusHexapaper=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
-			System.out.println("Received hexapaper from server");
+			System.out.println("Received hexapaper Radiuses from server");
 			Object[] paper=(Object[]) p.getObject();
 			storage.gridRa=(int) paper[0];
 			storage.gridSl=(int) paper[1];
 			storage.RADIUS=(int) paper[2];
-			storage.souradky= (ArrayList<HPEntity>) paper[3];
+			storage.hraciPlocha=new HraciPlocha();
+		}		
+	};
+	private PacketReceiveListener EntityHexapaper=new PacketReceiveListener(){
+		public void packetReceive(MessagePacket p) {
+			System.out.println("Received hexapaper Entity from server");
+			storage.souradky = (ArrayList<HPEntity>) p.getObject();
 			storage.initLoad(storage.souradky);
 		}		
 	};
@@ -47,7 +68,7 @@ public class ClientListeners {
 				}
 			}
 		}		
-	};
+	};	
 	private PacketReceiveListener DBa=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
 			System.out.println("Databaze Artefaktu updatnuta");
@@ -65,7 +86,9 @@ public class ClientListeners {
 	private PacketReceiveListener requestPJInfo=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
 			storage.PJ=true;
+			storage.updateConnect();
 			System.out.println("Requested PJ info");
+			hexaClient.radiusHexapaper();
 			hexaClient.updateHexapaper();
 			hexaClient.updateDatabase();
 		}		
@@ -74,6 +97,7 @@ public class ClientListeners {
 		public void packetReceive(MessagePacket p) {
 			storage.PJ=false;
 			System.out.println("No longer PJ");
+			storage.updateConnect();
 		}		
 	};
 	PacketReceiveListener insertEnt=new PacketReceiveListener(){
@@ -88,9 +112,11 @@ public class ClientListeners {
 		this.hexaClient=hexaClient;
 		this.storage=storage;
 		hexaClient.addConnectListener(cnt);
+		hexaClient.addDisconnectListener(dsc);
 		hexaClient.addReceiveListener(DBa,"DBartefact");
 		hexaClient.addReceiveListener(DBc,"DBcharacter");
-		hexaClient.addReceiveListener(hexaPaper,"hexapaper");
+		hexaClient.addReceiveListener(RadiusHexapaper,"RadiusHexapaper");
+		hexaClient.addReceiveListener(EntityHexapaper,"EntityHexapaper");
 		hexaClient.addReceiveListener(requestPJInfo,"requestPJInfo");
 		hexaClient.addReceiveListener(rotateEnt,"rotateEnt");
 		hexaClient.addReceiveListener(insertEnt,"insertEnt");

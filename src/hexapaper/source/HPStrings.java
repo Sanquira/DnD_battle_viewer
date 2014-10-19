@@ -65,7 +65,19 @@ public class HPStrings {
 	public static String exportPostOne = "... jedné postavy";
 	public static String addons = "Addony";
 	public static String kostka = "Kostka";
+	
+	public static String ipField = "IP serveru";
+	public static String portField = "Port serveru";
+	public static String nameField = "Nick";
+	public static String Connect = "Připojit";
+	public static String ConnectFrame = "Připojení k serveru";
+	public static String IOError = "Chyba při připojování";
+	public static String ConnectError = "Nepodařilo se připojit na server z důvodu: ";
+	public static String Position = "Pozice: ";
+	public static String ConnectLabel = "Připojeno: ";
+	public static String DisconnectMesage = "Odpojeno od serveru";
+	public static String DisconnectWindow = "Odpojeno";
 
 	public static String ztrataDat = "Ztráta dat";
-	public static String zpravaZtrataDat = "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVěechny neuložené změny budou ztraceny. \nChcete opravdu skončit?";
+	public static String zpravaZtrataDat = "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVšechny neuložené změny budou ztraceny. \nChcete opravdu skončit?";
 }

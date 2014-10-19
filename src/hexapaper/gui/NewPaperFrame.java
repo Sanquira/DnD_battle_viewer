@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import addons.dice.JNumberTextField;
+
 public class NewPaperFrame extends JPanel {
 
 	/**
@@ -44,21 +46,24 @@ public class NewPaperFrame extends JPanel {
 	protected void init() {
 		JPanel prvni = new JPanel(new GridLayout(1, 2, 10, 0));
 		JLabel polhex = new JLabel(sk.str.get("polomerHexu"));
-		polhexvalue = new JTextField("25");
+		polhexvalue = new JNumberTextField();
+		polhexvalue.setText("25");
 		polhexvalue.addFocusListener(new Listener());
 		prvni.add(polhex);
 		prvni.add(polhexvalue);
 
 		JPanel druhy = new JPanel(new GridLayout(1, 2, 10, 0));
 		JLabel numRow = new JLabel(sk.str.get("pocetRadku"));
-		numRowValue = new JTextField("25");
+		numRowValue = new JNumberTextField();
+		numRowValue.setText("25");
 		numRowValue.addFocusListener(new Listener());
 		druhy.add(numRow);
 		druhy.add(numRowValue);
 
 		JPanel treti = new JPanel(new GridLayout(1, 2, 10, 0));
 		JLabel numCol = new JLabel(sk.str.get("pocetSloupcu"));
-		numColValue = new JTextField("25");
+		numColValue = new JNumberTextField();
+		numColValue.setText("25");
 		numColValue.addFocusListener(new Listener());
 		treti.add(numCol);
 		treti.add(numColValue);
@@ -88,7 +93,8 @@ public class NewPaperFrame extends JPanel {
 		sk.hraciPlocha.revalidate();
 		sk.hraciPlocha.repaint();
 		if(sk.isConnected&&sk.PJ){
-			sk.client.updateHexapaper();
+			sk.client.radiusHexapaper();
+			sk.client.updateHexapaper();	
 		}	
 	}
 

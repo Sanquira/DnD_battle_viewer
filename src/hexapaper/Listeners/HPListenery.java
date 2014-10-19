@@ -4,6 +4,7 @@ import hexapaper.hexapaper;
 import hexapaper.file.LoadFile;
 import hexapaper.file.SaveFile;
 import hexapaper.gui.ArtefactAddFrame;
+import hexapaper.gui.ClientConnectFrame;
 import hexapaper.gui.ExportOneFrame;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.NewPaperFrame;
@@ -143,6 +144,8 @@ public class HPListenery {
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
+			ArrayList<prvekkNN> idx = NN.getkNNindexes(e.getX(), e.getY());
+			sk.updatePosition(idx.get(0).getX1(), idx.get(0).getY1());
 			HraciPlocha t = (HraciPlocha) e.getComponent();
 			t.drawCursor(e.getX(), e.getY());
 		}
@@ -171,8 +174,8 @@ public class HPListenery {
 					t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
 				}
 				if (e.getButton() == MouseEvent.BUTTON1 && !sk.insertingEntity) {
-					sk.RMenu.redrawProperities(idx.get(0));
 					if((sk.isConnected&&sk.PJ)||!sk.isConnected){
+						sk.RMenu.redrawProperities(idx.get(0));					
 						ins = true;						
 						HraciPlocha t = (HraciPlocha) e.getComponent();
 						t.saveEntity(idx.get(0).getIdx());
@@ -252,20 +255,21 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			System.out.println("Pokus o připojení");
-			DateFormat dateFormat = new SimpleDateFormat("ss");
-			Date date = new Date();
-			
-			HexaClient c=new HexaClient();
-			try {
-				c.connect("212.96.186.28", 10055, dateFormat.format(date));
-			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			new ClientConnectFrame();
+			//			System.out.println("Pokus o připojení");
+//			DateFormat dateFormat = new SimpleDateFormat("ss");
+//			Date date = new Date();
+//			
+//			HexaClient c=new HexaClient();
+//			try {
+//				c.connect("212.96.186.28", 10055, dateFormat.format(date));
+//			} catch (UnknownHostException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 		}
 	}
 	

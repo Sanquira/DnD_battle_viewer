@@ -27,8 +27,7 @@ public class NetworkClient extends AbstractNetworkUser{
 	    	socket = new Socket();
 	    }
 	    public void connect(String host, int port, String nick) throws IOException,UnknownHostException{
-        try{	
-	    	socket.connect(new InetSocketAddress(host, port), 1000);
+  	    	socket.connect(new InetSocketAddress(host, port), 1000);
 	    	this.nick=nick;
             i=new ObjectInputStream(socket.getInputStream());
             o=new ObjectOutputStream(socket.getOutputStream());
@@ -38,10 +37,6 @@ public class NetworkClient extends AbstractNetworkUser{
             o.writeObject(new MessagePacket(nick,"connect", null));
             o.writeObject(null);            
             sk.callConnectEvent(socket);
-        } catch (IOException e) {
-            close();
-            e.printStackTrace();
-        }
 	    }
 	    public void close() throws IOException{
 	    	socket.close();

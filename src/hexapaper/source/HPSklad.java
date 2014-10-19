@@ -1,6 +1,8 @@
 package hexapaper.source;
 
 import hexapaper.hexapaper;
+import hexapaper.Listeners.HPListenery;
+import hexapaper.Listeners.HPListenery.HraciPlochaListener;
 import hexapaper.entity.FreeSpace;
 import hexapaper.entity.HPEntity;
 import hexapaper.gui.Gprvky;
@@ -8,10 +10,12 @@ import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.HPRightMenu;
 import hexapaper.network.server.HexaClient;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JScrollPane;
 
@@ -29,12 +33,16 @@ public class HPSklad {
 	public int RADIUS = 25;
 	public int gridSl = 0;
 	public int gridRa = 0;
+	public int x = 0;
+	public int y = 0;
 	
 	public JScrollPane scroll;
 	public Location LocDontCare = new Location(RADIUS, RADIUS, 0);
 	public HPEntity insertedEntity;
 	public JMenu GameMenu;
 	public JMenu ExportMenu;
+	public JLabel connected;
+	public JLabel position;
 	
 	public ArrayList<HPEntity> souradky;
 	public ArrayList<HPEntity> databazePostav = new ArrayList<>();
@@ -105,14 +113,35 @@ public class HPSklad {
 			}
 		}		
 		hexapaper.HPfrm.repaint();
-		//scroll.setViewportView(hraciPlocha);
+		HPListenery lis = new HPListenery();
+		hraciPlocha.addMouseListener(lis.new HraciPlochaListener());
+		hraciPlocha.addMouseMotionListener(lis.new HraciPlochaListener());
+		scroll.setViewportView(hraciPlocha);
 		odblokujListenery();
 	}
 
 	public void odblokujListenery() {
 		canEvent = true;
 	}
-
+	public void updatePosition(double x1,double y1){
+		this.x=(int) x1;
+		this.y=(int) y1;
+		position.revalidate();
+		position.setText(str.get("Posititon")+x+","+y);
+		position.repaint();
+	}
+	public void updateConnect(){
+		if(isConnected&&PJ){
+			connected.setForeground(Color.BLUE);
+		}
+		if(isConnected&&!PJ){
+			connected.setForeground(Color.GREEN);
+		}
+		if(!isConnected){
+			connected.setForeground(Color.RED);
+		}
+		connected.setText(str.get("ConnectLabel")+"{"+isConnected+","+PJ+"}");
+	}
 	public static class prvekkNN implements Cloneable {
 		private double x1, y1, vzd;
 		private int idx;
