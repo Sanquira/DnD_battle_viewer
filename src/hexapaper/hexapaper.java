@@ -21,7 +21,9 @@ import dungeonmapper.source.DMSklad;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JPanel;
+
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 
 public class hexapaper extends JFrame {
 
@@ -125,7 +127,11 @@ public class hexapaper extends JFrame {
 		HlavniMenu.add(hraMenu);
 		HlavniMenu.add(upravy);
 		HlavniMenu.add(addons);
-
+		
+		sk.serverbanned.add(novyPaper);
+		sk.serverbanned.add(nactiPaper);
+		sk.serverbanned.add(pridejArt);
+		sk.serverbanned.add(pridejPost);
 		// TODO Ostranit tohle tlacitko
 		System.err.println("Nezapomen odstranit tlacitko v hexapaper u TODO");
 		JButton ulozLangy = new JButton("Uloz langy DOCASNE");

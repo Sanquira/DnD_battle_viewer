@@ -28,7 +28,9 @@ public class CommandHandler implements Runnable {
 	private void unknownCommand(String input) {
 		if(cs.defaultCommand!=null){
 			cs.defaultCommand.getListener().CommandExecuted(cs.cutString(input));
+			return;
 		}
+		System.out.println(Language.unknownCommand);
 	}
 
 

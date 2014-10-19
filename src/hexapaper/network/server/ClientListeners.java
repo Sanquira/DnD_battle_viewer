@@ -35,13 +35,13 @@ public class ClientListeners {
 			JOptionPane.showMessageDialog(storage.hraciPlocha,
 				    storage.str.get("DisconnectMessage"),
 				    storage.str.get("DisconnectWindow"),
-				    JOptionPane.PLAIN_MESSAGE);	
+				    JOptionPane.WARNING_MESSAGE);	
 		}		
 	};	
 	//Receive Listeners
 	private PacketReceiveListener RadiusHexapaper=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
-			System.out.println("Received hexapaper Radiuses from server");
+			//System.out.println("Received hexapaper Radiuses from server");
 			Object[] paper=(Object[]) p.getObject();
 			storage.gridRa=(int) paper[0];
 			storage.gridSl=(int) paper[1];
@@ -51,7 +51,7 @@ public class ClientListeners {
 	};
 	private PacketReceiveListener EntityHexapaper=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
-			System.out.println("Received hexapaper Entity from server");
+			//System.out.println("Received hexapaper Entity from server");
 			storage.souradky = (ArrayList<HPEntity>) p.getObject();
 			storage.initLoad(storage.souradky);
 		}		
@@ -63,7 +63,7 @@ public class ClientListeners {
 			for(HPEntity ent:storage.souradky){
 				if(ent.loc.getX().equals(table[0])&&ent.loc.getY().equals(table[1])){
 					ent.loc.setDir(table[2]);
-					System.out.println("Předělána entita");
+					//System.out.println("Předělána entita");
 					ent.recreateGraphics();
 				}
 			}
@@ -71,14 +71,14 @@ public class ClientListeners {
 	};	
 	private PacketReceiveListener DBa=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
-			System.out.println("Databaze Artefaktu updatnuta");
+			//System.out.println("Databaze Artefaktu updatnuta");
 			storage.databazeArtefaktu=(ArrayList<HPEntity>) p.getObject();
 			storage.RMenu.updateDatabase();
 		}		
 	};
 	private PacketReceiveListener DBc=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
-			System.out.println("Databaze Postav updatnuta");
+			//System.out.println("Databaze Postav updatnuta");
 			storage.databazePostav=(ArrayList<HPEntity>) p.getObject();
 			storage.RMenu.updateDatabase();
 		}		
@@ -87,7 +87,7 @@ public class ClientListeners {
 		public void packetReceive(MessagePacket p) {
 			storage.PJ=true;
 			storage.updateConnect();
-			System.out.println("Requested PJ info");
+			//System.out.println("Requested PJ info");
 			hexaClient.radiusHexapaper();
 			hexaClient.updateHexapaper();
 			hexaClient.updateDatabase();
@@ -96,18 +96,42 @@ public class ClientListeners {
 	private PacketReceiveListener removePJ=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
 			storage.PJ=false;
-			System.out.println("No longer PJ");
+			//System.out.println("No longer PJ");
 			storage.updateConnect();
 		}		
 	};
 	PacketReceiveListener insertEnt=new PacketReceiveListener(){
 		@Override
 		public void packetReceive(MessagePacket p) {
-			System.out.println("Vložena entita");
+			//System.out.println("Vložena entita");
 			Object[] table=(Object[]) p.getObject();
 			storage.hraciPlocha.insertEntity((int) table[0], ((HPEntity) table[1]), true);
 		}		
 	};
+	PacketReceiveListener EntChangeName=new PacketReceiveListener(){
+		@Override
+		public void packetReceive(MessagePacket p) {
+			Object[] table=(Object[]) p.getObject();
+			//System.out.println("přijato"+(Integer) table[0]+","+(Integer) table[1]);
+			//System.out.println(table[0]+":"+table[1]+":"+table[2]+":"+table[3]);
+			for(HPEntity ent:storage.souradky){
+				if(ent.loc.getX().equals((Integer) table[0])&&ent.loc.getY().equals((Integer) table[1])){
+					ent.setNick((String) table[2]);
+					ent.setTag((String) table[3]);
+					//System.out.println("Změnen nick a tag Entity");
+				}
+			}
+		}		
+	};
+	PacketReceiveListener kick=new PacketReceiveListener() {
+		@Override
+		public void packetReceive(MessagePacket p) {
+			JOptionPane.showMessageDialog(storage.hraciPlocha,
+				    storage.str.get("KickMessage")+(String) p.getObject(),
+				    storage.str.get("KickWindow"),
+				    JOptionPane.WARNING_MESSAGE);					
+		}		
+	};	
 	public ClientListeners(HexaClient hexaClient, HPSklad storage) {
 		this.hexaClient=hexaClient;
 		this.storage=storage;
@@ -118,7 +142,10 @@ public class ClientListeners {
 		hexaClient.addReceiveListener(RadiusHexapaper,"RadiusHexapaper");
 		hexaClient.addReceiveListener(EntityHexapaper,"EntityHexapaper");
 		hexaClient.addReceiveListener(requestPJInfo,"requestPJInfo");
+		hexaClient.addReceiveListener(removePJ,"removePJ");
 		hexaClient.addReceiveListener(rotateEnt,"rotateEnt");
 		hexaClient.addReceiveListener(insertEnt,"insertEnt");
+		hexaClient.addReceiveListener(EntChangeName,"EntChangeName");
+		hexaClient.addReceiveListener(kick, "kick");
 	}
 }

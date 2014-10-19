@@ -204,7 +204,7 @@ public class HraciPlocha extends JPanel {
 	}
 
 	public void saveEntity(int idx) {
-		System.out.println(sk.souradky.get(idx));
+		//System.out.println(sk.souradky.get(idx));
 		if (sk.souradky.get(idx) instanceof FreeSpace) {
 			sk.setupInserting(null, false);
 			return;

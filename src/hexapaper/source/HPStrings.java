@@ -75,8 +75,10 @@ public class HPStrings {
 	public static String ConnectError = "Nepodařilo se připojit na server z důvodu: ";
 	public static String Position = "Pozice: ";
 	public static String ConnectLabel = "Připojeno: ";
-	public static String DisconnectMesage = "Odpojeno od serveru";
+	public static String DisconnectMessage = "Odpojeno od serveru";
 	public static String DisconnectWindow = "Odpojeno";
+	public static String KickMessage = "Vyhozen ze serveru z duvodu: ";
+	public static String KickWindow = "Vyhozen ze serveru";	
 
 	public static String ztrataDat = "Ztráta dat";
 	public static String zpravaZtrataDat = "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVšechny neuložené změny budou ztraceny. \nChcete opravdu skončit?";

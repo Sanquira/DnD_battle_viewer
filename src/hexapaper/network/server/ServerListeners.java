@@ -28,7 +28,9 @@ public class ServerListeners {
 			System.out.println("Client připojen "+(String) c.getNick());
 			if(PJ!=null){
 				try {
-					c.send(hexapaperList, "hexapaper");
+					Object[] o={gridSl,gridRa,RADIUS};
+					c.send(o, "RadiusHexapaper");
+					c.send(souradky, "EntityHexapaper");
 					c.send(DBArtefact,"DBartefact");
 					c.send(DBCharacter,"DBcharacter");
 				} catch (IOException e) {
@@ -53,7 +55,7 @@ public class ServerListeners {
 	//ReceiveListeners
 	PacketReceiveListener RadiusHexapaper=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
-			System.out.println("Radius Hexapaperu přijaty"); 
+			System.out.println("Radius Hexapaperu přijat"); 
 			Object[] List = (Object[]) p.getObject();
 			gridSl=(int) List[0];
 			gridRa=(int) List[1];
@@ -78,6 +80,26 @@ public class ServerListeners {
 			}
 		}		
 	};
+	PacketReceiveListener EntChangeName=new PacketReceiveListener(){
+		@Override
+		public void packetReceive(MessagePacket p) {
+			Object[] table=(Object[]) p.getObject();
+			//System.out.println(table[0]+":"+table[1]+":"+table[2]);
+			for(HPEntity ent:souradky){
+				if(ent.loc.getX()==(Integer) table[0]&&ent.loc.getY()==(Integer) table[1]){
+					ent.setNick((String) table[2]);
+					ent.setTag((String) table[3]);
+					//System.out.println("Změnen nick a tag Entity");
+				}
+			}
+			try {
+				server.rebroadcast(p.getNick(), p.getObject(),"EntChangeName");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}		
+	};
 	PacketReceiveListener DBa=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
 			System.out.println("Artefacty přijaty"); 
@@ -94,12 +116,14 @@ public class ServerListeners {
 		@Override
 		public void packetReceive(MessagePacket p) {
 			Object[] table=(Object[]) p.getObject();
-			souradky.set((Integer) table[0], ((HPEntity) table[1]).clone());
-			try {
-				server.rebroadcast(p.getNick(), p.getObject(),p.getHeader());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if((Integer) table[0]<souradky.size()){
+				souradky.set((Integer) table[0], ((HPEntity) table[1]).clone());
+				try {
+					server.rebroadcast(p.getNick(), p.getObject(),p.getHeader());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}		
 	};
@@ -120,11 +144,11 @@ public class ServerListeners {
 		@Override
 		public void packetReceive(MessagePacket p) {
 			Integer[] table=(Integer[]) p.getObject();
-			System.out.println(table[0]+":"+table[1]+":"+table[2]);
+			//System.out.println(table[0]+":"+table[1]+":"+table[2]);
 			for(HPEntity ent:souradky){
 				if(ent.loc.getX()==table[0]&&ent.loc.getY()==table[1]){
 					ent.loc.setDir(table[2]);
-					System.out.println("Předělána entita");
+					//System.out.println("Předělána entita");
 				}
 			}
 			try {
@@ -166,6 +190,20 @@ public class ServerListeners {
 			System.out.println("PJ is not defined");		
 		}	
 	};
+	private CommandListener kick=new CommandListener(){
+		@Override
+		public void CommandExecuted(List<String> args) {
+			ClientInfo client = server.getNetworkStorage().getClientByName(args.get(0));
+			try {
+				String message=(String) args.get(1);
+				client.send((Object) message,"kick");
+				client.kick();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}			
+		}		
+	};	
 	public ServerListeners(CommandServer s){
 		this.server=s;
 		s.addClientConnectListener(connect);
@@ -176,7 +214,9 @@ public class ServerListeners {
 		s.addReceiveListener(DBc, "DBcharacter");
 		s.addReceiveListener(rotateEnt, "rotateEnt");
 		s.addReceiveListener(insertEnt, "insertEnt");
+		s.addReceiveListener(EntChangeName, "EntChangeName");
 		s.registerCommand("pj", 1, "pj <Name>", "Check if player is PJ", isPJ);
 		s.registerCommand("setpj", 1, "setpj <Name>", "Set PJ", setPJ);
+		s.registerCommand("kick", 2, "Kick <Name> <Reason>", "Kick player", kick);
 	}
 }

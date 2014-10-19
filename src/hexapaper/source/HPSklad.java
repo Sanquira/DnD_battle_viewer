@@ -11,12 +11,14 @@ import hexapaper.gui.HPRightMenu;
 import hexapaper.network.server.HexaClient;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 
 import core.LangFile;
@@ -47,6 +49,7 @@ public class HPSklad {
 	public ArrayList<HPEntity> souradky;
 	public ArrayList<HPEntity> databazePostav = new ArrayList<>();
 	public ArrayList<HPEntity> databazeArtefaktu = new ArrayList<>();
+	public ArrayList<Component> serverbanned = new ArrayList<>();
 	
 	public boolean hidePlayerColor = false;
 	public boolean hideNPCColor = false;
@@ -55,6 +58,7 @@ public class HPSklad {
 	public boolean isConnected = false;
 	public boolean PJ=false;
 	public boolean insertingEntity = false;
+	public boolean banned = false;
 	
 	public HexaClient client;
 	public LangFile str;
@@ -74,6 +78,16 @@ public class HPSklad {
 	protected HPSklad() {
 	}
 	
+	public void colorJMenu(){
+		Color color = Color.DARK_GRAY;
+		if(banned){
+			color = Color.RED;
+		}
+		for(Component item:serverbanned){
+			item.setForeground(color);
+			item.repaint();
+		}
+	}
 	public void init() {
 		str = new LangFile(HPStrings.class);
 		str.loadLang();
@@ -133,14 +147,18 @@ public class HPSklad {
 	public void updateConnect(){
 		if(isConnected&&PJ){
 			connected.setForeground(Color.BLUE);
+			banned=false;
 		}
 		if(isConnected&&!PJ){
 			connected.setForeground(Color.GREEN);
+			banned=true;
 		}
 		if(!isConnected){
 			connected.setForeground(Color.RED);
+			banned=false;
 		}
 		connected.setText(str.get("ConnectLabel")+"{"+isConnected+","+PJ+"}");
+		colorJMenu();
 	}
 	public static class prvekkNN implements Cloneable {
 		private double x1, y1, vzd;

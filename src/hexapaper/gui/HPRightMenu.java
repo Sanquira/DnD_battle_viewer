@@ -188,6 +188,11 @@ public class HPRightMenu extends JPanel {
 		addP.add(addPC, BorderLayout.CENTER);
 		addP.add(addPB, BorderLayout.EAST);
 
+		sk.serverbanned.add(addPB);
+		sk.serverbanned.add(addAB);
+		sk.serverbanned.add(wall);
+		sk.serverbanned.add(freespace);
+		
 		prvni.add(showP);
 		prvni.add(showN);
 		prvni.add(wallFreeSpace);
@@ -252,14 +257,15 @@ public class HPRightMenu extends JPanel {
 		freespace.setSelected(false);
 		if (addAC.getSelectedItem() != null) {
 			sk.setupInserting(((Artefact) addAC.getSelectedItem()).clone(), false);
-		}
-		;
+		}		
 	}
 
 	private void osetriAddPB() {
 		wall.setSelected(false);
 		freespace.setSelected(false);
-		sk.setupInserting(((Postava) addPC.getSelectedItem()).clone(), false);
+		if(addPC.getSelectedItem() != null){	
+			sk.setupInserting(((Postava) addPC.getSelectedItem()).clone(), false);
+		}
 	}
 
 	private JPanel vlastnosti() {
@@ -306,6 +312,9 @@ public class HPRightMenu extends JPanel {
 		nameL.getTextField().getDocument().addDocumentListener(new DocumentAdapter() {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
+				if(sk.isConnected&&!sk.PJ){
+					return;
+				}
 				String chtag = "";
 				try {
 					chtag = e.getDocument().getText(0, e.getDocument().getLength());
@@ -314,19 +323,21 @@ public class HPRightMenu extends JPanel {
 				}
 				vlastnosti.setNick(chtag);
 			}
-
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				insertUpdate(e);
 			}
 		});
-
+		
 		EditableJLabel tagL = new EditableJLabel(vlastnosti.tag);
 		tagL.setPreferredSize(new Dimension(35, 35));
 		tagL.getTextField().getDocument().addDocumentListener(new DocumentAdapter() {
 
 			@Override
 			public void insertUpdate(DocumentEvent arg0) {
+				if(sk.isConnected&&!sk.PJ){
+					return;
+				}
 				String chtag = vlastnosti.tag;
 				try {
 					if (arg0.getDocument().getLength() <= 2) {
@@ -338,7 +349,6 @@ public class HPRightMenu extends JPanel {
 				}
 				vlastnosti.setTag(chtag);
 				hexapaper.HPfrm.repaint();
-
 			}
 
 			@Override
@@ -488,22 +498,25 @@ public class HPRightMenu extends JPanel {
 		praveMenu();
 		revalidate();
 		repaint();
+		sk.colorJMenu();
 	}
 
 	public void redrawProperities(prvekkNN prvekkNN) {
-		HPEntity ent = sk.souradky.get(prvekkNN.getIdx());
-		if (ent instanceof Postava ||
-				ent instanceof Artefact) {
-			vlastnosti = sk.souradky.get(prvekkNN.getIdx());
-			if (vlastnosti instanceof Postava) {
-				isPostava = true;
-			} else {
-				isPostava = false;
+		if(prvekkNN.getIdx()<sk.souradky.size()){
+			HPEntity ent = sk.souradky.get(prvekkNN.getIdx());
+			if (ent instanceof Postava ||
+					ent instanceof Artefact) {
+				vlastnosti = sk.souradky.get(prvekkNN.getIdx());
+				if (vlastnosti instanceof Postava) {
+					isPostava = true;
+				} else {
+					isPostava = false;
+				}
+				removeAll();
+				praveMenu();
+				revalidate();
+				repaint();
 			}
-			removeAll();
-			praveMenu();
-			revalidate();
-			repaint();
 		}
 	}
 }

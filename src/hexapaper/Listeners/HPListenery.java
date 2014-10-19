@@ -56,6 +56,10 @@ public class HPListenery {
 			}
 			LoadFile load = new LoadFile(sk.str.get("Hex_text"), sk.str.get("Hex_ext"));
 			sk.initLoad(load.getSouradky());
+			if(sk.isConnected&&sk.PJ){
+				sk.client.radiusHexapaper();
+				sk.client.updateHexapaper();
+			}
 		}
 	}
 

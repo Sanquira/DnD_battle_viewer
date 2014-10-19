@@ -2,6 +2,7 @@ package hexapaper.network.server;
 
 import java.io.IOException;
 
+import hexapaper.entity.HPEntity;
 import hexapaper.source.HPSklad;
 import network.command.users.CommandClient;
 
@@ -35,6 +36,15 @@ public class HexaClient extends CommandClient{
 		} catch (IOException e) {
 			System.out.println("Failed to send Hexapaper");
 			e.printStackTrace();
+		}
+	}
+	public void updateNameTag(HPEntity e){
+		Object[] o={e.loc.getX(),e.loc.getY(),e.getNick(),e.tag};
+		try {
+			send(o,"EntChangeName");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 }
