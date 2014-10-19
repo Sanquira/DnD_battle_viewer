@@ -37,7 +37,7 @@ public class HPSklad {
 	public int gridRa = 0;
 	public int x = 0;
 	public int y = 0;
-	
+
 	public JScrollPane scroll;
 	public Location LocDontCare = new Location(RADIUS, RADIUS, 0);
 	public HPEntity insertedEntity;
@@ -45,55 +45,56 @@ public class HPSklad {
 	public JMenu ExportMenu;
 	public JLabel connected;
 	public JLabel position;
-	
+
 	public ArrayList<HPEntity> souradky;
 	public ArrayList<HPEntity> databazePostav = new ArrayList<>();
 	public ArrayList<HPEntity> databazeArtefaktu = new ArrayList<>();
 	public ArrayList<Component> serverbanned = new ArrayList<>();
-	
+
 	public boolean hidePlayerColor = false;
 	public boolean hideNPCColor = false;
 	public boolean repeatableInsert = false;
 	public boolean canEvent = false;
 	public boolean isConnected = false;
-	public boolean PJ=false;
+	public boolean PJ = false;
 	public boolean insertingEntity = false;
 	public boolean banned = false;
-	
+
 	public HexaClient client;
 	public LangFile str;
 
 	public final String VERSION = "v0.1";
-	
-	public void send(Object o,String header) throws IOException{
-		if(isConnected){
+
+	public void send(Object o, String header) throws IOException {
+		if (isConnected) {
 			client.send(o, header);
 		}
 	}
-	
-	public void reload(){
+
+	public void reload() {
 		initLoad(souradky);
 	}
-	
+
 	protected HPSklad() {
 	}
-	
-	public void colorJMenu(){
+
+	public void colorJMenu() {
 		Color color = Color.DARK_GRAY;
-		if(banned){
+		if (banned) {
 			color = Color.RED;
 		}
-		for(Component item:serverbanned){
+		for (Component item : serverbanned) {
 			item.setForeground(color);
 			item.repaint();
 		}
 	}
+
 	public void init() {
 		str = new LangFile(HPStrings.class);
 		str.loadLang();
-	
+
 		hraciPlocha = new HraciPlocha();
-				
+
 		prvky = new Gprvky();
 		RMenu = new HPRightMenu();
 	}
@@ -125,41 +126,45 @@ public class HPSklad {
 				// System.out.println(i);
 				hraciPlocha.insertEntity(i, souradky.get(i), true);
 			}
-		}		
+		}
 		hexapaper.HPfrm.repaint();
 		HPListenery lis = new HPListenery();
 		hraciPlocha.addMouseListener(lis.new HraciPlochaListener());
 		hraciPlocha.addMouseMotionListener(lis.new HraciPlochaListener());
 		scroll.setViewportView(hraciPlocha);
+		scroll.getViewport().addChangeListener(lis.new ScrollListener());
 		odblokujListenery();
 	}
 
 	public void odblokujListenery() {
 		canEvent = true;
 	}
-	public void updatePosition(double x1,double y1){
-		this.x=(int) x1;
-		this.y=(int) y1;
+
+	public void updatePosition(double x1, double y1) {
+		this.x = (int) x1;
+		this.y = (int) y1;
 		position.revalidate();
-		position.setText(str.get("Posititon")+x+","+y);
+		position.setText(str.get("Posititon") + x + "," + y);
 		position.repaint();
 	}
-	public void updateConnect(){
-		if(isConnected&&PJ){
+
+	public void updateConnect() {
+		if (isConnected && PJ) {
 			connected.setForeground(Color.BLUE);
-			banned=false;
+			banned = false;
 		}
-		if(isConnected&&!PJ){
+		if (isConnected && !PJ) {
 			connected.setForeground(Color.GREEN);
-			banned=true;
+			banned = true;
 		}
-		if(!isConnected){
+		if (!isConnected) {
 			connected.setForeground(Color.RED);
-			banned=false;
+			banned = false;
 		}
-		connected.setText(str.get("ConnectLabel")+"{"+isConnected+","+PJ+"}");
+		connected.setText(str.get("ConnectLabel") + "{" + isConnected + "," + PJ + "}");
 		colorJMenu();
 	}
+
 	public static class prvekkNN implements Cloneable {
 		private double x1, y1, vzd;
 		private int idx;
@@ -212,7 +217,7 @@ public class HPSklad {
 		}
 	}
 
-	public static class PropPair implements Cloneable,Serializable {
+	public static class PropPair implements Cloneable, Serializable {
 		/**
 		 * 
 		 */

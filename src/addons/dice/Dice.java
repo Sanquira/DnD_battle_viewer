@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import core.JNumberTextField;
+
 public class Dice {
 
 	// /////////////////////////////////////////////////////////////////////////////

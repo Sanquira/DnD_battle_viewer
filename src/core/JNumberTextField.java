@@ -1,4 +1,4 @@
-package addons.dice;
+package core;
 
 
 import javax.swing.*;

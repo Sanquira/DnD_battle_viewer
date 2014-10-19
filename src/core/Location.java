@@ -1,9 +1,9 @@
 package core;
 
+import java.awt.Point;
 import java.io.Serializable;
 
-
-public class Location implements Cloneable,Serializable {
+public class Location implements Cloneable, Serializable {
 
 	/**
 	 * 
@@ -46,6 +46,10 @@ public class Location implements Cloneable,Serializable {
 
 	public void setY(Integer dir) {
 		this.y = dir;
+	}
+
+	public Point getPoint() {
+		return new Point(this.x, this.y);
 	}
 
 	@Override

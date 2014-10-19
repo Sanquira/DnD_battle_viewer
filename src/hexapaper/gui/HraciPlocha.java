@@ -1,9 +1,7 @@
 package hexapaper.gui;
 
-import hexapaper.entity.Artefact;
 import hexapaper.entity.FreeSpace;
 import hexapaper.entity.HPEntity;
-import hexapaper.entity.Postava;
 import hexapaper.source.BPolygon;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.prvekkNN;
@@ -19,7 +17,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import core.Grids;
 import core.Location;
@@ -66,17 +63,19 @@ public class HraciPlocha extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(2));
 		for (HPEntity ent : sk.souradky) {
-			g2.setColor(ent.background);
-			g2.fillPolygon(new Gprvky().emptyHexagon(ent.loc));
-			g2.setColor(Color.black);
-			g2.drawString(ent.tag, Math.round(ent.loc.getX() - (fm.getStringBounds(ent.tag, g).getWidth() / 2)),
-					Math.round(ent.loc.getY() + (fm.getStringBounds(ent.tag, g).getHeight() / 3)));
-			fm.getStringBounds(ent.tag, g).getWidth();
-			for (BPolygon poly : ent.prvek) {
-				if (!poly.isFilled) {
-					g2.drawPolygon(poly);
-				} else {
-					g2.fillPolygon(poly);
+			if (sk.scroll.getViewport().getViewRect().contains(ent.loc.getPoint())) {
+				g2.setColor(ent.background);
+				g2.fillPolygon(new Gprvky().emptyHexagon(ent.loc));
+				g2.setColor(Color.black);
+				g2.drawString(ent.tag, Math.round(ent.loc.getX() - (fm.getStringBounds(ent.tag, g).getWidth() / 2)),
+						Math.round(ent.loc.getY() + (fm.getStringBounds(ent.tag, g).getHeight() / 3)));
+				fm.getStringBounds(ent.tag, g).getWidth();
+				for (BPolygon poly : ent.prvek) {
+					if (!poly.isFilled) {
+						g2.drawPolygon(poly);
+					} else {
+						g2.fillPolygon(poly);
+					}
 				}
 			}
 		}
@@ -204,12 +203,12 @@ public class HraciPlocha extends JPanel {
 	}
 
 	public void saveEntity(int idx) {
-		//System.out.println(sk.souradky.get(idx));
+		// System.out.println(sk.souradky.get(idx));
 		if (sk.souradky.get(idx) instanceof FreeSpace) {
 			sk.setupInserting(null, false);
 			return;
 		}
-		
+
 		sk.setupInserting(sk.souradky.get(idx).clone(), false);
 		Location loc = sk.souradky.get(idx).clone().loc;
 		oldIdx = idx;

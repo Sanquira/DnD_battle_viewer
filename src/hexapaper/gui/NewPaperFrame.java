@@ -16,7 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import addons.dice.JNumberTextField;
+import core.JNumberTextField;
+
 
 public class NewPaperFrame extends JPanel {
 

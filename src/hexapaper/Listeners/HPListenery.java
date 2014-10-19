@@ -29,6 +29,8 @@ import java.util.Date;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import network.command.users.CommandClient;
 import addons.dice.Dice;
@@ -37,6 +39,15 @@ import core.kNN;
 public class HPListenery {
 
 	HPSklad sk = HPSklad.getInstance();
+
+	public class ScrollListener implements ChangeListener {
+
+		@Override
+		public void stateChanged(ChangeEvent e) {
+			sk.hraciPlocha.repaint();
+		}
+
+	}
 
 	public class NovaListener implements ActionListener {
 		@Override
@@ -56,7 +67,7 @@ public class HPListenery {
 			}
 			LoadFile load = new LoadFile(sk.str.get("Hex_text"), sk.str.get("Hex_ext"));
 			sk.initLoad(load.getSouradky());
-			if(sk.isConnected&&sk.PJ){
+			if (sk.isConnected && sk.PJ) {
 				sk.client.radiusHexapaper();
 				sk.client.updateHexapaper();
 			}
@@ -307,4 +318,5 @@ public class HPListenery {
 		}
 
 	}
+
 }
