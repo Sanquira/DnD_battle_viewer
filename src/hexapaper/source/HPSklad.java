@@ -6,8 +6,14 @@ import hexapaper.entity.HPEntity;
 import hexapaper.gui.Gprvky;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.HPRightMenu;
+import hexapaper.network.server.HexaClient;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
+
+import javax.swing.JMenu;
+import javax.swing.JScrollPane;
 
 import core.LangFile;
 import core.Location;
@@ -23,32 +29,51 @@ public class HPSklad {
 	public int RADIUS = 25;
 	public int gridSl = 0;
 	public int gridRa = 0;
-	public ArrayList<HPEntity> souradky;
-	public boolean insertingEntity = false;
+	
+	public JScrollPane scroll;
 	public Location LocDontCare = new Location(RADIUS, RADIUS, 0);
+	public HPEntity insertedEntity;
+	public JMenu GameMenu;
+	public JMenu ExportMenu;
+	
+	public ArrayList<HPEntity> souradky;
 	public ArrayList<HPEntity> databazePostav = new ArrayList<>();
 	public ArrayList<HPEntity> databazeArtefaktu = new ArrayList<>();
-	public HPEntity insertedEntity;
+	
 	public boolean hidePlayerColor = false;
 	public boolean hideNPCColor = false;
 	public boolean repeatableInsert = false;
 	public boolean canEvent = false;
+	public boolean isConnected = false;
+	public boolean PJ=false;
+	public boolean insertingEntity = false;
+	
+	public HexaClient client;
 	public LangFile str;
 
 	public final String VERSION = "v0.1";
-
+	
+	public void send(Object o,String header) throws IOException{
+		if(isConnected){
+			client.send(o, header);
+		}
+	}
+	
+	public void reload(){
+		initLoad(souradky);
+	}
+	
 	protected HPSklad() {
 	}
-
+	
 	public void init() {
 		str = new LangFile(HPStrings.class);
 		str.loadLang();
-
+	
 		hraciPlocha = new HraciPlocha();
-
+				
 		prvky = new Gprvky();
 		RMenu = new HPRightMenu();
-
 	}
 
 	public static HPSklad getInstance() {
@@ -78,9 +103,10 @@ public class HPSklad {
 				// System.out.println(i);
 				hraciPlocha.insertEntity(i, souradky.get(i), true);
 			}
-		}
-		odblokujListenery();
+		}		
 		hexapaper.HPfrm.repaint();
+		//scroll.setViewportView(hraciPlocha);
+		odblokujListenery();
 	}
 
 	public void odblokujListenery() {
@@ -139,7 +165,11 @@ public class HPSklad {
 		}
 	}
 
-	public static class PropPair implements Cloneable {
+	public static class PropPair implements Cloneable,Serializable {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 2280106317511129808L;
 		public String name;
 		public String value;
 

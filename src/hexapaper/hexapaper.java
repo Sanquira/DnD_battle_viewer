@@ -59,9 +59,12 @@ public class hexapaper extends JFrame {
 		JMenuItem novyPaper = new JMenuItem(sk.str.get("newPaper"));
 		JMenuItem nactiPaper = new JMenuItem(sk.str.get("loadPaper"));
 		JMenuItem ulozPaper = new JMenuItem(sk.str.get("savePaper"));
+		JMenuItem Server = new JMenuItem("Server");
+		JMenuItem Client = new JMenuItem("Client");
 		JMenuItem konec = new JMenuItem(sk.str.get("konec"));
 
 		novyPaper.addActionListener(lis.new NovaListener());
+		Client.addActionListener(lis.new Client());
 		nactiPaper.addActionListener(lis.new NactiListener());
 		ulozPaper.addActionListener(lis.new UlozListener());
 		konec.addActionListener(lis.new KonecListener());
@@ -69,6 +72,8 @@ public class hexapaper extends JFrame {
 		hraMenu.add(novyPaper);
 		hraMenu.add(nactiPaper);
 		hraMenu.add(ulozPaper);
+		hraMenu.add(Client);
+		hraMenu.add(Server);
 		hraMenu.add(konec);
 
 		JMenu upravy = new JMenu(sk.str.get("upravy"));
@@ -139,5 +144,6 @@ public class hexapaper extends JFrame {
 		hraciplsc.getVerticalScrollBar().setUnitIncrement(16);
 		hraciplsc.getHorizontalScrollBar().setUnitIncrement(16);
 		hraciplsc.setViewportView(sk.hraciPlocha);
+		sk.scroll=hraciplsc;
 	}
 }

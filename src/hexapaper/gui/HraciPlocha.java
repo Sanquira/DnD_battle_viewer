@@ -1,7 +1,9 @@
 package hexapaper.gui;
 
+import hexapaper.entity.Artefact;
 import hexapaper.entity.FreeSpace;
 import hexapaper.entity.HPEntity;
+import hexapaper.entity.Postava;
 import hexapaper.source.BPolygon;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.prvekkNN;
@@ -13,9 +15,11 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import core.Grids;
 import core.Location;
@@ -128,18 +132,32 @@ public class HraciPlocha extends JPanel {
 		int smer = countDir(idx);
 		for (HPEntity ent : sk.souradky) {
 			if (ent.loc.getX() == idx.get(0).getX1() && ent.loc.getY() == idx.get(0).getY1() && ent.isRotateable) {
-				ent.loc.setDir(smer);
-				ent.recreateGraphics();
+				if((sk.isConnected&&sk.PJ)||!sk.isConnected){
+					ent.loc.setDir(smer);
+					ent.recreateGraphics();
+					try {
+						Integer[] obj={ent.loc.getX(),ent.loc.getY(),ent.loc.getDir()};
+						System.out.println(obj[0]+":"+obj[1]+":"+obj[2]);
+						sk.send(obj, "rotateEnt");
+						//System.out.println(ent.loc.getDir());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return;
+				}
+				System.out.println("No permission: Rotate");
 				break;
 			}
 		}
 		this.repaint();
 	}
 
-	public boolean insertEntity(int idx, HPEntity type, boolean hard) {
+	public boolean insertEntity(Integer idx, HPEntity type, Boolean hard) {
 		if (type == null) {
 			return false;
 		}
+
 		HPEntity ent = sk.souradky.get(idx).clone();
 		if (ent.isColidable || hard) {
 			Location loc = ent.loc;
@@ -148,6 +166,15 @@ public class HraciPlocha extends JPanel {
 			type.recreateGraphics();
 			sk.souradky.set(idx, type.clone());
 			repaint();
+			if(sk.isConnected&&sk.PJ&&type!=null){
+				Object[] o={idx,type.clone()};
+				try {
+					sk.client.send(o, "insertEnt");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			if (!sk.repeatableInsert) {
 				type = null;
 				sk.setupInserting(null, false);
@@ -181,6 +208,12 @@ public class HraciPlocha extends JPanel {
 			sk.setupInserting(null, false);
 			return;
 		}
+		//if (sk.souradky.get(idx) instanceof Postava||sk.souradky.get(idx) instanceof Artefact){
+			//sk.setupInserting(sk.souradky.get(idx), false);
+			//Location loc = sk.souradky.get(idx).loc;
+			//oldIdx = idx;
+			//drawCursor(loc.getX(), loc.getY());
+		//}
 		sk.setupInserting(sk.souradky.get(idx).clone(), false);
 		Location loc = sk.souradky.get(idx).clone().loc;
 		oldIdx = idx;

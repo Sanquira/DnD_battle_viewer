@@ -1,13 +1,15 @@
 package hexapaper.source;
 
 import java.awt.Polygon;
+import java.io.Serializable;
 
-public class BPolygon extends Polygon implements Cloneable {
+public class BPolygon extends Polygon implements Cloneable,Serializable {
+
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2159232486203749704L;
 	public boolean isFilled = false;
 
 	public BPolygon() {

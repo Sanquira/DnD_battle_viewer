@@ -8,6 +8,7 @@ import hexapaper.gui.ExportOneFrame;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.NewPaperFrame;
 import hexapaper.gui.PostavaAddFrame;
+import hexapaper.network.server.HexaClient;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.prvekkNN;
 
@@ -18,11 +19,17 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.net.UnknownHostException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import network.command.users.CommandClient;
 import addons.dice.Dice;
 import core.kNN;
 
@@ -33,13 +40,19 @@ public class HPListenery {
 	public class NovaListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new NewPaperFrame();
+			if(sk.isConnected&&!sk.PJ){
+				return;
+			}
+			new NewPaperFrame();					
 		}
 	}
 
 	public class NactiListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			if(sk.isConnected&&!sk.PJ){
+				return;
+			}
 			LoadFile load = new LoadFile(sk.str.get("Hex_text"), sk.str.get("Hex_ext"));
 			sk.initLoad(load.getSouradky());
 		}
@@ -56,6 +69,9 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
+			if(sk.isConnected&&!sk.PJ){
+				return;
+			}
 			new PostavaAddFrame();
 		}
 	}
@@ -64,6 +80,9 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
+			if(sk.isConnected&&!sk.PJ){
+				return;
+			}
 			new ArtefactAddFrame();
 		}
 	}
@@ -152,10 +171,12 @@ public class HPListenery {
 					t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
 				}
 				if (e.getButton() == MouseEvent.BUTTON1 && !sk.insertingEntity) {
-					ins = true;
 					sk.RMenu.redrawProperities(idx.get(0));
-					HraciPlocha t = (HraciPlocha) e.getComponent();
-					t.saveEntity(idx.get(0).getIdx());
+					if((sk.isConnected&&sk.PJ)||!sk.isConnected){
+						ins = true;						
+						HraciPlocha t = (HraciPlocha) e.getComponent();
+						t.saveEntity(idx.get(0).getIdx());
+					}	
 				}
 			}
 		}
@@ -219,11 +240,52 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
+			if(sk.isConnected&&!sk.PJ){
+				return;
+			}
 			new LoadFile(sk.str.get("desc"), sk.str.get("File_ext"), sk.str.get("Db_ext"));
 			sk.RMenu.updateDatabase();
+
 		}
 	}
+	public class Client implements ActionListener {
 
+		@Override
+		public void actionPerformed(ActionEvent paramActionEvent) {
+			System.out.println("Pokus o připojení");
+			DateFormat dateFormat = new SimpleDateFormat("ss");
+			Date date = new Date();
+			
+			HexaClient c=new HexaClient();
+			try {
+				c.connect("212.96.186.28", 10055, dateFormat.format(date));
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public class Server implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent paramActionEvent) {
+			CommandClient c=new CommandClient();
+			try {
+				c.connect("localhost", 10555, "Sprt");
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public class KostkaListener implements ActionListener {
 
 		@Override

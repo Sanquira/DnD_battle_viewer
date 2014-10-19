@@ -1,12 +1,19 @@
 package core;
 
+import java.io.Serializable;
 
-public class Location implements Cloneable {
-	private int x = 0;
-	private int y = 0;
-	private int direction = 0;
 
-	public Location(int x, int y, int dir) {
+public class Location implements Cloneable,Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6007945538361059723L;
+	private Integer x = 0;
+	private Integer y = 0;
+	private Integer direction = 0;
+
+	public Location(Integer x, Integer y, Integer dir) {
 		this.x = x;
 		this.y = y;
 		this.direction = dir;
@@ -17,27 +24,27 @@ public class Location implements Cloneable {
 		return (Location) super.clone();
 	}
 
-	public int getX() {
+	public Integer getX() {
 		return x;
 	}
 
-	public int getY() {
+	public Integer getY() {
 		return y;
 	}
 
-	public int getDir() {
+	public Integer getDir() {
 		return direction;
 	}
 
-	public void setDir(int dir) {
+	public void setDir(Integer dir) {
 		this.direction = dir;
 	}
 
-	public void setX(int dir) {
+	public void setX(Integer dir) {
 		this.x = dir;
 	}
 
-	public void setY(int dir) {
+	public void setY(Integer dir) {
 		this.y = dir;
 	}
 

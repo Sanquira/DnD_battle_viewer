@@ -87,6 +87,9 @@ public class NewPaperFrame extends JPanel {
 		sk.hraciPlocha.init();
 		sk.hraciPlocha.revalidate();
 		sk.hraciPlocha.repaint();
+		if(sk.isConnected&&sk.PJ){
+			sk.client.updateHexapaper();
+		}	
 	}
 
 	private class Listener extends FocusAdapter {

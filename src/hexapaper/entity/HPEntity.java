@@ -3,12 +3,17 @@ package hexapaper.entity;
 import hexapaper.source.BPolygon;
 
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import core.Location;
 
-public abstract class HPEntity implements Cloneable {
+public abstract class HPEntity implements Cloneable,Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6970412701137178068L;
 	public boolean isColidable;
 	public boolean isRotateable;
 	public Location loc;

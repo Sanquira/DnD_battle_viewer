@@ -3,12 +3,17 @@ package hexapaper.entity;
 import hexapaper.gui.Gprvky;
 import hexapaper.source.HPSklad.PropPair;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import core.Location;
 
-public class Postava extends HPEntity {
+public class Postava extends HPEntity implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2929222903743095773L;
 	private boolean PJ;
 	private ArrayList<PropPair> param = new ArrayList<PropPair>();
 

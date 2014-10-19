@@ -1,14 +1,18 @@
 package hexapaper.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import core.Location;
-
 import hexapaper.gui.Gprvky;
 import hexapaper.source.HPSklad.PropPair;
 
-public class Artefact extends HPEntity {
+public class Artefact extends HPEntity implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6124161923341675505L;
 	private ArrayList<PropPair> param = new ArrayList<PropPair>();
 
 	public Artefact(String name, Location loc, ArrayList<PropPair> prop) {

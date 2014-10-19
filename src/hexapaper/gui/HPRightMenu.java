@@ -222,6 +222,9 @@ public class HPRightMenu extends JPanel {
 	}
 
 	private void osetriWall(boolean isActive) {
+		if(sk.isConnected&&!sk.PJ){
+			return;
+		}
 		if (isActive) {
 			freespace.setSelected(false);
 			osetriFreeSpace(false);
@@ -232,6 +235,9 @@ public class HPRightMenu extends JPanel {
 	}
 
 	private void osetriFreeSpace(boolean isActive) {
+		if(sk.isConnected&&!sk.PJ){
+			return;
+		}
 		if (isActive) {
 			wall.setSelected(false);
 			osetriWall(false);
@@ -395,6 +401,9 @@ public class HPRightMenu extends JPanel {
 			if (!((Postava) vlastnosti).isPJ() && sk.hidePlayerColor) {
 				skryj = true;
 			}
+		}
+		if(sk.isConnected&&!sk.PJ){
+			skryj= true;
 		}
 		if (!skryj) {
 			int i = 0;
