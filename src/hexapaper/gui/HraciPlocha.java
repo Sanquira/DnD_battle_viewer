@@ -49,7 +49,7 @@ public class HraciPlocha extends JPanel {
 
 	private ArrayList<HPEntity> genGrid(int sloupcu, int radku) {
 		ArrayList<HPEntity> grid = new ArrayList<HPEntity>();
-		int[][] souradky = Grids.gridHexa(sloupcu,radku,sk.RADIUS);
+		int[][] souradky = Grids.gridHexa(sloupcu, radku, sk.RADIUS);
 		for (int i = 0; i < souradky.length; i++) {
 			souradky[i][0] += sk.RADIUS;
 			souradky[i][1] += Math.round(sk.RADIUS * Math.cos(Math.toRadians(30)));
@@ -132,14 +132,14 @@ public class HraciPlocha extends JPanel {
 		int smer = countDir(idx);
 		for (HPEntity ent : sk.souradky) {
 			if (ent.loc.getX() == idx.get(0).getX1() && ent.loc.getY() == idx.get(0).getY1() && ent.isRotateable) {
-				if((sk.isConnected&&sk.PJ)||!sk.isConnected){
+				if ((sk.isConnected && sk.PJ) || !sk.isConnected) {
 					ent.loc.setDir(smer);
 					ent.recreateGraphics();
 					try {
-						Integer[] obj={ent.loc.getX(),ent.loc.getY(),ent.loc.getDir()};
-						//System.out.println(obj[0]+":"+obj[1]+":"+obj[2]);
+						Integer[] obj = { ent.loc.getX(), ent.loc.getY(), ent.loc.getDir() };
+						// System.out.println(obj[0]+":"+obj[1]+":"+obj[2]);
 						sk.send(obj, "rotateEnt");
-						//System.out.println(ent.loc.getDir());
+						// System.out.println(ent.loc.getDir());
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -166,8 +166,8 @@ public class HraciPlocha extends JPanel {
 			type.recreateGraphics();
 			sk.souradky.set(idx, type.clone());
 			repaint();
-			if(sk.isConnected&&sk.PJ&&type!=null){
-				Object[] o={idx,type.clone()};
+			if (sk.isConnected && sk.PJ && type != null) {
+				Object[] o = { idx, type.clone() };
 				try {
 					sk.client.send(o, "insertEnt");
 				} catch (IOException e) {
@@ -204,16 +204,12 @@ public class HraciPlocha extends JPanel {
 	}
 
 	public void saveEntity(int idx) {
+		System.out.println(sk.souradky.get(idx));
 		if (sk.souradky.get(idx) instanceof FreeSpace) {
 			sk.setupInserting(null, false);
 			return;
 		}
-		//if (sk.souradky.get(idx) instanceof Postava||sk.souradky.get(idx) instanceof Artefact){
-			//sk.setupInserting(sk.souradky.get(idx), false);
-			//Location loc = sk.souradky.get(idx).loc;
-			//oldIdx = idx;
-			//drawCursor(loc.getX(), loc.getY());
-		//}
+		
 		sk.setupInserting(sk.souradky.get(idx).clone(), false);
 		Location loc = sk.souradky.get(idx).clone().loc;
 		oldIdx = idx;

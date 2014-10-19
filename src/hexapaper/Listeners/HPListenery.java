@@ -41,17 +41,17 @@ public class HPListenery {
 	public class NovaListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(sk.isConnected&&!sk.PJ){
+			if (sk.isConnected && !sk.PJ) {
 				return;
 			}
-			new NewPaperFrame();					
+			new NewPaperFrame();
 		}
 	}
 
 	public class NactiListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(sk.isConnected&&!sk.PJ){
+			if (sk.isConnected && !sk.PJ) {
 				return;
 			}
 			LoadFile load = new LoadFile(sk.str.get("Hex_text"), sk.str.get("Hex_ext"));
@@ -70,7 +70,7 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			if(sk.isConnected&&!sk.PJ){
+			if (sk.isConnected && !sk.PJ) {
 				return;
 			}
 			new PostavaAddFrame();
@@ -81,7 +81,7 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			if(sk.isConnected&&!sk.PJ){
+			if (sk.isConnected && !sk.PJ) {
 				return;
 			}
 			new ArtefactAddFrame();
@@ -99,11 +99,15 @@ public class HPListenery {
 	public class KonecHardListener implements WindowListener {
 		@Override
 		public void windowClosing(WindowEvent paramWindowEvent) {
-			Object[] opt = { sk.str.get("ano"), sk.str.get("ne") };
-			int t = JOptionPane.showOptionDialog(paramWindowEvent.getComponent(), sk.str.get("zpravaZtrataDat"), sk.str.get("ztrataDat"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
-			if (t == JOptionPane.OK_OPTION) {
-				System.exit(0);
-			}
+			/*
+			 * Object[] opt = { sk.str.get("ano"), sk.str.get("ne") }; int t =
+			 * JOptionPane.showOptionDialog(paramWindowEvent.getComponent(),
+			 * sk.str.get("zpravaZtrataDat"), sk.str.get("ztrataDat"),
+			 * JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null,
+			 * opt, opt[0]); if (t == JOptionPane.OK_OPTION) { System.exit(0);
+			 * }//
+			 */
+			System.exit(0);
 		}
 
 		@Override
@@ -174,19 +178,19 @@ public class HPListenery {
 					t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
 				}
 				if (e.getButton() == MouseEvent.BUTTON1 && !sk.insertingEntity) {
-					if((sk.isConnected&&sk.PJ)||!sk.isConnected){
-						sk.RMenu.redrawProperities(idx.get(0));					
-						ins = true;						
+					if ((sk.isConnected && sk.PJ) || !sk.isConnected) {
+						sk.RMenu.redrawProperities(idx.get(0));
+						ins = true;
 						HraciPlocha t = (HraciPlocha) e.getComponent();
 						t.saveEntity(idx.get(0).getIdx());
-					}	
+					}
 				}
 			}
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			if (ins && ins2 && e.getButton() == MouseEvent.BUTTON1 && sk.canEvent) {
+			if (ins && e.getButton() == MouseEvent.BUTTON1 && sk.canEvent) {
 				ins = false;
 				ins2 = false;
 				double x = e.getX();
@@ -243,7 +247,7 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			if(sk.isConnected&&!sk.PJ){
+			if (sk.isConnected && !sk.PJ) {
 				return;
 			}
 			new LoadFile(sk.str.get("desc"), sk.str.get("File_ext"), sk.str.get("Db_ext"));
@@ -251,33 +255,34 @@ public class HPListenery {
 
 		}
 	}
+
 	public class Client implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
 			new ClientConnectFrame();
-			//			System.out.println("Pokus o připojení");
-//			DateFormat dateFormat = new SimpleDateFormat("ss");
-//			Date date = new Date();
-//			
-//			HexaClient c=new HexaClient();
-//			try {
-//				c.connect("212.96.186.28", 10055, dateFormat.format(date));
-//			} catch (UnknownHostException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+			// System.out.println("Pokus o připojení");
+			// DateFormat dateFormat = new SimpleDateFormat("ss");
+			// Date date = new Date();
+			//
+			// HexaClient c=new HexaClient();
+			// try {
+			// c.connect("212.96.186.28", 10055, dateFormat.format(date));
+			// } catch (UnknownHostException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// } catch (IOException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
 		}
 	}
-	
+
 	public class Server implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			CommandClient c=new CommandClient();
+			CommandClient c = new CommandClient();
 			try {
 				c.connect("localhost", 10555, "Sprt");
 			} catch (UnknownHostException e) {
@@ -289,7 +294,7 @@ public class HPListenery {
 			}
 		}
 	}
-	
+
 	public class KostkaListener implements ActionListener {
 
 		@Override
