@@ -13,6 +13,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -81,11 +82,13 @@ public class HraciPlocha extends JPanel {
 		}
 		if (cursor != null) {
 			g2.setColor(cursor.background);
-			g2.fillPolygon(new Gprvky().emptyHexagon(cursor.loc));
-			g2.setColor(Color.black);
-			g2.drawString(cursor.tag, Math.round(cursor.loc.getX() - (fm.getStringBounds(cursor.tag, g).getWidth() / 2)),
-					Math.round(cursor.loc.getY() + (fm.getStringBounds(cursor.tag, g).getHeight() / 3)));
-			fm.getStringBounds(cursor.tag, g).getWidth();
+			if (!sk.isConnected && !sk.isPJ) {
+				g2.fillPolygon(new Gprvky().emptyHexagon(cursor.loc));
+				g2.setColor(Color.black);
+				g2.drawString(cursor.tag, Math.round(cursor.loc.getX() - (fm.getStringBounds(cursor.tag, g).getWidth() / 2)),
+						Math.round(cursor.loc.getY() + (fm.getStringBounds(cursor.tag, g).getHeight() / 3)));
+				fm.getStringBounds(cursor.tag, g).getWidth();
+			}
 			for (BPolygon poly : cursor.prvek) {
 				if (!poly.isFilled) {
 					g2.drawPolygon(poly);
@@ -131,7 +134,7 @@ public class HraciPlocha extends JPanel {
 		int smer = countDir(idx);
 		for (HPEntity ent : sk.souradky) {
 			if (ent.loc.getX() == idx.get(0).getX1() && ent.loc.getY() == idx.get(0).getY1() && ent.isRotateable) {
-				if ((sk.isConnected && sk.PJ) || !sk.isConnected) {
+				if ((sk.isConnected && sk.isPJ) || !sk.isConnected) {
 					ent.loc.setDir(smer);
 					ent.recreateGraphics();
 					try {
@@ -165,7 +168,7 @@ public class HraciPlocha extends JPanel {
 			type.recreateGraphics();
 			sk.souradky.set(idx, type.clone());
 			repaint();
-			if (sk.isConnected && sk.PJ && type != null) {
+			if (sk.isConnected && sk.isPJ && type != null) {
 				Object[] o = { idx, type.clone() };
 				try {
 					sk.client.send(o, "insertEnt");
@@ -196,6 +199,19 @@ public class HraciPlocha extends JPanel {
 			cursor = sk.insertedEntity.clone();
 			cursor.loc = new Location(x, y, cursor.loc.getDir());
 			cursor.recreateGraphics();
+		} else if (sk.isConnected && !sk.isPJ) {
+			int sizeC = 15;
+			int[] xp = { x + 0, x + 0, x + sizeC };
+			int[] yp = { y + 0, y + sizeC, y + 0 };
+			final BPolygon poly = new BPolygon(new Polygon(xp, yp, 3), true);
+			cursor = new HPEntity("", new Location(x, y, 0), false, false, poly) {
+
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void recreateGraphics() {
+				}
+			};
 		} else {
 			cursor = null;
 		}

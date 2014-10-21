@@ -30,7 +30,7 @@ public class ClientListeners {
 	private DisconnectListener dsc=new DisconnectListener(){
 		public void Disconnect(Socket s) {
 			storage.isConnected=false;
-			storage.PJ=false;
+			storage.isPJ=false;
 			storage.updateConnect();
 			JOptionPane.showMessageDialog(storage.hraciPlocha,
 				    storage.str.get("DisconnectMessage"),
@@ -85,7 +85,7 @@ public class ClientListeners {
 	};
 	private PacketReceiveListener requestPJInfo=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
-			storage.PJ=true;
+			storage.isPJ=true;
 			storage.updateConnect();
 			//System.out.println("Requested PJ info");
 			hexaClient.radiusHexapaper();
@@ -95,7 +95,7 @@ public class ClientListeners {
 	};
 	private PacketReceiveListener removePJ=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
-			storage.PJ=false;
+			storage.isPJ=false;
 			//System.out.println("No longer PJ");
 			storage.updateConnect();
 		}		

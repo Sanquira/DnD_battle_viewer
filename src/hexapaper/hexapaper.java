@@ -157,7 +157,7 @@ public class hexapaper extends JFrame {
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 		HlavniMenu.add(panel);
 		
-		JLabel connected = new JLabel(sk.str.get("ConnectLabel")+"{"+sk.isConnected+","+sk.PJ+"}");
+		JLabel connected = new JLabel(sk.str.get("ConnectLabel")+"{"+sk.isConnected+","+sk.isPJ+"}");
 		panel.add(connected);
 		connected.setForeground (Color.red);
 		

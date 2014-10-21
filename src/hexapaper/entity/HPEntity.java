@@ -71,7 +71,7 @@ public abstract class HPEntity implements Cloneable,Serializable {
 			try {
 				this.tag = name.substring(0, 2);
 			} catch (StringIndexOutOfBoundsException e) {
-				this.tag = "";
+				this.tag = name;
 			}
 		} else {
 			this.tag = tag;

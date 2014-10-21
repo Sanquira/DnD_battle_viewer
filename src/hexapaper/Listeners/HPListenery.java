@@ -53,7 +53,7 @@ public class HPListenery {
 	public class NovaListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (sk.isConnected && !sk.PJ) {
+			if (sk.isConnected && !sk.isPJ) {
 				return;
 			}
 			new NewPaperFrame();
@@ -63,12 +63,12 @@ public class HPListenery {
 	public class NactiListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (sk.isConnected && !sk.PJ) {
+			if (sk.isConnected && !sk.isPJ) {
 				return;
 			}
 			LoadFile load = new LoadFile(sk.str.get("Hex_text"), sk.str.get("Hex_ext"));
 			sk.initLoad(load.getSouradky());
-			if (sk.isConnected && sk.PJ) {
+			if (sk.isConnected && sk.isPJ) {
 				sk.client.radiusHexapaper();
 				sk.client.updateHexapaper();
 			}
@@ -86,7 +86,7 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			if (sk.isConnected && !sk.PJ) {
+			if (sk.isConnected && !sk.isPJ) {
 				return;
 			}
 			new PostavaAddFrame();
@@ -97,7 +97,7 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			if (sk.isConnected && !sk.PJ) {
+			if (sk.isConnected && !sk.isPJ) {
 				return;
 			}
 			new ArtefactAddFrame();
@@ -194,7 +194,7 @@ public class HPListenery {
 					t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
 				}
 				if (e.getButton() == MouseEvent.BUTTON1 && !sk.insertingEntity) {
-					if ((sk.isConnected && sk.PJ) || !sk.isConnected) {
+					if ((sk.isConnected && sk.isPJ) || !sk.isConnected) {
 						sk.RMenu.redrawProperities(idx.get(0));
 						ins = true;
 						HraciPlocha t = (HraciPlocha) e.getComponent();
@@ -263,7 +263,7 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			if (sk.isConnected && !sk.PJ) {
+			if (sk.isConnected && !sk.isPJ) {
 				return;
 			}
 			new LoadFile(sk.str.get("desc"), sk.str.get("File_ext"), sk.str.get("Db_ext"));

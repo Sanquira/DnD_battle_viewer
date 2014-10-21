@@ -227,7 +227,7 @@ public class HPRightMenu extends JPanel {
 	}
 
 	private void osetriWall(boolean isActive) {
-		if(sk.isConnected&&!sk.PJ){
+		if(sk.isConnected&&!sk.isPJ){
 			return;
 		}
 		if (isActive) {
@@ -240,7 +240,7 @@ public class HPRightMenu extends JPanel {
 	}
 
 	private void osetriFreeSpace(boolean isActive) {
-		if(sk.isConnected&&!sk.PJ){
+		if(sk.isConnected&&!sk.isPJ){
 			return;
 		}
 		if (isActive) {
@@ -312,7 +312,7 @@ public class HPRightMenu extends JPanel {
 		nameL.getTextField().getDocument().addDocumentListener(new DocumentAdapter() {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				if(sk.isConnected&&!sk.PJ){
+				if(sk.isConnected&&!sk.isPJ){
 					return;
 				}
 				String chtag = "";
@@ -335,7 +335,7 @@ public class HPRightMenu extends JPanel {
 
 			@Override
 			public void insertUpdate(DocumentEvent arg0) {
-				if(sk.isConnected&&!sk.PJ){
+				if(sk.isConnected&&!sk.isPJ){
 					return;
 				}
 				String chtag = vlastnosti.tag;
@@ -412,7 +412,7 @@ public class HPRightMenu extends JPanel {
 				skryj = true;
 			}
 		}
-		if(sk.isConnected&&!sk.PJ){
+		if(sk.isConnected&&!sk.isPJ){
 			skryj= true;
 		}
 		if (!skryj) {

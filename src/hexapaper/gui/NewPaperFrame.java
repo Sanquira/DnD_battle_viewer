@@ -93,7 +93,7 @@ public class NewPaperFrame extends JPanel {
 		sk.hraciPlocha.init();
 		sk.hraciPlocha.revalidate();
 		sk.hraciPlocha.repaint();
-		if(sk.isConnected&&sk.PJ){
+		if(sk.isConnected&&sk.isPJ){
 			sk.client.radiusHexapaper();
 			sk.client.updateHexapaper();	
 		}	

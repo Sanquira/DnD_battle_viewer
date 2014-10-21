@@ -54,7 +54,7 @@ public class HPSklad {
 	public boolean repeatableInsert = false;
 	public boolean canEvent = false;
 	public boolean isConnected = false;
-	public boolean PJ = false;
+	public boolean isPJ = false;
 	public boolean insertingEntity = false;
 	public boolean banned = false;
 
@@ -145,11 +145,11 @@ public class HPSklad {
 	}
 
 	public void updateConnect() {
-		if (isConnected && PJ) {
+		if (isConnected && isPJ) {
 			connected.setForeground(Color.BLUE);
 			banned = false;
 		}
-		if (isConnected && !PJ) {
+		if (isConnected && !isPJ) {
 			connected.setForeground(Color.GREEN);
 			banned = true;
 		}
@@ -157,7 +157,7 @@ public class HPSklad {
 			connected.setForeground(Color.RED);
 			banned = false;
 		}
-		connected.setText(str.get("ConnectLabel") + "{" + isConnected + "," + PJ + "}");
+		connected.setText(str.get("ConnectLabel") + "{" + isConnected + "," + isPJ + "}");
 		colorJMenu();
 	}
 

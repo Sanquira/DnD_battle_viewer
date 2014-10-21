@@ -47,7 +47,7 @@ public class Dice {
 			final int max = Integer.valueOf(str);
 			Integer number=rand.nextInt((max - min) + 1) + min;
 			label.setText(String.valueOf(number));
-			if(sk.isConnected&&!sk.PJ){
+			if(sk.isConnected&&!sk.isPJ){
 				Integer[] i={number,max};
 				try {
 					sk.client.send(i, "dice");
