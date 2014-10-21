@@ -1,6 +1,7 @@
 package hexapaper;
 
 import hexapaper.Listeners.HPListenery;
+import hexapaper.Listeners.HPListenery.ScrollListener;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPStrings;
 
@@ -176,6 +177,7 @@ public class hexapaper extends JFrame {
 		hraciplsc.getVerticalScrollBar().setUnitIncrement(16);
 		hraciplsc.getHorizontalScrollBar().setUnitIncrement(16);
 		hraciplsc.setViewportView(sk.hraciPlocha);
+		hraciplsc.getViewport().addChangeListener(lis.new ScrollListener());
 		sk.scroll=hraciplsc;
 	}
 }
