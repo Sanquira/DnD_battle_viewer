@@ -131,7 +131,14 @@ public class ClientListeners {
 				    storage.str.get("KickWindow"),
 				    JOptionPane.WARNING_MESSAGE);					
 		}		
-	};	
+	};	PacketReceiveListener dice=new PacketReceiveListener(){
+		@Override
+		public void packetReceive(MessagePacket p) {
+			Integer roll=((Integer[]) p.getObject())[0];
+			Integer side=((Integer[]) p.getObject())[1];
+			System.out.println(p.getNick()+" si hodil "+roll+" na "+side+" kostce.");
+		}		
+	};
 	public ClientListeners(HexaClient hexaClient, HPSklad storage) {
 		this.hexaClient=hexaClient;
 		this.storage=storage;
@@ -142,6 +149,7 @@ public class ClientListeners {
 		hexaClient.addReceiveListener(RadiusHexapaper,"RadiusHexapaper");
 		hexaClient.addReceiveListener(EntityHexapaper,"EntityHexapaper");
 		hexaClient.addReceiveListener(requestPJInfo,"requestPJInfo");
+		hexaClient.addReceiveListener(dice,"dice");
 		hexaClient.addReceiveListener(removePJ,"removePJ");
 		hexaClient.addReceiveListener(rotateEnt,"rotateEnt");
 		hexaClient.addReceiveListener(insertEnt,"insertEnt");

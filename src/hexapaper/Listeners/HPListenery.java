@@ -4,11 +4,13 @@ import hexapaper.hexapaper;
 import hexapaper.file.LoadFile;
 import hexapaper.file.SaveFile;
 import hexapaper.gui.ArtefactAddFrame;
+import hexapaper.gui.ChangeZoomFrame;
 import hexapaper.gui.ClientConnectFrame;
 import hexapaper.gui.ExportOneFrame;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.NewPaperFrame;
 import hexapaper.gui.PostavaAddFrame;
+import hexapaper.gui.ZoomFrame;
 import hexapaper.network.server.HexaClient;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.prvekkNN;
@@ -292,7 +294,7 @@ public class HPListenery {
 			// }
 		}
 	}
-
+	
 	public class Server implements ActionListener {
 
 		@Override
@@ -307,6 +309,12 @@ public class HPListenery {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}		
+	}
+	public class Zoom implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent paramActionEvent) {
+			new ChangeZoomFrame();
 		}
 	}
 

@@ -35,6 +35,7 @@ public class HPSklad {
 	public int RADIUS = 25;
 	public int gridSl = 0;
 	public int gridRa = 0;
+	public int OriginalRadius = 25;
 	public int x = 0;
 	public int y = 0;
 
@@ -63,7 +64,7 @@ public class HPSklad {
 	public HexaClient client;
 	public LangFile str;
 
-	public final String VERSION = "v0.1";
+	public final String VERSION = "v0.15f";
 
 	public void send(Object o, String header) throws IOException {
 		if (isConnected) {

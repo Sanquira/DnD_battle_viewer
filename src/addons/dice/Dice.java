@@ -1,10 +1,13 @@
 package addons.dice;
 
+import hexapaper.source.HPSklad;
+
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Random;
 
 import javax.swing.JButton;
@@ -24,11 +27,13 @@ public class Dice {
 	private JFrame frmKostka;
 	private JTextField text;
 	private JLabel label;
+	private HPSklad sk=HPSklad.getInstance();
 
 	private ActionListener fastValueButtonListener = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			JButton button = (JButton) e.getSource();
 			text.setText(String.valueOf(button.getText()));
+			
 		}
 	};
 
@@ -40,7 +45,17 @@ public class Dice {
 			final int min = 1;
 			final Random rand = new Random();
 			final int max = Integer.valueOf(str);
-			label.setText(String.valueOf(rand.nextInt((max - min) + 1) + min));
+			Integer number=rand.nextInt((max - min) + 1) + min;
+			label.setText(String.valueOf(number));
+			if(sk.isConnected&&!sk.PJ){
+				Integer[] i={number,max};
+				try {
+					sk.client.send(i, "dice");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}	
 		}
 	};
 
@@ -109,7 +124,7 @@ public class Dice {
 		// rychle nastaveni rozsahu na 6
 		JButton six = new JButton("6");
 		six.setBounds(320, 0, 114, 31);
-		six.addActionListener(rollListener);
+		//six.addActionListener(rollListener);
 		six.addActionListener(fastValueButtonListener);
 		
 		frmKostka.add(six);

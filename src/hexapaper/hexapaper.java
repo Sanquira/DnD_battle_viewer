@@ -92,12 +92,15 @@ public class hexapaper extends JFrame {
 		JMenuItem exportPostDat = new JMenuItem(sk.str.get("exportPostDat"));
 		JMenuItem exportArtOne = new JMenuItem(sk.str.get("exportArtOne"));
 		JMenuItem exportPostOne = new JMenuItem(sk.str.get("exportPostOne"));
+		JMenuItem zoom = new JMenuItem("Zoom");
 
 		JMenuItem importAP = new JMenuItem(sk.str.get("importAP"));
 
 		pridejArt.addActionListener(lis.new PridejArtefakt());
 		pridejPost.addActionListener(lis.new PridejPostavu());
-
+		
+		zoom.addActionListener(lis.new Zoom());
+		
 		exportArtDat.addActionListener(lis.new ExportArtDat());
 		exportArtOne.addActionListener(lis.new ExportArtOne());
 		exportPostDat.addActionListener(lis.new ExportPostDat());
@@ -107,7 +110,8 @@ public class hexapaper extends JFrame {
 
 		upravy.add(pridejArt);
 		upravy.add(pridejPost);
-
+		upravy.add(zoom);
+		
 		exportAP.add(exportArtOne);
 		exportAP.add(exportArtDat);
 		exportAP.add(exportPostOne);

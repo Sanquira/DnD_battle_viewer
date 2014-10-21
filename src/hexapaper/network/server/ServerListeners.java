@@ -16,7 +16,6 @@ import network.core.source.MessagePacket;
 
 public class ServerListeners {
 	private CommandServer server;
-	private Object[] hexapaperList=null;
 	private int gridSl,gridRa,RADIUS;
 	private ArrayList<HPEntity> souradky=null;
 	private ArrayList<HPEntity> DBArtefact=null;
@@ -160,6 +159,22 @@ public class ServerListeners {
 		}
 		
 	};
+	PacketReceiveListener dice=new PacketReceiveListener(){
+		@Override
+		public void packetReceive(MessagePacket p) {
+			Integer roll=((Integer[]) p.getObject())[0];
+			Integer side=((Integer[]) p.getObject())[1];
+			System.out.println(p.getNick()+" si hodil "+roll+" na "+side+" kostce.");
+			try {
+				if(PJ!=null){
+					PJ.send(p.getNick(), p.getObject(), "dice");
+				}	
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}		
+	};
 	//CommandListeners
 	private CommandListener setPJ=new CommandListener(){
 		public void CommandExecuted(List<String> args) {
@@ -215,6 +230,7 @@ public class ServerListeners {
 		s.addReceiveListener(rotateEnt, "rotateEnt");
 		s.addReceiveListener(insertEnt, "insertEnt");
 		s.addReceiveListener(EntChangeName, "EntChangeName");
+		s.addReceiveListener(dice, "dice");
 		s.registerCommand("pj", 1, "pj <Name>", "Check if player is PJ", isPJ);
 		s.registerCommand("setpj", 1, "setpj <Name>", "Set PJ", setPJ);
 		s.registerCommand("kick", 2, "Kick <Name> <Reason>", "Kick player", kick);

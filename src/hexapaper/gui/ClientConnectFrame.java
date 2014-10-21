@@ -87,6 +87,15 @@ public class ClientConnectFrame extends JPanel {
 	}
 
 	private void connect() {
+		if(sk.isConnected){
+			try {
+				sk.client.close();
+				sk.client=null;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		String ip = ipfield.getText();
 		Integer port = Integer.valueOf(portfield.getText());
 		String nick = namefield.getText();
