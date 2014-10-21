@@ -10,7 +10,6 @@ import hexapaper.gui.ExportOneFrame;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.NewPaperFrame;
 import hexapaper.gui.PostavaAddFrame;
-import hexapaper.gui.ZoomFrame;
 import hexapaper.network.server.HexaClient;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.prvekkNN;
