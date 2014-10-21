@@ -165,7 +165,7 @@ public class HPListenery {
 		@Override
 		public void mouseMoved(MouseEvent e) {
 			ArrayList<prvekkNN> idx = NN.getkNNindexes(e.getX(), e.getY());
-			sk.updatePosition(idx.get(0).getX1(), idx.get(0).getY1());
+			sk.updatePosition((int)idx.get(0).getX1(), (int)idx.get(0).getY1());
 			HraciPlocha t = (HraciPlocha) e.getComponent();
 			t.drawCursor(e.getX(), e.getY());
 		}

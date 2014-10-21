@@ -35,9 +35,6 @@ public class HPSklad {
 	public int RADIUS = 25;
 	public int gridSl = 0;
 	public int gridRa = 0;
-	public int OriginalRadius = 25;
-	public int x = 0;
-	public int y = 0;
 
 	public JScrollPane scroll;
 	public Location LocDontCare = new Location(RADIUS, RADIUS, 0);
@@ -142,10 +139,8 @@ public class HPSklad {
 	}
 
 	public void updatePosition(double x1, double y1) {
-		this.x = (int) x1;
-		this.y = (int) y1;
-		position.revalidate();
-		position.setText(str.get("Posititon") + x + "," + y);
+		double r = Math.cos(Math.toRadians(30)) * RADIUS;
+		position.setText(str.get("Posititon") + Math.round(((x1 / RADIUS) - 1) * (2 / 3.) + 1) + "," + Math.round(((y1/r)-((y1/r)+1)%2-1)/2));
 		position.repaint();
 	}
 
