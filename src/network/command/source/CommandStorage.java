@@ -23,7 +23,7 @@ public class CommandStorage {
 	
 	public static CommandStorage getInstance(){
 		if(instance==null){
-			instance=new CommandStorage();
+			instance = new CommandStorage();
 		}
 		return instance;
 	}
@@ -85,5 +85,9 @@ public class CommandStorage {
 		String[] str=userInput.split("\\s");
 		return new ArrayList<String>(Arrays.asList(str));
 	}
+	public void reset(){
+		cmdlisteners=new ArrayList<>();
+		defaultCommand=null;
+	}	
 	
 }

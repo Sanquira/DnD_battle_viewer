@@ -11,6 +11,9 @@ import network.core.users.NetworkClient;
 
 public class CommandClient extends NetworkClient {
 	CommandStorage cmd=CommandStorage.getInstance();
+	public CommandClient(){
+		cmd.reset();
+	}
 	public void registerCommand(String name,int arguments,String usage,String help, CommandListener listener){
 		cmd.cmdlisteners.add(new CommandInfo(name, arguments,usage,help,listener));
 	}

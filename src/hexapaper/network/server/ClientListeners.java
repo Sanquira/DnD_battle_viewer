@@ -91,6 +91,7 @@ public class ClientListeners {
 			hexaClient.radiusHexapaper();
 			hexaClient.updateHexapaper();
 			hexaClient.updateDatabase();
+			System.out.println("cool");
 		}		
 	};
 	private PacketReceiveListener removePJ=new PacketReceiveListener(){

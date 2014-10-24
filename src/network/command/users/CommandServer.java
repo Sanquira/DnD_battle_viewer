@@ -11,6 +11,9 @@ import network.core.users.NetworkServer;
 
 public class CommandServer extends NetworkServer {
 	CommandStorage cmd=CommandStorage.getInstance();
+	public CommandServer(){
+		cmd.reset();
+	}	
 	public void registerCommand(String name,int arguments,String usage,String help, CommandListener listener){
 		cmd.cmdlisteners.add(new CommandInfo(name, arguments,usage,help,listener));
 	}
