@@ -192,7 +192,7 @@ public class HPRightMenu extends JPanel {
 		sk.serverbanned.add(addAB);
 		sk.serverbanned.add(wall);
 		sk.serverbanned.add(freespace);
-		
+
 		prvni.add(showP);
 		prvni.add(showN);
 		prvni.add(wallFreeSpace);
@@ -227,7 +227,7 @@ public class HPRightMenu extends JPanel {
 	}
 
 	private void osetriWall(boolean isActive) {
-		if(sk.isConnected&&!sk.isPJ){
+		if (sk.isConnected && !sk.isPJ) {
 			return;
 		}
 		if (isActive) {
@@ -240,7 +240,7 @@ public class HPRightMenu extends JPanel {
 	}
 
 	private void osetriFreeSpace(boolean isActive) {
-		if(sk.isConnected&&!sk.isPJ){
+		if (sk.isConnected && !sk.isPJ) {
 			return;
 		}
 		if (isActive) {
@@ -257,13 +257,13 @@ public class HPRightMenu extends JPanel {
 		freespace.setSelected(false);
 		if (addAC.getSelectedItem() != null) {
 			sk.setupInserting(((Artefact) addAC.getSelectedItem()).clone(), false);
-		}		
+		}
 	}
 
 	private void osetriAddPB() {
 		wall.setSelected(false);
 		freespace.setSelected(false);
-		if(addPC.getSelectedItem() != null){	
+		if (addPC.getSelectedItem() != null) {
 			sk.setupInserting(((Postava) addPC.getSelectedItem()).clone(), false);
 		}
 	}
@@ -312,7 +312,7 @@ public class HPRightMenu extends JPanel {
 		nameL.getTextField().getDocument().addDocumentListener(new DocumentAdapter() {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				if(sk.isConnected&&!sk.isPJ){
+				if (sk.isConnected && !sk.isPJ) {
 					return;
 				}
 				String chtag = "";
@@ -323,19 +323,20 @@ public class HPRightMenu extends JPanel {
 				}
 				vlastnosti.setNick(chtag);
 			}
+
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				insertUpdate(e);
 			}
 		});
-		
+
 		EditableJLabel tagL = new EditableJLabel(vlastnosti.tag);
 		tagL.setPreferredSize(new Dimension(35, 35));
 		tagL.getTextField().getDocument().addDocumentListener(new DocumentAdapter() {
 
 			@Override
 			public void insertUpdate(DocumentEvent arg0) {
-				if(sk.isConnected&&!sk.isPJ){
+				if (sk.isConnected && !sk.isPJ) {
 					return;
 				}
 				String chtag = vlastnosti.tag;
@@ -412,8 +413,8 @@ public class HPRightMenu extends JPanel {
 				skryj = true;
 			}
 		}
-		if(sk.isConnected&&!sk.isPJ){
-			skryj= true;
+		if (sk.isConnected && !sk.isPJ) {
+			skryj = true;
 		}
 		if (!skryj) {
 			int i = 0;
@@ -487,8 +488,8 @@ public class HPRightMenu extends JPanel {
 
 	protected void readParam() {
 		for (int i = 0; i < param.size(); i++) {
-			String name = ((EditableJLabel) ((JPanel) ((JPanel) ((JViewport) ((JScrollPane) prop.getComponent(1)).getComponent(0)).getComponent(0)).getComponent(i)).getComponent(0)).getText();
-			String value = ((JTextField) ((JPanel) ((JPanel) ((JViewport) ((JScrollPane) prop.getComponent(1)).getComponent(0)).getComponent(0)).getComponent(i)).getComponent(1)).getText();
+			String name = ((EditableJLabel) ((JPanel) ((JPanel) ((JViewport) ((JScrollPane) prop.getComponent(2)).getComponent(0)).getComponent(0)).getComponent(i)).getComponent(0)).getText();
+			String value = ((JTextField) ((JPanel) ((JPanel) ((JViewport) ((JScrollPane) prop.getComponent(2)).getComponent(0)).getComponent(0)).getComponent(i)).getComponent(1)).getText();
 			param.set(i, new PropPair(name, value));
 		}
 	}
@@ -502,7 +503,7 @@ public class HPRightMenu extends JPanel {
 	}
 
 	public void redrawProperities(prvekkNN prvekkNN) {
-		if(prvekkNN.getIdx()<sk.souradky.size()){
+		if (prvekkNN.getIdx() < sk.souradky.size()) {
 			HPEntity ent = sk.souradky.get(prvekkNN.getIdx());
 			if (ent instanceof Postava ||
 					ent instanceof Artefact) {

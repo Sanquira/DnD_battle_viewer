@@ -8,6 +8,7 @@ import hexapaper.source.HPSklad.prvekkNN;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -205,7 +206,6 @@ public class HraciPlocha extends JPanel {
 			int[] yp = { y + 0, y + sizeC, y + 0 };
 			final BPolygon poly = new BPolygon(new Polygon(xp, yp, 3), true);
 			cursor = new HPEntity("", new Location(x, y, 0), false, false, poly) {
-
 				private static final long serialVersionUID = 1L;
 
 				@Override

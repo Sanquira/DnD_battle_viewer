@@ -1,21 +1,3 @@
 {
-  "DMm_text": "Mapa dungeonu",
-  "gameMenu": "Hra",
-  "eraseTooltip": "Zdi",
-  "zpravaZtrataDat": "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVěechny neuložené změny budou ztraceny. \nChcete opravdu skončit?",
-  "drawOrder": "Způsob kreslení",
-  "penTooltip": "Čára",
-  "SUTooltip": "Schody nahoru",
-  "rectTooltip": "Obdélník",
-  "ztrataDat": "Ztráta dat",
-  "negateTooltip": "Neguj",
-  "endGame": "Konec",
-  "circTooltip": "Elipsa",
-  "ne": "Ne",
-  "SDTooltip": "Schody dolů",
-  "drawShape": "Nástroj kreslení",
-  "drawTooltip": "Chodby",
-  "ano": "Ano",
-  "holeTooltip": "Díra",
-  "DMm_ext": "map"
+  "test": "prvni"
 }

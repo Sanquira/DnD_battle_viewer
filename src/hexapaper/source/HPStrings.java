@@ -82,4 +82,7 @@ public class HPStrings {
 
 	public static String ztrataDat = "Ztráta dat";
 	public static String zpravaZtrataDat = "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVšechny neuložené změny budou ztraceny. \nChcete opravdu skončit?";
+	
+	
+	public static String diceTitle = "Kostka Log"; 
 }
