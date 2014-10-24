@@ -50,7 +50,7 @@ public class ClientConnectFrame extends JPanel {
 	protected void init() {
 		JPanel first = new JPanel(new GridLayout(1, 2, 10, 0));
 		JLabel polhex = new JLabel(sk.str.get("ipField"));
-		ipfield = new JTextField("localhost");
+		ipfield = new JTextField("212.96.186.28");
 		ipfield.addFocusListener(new Listener());
 		first.add(polhex);
 		first.add(ipfield);

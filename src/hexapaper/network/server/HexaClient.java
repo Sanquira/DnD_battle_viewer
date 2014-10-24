@@ -39,12 +39,21 @@ public class HexaClient extends CommandClient{
 		}
 	}
 	public void updateNameTag(HPEntity e){
-		Object[] o={e.loc.getX(),e.loc.getY(),e.getNick(),e.tag};
+		Object[] o={e.loc.getX(),e.loc.getY(),e.tag};
 		try {
-			send(o,"EntChangeName");
+			send(o,"EntChangeTag");
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		}
+	}
+	public void sendCoord(Integer x,Integer y){
+		Integer[] table={x,y};
+		try {
+			send(table,"PJcursor");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

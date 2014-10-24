@@ -166,8 +166,14 @@ public class HPListenery {
 		public void mouseMoved(MouseEvent e) {
 			ArrayList<prvekkNN> idx = NN.getkNNindexes(e.getX(), e.getY());
 			sk.updatePosition((int)idx.get(0).getX1(), (int)idx.get(0).getY1());
+			if(sk.isConnected&&!sk.isPJ){
+				return;
+			}
 			HraciPlocha t = (HraciPlocha) e.getComponent();
 			t.drawCursor(e.getX(), e.getY());
+			if(sk.isConnected&&sk.isPJ){
+				sk.client.sendCoord(e.getX(), e.getY());
+			}	
 		}
 
 		@Override

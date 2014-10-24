@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import core.Location;
 import network.command.interfaces.CommandListener;
 import network.command.users.CommandServer;
 import network.core.interfaces.ClientConnectListener;
@@ -17,6 +18,7 @@ import network.core.source.MessagePacket;
 public class ServerListeners {
 	private CommandServer server;
 	private int gridSl,gridRa,RADIUS;
+	private Integer[] Cursorloc;
 	private ArrayList<HPEntity> souradky=null;
 	private ArrayList<HPEntity> DBArtefact=null;
 	private ArrayList<HPEntity> DBCharacter=null;
@@ -30,8 +32,9 @@ public class ServerListeners {
 					Object[] o={gridSl,gridRa,RADIUS};
 					c.send(o, "RadiusHexapaper");
 					c.send(souradky, "EntityHexapaper");
-					c.send(DBArtefact,"DBartefact");
-					c.send(DBCharacter,"DBcharacter");
+					c.send(Cursorloc,"PJcursor");
+					//c.send(DBArtefact,"DBartefact");
+					//c.send(DBCharacter,"DBcharacter");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -83,16 +86,15 @@ public class ServerListeners {
 		@Override
 		public void packetReceive(MessagePacket p) {
 			Object[] table=(Object[]) p.getObject();
-			//System.out.println(table[0]+":"+table[1]+":"+table[2]);
+			System.out.println(table[0]+":"+table[1]+":"+table[2]);
 			for(HPEntity ent:souradky){
 				if(ent.loc.getX()==(Integer) table[0]&&ent.loc.getY()==(Integer) table[1]){
-					ent.setNick((String) table[2]);
-					ent.setTag((String) table[3]);
-					//System.out.println("Změnen nick a tag Entity");
+					ent.setTag((String) table[2]);
+					System.out.println("Změnen nick a tag Entity");
 				}
 			}
 			try {
-				server.rebroadcast(p.getNick(), p.getObject(),"EntChangeName");
+				server.rebroadcast(p.getNick(), p.getObject(),"EntChangeTag");
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -175,6 +177,18 @@ public class ServerListeners {
 			}
 		}		
 	};
+	PacketReceiveListener cursor=new PacketReceiveListener(){
+		@Override
+		public void packetReceive(MessagePacket p){
+			Cursorloc=(Integer[]) p.getObject();			
+			try {
+				server.rebroadcast(PJ.getNick(), p.getObject(), "PJcursor");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		}		
+	};	
 	//CommandListeners
 	private CommandListener setPJ=new CommandListener(){
 		public void CommandExecuted(List<String> args) {
@@ -229,8 +243,9 @@ public class ServerListeners {
 		s.addReceiveListener(DBc, "DBcharacter");
 		s.addReceiveListener(rotateEnt, "rotateEnt");
 		s.addReceiveListener(insertEnt, "insertEnt");
-		s.addReceiveListener(EntChangeName, "EntChangeName");
+		s.addReceiveListener(EntChangeName, "EntChangeTag");
 		s.addReceiveListener(dice, "dice");
+		s.addReceiveListener(cursor,"PJcursor");
 		s.registerCommand("pj", 1, "pj <Name>", "Check if player is PJ", isPJ);
 		s.registerCommand("setpj", 1, "setpj <Name>", "Set PJ", setPJ);
 		s.registerCommand("kick", 2, "Kick <Name> <Reason>", "Kick player", kick);

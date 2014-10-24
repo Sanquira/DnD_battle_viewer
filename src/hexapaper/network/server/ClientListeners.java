@@ -116,8 +116,8 @@ public class ClientListeners {
 			//System.out.println(table[0]+":"+table[1]+":"+table[2]+":"+table[3]);
 			for(HPEntity ent:storage.souradky){
 				if(ent.loc.getX().equals((Integer) table[0])&&ent.loc.getY().equals((Integer) table[1])){
-					ent.setNick((String) table[2]);
-					ent.setTag((String) table[3]);
+					ent.setTag((String) table[2]);
+					storage.hraciPlocha.repaint();
 					//System.out.println("Změnen nick a tag Entity");
 				}
 			}
@@ -131,7 +131,8 @@ public class ClientListeners {
 				    storage.str.get("KickWindow"),
 				    JOptionPane.WARNING_MESSAGE);					
 		}		
-	};	PacketReceiveListener dice=new PacketReceiveListener(){
+	};
+	PacketReceiveListener dice=new PacketReceiveListener(){
 		@Override
 		public void packetReceive(MessagePacket p) {
 			Integer roll=((Integer[]) p.getObject())[0];
@@ -139,6 +140,13 @@ public class ClientListeners {
 			System.out.println(p.getNick()+" si hodil "+roll+" na "+side+" kostce.");
 		}		
 	};
+	PacketReceiveListener pjcoord=new PacketReceiveListener(){
+		@Override
+		public void packetReceive(MessagePacket p) {
+			Integer[] o=(Integer[]) p.getObject();
+			storage.hraciPlocha.drawCursor(o[0], o[1]);			
+		}		
+	};	
 	public ClientListeners(HexaClient hexaClient, HPSklad storage) {
 		this.hexaClient=hexaClient;
 		this.storage=storage;
@@ -149,11 +157,12 @@ public class ClientListeners {
 		hexaClient.addReceiveListener(RadiusHexapaper,"RadiusHexapaper");
 		hexaClient.addReceiveListener(EntityHexapaper,"EntityHexapaper");
 		hexaClient.addReceiveListener(requestPJInfo,"requestPJInfo");
+		hexaClient.addReceiveListener(pjcoord,"PJcursor");
 		hexaClient.addReceiveListener(dice,"dice");
 		hexaClient.addReceiveListener(removePJ,"removePJ");
 		hexaClient.addReceiveListener(rotateEnt,"rotateEnt");
 		hexaClient.addReceiveListener(insertEnt,"insertEnt");
-		hexaClient.addReceiveListener(EntChangeName,"EntChangeName");
+		hexaClient.addReceiveListener(EntChangeName,"EntChangeTag");
 		hexaClient.addReceiveListener(kick, "kick");
 	}
 }
