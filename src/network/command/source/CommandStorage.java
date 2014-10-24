@@ -22,9 +22,7 @@ public class CommandStorage {
 	public CommandInfo defaultCommand=null;
 	
 	public static CommandStorage getInstance(){
-		if(instance==null){
-			instance=new CommandStorage();
-		}
+		instance=new CommandStorage();
 		return instance;
 	}
 	public Boolean checkCommand(String userInput) {

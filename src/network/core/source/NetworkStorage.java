@@ -23,9 +23,7 @@ public class NetworkStorage {
 	public int port;
 		
 	public static NetworkStorage getInstance() {
-		if (instance == null) {
-			instance = new NetworkStorage();
-		}
+		instance = new NetworkStorage();
 		return instance;
 	}
 	public void callReceiveEvent(MessagePacket inputLine) {
@@ -67,5 +65,8 @@ public class NetworkStorage {
 			}
 		}
 		return null;
+	}
+	public void reset() {
+	    
 	}
 }
