@@ -22,7 +22,9 @@ public class CommandStorage {
 	public CommandInfo defaultCommand=null;
 	
 	public static CommandStorage getInstance(){
-		instance=new CommandStorage();
+		if(instance==null){
+			instance = new CommandStorage();
+		}
 		return instance;
 	}
 	public Boolean checkCommand(String userInput) {
@@ -83,5 +85,9 @@ public class CommandStorage {
 		String[] str=userInput.split("\\s");
 		return new ArrayList<String>(Arrays.asList(str));
 	}
+	public void reset(){
+		cmdlisteners=new ArrayList<>();
+		defaultCommand=null;
+	}	
 	
 }

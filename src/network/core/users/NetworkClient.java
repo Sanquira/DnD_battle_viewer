@@ -25,6 +25,7 @@ public class NetworkClient extends AbstractNetworkUser{
 	    }
 	    public NetworkClient(){
 	    	socket = new Socket();
+	    	sk.reset();
 	    }
 	    public void connect(String host, int port, String nick) throws IOException,UnknownHostException{
   	    	socket.connect(new InetSocketAddress(host, port), 1000);

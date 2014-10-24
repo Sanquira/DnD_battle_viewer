@@ -1,13 +1,7 @@
 package hexapaper.network.server;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import network.command.interfaces.CommandListener;
 import network.command.users.CommandServer;
-import network.core.interfaces.ClientConnectListener;
-import network.core.source.ClientInfo;
 
 public class HexaServer extends CommandServer {
 	private static boolean isConsole=true;

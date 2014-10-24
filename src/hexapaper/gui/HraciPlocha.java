@@ -212,6 +212,7 @@ public class HraciPlocha extends JPanel {
 				public void recreateGraphics() {
 				}
 			};
+			cursor.background=Color.black;
 		} else {
 			cursor = null;
 		}

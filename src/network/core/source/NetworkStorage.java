@@ -23,7 +23,9 @@ public class NetworkStorage {
 	public int port;
 		
 	public static NetworkStorage getInstance() {
-		instance = new NetworkStorage();
+		if(instance==null){
+			instance = new NetworkStorage();
+		}
 		return instance;
 	}
 	public void callReceiveEvent(MessagePacket inputLine) {
@@ -67,6 +69,11 @@ public class NetworkStorage {
 		return null;
 	}
 	public void reset() {
-	    
+		receiveListeners=new ConcurrentHashMap<PacketReceiveListener,String>();
+		clientconnectListeners=new CopyOnWriteArrayList<>();
+		connectListeners=new CopyOnWriteArrayList<>();
+		disconnectListeners=new CopyOnWriteArrayList<>();
+		clientdisconnectListeners=new CopyOnWriteArrayList<>();
+		clients=new ConcurrentHashMap<String,ClientInfo>();
 	}
 }

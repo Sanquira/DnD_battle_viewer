@@ -12,7 +12,10 @@ import network.core.source.ConnectThread;
 
 public class NetworkServer extends AbstractNetworkUser{
    	static int portNumber = 1055;
-    static ServerSocket serverSocket=null;     
+    static ServerSocket serverSocket=null;
+    public NetworkServer(){
+    	sk.reset();
+    }
     public void addClientDisconnectListener(ClientDisconnectListener l){
     	sk.clientdisconnectListeners.add(l);
     }
