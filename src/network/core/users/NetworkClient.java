@@ -27,6 +27,12 @@ public class NetworkClient extends AbstractNetworkUser{
 	    	socket = new Socket();
 	    	sk.reset();
 	    }
+	    public ObjectOutputStream getOutputStream(){
+	    	return o;
+	    }
+	    public ObjectInputStream getInputStream(){
+	    	return i;
+	    }
 	    public void connect(String host, int port, String nick) throws IOException,UnknownHostException{
   	    	socket.connect(new InetSocketAddress(host, port), 1000);
 	    	this.nick=nick;
@@ -46,14 +52,27 @@ public class NetworkClient extends AbstractNetworkUser{
 	    	return socket;
 	    }
 	    public void send(Object ob) throws IOException{
-	    	o.writeObject(new MessagePacket(nick, ob));
+		   	try{
+		   		o.writeObject(new MessagePacket(nick, ob));
+		   		o.flush();
+	    	}
+	    	catch(IOException e){
+	    		e.printStackTrace();
+	    		disconnect();
+	    	}
 	    }
 	    public void send(Object ob,String header) throws IOException{
-	    	o.writeObject(new MessagePacket(nick,header, ob));
+	       	try{
+	       		o.writeObject(new MessagePacket(nick,header, ob));
+	       		o.flush();
+	       	}
+	       	catch(IOException e){
+	       		e.printStackTrace();
+	       		disconnect();
+	       	}	       	
 	    }
 	    public void disconnect() throws IOException{
-			i.close();
-			o.close();	    	    	
+			socket.close();    	    	
 	    }
 }
 

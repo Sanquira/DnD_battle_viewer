@@ -36,6 +36,7 @@ public class NetworkServer extends AbstractNetworkUser{
         System.out.println("Server zahájen "+serverSocket.getLocalSocketAddress());
         Thread t=new Thread(new ConnectThread(serverSocket));            
         t.start();
+        t.setName("ConnectThread");
     }
     public void close() throws IOException {
     	serverSocket.close();

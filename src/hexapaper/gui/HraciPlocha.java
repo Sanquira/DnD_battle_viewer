@@ -8,7 +8,6 @@ import hexapaper.source.HPSklad.prvekkNN;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -196,11 +195,7 @@ public class HraciPlocha extends JPanel {
 	}
 
 	public void drawCursor(int x, int y) {
-		if (sk.insertingEntity) {
-			cursor = sk.insertedEntity.clone();
-			cursor.loc = new Location(x, y, cursor.loc.getDir());
-			cursor.recreateGraphics();
-		} else if (sk.isConnected && !sk.isPJ) {
+		if (sk.isConnected && !sk.isPJ) {
 			int sizeC = 15;
 			int[] xp = { x + 0, x + 0, x + sizeC };
 			int[] yp = { y + 0, y + sizeC, y + 0 };

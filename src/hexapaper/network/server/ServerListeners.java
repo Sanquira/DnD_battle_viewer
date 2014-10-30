@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import core.Location;
 import network.command.interfaces.CommandListener;
 import network.command.users.CommandServer;
 import network.core.interfaces.ClientConnectListener;
@@ -32,7 +31,7 @@ public class ServerListeners {
 					Object[] o={gridSl,gridRa,RADIUS};
 					c.send(o, "RadiusHexapaper");
 					c.send(souradky, "EntityHexapaper");
-					c.send(Cursorloc,"PJcursor");
+					//c.send(Cursorloc,"PJcursor");
 					//c.send(DBArtefact,"DBartefact");
 					//c.send(DBCharacter,"DBcharacter");
 				} catch (IOException e) {
@@ -116,6 +115,7 @@ public class ServerListeners {
 	PacketReceiveListener insertEnt=new PacketReceiveListener(){
 		@Override
 		public void packetReceive(MessagePacket p) {
+			System.out.println("Test ent!");
 			Object[] table=(Object[]) p.getObject();
 			if((Integer) table[0]<souradky.size()){
 				souradky.set((Integer) table[0], ((HPEntity) table[1]).clone());
@@ -177,18 +177,7 @@ public class ServerListeners {
 			}
 		}		
 	};
-	PacketReceiveListener cursor=new PacketReceiveListener(){
-		@Override
-		public void packetReceive(MessagePacket p){
-			Cursorloc=(Integer[]) p.getObject();			
-			try {
-				server.rebroadcast(PJ.getNick(), p.getObject(), "PJcursor");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}			
-		}		
-	};	
+
 	//CommandListeners
 	private CommandListener setPJ=new CommandListener(){
 		public void CommandExecuted(List<String> args) {
@@ -232,7 +221,22 @@ public class ServerListeners {
 				e1.printStackTrace();
 			}			
 		}		
-	};	
+	};
+	private CommandListener dicecmd=new CommandListener(){
+		@Override
+		public void CommandExecuted(List<String> args) {
+			Integer[] o = {(Integer) Integer.valueOf(args.get(0)),(Integer) Integer.valueOf(args.get(1))};
+			if(PJ!=null){
+				try {
+					System.out.println("(Příkaz)"+args.get(2)+" si hodil "+args.get(0)+" na "+args.get(1)+" kostce.");
+					PJ.send(args.get(2), o, "dice");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}			
+		}		
+	};
 	public ServerListeners(CommandServer s){
 		this.server=s;
 		s.addClientConnectListener(connect);
@@ -245,9 +249,10 @@ public class ServerListeners {
 		s.addReceiveListener(insertEnt, "insertEnt");
 		s.addReceiveListener(EntChangeName, "EntChangeTag");
 		s.addReceiveListener(dice, "dice");
-		s.addReceiveListener(cursor,"PJcursor");
+		//s.addReceiveListener(cursor,"PJcursor");
 		s.registerCommand("pj", 1, "pj <Name>", "Check if player is PJ", isPJ);
 		s.registerCommand("setpj", 1, "setpj <Name>", "Set PJ", setPJ);
 		s.registerCommand("kick", 2, "Kick <Name> <Reason>", "Kick player", kick);
+		s.registerCommand("dice", 3, "Dice <Roll> <Side> <Player>", "Hodí za hráče", dicecmd);
 	}
 }

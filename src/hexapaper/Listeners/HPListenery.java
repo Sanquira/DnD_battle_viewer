@@ -10,7 +10,6 @@ import hexapaper.gui.ExportOneFrame;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.NewPaperFrame;
 import hexapaper.gui.PostavaAddFrame;
-import hexapaper.network.server.HexaClient;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.prvekkNN;
 
@@ -23,12 +22,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -172,7 +166,7 @@ public class HPListenery {
 			HraciPlocha t = (HraciPlocha) e.getComponent();
 			t.drawCursor(e.getX(), e.getY());
 			if(sk.isConnected&&sk.isPJ){
-				sk.client.sendCoord(e.getX(), e.getY());
+				//sk.client.sendCoord(e.getX(), e.getY());
 			}	
 		}
 

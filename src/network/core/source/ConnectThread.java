@@ -22,7 +22,6 @@ public class ConnectThread implements Runnable{
 			ClientInfo c = new ClientInfo(client.getRemoteSocketAddress().toString(), client.getLocalPort(),connectMessage.getNick() , client,IStream,OStream);
 			sk.clients.put(c.getNick(),c);
 			sk.callClientConnectEvent(c);
-
 		}
 		else{
 			try {
@@ -44,8 +43,8 @@ public class ConnectThread implements Runnable{
 			OStream.writeObject(null);
 			registerClient(IStream);
 			Thread t=new Thread(new PacketReceiveHandler(IStream,name)); 
-			t.start();
-            
+			t.setName("PacketReceiveHandler-"+name);
+			t.start();            
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

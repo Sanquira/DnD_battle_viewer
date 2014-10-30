@@ -65,7 +65,7 @@ public class ClientConnectFrame extends JPanel {
 
 		JPanel third = new JPanel(new GridLayout(1, 2, 10, 0));
 		JLabel numCol = new JLabel(sk.str.get("nameField"));
-		namefield = new JTextField("Player");
+		namefield = new JTextField(sk.lastName);
 		namefield.addFocusListener(new Listener());
 		third.add(numCol);
 		third.add(namefield);
@@ -99,7 +99,8 @@ public class ClientConnectFrame extends JPanel {
 		String ip = ipfield.getText();
 		Integer port = Integer.valueOf(portfield.getText());
 		String nick = namefield.getText();
-
+		
+		sk.lastName = nick;
 		HexaClient c=new HexaClient();
 		try {
 			c.connect(ip, port, nick);

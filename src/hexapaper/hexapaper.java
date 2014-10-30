@@ -24,6 +24,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JPanel;
 
 import addons.dice.DiceLog;
+import addons.dice.PJGUI;
 
 import java.awt.FlowLayout;
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class hexapaper extends JFrame {
 		getContentPane().setLayout(new BorderLayout());
 		initializace();
 		setVisible(true);
-		new DiceLog();
+		//new PJGUI().setVisible(true);;
 	}
 
 	private void initializace() {

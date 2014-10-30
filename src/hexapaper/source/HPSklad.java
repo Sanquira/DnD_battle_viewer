@@ -61,7 +61,8 @@ public class HPSklad {
 	public HexaClient client;
 	public LangFile str;
 
-	public final String VERSION = "v0.15f";
+	public final String VERSION = "v0.2a";
+	public String lastName = "Player";
 
 	public void send(Object o, String header) throws IOException {
 		if (isConnected) {

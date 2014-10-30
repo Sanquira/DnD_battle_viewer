@@ -3,16 +3,17 @@ package hexapaper.network.server;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
 import hexapaper.entity.HPEntity;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.source.HPSklad;
+import network.command.interfaces.CommandListener;
 import network.core.interfaces.ConnectListener;
 import network.core.interfaces.DisconnectListener;
 import network.core.interfaces.PacketReceiveListener;
-import network.core.source.ClientInfo;
 import network.core.source.MessagePacket;
 
 public class ClientListeners {
@@ -91,7 +92,6 @@ public class ClientListeners {
 			hexaClient.radiusHexapaper();
 			hexaClient.updateHexapaper();
 			hexaClient.updateDatabase();
-			System.out.println("cool");
 		}		
 	};
 	private PacketReceiveListener removePJ=new PacketReceiveListener(){
@@ -141,13 +141,28 @@ public class ClientListeners {
 			System.out.println(p.getNick()+" si hodil "+roll+" na "+side+" kostce.");
 		}		
 	};
-	PacketReceiveListener pjcoord=new PacketReceiveListener(){
+	CommandListener oclose=new CommandListener(){
 		@Override
-		public void packetReceive(MessagePacket p) {
-			Integer[] o=(Integer[]) p.getObject();
-			storage.hraciPlocha.drawCursor(o[0], o[1]);			
+		public void CommandExecuted(List<String> args) {
+			try {
+				storage.client.getOutputStream().close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
 		}		
-	};	
+	};
+	CommandListener iclose=new CommandListener(){
+		@Override
+		public void CommandExecuted(List<String> args) {
+			try {
+				storage.client.getInputStream().close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		}		
+	};
 	public ClientListeners(HexaClient hexaClient, HPSklad storage) {
 		this.hexaClient=hexaClient;
 		this.storage=storage;
@@ -158,12 +173,13 @@ public class ClientListeners {
 		hexaClient.addReceiveListener(RadiusHexapaper,"RadiusHexapaper");
 		hexaClient.addReceiveListener(EntityHexapaper,"EntityHexapaper");
 		hexaClient.addReceiveListener(requestPJInfo,"requestPJInfo");
-		hexaClient.addReceiveListener(pjcoord,"PJcursor");
 		hexaClient.addReceiveListener(dice,"dice");
 		hexaClient.addReceiveListener(removePJ,"removePJ");
 		hexaClient.addReceiveListener(rotateEnt,"rotateEnt");
 		hexaClient.addReceiveListener(insertEnt,"insertEnt");
 		hexaClient.addReceiveListener(EntChangeName,"EntChangeTag");
 		hexaClient.addReceiveListener(kick, "kick");
+		hexaClient.registerCommand("iclose", 0, "", "", iclose);
+		hexaClient.registerCommand("oclose", 0, "", "", oclose);
 	}
 }

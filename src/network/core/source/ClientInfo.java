@@ -62,20 +62,47 @@ public class ClientInfo {
 		this.inputStream = inputStream;
 	}
 	public void send(Object o) throws IOException{
-		outputStream.writeObject(new MessagePacket("Server",o));
+		try{
+			outputStream.writeObject(new MessagePacket("Server",o));
+			outputStream.flush();
+		}
+		catch(IOException e){
+			e.printStackTrace();
+			kick();
+		}
 	}
 	public void send(Object o,String header) throws IOException{
-		outputStream.writeObject(new MessagePacket("Server",header,o));
+		try{
+			outputStream.writeObject(new MessagePacket("Server",header,o));
+			outputStream.flush();
+		}
+		catch(IOException e){
+			e.printStackTrace();
+			kick();
+		}
 	}
 	public void send(String nick,Object o) throws IOException{
-		outputStream.writeObject(new MessagePacket(nick,"none",o));
+		try{
+			outputStream.writeObject(new MessagePacket(nick,"none",o));
+			outputStream.flush();
+		}
+		catch(IOException e){
+			e.printStackTrace();
+			kick();
+		}
 	}
 	public void send(String nick,Object o,String header) throws IOException{
-		outputStream.writeObject(new MessagePacket(nick,header,o));
+		try{
+			outputStream.writeObject(new MessagePacket(nick,header,o));
+			outputStream.flush();
+		}
+		catch(IOException e){
+			e.printStackTrace();
+			kick();
+		}
 	}
 	public void kick() throws IOException{
-		inputStream.close();
-		outputStream.close();
+		socket.close();
 	}
 	public Map<String,Object> getAtributes() {
 		return atributes;
