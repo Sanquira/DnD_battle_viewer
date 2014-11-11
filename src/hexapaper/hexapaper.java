@@ -23,11 +23,17 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JPanel;
 
+import core.FileStreamWriter;
 import addons.dice.DiceLog;
 import addons.dice.PJGUI;
+import addons.log.Log;
 
 import java.awt.FlowLayout;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
 
 public class hexapaper extends JFrame {
 
@@ -53,7 +59,17 @@ public class hexapaper extends JFrame {
 		getContentPane().setLayout(new BorderLayout());
 		initializace();
 		setVisible(true);
-		//new PJGUI().setVisible(true);;
+		sk.log=new DiceLog();
+		//logging
+//		File f=new File("HexaLog.log");
+//		try {
+//			FileStreamWriter fs = new FileStreamWriter(f);
+//			System.setOut(fs);
+//			System.setErr(fs);	
+//		} catch (FileNotFoundException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}	
 	}
 
 	private void initializace() {

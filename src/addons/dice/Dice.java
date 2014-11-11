@@ -80,9 +80,13 @@ public class Dice {
 	 */
 	public Dice() {
 		frmKostka = new JFrame();
+		frmKostka.setResizable(false);
 		frmKostka.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		initialize();
 		frmKostka.setVisible(true);
+		if(sk.isPJ){
+			sk.log.setVisible(true);
+		}
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////

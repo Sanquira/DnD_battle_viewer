@@ -78,7 +78,8 @@ public class HPStrings {
 	public static String DisconnectMessage = "Odpojeno od serveru";
 	public static String DisconnectWindow = "Odpojeno";
 	public static String KickMessage = "Vyhozen ze serveru z duvodu: ";
-	public static String KickWindow = "Vyhozen ze serveru";	
+	public static String KickWindow = "Vyhozen ze serveru";
+	//public static String Player = "Play";
 
 	public static String ztrataDat = "Ztráta dat";
 	public static String zpravaZtrataDat = "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVšechny neuložené změny budou ztraceny. \nChcete opravdu skončit?";

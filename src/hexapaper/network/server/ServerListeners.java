@@ -115,7 +115,7 @@ public class ServerListeners {
 	PacketReceiveListener insertEnt=new PacketReceiveListener(){
 		@Override
 		public void packetReceive(MessagePacket p) {
-			System.out.println("Test ent!");
+			//System.out.println("Test ent!");
 			Object[] table=(Object[]) p.getObject();
 			if((Integer) table[0]<souradky.size()){
 				souradky.set((Integer) table[0], ((HPEntity) table[1]).clone());
@@ -177,7 +177,12 @@ public class ServerListeners {
 			}
 		}		
 	};
-
+	PacketReceiveListener versionReceive=new PacketReceiveListener(){
+		@Override
+		public void packetReceive(MessagePacket p) {
+			System.out.println(p.getNick()+" má verzi "+(String) p.getObject());			
+		}		
+	};
 	//CommandListeners
 	private CommandListener setPJ=new CommandListener(){
 		public void CommandExecuted(List<String> args) {
@@ -237,6 +242,18 @@ public class ServerListeners {
 			}			
 		}		
 	};
+	private CommandListener version=new CommandListener(){
+		@Override
+		public void CommandExecuted(List<String> args) {
+			ClientInfo c=server.getNetworkStorage().getClientByName(args.get(0));
+			try {
+				c.send(0, "version");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}		
+	};
 	public ServerListeners(CommandServer s){
 		this.server=s;
 		s.addClientConnectListener(connect);
@@ -249,10 +266,11 @@ public class ServerListeners {
 		s.addReceiveListener(insertEnt, "insertEnt");
 		s.addReceiveListener(EntChangeName, "EntChangeTag");
 		s.addReceiveListener(dice, "dice");
-		//s.addReceiveListener(cursor,"PJcursor");
+		s.addReceiveListener(versionReceive,"version");
 		s.registerCommand("pj", 1, "pj <Name>", "Check if player is PJ", isPJ);
 		s.registerCommand("setpj", 1, "setpj <Name>", "Set PJ", setPJ);
 		s.registerCommand("kick", 2, "Kick <Name> <Reason>", "Kick player", kick);
 		s.registerCommand("dice", 3, "Dice <Roll> <Side> <Player>", "Hodí za hráče", dicecmd);
+		s.registerCommand("version", 1, "Version <Name>", "Požádá hráče o verzi clienta", version);
 	}
 }

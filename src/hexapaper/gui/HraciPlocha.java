@@ -195,19 +195,11 @@ public class HraciPlocha extends JPanel {
 	}
 
 	public void drawCursor(int x, int y) {
-		if (sk.isConnected && !sk.isPJ) {
-			int sizeC = 15;
-			int[] xp = { x + 0, x + 0, x + sizeC };
-			int[] yp = { y + 0, y + sizeC, y + 0 };
-			final BPolygon poly = new BPolygon(new Polygon(xp, yp, 3), true);
-			cursor = new HPEntity("", new Location(x, y, 0), false, false, poly) {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void recreateGraphics() {
-				}
-			};
-			cursor.background=Color.black;
+		if (sk.insertingEntity) {
+			cursor = sk.insertedEntity.clone();
+			cursor.loc = new Location(x, y, cursor.loc.getDir());
+			cursor.background=Color.BLACK;
+			cursor.recreateGraphics();
 		} else {
 			cursor = null;
 		}

@@ -23,7 +23,9 @@ public class CommandClient extends NetworkClient {
 	public void connect(String hostName,int port, String name) throws UnknownHostException, IOException{
 		super.connect(hostName, port, name);
 		registerInitialcommands();
-		new Thread(new CommandHandler()).start();
+		Thread cmd=new Thread(new CommandHandler());
+		cmd.setName("CommandThread");
+		cmd.start();
 	}
 	public CommandStorage getCommandStorage(){
 		return cmd;

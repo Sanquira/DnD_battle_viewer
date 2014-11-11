@@ -30,9 +30,9 @@ public class DiceLog extends JFrame {
 		textPane.setEditable(false);
 		scroll.setViewportView(textPane);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		
 		add(scroll);
-		setVisible(true);
+		//setVisible(true);
+		addMessage("Initializováno");
 	}
 
 	public void addMessage(String text, Color color) {
@@ -48,6 +48,9 @@ public class DiceLog extends JFrame {
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
+	}
+	public void addMessage(String text){
+		addMessage(text,Color.BLACK);
 	}
 
 	// JTextPane textpane = new JTextPane(document);

@@ -503,8 +503,9 @@ public class HPRightMenu extends JPanel {
 	}
 
 	public void redrawProperities(prvekkNN prvekkNN) {
-		if (prvekkNN.getIdx() < sk.souradky.size()) {
-			HPEntity ent = sk.souradky.get(prvekkNN.getIdx());
+		if (prvekkNN.getIdx() < sk.souradky.size()&&prvekkNN.getIdx()>=0) {
+			int i=prvekkNN.getIdx();
+			HPEntity ent = sk.souradky.get(i);
 			if (ent instanceof Postava ||
 					ent instanceof Artefact) {
 				vlastnosti = sk.souradky.get(prvekkNN.getIdx());

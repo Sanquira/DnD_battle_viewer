@@ -15,7 +15,8 @@ import network.core.interfaces.PacketReceiveListener;
 public class NetworkStorage {
 	private static NetworkStorage instance;
 	public ConcurrentMap<String,ClientInfo> clients=new ConcurrentHashMap<String,ClientInfo>();
-	public ConcurrentMap<PacketReceiveListener,String> receiveListeners=new ConcurrentHashMap<PacketReceiveListener,String>();
+	public ConcurrentMap<String,CopyOnWriteArrayList<PacketReceiveListener>> receiveListeners=new ConcurrentHashMap<String,CopyOnWriteArrayList<PacketReceiveListener>>();
+	//public ConcurrentMap<PacketReceiveListener,String> receiveListeners=new ConcurrentHashMap<PacketReceiveListener,String>();
 	public CopyOnWriteArrayList<ClientConnectListener> clientconnectListeners=new CopyOnWriteArrayList<>();
 	public CopyOnWriteArrayList<ConnectListener> connectListeners=new CopyOnWriteArrayList<>();
 	public CopyOnWriteArrayList<DisconnectListener> disconnectListeners=new CopyOnWriteArrayList<>();
@@ -28,15 +29,13 @@ public class NetworkStorage {
 		}
 		return instance;
 	}
-	public void callReceiveEvent(MessagePacket inputLine) {
-		for(Entry<PacketReceiveListener, String> entry :receiveListeners.entrySet()){
-			PacketReceiveListener l=entry.getKey();
-			String header=entry.getValue();
-			if(inputLine.getHeader()=="none"||inputLine.getHeader().equals(header)){
-				l.packetReceive(inputLine);
+	public void callReceiveEvent(MessagePacket packet) {
+		CopyOnWriteArrayList<PacketReceiveListener> listeners = receiveListeners.get(packet.getHeader());
+		if(listeners!=null){
+			for(PacketReceiveListener listener:listeners){
+				listener.packetReceive(packet);
 			}
 		}
-		
 	}
 	public void callClientConnectEvent(ClientInfo c){
 		for(ClientConnectListener l:clientconnectListeners){
@@ -69,7 +68,7 @@ public class NetworkStorage {
 		return null;
 	}
 	public void reset() {
-		receiveListeners=new ConcurrentHashMap<PacketReceiveListener,String>();
+		receiveListeners=new ConcurrentHashMap<String,CopyOnWriteArrayList<PacketReceiveListener>>();
 		clientconnectListeners=new CopyOnWriteArrayList<>();
 		connectListeners=new CopyOnWriteArrayList<>();
 		disconnectListeners=new CopyOnWriteArrayList<>();

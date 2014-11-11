@@ -21,6 +21,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 
+import addons.dice.DiceLog;
 import core.LangFile;
 import core.Location;
 
@@ -43,6 +44,7 @@ public class HPSklad {
 	public JMenu ExportMenu;
 	public JLabel connected;
 	public JLabel position;
+	public DiceLog log;
 
 	public ArrayList<HPEntity> souradky;
 	public ArrayList<HPEntity> databazePostav = new ArrayList<>();
@@ -61,7 +63,7 @@ public class HPSklad {
 	public HexaClient client;
 	public LangFile str;
 
-	public final String VERSION = "v0.2a";
+	public final String VERSION = "v0.2f";
 	public String lastName = "Player";
 
 	public void send(Object o, String header) throws IOException {

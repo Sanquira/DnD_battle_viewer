@@ -26,7 +26,9 @@ public class CommandServer extends NetworkServer {
 	public void create(String hostname, int port) throws IOException{
 		super.create(hostname,port);
 		registerInitialcommands();
-		new Thread(new CommandHandler()).start();
+		Thread cmd=new Thread(new CommandHandler());
+		cmd.setName("CommandThread");
+		cmd.start();
 	}
 	public void create(int port) throws IOException{
 		super.create(port);

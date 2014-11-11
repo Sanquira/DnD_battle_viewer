@@ -63,9 +63,10 @@ public class ClientListeners {
 			System.out.println(table[0]+":"+table[1]+":"+table[2]);
 			for(HPEntity ent:storage.souradky){
 				if(ent.loc.getX().equals(table[0])&&ent.loc.getY().equals(table[1])){
+					System.out.println("cool");
 					ent.loc.setDir(table[2]);
 					//System.out.println("Předělána entita");
-					ent.recreateGraphics();
+					storage.hraciPlocha.repaint();
 				}
 			}
 		}		
@@ -139,8 +140,20 @@ public class ClientListeners {
 			Integer roll=((Integer[]) p.getObject())[0];
 			Integer side=((Integer[]) p.getObject())[1];
 			System.out.println(p.getNick()+" si hodil "+roll+" na "+side+" kostce.");
+			storage.log.addMessage(p.getNick()+" si hodil "+roll+" na "+side+" kostce.");
 		}		
 	};
+	PacketReceiveListener version=new PacketReceiveListener(){
+		@Override
+		public void packetReceive(MessagePacket p) {
+			try {
+				hexaClient.send(storage.VERSION, "version");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		}		
+	};	
 	CommandListener oclose=new CommandListener(){
 		@Override
 		public void CommandExecuted(List<String> args) {
@@ -179,6 +192,7 @@ public class ClientListeners {
 		hexaClient.addReceiveListener(insertEnt,"insertEnt");
 		hexaClient.addReceiveListener(EntChangeName,"EntChangeTag");
 		hexaClient.addReceiveListener(kick, "kick");
+		hexaClient.addReceiveListener(version, "version");
 		hexaClient.registerCommand("iclose", 0, "", "", iclose);
 		hexaClient.registerCommand("oclose", 0, "", "", oclose);
 	}
