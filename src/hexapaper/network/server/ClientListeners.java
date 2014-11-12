@@ -138,9 +138,18 @@ public class ClientListeners {
 		@Override
 		public void packetReceive(MessagePacket p) {
 			Integer roll=((Integer[]) p.getObject())[0];
-			Integer side=((Integer[]) p.getObject())[1];
-			System.out.println(p.getNick()+" si hodil "+roll+" na "+side+" kostce.");
-			storage.log.addMessage(p.getNick()+" si hodil "+roll+" na "+side+" kostce.");
+			Integer range=((Integer[]) p.getObject())[1];
+			Integer modifier=((Integer[]) p.getObject())[2];
+			String message;
+			if(modifier==0){
+				message=p.getNick()+" si hodil "+roll+" na "+range+" kostce.";
+			}
+			else{
+				message=p.getNick()+" si hodil "+(roll+modifier)+" na "+range+" kostce se základním hodem "+roll;
+			}
+			//String message=p.getNick()+" si hodil "+(roll+modifier)+" na "+range+" kostce se základním hodem "+roll;
+			System.out.println(message);
+			storage.log.addMessage(message);
 		}		
 	};
 	PacketReceiveListener version=new PacketReceiveListener(){

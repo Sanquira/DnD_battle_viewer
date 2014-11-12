@@ -7,6 +7,7 @@ import java.awt.HeadlessException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
@@ -24,7 +25,7 @@ public class DiceLog extends JFrame {
 	Style style = context.addStyle("test", null);
 
 	public DiceLog() throws HeadlessException {
-		setTitle(sk.str.get("diceTitle"));
+		setName(sk.str.get("diceTitle"));
 		setSize(400, 300);
 		JScrollPane scroll = new JScrollPane();
 		textPane.setEditable(false);

@@ -2,7 +2,6 @@ package hexapaper.source;
 
 import hexapaper.hexapaper;
 import hexapaper.Listeners.HPListenery;
-import hexapaper.Listeners.HPListenery.HraciPlochaListener;
 import hexapaper.entity.FreeSpace;
 import hexapaper.entity.HPEntity;
 import hexapaper.gui.Gprvky;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 
 import addons.dice.DiceLog;
@@ -63,7 +61,7 @@ public class HPSklad {
 	public HexaClient client;
 	public LangFile str;
 
-	public final String VERSION = "v0.2f";
+	public final String VERSION = "v0.3a";
 	public String lastName = "Player";
 
 	public void send(Object o, String header) throws IOException {

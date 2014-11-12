@@ -1,10 +1,7 @@
 package hexapaper;
 
 import hexapaper.Listeners.HPListenery;
-import hexapaper.Listeners.HPListenery.ScrollListener;
 import hexapaper.source.HPSklad;
-import hexapaper.source.HPStrings;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -23,17 +20,9 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JPanel;
 
-import core.FileStreamWriter;
 import addons.dice.DiceLog;
-import addons.dice.PJGUI;
-import addons.log.Log;
 
 import java.awt.FlowLayout;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.logging.FileHandler;
 
 public class hexapaper extends JFrame {
 

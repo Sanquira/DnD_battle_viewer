@@ -1,5 +1,6 @@
 package addons.dice;
 
+import hexapaper.gui.PJGUI;
 import hexapaper.source.HPSklad;
 
 import java.awt.Color;
@@ -25,14 +26,16 @@ public class Dice {
 	// /////////////////////////////////////////////////////////////////////////////
 	
 	private JFrame frmKostka;
-	private JTextField text;
+	private JTextField RangeField;
+	private JTextField BonusField;
 	private JLabel label;
+	final Random rand = new Random();
 	private HPSklad sk=HPSklad.getInstance();
 
 	private ActionListener fastValueButtonListener = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			JButton button = (JButton) e.getSource();
-			text.setText(String.valueOf(button.getText()));
+			RangeField.setText(String.valueOf(button.getText()));
 			
 		}
 	};
@@ -41,14 +44,14 @@ public class Dice {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String str = text.getText();
-			final int min = 1;
-			final Random rand = new Random();
+			String str = RangeField.getText();
+			final int min = 1;			
+			final int bonus = Integer.valueOf(BonusField.getText());
 			final int max = Integer.valueOf(str);
 			Integer number=rand.nextInt((max - min) + 1) + min;
-			label.setText(String.valueOf(number));
+			label.setText(String.valueOf(number+bonus));
 			if(sk.isConnected&&!sk.isPJ){
-				Integer[] i={number,max};
+				Integer[] i={number,max,bonus};
 				try {
 					sk.client.send(i, "dice");
 				} catch (IOException e1) {
@@ -84,6 +87,7 @@ public class Dice {
 		frmKostka.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		initialize();
 		frmKostka.setVisible(true);
+		//new PJGUI().setVisible(true);
 		if(sk.isPJ){
 			sk.log.setVisible(true);
 		}
@@ -100,7 +104,7 @@ public class Dice {
 		// nastaveni titulku okna, velikosti a layoutu
 		frmKostka.setTitle("Kostka");
 		frmKostka.setSize(450, 300);
-		frmKostka.setLayout(null);
+		frmKostka.getContentPane().setLayout(null);
 
 		// tohle zobrazuje vysledek
 		label = new JLabel("0");
@@ -109,40 +113,54 @@ public class Dice {
 		label.setBackground(Color.LIGHT_GRAY);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setBounds(28, 11, 285, 208);
-		frmKostka.add(label);
+		frmKostka.getContentPane().add(label);
 
 		// tohle hazi kostkou
 		JButton btnRoll = new JButton("Roll");
 		btnRoll.setBounds(28, 230, 89, 23);
 		btnRoll.addActionListener(rollListener);
-		frmKostka.add(btnRoll);
+		frmKostka.getContentPane().add(btnRoll);
 
 		// tohle udava rozsah kostky
-		text = new JNumberTextField();
-		text.setText("6");
-		text.setBounds(227, 231, 86, 20);
-		text.setColumns(3);
-		frmKostka.add(text);
+		RangeField = new JNumberTextField();
+		RangeField.setText("6");
+		RangeField.setBounds(178, 230, 86, 20);
+		RangeField.setColumns(3);
+		frmKostka.getContentPane().add(RangeField);
 		
 
 		// rychle nastaveni rozsahu na 6
 		JButton six = new JButton("6");
-		six.setBounds(320, 0, 114, 31);
+		six.setBounds(319, 0, 115, 30);
 		//six.addActionListener(rollListener);
 		six.addActionListener(fastValueButtonListener);
 		
-		frmKostka.add(six);
+		frmKostka.getContentPane().add(six);
 
 		// rychle nastaveni rozsahu na 10
 		JButton ten = new JButton("10");
 		ten.addActionListener(fastValueButtonListener);
 		ten.setBounds(319, 32, 115, 30);
-		frmKostka.add(ten);
+		frmKostka.getContentPane().add(ten);
 
 		// rychle nastaveni rozsahu na 100
 		JButton hundred = new JButton("100");
 		hundred.addActionListener(fastValueButtonListener);
-		hundred.setBounds(319, 63, 115, 30);
-		frmKostka.add(hundred);
+		hundred.setBounds(319, 64, 115, 30);
+		frmKostka.getContentPane().add(hundred);
+		
+		BonusField = new JNumberTextField();
+		BonusField.setText("0");
+		BonusField.setColumns(3);
+		BonusField.setBounds(333, 230, 86, 20);
+		frmKostka.getContentPane().add(BonusField);
+		
+		JLabel Range = new JLabel(sk.str.get("Range"));
+		Range.setBounds(178, 205, 46, 14);
+		frmKostka.getContentPane().add(Range);
+		
+		JLabel Bonus = new JLabel(sk.str.get("Modifier"));
+		Bonus.setBounds(336, 205, 69, 14);
+		frmKostka.getContentPane().add(Bonus);
 	}
 }

@@ -1,9 +1,5 @@
 package hexapaper.source;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-
 public class HPStrings {
 
 	public static String varovani = "Varování­";
@@ -79,6 +75,8 @@ public class HPStrings {
 	public static String DisconnectWindow = "Odpojeno";
 	public static String KickMessage = "Vyhozen ze serveru z duvodu: ";
 	public static String KickWindow = "Vyhozen ze serveru";
+	public static String Range = "Rozsah";
+	public static String Modifier = "Bonus";	
 	//public static String Player = "Play";
 
 	public static String ztrataDat = "Ztráta dat";

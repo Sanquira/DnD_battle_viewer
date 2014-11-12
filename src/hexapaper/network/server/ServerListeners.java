@@ -165,8 +165,16 @@ public class ServerListeners {
 		@Override
 		public void packetReceive(MessagePacket p) {
 			Integer roll=((Integer[]) p.getObject())[0];
-			Integer side=((Integer[]) p.getObject())[1];
-			System.out.println(p.getNick()+" si hodil "+roll+" na "+side+" kostce.");
+			Integer range=((Integer[]) p.getObject())[1];
+			Integer modifier=((Integer[]) p.getObject())[2];
+			String Message;
+			if(modifier==0){
+				Message=p.getNick()+" si hodil "+roll+" na "+range+" kostce.";
+			}
+			else{
+				Message=p.getNick()+" si hodil "+(roll+modifier)+" na "+range+" kostce se základním hodem "+roll;
+			}
+			System.out.println(Message);
 			try {
 				if(PJ!=null){
 					PJ.send(p.getNick(), p.getObject(), "dice");
