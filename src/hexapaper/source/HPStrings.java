@@ -59,8 +59,9 @@ public class HPStrings {
 	public static String exportPostDat = "... databáze postav";
 	public static String exportArtOne = "... jednoho artefaktu";
 	public static String exportPostOne = "... jedné postavy";
-	public static String addons = "Addony";
+	public static String utility = "Utility";
 	public static String kostka = "Kostka";
+	public static String PJInfo = "PJGUI";
 	
 	public static String ipField = "IP serveru";
 	public static String portField = "Port serveru";

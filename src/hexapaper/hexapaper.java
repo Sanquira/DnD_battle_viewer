@@ -1,7 +1,9 @@
 package hexapaper;
 
 import hexapaper.Listeners.HPListenery;
+import hexapaper.gui.PJGUI;
 import hexapaper.source.HPSklad;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -20,9 +22,8 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JPanel;
 
-import addons.dice.DiceLog;
-
 import java.awt.FlowLayout;
+import java.awt.Dimension;
 
 public class hexapaper extends JFrame {
 
@@ -48,7 +49,7 @@ public class hexapaper extends JFrame {
 		getContentPane().setLayout(new BorderLayout());
 		initializace();
 		setVisible(true);
-		sk.log=new DiceLog();
+		sk.PJInfo=new PJGUI();
 		//logging
 //		File f=new File("HexaLog.log");
 //		try {
@@ -102,14 +103,11 @@ public class hexapaper extends JFrame {
 		JMenuItem exportPostDat = new JMenuItem(sk.str.get("exportPostDat"));
 		JMenuItem exportArtOne = new JMenuItem(sk.str.get("exportArtOne"));
 		JMenuItem exportPostOne = new JMenuItem(sk.str.get("exportPostOne"));
-		JMenuItem zoom = new JMenuItem("Zoom");
 
 		JMenuItem importAP = new JMenuItem(sk.str.get("importAP"));
 
 		pridejArt.addActionListener(lis.new PridejArtefakt());
 		pridejPost.addActionListener(lis.new PridejPostavu());
-		
-		zoom.addActionListener(lis.new Zoom());
 		
 		exportArtDat.addActionListener(lis.new ExportArtDat());
 		exportArtOne.addActionListener(lis.new ExportArtOne());
@@ -120,7 +118,6 @@ public class hexapaper extends JFrame {
 
 		upravy.add(pridejArt);
 		upravy.add(pridejPost);
-		upravy.add(zoom);
 		
 		exportAP.add(exportArtOne);
 		exportAP.add(exportArtDat);
@@ -130,13 +127,16 @@ public class hexapaper extends JFrame {
 
 		upravy.add(importAP);
 
-		JMenu addons = new JMenu(sk.str.get("addons"));
+		JMenu addons = new JMenu(sk.str.get("utility"));
 
 		JMenuItem kostka = new JMenuItem(sk.str.get("kostka"));
+		JMenuItem PJInfo = new JMenuItem(sk.str.get("PJInfo"));
 
 		kostka.addActionListener(lis.new KostkaListener());
+		PJInfo.addActionListener(lis.new PJInfoListener());
 
 		addons.add(kostka);
+		addons.add(PJInfo);
 
 		HlavniMenu.add(hraMenu);
 		HlavniMenu.add(upravy);
@@ -147,30 +147,36 @@ public class hexapaper extends JFrame {
 		sk.serverbanned.add(pridejArt);
 		sk.serverbanned.add(pridejPost);
 		// TODO Ostranit tohle tlacitko
-		System.err.println("Nezapomen odstranit tlacitko v hexapaper u TODO");
-		JButton ulozLangy = new JButton("Uloz langy DOCASNE");
-		ulozLangy.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				sk.str.saveLang();
-				DMSklad sk1 = DMSklad.getInstance();
-				sk1.init();
-				sk1.str.saveLang();
-			}
-		});
-		HlavniMenu.add(ulozLangy);
+//		System.err.println("Nezapomen odstranit tlacitko v hexapaper u TODO");
+//		JButton ulozLangy = new JButton("Uloz langy DOCASNE");
+//		ulozLangy.addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				sk.str.saveLang();
+//				DMSklad sk1 = DMSklad.getInstance();
+//				sk1.init();
+//				sk1.str.saveLang();
+//			}
+//		});
+//		HlavniMenu.add(ulozLangy);
 		
 		JPanel panel = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 		HlavniMenu.add(panel);
 		
+		JLabel StatusBar = new JLabel();
+		StatusBar.setHorizontalAlignment(SwingConstants.RIGHT);
+		StatusBar.setPreferredSize(new Dimension(300, 14));
+		panel.add(StatusBar);
+		
 		JLabel connected = new JLabel(sk.str.get("ConnectLabel")+"{"+sk.isConnected+","+sk.isPJ+"}");
 		panel.add(connected);
 		connected.setForeground (Color.red);
 		
 		sk.connected=connected;
+		sk.statusBar=StatusBar;
 		
 		JLabel position = new JLabel();
 		panel.add(position);

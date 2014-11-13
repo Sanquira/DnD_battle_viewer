@@ -7,6 +7,7 @@ import hexapaper.entity.HPEntity;
 import hexapaper.gui.Gprvky;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.HPRightMenu;
+import hexapaper.gui.PJGUI;
 import hexapaper.network.server.HexaClient;
 
 import java.awt.Color;
@@ -42,7 +43,8 @@ public class HPSklad {
 	public JMenu ExportMenu;
 	public JLabel connected;
 	public JLabel position;
-	public DiceLog log;
+	public PJGUI PJInfo;
+	public JLabel statusBar;
 
 	public ArrayList<HPEntity> souradky;
 	public ArrayList<HPEntity> databazePostav = new ArrayList<>();
@@ -61,7 +63,7 @@ public class HPSklad {
 	public HexaClient client;
 	public LangFile str;
 
-	public final String VERSION = "v0.3a";
+	public final String VERSION = "v0.3b";
 	public String lastName = "Player";
 
 	public void send(Object o, String header) throws IOException {
@@ -162,6 +164,17 @@ public class HPSklad {
 		colorJMenu();
 	}
 
+	public DiceLog getDiceLog(){
+		return PJInfo.getLog();
+	}
+	
+	public DiceLog getPJLog(){
+		return PJInfo.getInfo();
+	}
+	
+	public void setStatus(String Message){
+		statusBar.setText(Message);
+	}	
 	public static class prvekkNN implements Cloneable {
 		private double x1, y1, vzd;
 		private int idx;

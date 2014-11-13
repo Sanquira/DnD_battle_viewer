@@ -42,19 +42,22 @@ public class ClientListeners {
 	//Receive Listeners
 	private PacketReceiveListener RadiusHexapaper=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
+			storage.setStatus("Přijímání rozsahu HexaPapaeru");
 			//System.out.println("Received hexapaper Radiuses from server");
 			Object[] paper=(Object[]) p.getObject();
 			storage.gridRa=(int) paper[0];
 			storage.gridSl=(int) paper[1];
 			storage.RADIUS=(int) paper[2];
 			storage.hraciPlocha=new HraciPlocha();
+			storage.setStatus("Rozměry HexaPapaperu přijaty");
 		}		
 	};
 	private PacketReceiveListener EntityHexapaper=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
-			//System.out.println("Received hexapaper Entity from server");
+			storage.setStatus("Přijímání entit HexaPaperu");
 			storage.souradky = (ArrayList<HPEntity>) p.getObject();
 			storage.initLoad(storage.souradky);
+			storage.setStatus("HexaPaperu načten ze serveru");
 		}		
 	};
 	private PacketReceiveListener rotateEnt=new PacketReceiveListener(){
@@ -93,13 +96,16 @@ public class ClientListeners {
 			hexaClient.radiusHexapaper();
 			hexaClient.updateHexapaper();
 			hexaClient.updateDatabase();
+			storage.setStatus("Nastaven PJ");
 		}		
 	};
 	private PacketReceiveListener removePJ=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
 			storage.isPJ=false;
+			storage.PJInfo.setVisible(false);
 			//System.out.println("No longer PJ");
 			storage.updateConnect();
+			storage.setStatus("Odebrán PJ");
 		}		
 	};
 	PacketReceiveListener insertEnt=new PacketReceiveListener(){
@@ -108,6 +114,7 @@ public class ClientListeners {
 			//System.out.println("Vložena entita");
 			Object[] table=(Object[]) p.getObject();
 			storage.hraciPlocha.insertEntity((int) table[0], ((HPEntity) table[1]), true);
+			storage.setStatus("Získáná entita");
 		}		
 	};
 	PacketReceiveListener EntChangeName=new PacketReceiveListener(){
@@ -131,7 +138,8 @@ public class ClientListeners {
 			JOptionPane.showMessageDialog(storage.hraciPlocha,
 				    storage.str.get("KickMessage")+(String) p.getObject(),
 				    storage.str.get("KickWindow"),
-				    JOptionPane.WARNING_MESSAGE);					
+				    JOptionPane.WARNING_MESSAGE);
+			storage.setStatus("Vyhozen ze serveru");
 		}		
 	};
 	PacketReceiveListener dice=new PacketReceiveListener(){
@@ -149,7 +157,7 @@ public class ClientListeners {
 			}
 			//String message=p.getNick()+" si hodil "+(roll+modifier)+" na "+range+" kostce se základním hodem "+roll;
 			System.out.println(message);
-			storage.log.addMessage(message);
+			storage.getDiceLog().addMessage(message);
 		}		
 	};
 	PacketReceiveListener version=new PacketReceiveListener(){
@@ -160,7 +168,26 @@ public class ClientListeners {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}			
+			}
+			storage.setStatus("Server vyžádal vaši verzi");
+		}		
+	};
+	PacketReceiveListener PConnect=new PacketReceiveListener(){
+		@Override
+		public void packetReceive(MessagePacket p) {
+			String Message=p.getNick()+" se připojil na server";
+			System.out.println(Message);
+			storage.setStatus(Message);
+			storage.getPJLog().addMessage(Message);
+		}		
+	};
+	PacketReceiveListener PDisconnect=new PacketReceiveListener(){
+		@Override
+		public void packetReceive(MessagePacket p) {
+			String Message=p.getNick()+" se odpojil z serveru";
+			System.out.println(Message);
+			storage.setStatus(Message);
+			storage.getPJLog().addMessage(Message);
 		}		
 	};	
 	CommandListener oclose=new CommandListener(){
@@ -196,6 +223,8 @@ public class ClientListeners {
 		hexaClient.addReceiveListener(EntityHexapaper,"EntityHexapaper");
 		hexaClient.addReceiveListener(requestPJInfo,"requestPJInfo");
 		hexaClient.addReceiveListener(dice,"dice");
+		hexaClient.addReceiveListener(PConnect,"PlayerConnect");
+		hexaClient.addReceiveListener(PDisconnect,"PlayerDisconnect");
 		hexaClient.addReceiveListener(removePJ,"removePJ");
 		hexaClient.addReceiveListener(rotateEnt,"rotateEnt");
 		hexaClient.addReceiveListener(insertEnt,"insertEnt");

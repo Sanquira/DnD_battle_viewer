@@ -3,6 +3,7 @@ package addons.dice;
 import hexapaper.source.HPSklad;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.HeadlessException;
 
 import javax.swing.JFrame;
@@ -16,7 +17,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
-public class DiceLog extends JFrame {
+public class DiceLog extends JScrollPane {
 
 	HPSklad sk = HPSklad.getInstance();
 	DefaultStyledDocument document = new DefaultStyledDocument();
@@ -25,15 +26,16 @@ public class DiceLog extends JFrame {
 	Style style = context.addStyle("test", null);
 
 	public DiceLog() throws HeadlessException {
-		setName(sk.str.get("diceTitle"));
-		setSize(400, 300);
-		JScrollPane scroll = new JScrollPane();
+		//setName(sk.str.get("diceTitle"));
+		//setSize(400, 300);
+		setPreferredSize(new Dimension(400, 300));
+		//JScrollPane scroll = new JScrollPane();
 		textPane.setEditable(false);
-		scroll.setViewportView(textPane);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		add(scroll);
+		//setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		add(textPane);
+		setViewportView(textPane);
 		//setVisible(true);
-		addMessage("Initializováno");
+		//addMessage("Initializováno");
 	}
 
 	public void addMessage(String text, Color color) {

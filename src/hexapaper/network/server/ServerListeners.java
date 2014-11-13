@@ -25,12 +25,12 @@ public class ServerListeners {
 	//ClientConnectListeners
 	ClientConnectListener connect=new ClientConnectListener(){
 		public void clientConnect(ClientInfo c) {
-			System.out.println("Client připojen "+(String) c.getNick());
 			if(PJ!=null){
-				try {
+				try {					
 					Object[] o={gridSl,gridRa,RADIUS};
 					c.send(o, "RadiusHexapaper");
 					c.send(souradky, "EntityHexapaper");
+					PJ.send(c.getNick(),0,"PlayerConnect");
 					//c.send(Cursorloc,"PJcursor");
 					//c.send(DBArtefact,"DBartefact");
 					//c.send(DBCharacter,"DBcharacter");
@@ -39,18 +39,36 @@ public class ServerListeners {
 					e.printStackTrace();
 				}
 			}
+			System.out.println("Client připojen "+(String) c.getNick());
+			try {
+				c.send(0, "version");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}			
 	};
 	//ClientDisconnectListeners
 	ClientDisconnectListener disconnect=new ClientDisconnectListener(){
 		public void clientDisconnect(ClientInfo c) {
-			System.out.println("Client odpojen: "+c.getNick());
+			String Message;
+			Message="Client odpojen: "+c.getNick();
 			if(PJ!=null){
 				if(PJ.equals(c)){
-					System.out.println("PJ se odpojil");
-					PJ=null;
-				}	
+					Message="PJ odpojen: "+c.getNick();
+					PJ=null;					
+				}
+				else{
+					try {
+						PJ.send(c.getNick(), 0,"PlayerDisconnect");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
+			System.out.println(Message);
+			
 		}		
 	};
 	//ReceiveListeners

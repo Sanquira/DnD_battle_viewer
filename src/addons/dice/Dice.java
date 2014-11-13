@@ -87,10 +87,9 @@ public class Dice {
 		frmKostka.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		initialize();
 		frmKostka.setVisible(true);
-		//new PJGUI().setVisible(true);
-		if(sk.isPJ){
-			sk.log.setVisible(true);
-		}
+		//if(sk.isPJ){
+			//sk.log.setVisible(true);
+		//}
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////

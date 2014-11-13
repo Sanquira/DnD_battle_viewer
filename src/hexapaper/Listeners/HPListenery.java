@@ -325,5 +325,15 @@ public class HPListenery {
 		}
 
 	}
+	public class PJInfoListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent paramActionEvent) {
+			if(sk.isPJ){
+				sk.PJInfo.setVisible(true);
+			}			
+		}
+
+	}
 
 }
