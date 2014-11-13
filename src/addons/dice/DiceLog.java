@@ -51,6 +51,7 @@ public class DiceLog extends JScrollPane {
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
+		this.getVerticalScrollBar().setValue(this.getVerticalScrollBar().getMaximum());
 	}
 	public void addMessage(String text){
 		addMessage(text,Color.BLACK);

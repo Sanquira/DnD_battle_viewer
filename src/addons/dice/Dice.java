@@ -45,7 +45,10 @@ public class Dice {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String str = RangeField.getText();
-			final int min = 1;			
+			final int min = 1;	
+			if(BonusField.getText()==""){
+				BonusField.setText("0");
+			}
 			final int bonus = Integer.valueOf(BonusField.getText());
 			final int max = Integer.valueOf(str);
 			Integer number=rand.nextInt((max - min) + 1) + min;
