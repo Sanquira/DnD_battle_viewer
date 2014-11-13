@@ -165,9 +165,6 @@ public class HPListenery {
 			}
 			HraciPlocha t = (HraciPlocha) e.getComponent();
 			t.drawCursor(e.getX(), e.getY());
-			if(sk.isConnected&&sk.isPJ){
-				//sk.client.sendCoord(e.getX(), e.getY());
-			}	
 		}
 
 		@Override

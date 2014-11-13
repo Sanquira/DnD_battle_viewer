@@ -15,6 +15,8 @@ import java.awt.Component;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -45,7 +47,7 @@ public class HPSklad {
 	public JLabel position;
 	public PJGUI PJInfo;
 	public JLabel statusBar;
-
+	
 	public ArrayList<HPEntity> souradky;
 	public ArrayList<HPEntity> databazePostav = new ArrayList<>();
 	public ArrayList<HPEntity> databazeArtefaktu = new ArrayList<>();

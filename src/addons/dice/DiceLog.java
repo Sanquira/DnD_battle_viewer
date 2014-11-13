@@ -41,7 +41,7 @@ public class DiceLog extends JScrollPane {
 	public void addMessage(String text, Color color) {
 		try {
 			StyleConstants.setForeground(style, color);
-			StyleConstants.setBold(style, true);
+			//StyleConstants.setBold(style, true);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			return;

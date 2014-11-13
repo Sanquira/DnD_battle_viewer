@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
 
@@ -22,6 +23,12 @@ public class ClientListeners {
 	//Connect Listeners
 	private ConnectListener cnt=new ConnectListener(){
 		public void Connect(Socket c) {
+			try {
+				hexaClient.send(storage.VERSION, "version");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			System.out.println("Připojeno k serveru");
 			storage.isConnected=true;
 			storage.client=hexaClient;
@@ -169,7 +176,14 @@ public class ClientListeners {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			storage.setStatus("Server vyžádal vaši verzi");
+			//storage.setStatus("Server vyžádal vaši verzi");
+		}		
+	};
+	PacketReceiveListener versionUpdate=new PacketReceiveListener(){
+		@Override
+		public void packetReceive(MessagePacket p) {
+			Map<String,String> versions=(Map<String,String>) p.getObject();
+			storage.PJInfo.updateClients(versions);
 		}		
 	};
 	PacketReceiveListener PConnect=new PacketReceiveListener(){
@@ -179,6 +193,7 @@ public class ClientListeners {
 			System.out.println(Message);
 			storage.setStatus(Message);
 			storage.getPJLog().addMessage(Message);
+			storage.PJInfo.updateClients((Map<String,String>) p.getObject());
 		}		
 	};
 	PacketReceiveListener PDisconnect=new PacketReceiveListener(){
@@ -189,7 +204,7 @@ public class ClientListeners {
 			storage.setStatus(Message);
 			storage.getPJLog().addMessage(Message);
 		}		
-	};	
+	};
 	CommandListener oclose=new CommandListener(){
 		@Override
 		public void CommandExecuted(List<String> args) {
@@ -231,6 +246,7 @@ public class ClientListeners {
 		hexaClient.addReceiveListener(EntChangeName,"EntChangeTag");
 		hexaClient.addReceiveListener(kick, "kick");
 		hexaClient.addReceiveListener(version, "version");
+		hexaClient.addReceiveListener(versionUpdate, "versionUpdate");
 		hexaClient.registerCommand("iclose", 0, "", "", iclose);
 		hexaClient.registerCommand("oclose", 0, "", "", oclose);
 	}

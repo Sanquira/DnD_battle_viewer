@@ -5,6 +5,8 @@ import hexapaper.entity.HPEntity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import network.command.interfaces.CommandListener;
 import network.command.users.CommandServer;
@@ -21,6 +23,7 @@ public class ServerListeners {
 	private ArrayList<HPEntity> souradky=null;
 	private ArrayList<HPEntity> DBArtefact=null;
 	private ArrayList<HPEntity> DBCharacter=null;
+	private ConcurrentMap<String,String> versions=new ConcurrentHashMap<String,String>();
 	private ClientInfo PJ=null;
 	//ClientConnectListeners
 	ClientConnectListener connect=new ClientConnectListener(){
@@ -30,7 +33,7 @@ public class ServerListeners {
 					Object[] o={gridSl,gridRa,RADIUS};
 					c.send(o, "RadiusHexapaper");
 					c.send(souradky, "EntityHexapaper");
-					PJ.send(c.getNick(),0,"PlayerConnect");
+					PJ.send(c.getNick(),versions,"PlayerConnect");
 					//c.send(Cursorloc,"PJcursor");
 					//c.send(DBArtefact,"DBartefact");
 					//c.send(DBCharacter,"DBcharacter");
@@ -40,12 +43,12 @@ public class ServerListeners {
 				}
 			}
 			System.out.println("Client připojen "+(String) c.getNick());
-			try {
-				c.send(0, "version");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			try {
+//				c.send(0, "version");
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 		}			
 	};
 	//ClientDisconnectListeners
@@ -206,7 +209,16 @@ public class ServerListeners {
 	PacketReceiveListener versionReceive=new PacketReceiveListener(){
 		@Override
 		public void packetReceive(MessagePacket p) {
-			System.out.println(p.getNick()+" má verzi "+(String) p.getObject());			
+			versions.put(p.getNick(),(String) p.getObject());
+			System.out.println(p.getNick()+" má verzi "+(String) p.getObject());
+			if(PJ!=null){
+				try {
+					PJ.send(versions,"versionUpdate");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}		
 	};
 	//CommandListeners
