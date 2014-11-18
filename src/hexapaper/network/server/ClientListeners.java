@@ -75,6 +75,8 @@ public class ClientListeners {
 				if(ent.loc.getX().equals(table[0])&&ent.loc.getY().equals(table[1])){
 					System.out.println("cool");
 					ent.loc.setDir(table[2]);
+					ent.recreateGraphics();
+					storage.setStatus("Rotována entita");
 					//System.out.println("Předělána entita");
 					storage.hraciPlocha.repaint();
 				}

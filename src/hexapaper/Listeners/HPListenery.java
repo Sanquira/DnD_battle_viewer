@@ -6,6 +6,7 @@ import hexapaper.file.SaveFile;
 import hexapaper.gui.ArtefactAddFrame;
 import hexapaper.gui.ChangeZoomFrame;
 import hexapaper.gui.ClientConnectFrame;
+import hexapaper.gui.ColorPicker;
 import hexapaper.gui.ExportOneFrame;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.NewPaperFrame;
@@ -13,6 +14,7 @@ import hexapaper.gui.PostavaAddFrame;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.prvekkNN;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -23,6 +25,8 @@ import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+
+import javax.swing.JColorChooser;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -314,11 +318,19 @@ public class HPListenery {
 		}
 	}
 
-	public class KostkaListener implements ActionListener {
+	public class DiceListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
 			new Dice();
+		}
+
+	}
+	public class ColorListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent paramActionEvent) {
+			new ColorPicker();
 		}
 
 	}

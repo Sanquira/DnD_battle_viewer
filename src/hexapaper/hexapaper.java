@@ -6,17 +6,11 @@ import hexapaper.source.HPSklad;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
-
-import dungeonmapper.source.DMSklad;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -131,12 +125,15 @@ public class hexapaper extends JFrame {
 
 		JMenuItem kostka = new JMenuItem(sk.str.get("kostka"));
 		JMenuItem PJInfo = new JMenuItem(sk.str.get("PJInfo"));
+		JMenuItem ColorPicker = new JMenuItem("ColorPicker");
 
-		kostka.addActionListener(lis.new KostkaListener());
+		kostka.addActionListener(lis.new DiceListener());
 		PJInfo.addActionListener(lis.new PJInfoListener());
+		ColorPicker.addActionListener(lis.new ColorListener());
 
 		addons.add(kostka);
 		addons.add(PJInfo);
+		addons.add(ColorPicker);
 
 		HlavniMenu.add(hraMenu);
 		HlavniMenu.add(upravy);

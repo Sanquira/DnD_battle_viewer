@@ -72,7 +72,9 @@ public class NetworkClient extends AbstractNetworkUser{
 	       	}	       	
 	    }
 	    public void disconnect() throws IOException{
-			socket.close();    	    	
+			socket.getInputStream().close();
+			socket.getOutputStream().close();
+	    	//socket.close();    	    	
 	    }
 }
 

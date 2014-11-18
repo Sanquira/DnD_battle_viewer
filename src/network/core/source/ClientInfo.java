@@ -102,6 +102,8 @@ public class ClientInfo {
 		}
 	}
 	public void kick() throws IOException{
+		socket.getInputStream().close();
+		socket.getOutputStream().close();
 		socket.close();
 	}
 	public Map<String,Object> getAtributes() {

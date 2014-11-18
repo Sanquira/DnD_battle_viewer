@@ -1,6 +1,5 @@
 package addons.dice;
 
-import hexapaper.gui.PJGUI;
 import hexapaper.source.HPSklad;
 
 import java.awt.Color;
@@ -26,8 +25,8 @@ public class Dice {
 	// /////////////////////////////////////////////////////////////////////////////
 	
 	private JFrame frmKostka;
-	private JTextField RangeField;
-	private JTextField BonusField;
+	private JNumberTextField RangeField;
+	private JNumberTextField BonusField;
 	private JLabel label;
 	final Random rand = new Random();
 	private HPSklad sk=HPSklad.getInstance();
@@ -39,18 +38,23 @@ public class Dice {
 			
 		}
 	};
-
+	
+	private ActionListener preventNull = new ActionListener(){
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			JNumberTextField field=(JNumberTextField) event.getSource();
+			if(field.getText().equals("")){
+				field.setInt(1);
+			}
+		}		
+	};	
 	private ActionListener rollListener = new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String str = RangeField.getText();
 			final int min = 1;	
-			if(BonusField.getText()==""){
-				BonusField.setText("0");
-			}
-			final int bonus = Integer.valueOf(BonusField.getText());
-			final int max = Integer.valueOf(str);
+			final int bonus = BonusField.getInt();
+			final int max = RangeField.getInt();
 			Integer number=rand.nextInt((max - min) + 1) + min;
 			label.setText(String.valueOf(number+bonus));
 			if(sk.isConnected&&!sk.isPJ){
@@ -125,7 +129,8 @@ public class Dice {
 
 		// tohle udava rozsah kostky
 		RangeField = new JNumberTextField();
-		RangeField.setText("6");
+		RangeField.addActionListener(preventNull);
+		RangeField.setInt(6);
 		RangeField.setBounds(178, 230, 86, 20);
 		RangeField.setColumns(3);
 		frmKostka.getContentPane().add(RangeField);
@@ -152,7 +157,8 @@ public class Dice {
 		frmKostka.getContentPane().add(hundred);
 		
 		BonusField = new JNumberTextField();
-		BonusField.setText("0");
+		BonusField.addActionListener(preventNull);
+		BonusField.setInt(0);
 		BonusField.setColumns(3);
 		BonusField.setBounds(333, 230, 86, 20);
 		frmKostka.getContentPane().add(BonusField);
@@ -162,7 +168,7 @@ public class Dice {
 		frmKostka.getContentPane().add(Range);
 		
 		JLabel Bonus = new JLabel(sk.str.get("Modifier"));
-		Bonus.setBounds(336, 205, 69, 14);
+		Bonus.setBounds(333, 205, 69, 14);
 		frmKostka.getContentPane().add(Bonus);
 	}
 }

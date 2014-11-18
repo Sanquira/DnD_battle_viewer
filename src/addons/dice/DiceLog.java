@@ -6,9 +6,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
@@ -19,6 +16,10 @@ import javax.swing.text.StyleContext;
 
 public class DiceLog extends JScrollPane {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2137955313960178663L;
 	HPSklad sk = HPSklad.getInstance();
 	DefaultStyledDocument document = new DefaultStyledDocument();
 	JTextPane textPane = new JTextPane(document);
@@ -26,16 +27,10 @@ public class DiceLog extends JScrollPane {
 	Style style = context.addStyle("test", null);
 
 	public DiceLog() throws HeadlessException {
-		//setName(sk.str.get("diceTitle"));
-		//setSize(400, 300);
 		setPreferredSize(new Dimension(400, 300));
-		//JScrollPane scroll = new JScrollPane();
 		textPane.setEditable(false);
-		//setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		add(textPane);
 		setViewportView(textPane);
-		//setVisible(true);
-		//addMessage("Initializováno");
 	}
 
 	public void addMessage(String text, Color color) {
