@@ -42,7 +42,7 @@ public class DiceLog extends JScrollPane {
 			return;
 		}
 		try {
-			document.insertString(0, text + '\n', style);
+			document.insertString(document.getLength(), text + '\n', style);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
