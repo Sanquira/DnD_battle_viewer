@@ -3,14 +3,13 @@ package hexapaper.gui;
 import hexapaper.hexapaper;
 import hexapaper.Listeners.ValueListener;
 import hexapaper.entity.Artefact;
-import hexapaper.entity.HPEntity;
 import hexapaper.entity.FreeSpace;
+import hexapaper.entity.HPEntity;
 import hexapaper.entity.Postava;
 import hexapaper.entity.Wall;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.PropPair;
 import hexapaper.source.HPSklad.prvekkNN;
-import hexapaper.source.HPStrings;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -48,12 +47,12 @@ public class HPRightMenu extends JPanel {
 
 	HPSklad sk = HPSklad.getInstance();
 
-	JPanel prop,clrP;
+	JPanel prop, clrP;
 	JCheckBox showB, showBn;
 	JComboBox<Object> addAC;
 	JComboBox<Object> addPC;
 	boolean isAddingWall = false, isAddingFreeSpace = false;
-	JToggleButton freespace, wall;
+	JToggleButton freespace, wall,clrB;
 	HPEntity vlastnosti = null;
 	boolean isPostava = false, isDel = false;
 	ArrayList<PropPair> param = new ArrayList<PropPair>();
@@ -98,46 +97,29 @@ public class HPRightMenu extends JPanel {
 		prvni.setBorder(new TitledBorder(sk.str.get("ovladaniBitvy")));
 		prvni.setLayout(new GridLayout(5, 1, 0, 10));
 
-		clrP = new JPanel(new GridLayout(1, 2, 10, 0));
+		clrB = new JToggleButton("Barva");
+		clrB.setSelected(sk.colorAdd);
+		clrB.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				osetriColor(((JToggleButton) e.getSource()).isSelected());
+			}
+
+		});
+		clrP = new JPanel(new BorderLayout());
 		clrP.setBackground(sk.color);
 		clrP.setBorder(BorderFactory.createLineBorder(Color.black));
-		clrP.addMouseListener(new MouseAdapter(){
+		clrP.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				sk.clr.setVisible(true);				
-			}			
+				sk.clr.setVisible(true);
+			}
 		});
-		
-		//		JLabel showL = new JLabel(sk.str.get("showPlayerColor"));
-//		showB = new JCheckBox();
-//		showB.setSelected(sk.hidePlayerColor);
-//		osetriShowColor();
-//		showB.addActionListener(new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				osetriShowColor();
-//				updateCreate();
-//			}
-//		});
-//		showP.add(showL);
-//		showP.add(showB);
+		clrP.add(clrB,BorderLayout.EAST);
 
 		JPanel showN = new JPanel(new GridLayout(1, 2, 10, 0));
-//		JLabel showLn = new JLabel(sk.str.get("showNPCColor"));
-//		showBn = new JCheckBox();
-//		showBn.setSelected(sk.hideNPCColor);
-//		osetriShowNPC();
-//		showBn.addActionListener(new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				osetriShowNPC();
-//				updateCreate();
-//			}
-//		});
-//		showN.add(showLn);
-//		showN.add(showBn);
+		//UNUSED
 
 		JPanel wallFreeSpace = new JPanel(new GridLayout(1, 2, 10, 0));
 
@@ -210,6 +192,21 @@ public class HPRightMenu extends JPanel {
 		prvni.add(addP);
 		return prvni;
 	}
+	
+	private void osetriColor(boolean isActive) {
+		if (sk.isConnected && !sk.isPJ) {
+			return;
+		}
+		if (isActive) {
+			freespace.setSelected(false);
+			osetriFreeSpace(false);
+			wall.setSelected(false);
+			osetriWall(false);
+			sk.setupColor(true);
+		} else {
+			sk.setupColor(false);
+		}
+	}
 
 	public void updateDatabase() {
 		Object[] artlist = sk.databazeArtefaktu.toArray();
@@ -217,27 +214,10 @@ public class HPRightMenu extends JPanel {
 		Object[] postlist = sk.databazePostav.toArray();
 		addPC.setModel(new DefaultComboBoxModel<>(postlist));
 	}
-	
-	public void updateColor(){
+
+	public void updateColor() {
 		clrP.setBackground(sk.color);
 		clrP.repaint();
-	}
-	private void osetriShowColor() {
-		sk.hidePlayerColor = showB.isSelected();
-		if (showB.isSelected()) {
-			showB.setText(sk.str.get("ano"));
-		} else {
-			showB.setText(sk.str.get("ne"));
-		}
-	}
-
-	private void osetriShowNPC() {
-		sk.hideNPCColor = showBn.isSelected();
-		if (showBn.isSelected()) {
-			showBn.setText(sk.str.get("ano"));
-		} else {
-			showBn.setText(sk.str.get("ne"));
-		}
 	}
 
 	private void osetriWall(boolean isActive) {
@@ -246,7 +226,10 @@ public class HPRightMenu extends JPanel {
 		}
 		if (isActive) {
 			freespace.setSelected(false);
+			clrB.setSelected(false);
+			osetriColor(false);
 			osetriFreeSpace(false);
+			sk.setupColor(false);
 			sk.setupInserting(new Wall(sk.LocDontCare), true);
 		} else {
 			sk.setupInserting(null, false);
@@ -259,7 +242,10 @@ public class HPRightMenu extends JPanel {
 		}
 		if (isActive) {
 			wall.setSelected(false);
+			clrB.setSelected(false);
+			osetriColor(false);
 			osetriWall(false);
+			sk.setupColor(false);
 			sk.setupInserting(new FreeSpace(sk.LocDontCare), true);
 		} else {
 			sk.setupInserting(null, false);
@@ -517,8 +503,8 @@ public class HPRightMenu extends JPanel {
 	}
 
 	public void redrawProperities(prvekkNN prvekkNN) {
-		if (prvekkNN.getIdx() < sk.souradky.size()&&prvekkNN.getIdx()>=0) {
-			int i=prvekkNN.getIdx();
+		if (prvekkNN.getIdx() < sk.souradky.size() && prvekkNN.getIdx() >= 0) {
+			int i = prvekkNN.getIdx();
 			HPEntity ent = sk.souradky.get(i);
 			if (ent instanceof Postava ||
 					ent instanceof Artefact) {

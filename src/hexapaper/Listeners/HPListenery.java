@@ -196,6 +196,9 @@ public class HPListenery {
 				}
 				if (e.getButton() == MouseEvent.BUTTON1 && !sk.insertingEntity) {
 					if ((sk.isConnected && sk.isPJ) || !sk.isConnected) {
+						if(sk.colorAdd){
+							sk.souradky.get(idx.get(0).getIdx()).setBcg(sk.color);
+						}
 						sk.RMenu.redrawProperities(idx.get(0));
 						ins = true;
 						HraciPlocha t = (HraciPlocha) e.getComponent();

@@ -8,6 +8,7 @@ import hexapaper.source.HPSklad.prvekkNN;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -143,7 +144,6 @@ public class HraciPlocha extends JPanel {
 						sk.send(obj, "rotateEnt");
 						// System.out.println(ent.loc.getDir());
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					return;
@@ -173,7 +173,6 @@ public class HraciPlocha extends JPanel {
 				try {
 					sk.client.send(o, "insertEnt");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -198,7 +197,7 @@ public class HraciPlocha extends JPanel {
 		if (sk.insertingEntity) {
 			cursor = sk.insertedEntity.clone();
 			cursor.loc = new Location(x, y, cursor.loc.getDir());
-			cursor.background=Color.BLACK;
+			//cursor.background=Color.BLACK;
 			cursor.recreateGraphics();
 		} else {
 			cursor = null;
@@ -226,5 +225,5 @@ public class HraciPlocha extends JPanel {
 		}
 		drawCursor(-1, -1);
 	}
-
+	
 }

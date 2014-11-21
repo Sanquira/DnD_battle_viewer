@@ -13,6 +13,7 @@ import hexapaper.network.server.HexaClient;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -49,8 +50,8 @@ public class HPSklad {
 	public PJGUI PJInfo;
 	public JLabel statusBar;
 	public ColorPicker clr;
-	public Color color=Color.WHITE;
-	
+	public Color color = Color.WHITE;
+
 	public ArrayList<HPEntity> souradky;
 	public ArrayList<HPEntity> databazePostav = new ArrayList<>();
 	public ArrayList<HPEntity> databazeArtefaktu = new ArrayList<>();
@@ -64,6 +65,7 @@ public class HPSklad {
 	public boolean isPJ = false;
 	public boolean insertingEntity = false;
 	public boolean banned = false;
+	public boolean colorAdd = false;
 
 	public HexaClient client;
 	public LangFile str;
@@ -110,7 +112,7 @@ public class HPSklad {
 			instance = new HPSklad();
 		}
 		return instance;
-	}	
+	}
 
 	public void setupInserting(HPEntity insert, boolean repeat) {
 		if (insert == null) {
@@ -122,6 +124,10 @@ public class HPSklad {
 			insertingEntity = true;
 			repeatableInsert = repeat;
 		}
+	}
+
+	public void setupColor(boolean isActive) {
+		colorAdd = isActive;
 	}
 
 	public void initLoad(ArrayList<HPEntity> souradky) {
@@ -148,7 +154,7 @@ public class HPSklad {
 
 	public void updatePosition(double x1, double y1) {
 		double r = Math.cos(Math.toRadians(30)) * RADIUS;
-		position.setText(str.get("Posititon") + Math.round(((x1 / RADIUS) - 1) * (2 / 3.) + 1) + "," + Math.round(((y1/r)-((y1/r)+1)%2-1)/2));
+		position.setText(str.get("Posititon") + Math.round(((x1 / RADIUS) - 1) * (2 / 3.) + 1) + "," + Math.round(((y1 / r) - ((y1 / r) + 1) % 2 - 1) / 2));
 		position.repaint();
 	}
 
@@ -169,17 +175,18 @@ public class HPSklad {
 		colorJMenu();
 	}
 
-	public DiceLog getDiceLog(){
+	public DiceLog getDiceLog() {
 		return PJInfo.getLog();
 	}
-	
-	public DiceLog getPJLog(){
+
+	public DiceLog getPJLog() {
 		return PJInfo.getInfo();
 	}
-	
-	public void setStatus(String Message){
+
+	public void setStatus(String Message) {
 		statusBar.setText(Message);
-	}	
+	}
+
 	public static class prvekkNN implements Cloneable {
 		private double x1, y1, vzd;
 		private int idx;

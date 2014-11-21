@@ -45,6 +45,15 @@ public class hexapaper extends JFrame {
 		initializace();
 		setVisible(true);
 		sk.PJInfo=new PJGUI();
+		
+//		System.err.println("hexapaper 49-54");
+//		sk.gridRa = 10;
+//		sk.gridSl = 10;
+//		sk.init();
+//		sk.odblokujListenery();
+//		revalidate();
+//		repaint();
+		
 		//logging
 //		File f=new File("HexaLog.log");
 //		try {
