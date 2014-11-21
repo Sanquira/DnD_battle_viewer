@@ -1,7 +1,3 @@
-import Demos.ToolbarDemo;
-import dungeonmapper.dungeonMapper;
-import dungeonmapper.source.DMGridElement;
-import dungeonmapper.source.DMMapTypesEnum;
 import hexapaper.hexapaper;
 
 public class mainClass {

@@ -1,17 +1,18 @@
 package hexapaper;
 
 import hexapaper.Listeners.HPListenery;
+import hexapaper.gui.ColorPicker;
 import hexapaper.gui.PJGUI;
 import hexapaper.source.HPSklad;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
-
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JPanel;
@@ -179,6 +180,8 @@ public class hexapaper extends JFrame {
 		panel.add(position);
 		position.setHorizontalAlignment(SwingConstants.RIGHT);
 		sk.position=position;
+		
+		sk.clr=new ColorPicker();
 
 		return HlavniMenu;
 	}

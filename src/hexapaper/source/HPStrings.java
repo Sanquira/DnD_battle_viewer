@@ -30,7 +30,6 @@ public class HPStrings {
 	public static String loadPaper = "Načti papír";
 	public static String addArt = "Přidej artefakt";
 	public static String addPost = "Přidej postavu";
-	public static String konec = "Konec";
 
 	public static String ovladaniBitvy = "Ovládání bitvy";
 	public static String vlastnostiObj = "Vlastnosti objektu";
@@ -79,7 +78,13 @@ public class HPStrings {
 	public static String Range = "Rozsah";
 	public static String Modifier = "Bonus";	
 	//public static String Player = "Play";
-
+	
+	//Dialogové překlady
+	public static String Close = "Zavřít";
+	public static String Confirm = "Ok";
+	public static String Reset = "Reset";
+	public static String konec = "Konec";
+	
 	public static String ztrataDat = "Ztráta dat";
 	public static String zpravaZtrataDat = "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVšechny neuložené změny budou ztraceny. \nChcete opravdu skončit?";
 	

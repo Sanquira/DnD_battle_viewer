@@ -14,6 +14,7 @@ public class ClientInfo {
 	private Socket socket;
 	private ObjectInputStream inputStream;
 	private ObjectOutputStream outputStream;
+	private Thread thread;
 	private Map<String,Object> atributes=new HashMap<String,Object>();
 	
 	public ClientInfo(String hostName, int port, String nick, Socket socket, ObjectInputStream i, ObjectOutputStream o){
@@ -23,6 +24,9 @@ public class ClientInfo {
 		this.setSocket(socket);
 		this.inputStream=i;
 		this.outputStream=o;
+		thread=new Thread(new PacketReceiveHandler(inputStream,nick));
+		thread.setName("PacketReceiveHandler-"+nick);
+		thread.start();   
 		
 	}
 	public String getNick() {
@@ -68,7 +72,7 @@ public class ClientInfo {
 		}
 		catch(IOException e){
 			e.printStackTrace();
-			kick();
+			remove();
 		}
 	}
 	public void send(Object o,String header) throws IOException{
@@ -78,7 +82,7 @@ public class ClientInfo {
 		}
 		catch(IOException e){
 			e.printStackTrace();
-			kick();
+			remove();
 		}
 	}
 	public void send(String nick,Object o) throws IOException{
@@ -88,7 +92,7 @@ public class ClientInfo {
 		}
 		catch(IOException e){
 			e.printStackTrace();
-			kick();
+			remove();
 		}
 	}
 	public void send(String nick,Object o,String header) throws IOException{
@@ -98,13 +102,19 @@ public class ClientInfo {
 		}
 		catch(IOException e){
 			e.printStackTrace();
-			kick();
+			remove();
 		}
 	}
-	public void kick() throws IOException{
-		socket.getInputStream().close();
-		socket.getOutputStream().close();
-		socket.close();
+	public void remove() throws IOException{
+		if(!socket.isClosed()){
+			socket.close();
+		}
+		thread.interrupt();
+		//socket.close();
+	}
+	public void kick(String reason) throws IOException{
+		send(nick,reason,"corekick");
+		remove();
 	}
 	public Map<String,Object> getAtributes() {
 		return atributes;

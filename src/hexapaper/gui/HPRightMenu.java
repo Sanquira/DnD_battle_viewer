@@ -25,6 +25,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -47,7 +48,7 @@ public class HPRightMenu extends JPanel {
 
 	HPSklad sk = HPSklad.getInstance();
 
-	JPanel prop;
+	JPanel prop,clrP;
 	JCheckBox showB, showBn;
 	JComboBox<Object> addAC;
 	JComboBox<Object> addPC;
@@ -97,37 +98,46 @@ public class HPRightMenu extends JPanel {
 		prvni.setBorder(new TitledBorder(sk.str.get("ovladaniBitvy")));
 		prvni.setLayout(new GridLayout(5, 1, 0, 10));
 
-		JPanel showP = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel showL = new JLabel(sk.str.get("showPlayerColor"));
-		showB = new JCheckBox();
-		showB.setSelected(sk.hidePlayerColor);
-		osetriShowColor();
-		showB.addActionListener(new ActionListener() {
-
+		clrP = new JPanel(new GridLayout(1, 2, 10, 0));
+		clrP.setBackground(sk.color);
+		clrP.setBorder(BorderFactory.createLineBorder(Color.black));
+		clrP.addMouseListener(new MouseAdapter(){
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				osetriShowColor();
-				updateCreate();
-			}
+			public void mouseClicked(MouseEvent arg0) {
+				sk.clr.setVisible(true);				
+			}			
 		});
-		showP.add(showL);
-		showP.add(showB);
+		
+		//		JLabel showL = new JLabel(sk.str.get("showPlayerColor"));
+//		showB = new JCheckBox();
+//		showB.setSelected(sk.hidePlayerColor);
+//		osetriShowColor();
+//		showB.addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				osetriShowColor();
+//				updateCreate();
+//			}
+//		});
+//		showP.add(showL);
+//		showP.add(showB);
 
 		JPanel showN = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel showLn = new JLabel(sk.str.get("showNPCColor"));
-		showBn = new JCheckBox();
-		showBn.setSelected(sk.hideNPCColor);
-		osetriShowNPC();
-		showBn.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				osetriShowNPC();
-				updateCreate();
-			}
-		});
-		showN.add(showLn);
-		showN.add(showBn);
+//		JLabel showLn = new JLabel(sk.str.get("showNPCColor"));
+//		showBn = new JCheckBox();
+//		showBn.setSelected(sk.hideNPCColor);
+//		osetriShowNPC();
+//		showBn.addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				osetriShowNPC();
+//				updateCreate();
+//			}
+//		});
+//		showN.add(showLn);
+//		showN.add(showBn);
 
 		JPanel wallFreeSpace = new JPanel(new GridLayout(1, 2, 10, 0));
 
@@ -193,7 +203,7 @@ public class HPRightMenu extends JPanel {
 		sk.serverbanned.add(wall);
 		sk.serverbanned.add(freespace);
 
-		prvni.add(showP);
+		prvni.add(clrP);
 		prvni.add(showN);
 		prvni.add(wallFreeSpace);
 		prvni.add(addA);
@@ -207,7 +217,11 @@ public class HPRightMenu extends JPanel {
 		Object[] postlist = sk.databazePostav.toArray();
 		addPC.setModel(new DefaultComboBoxModel<>(postlist));
 	}
-
+	
+	public void updateColor(){
+		clrP.setBackground(sk.color);
+		clrP.repaint();
+	}
 	private void osetriShowColor() {
 		sk.hidePlayerColor = showB.isSelected();
 		if (showB.isSelected()) {

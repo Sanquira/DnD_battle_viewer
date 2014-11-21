@@ -258,7 +258,7 @@ public class ServerListeners {
 			try {
 				String message=(String) args.get(1);
 				client.send((Object) message,"kick");
-				client.kick();
+				client.remove();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

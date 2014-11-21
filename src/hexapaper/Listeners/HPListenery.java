@@ -330,7 +330,7 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			new ColorPicker();
+			sk.clr.setVisible(true);
 		}
 
 	}

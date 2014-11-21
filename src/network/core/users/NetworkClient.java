@@ -9,12 +9,14 @@ import java.net.UnknownHostException;
 
 import network.core.interfaces.ConnectListener;
 import network.core.interfaces.DisconnectListener;
+import network.core.interfaces.PacketReceiveListener;
 import network.core.source.MessagePacket;
 import network.core.source.PacketReceiveHandler;
 
 public class NetworkClient extends AbstractNetworkUser{
     private Socket socket=null;
     private String nick;
+    private Thread thread;
     private ObjectOutputStream o;
     private ObjectInputStream i;
 	    public void addDisconnectListener(DisconnectListener l){
@@ -22,6 +24,9 @@ public class NetworkClient extends AbstractNetworkUser{
 	    }
 	    public void addConnectListener(ConnectListener l){
 	    	sk.connectListeners.add(l);
+	    }
+	    public void addKickListener(PacketReceiveListener l){
+	    	addReceiveListener(l,"corekick");
 	    }
 	    public NetworkClient(){
 	    	socket = new Socket();
@@ -38,8 +43,8 @@ public class NetworkClient extends AbstractNetworkUser{
 	    	this.nick=nick;
             i=new ObjectInputStream(socket.getInputStream());
             o=new ObjectOutputStream(socket.getOutputStream());
-            Thread t=new Thread(new PacketReceiveHandler(i,socket));
-            t.start();
+            thread=new Thread(new PacketReceiveHandler(i,socket));
+            thread.start();
             o.writeObject(null);
             o.writeObject(new MessagePacket(nick,"connect", null));
             o.writeObject(null);            
@@ -72,8 +77,10 @@ public class NetworkClient extends AbstractNetworkUser{
 	       	}	       	
 	    }
 	    public void disconnect() throws IOException{
-			socket.getInputStream().close();
-			socket.getOutputStream().close();
+			if(!socket.isClosed()){
+				socket.close();
+			}
+			thread.interrupt();
 	    	//socket.close();    	    	
 	    }
 }

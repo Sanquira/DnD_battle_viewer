@@ -83,7 +83,7 @@ public class ServerListeners {
 				ClientInfo client = server.getNetworkStorage().getClientByName(args.get(0));
 				client.send("Server","Byl jsi vykopnut ze serveru z důvodu: "+args.get(1),"announce");
 				server.rebroadcast(client.getNick(), "Hráč "+client.getNick()+" byl vyhozen ze serveru z důvodu: "+args.get(1), "broadcast");
-				client.kick();
+				client.remove();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

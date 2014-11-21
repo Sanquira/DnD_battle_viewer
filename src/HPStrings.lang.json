@@ -45,7 +45,7 @@
   "export": "Export",
   "File_ext": "ent",
   "NPC": "NPC",
-  "zpravaZtrataDat": "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVěechny neuložené změny budou ztraceny. \nChcete opravdu skončit?",
+  "zpravaZtrataDat": "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVšechny neuložené změny budou ztraceny. \nChcete opravdu skončit?",
   "vlastnostiObj": "Vlastnosti objektu",
   "vytvoreneArtefakty": "Vytvořené artefakty",
   "kostka": "Kostka",
@@ -55,4 +55,5 @@
   "ne": "Ne",
   "weapon": "Zbraň",
   "vytvorPaper": "Vytvoř hexu"
+  "Player": "Sprt"
 }

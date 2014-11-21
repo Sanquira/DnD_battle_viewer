@@ -4,6 +4,7 @@ import hexapaper.hexapaper;
 import hexapaper.Listeners.HPListenery;
 import hexapaper.entity.FreeSpace;
 import hexapaper.entity.HPEntity;
+import hexapaper.gui.ColorPicker;
 import hexapaper.gui.Gprvky;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.HPRightMenu;
@@ -47,6 +48,8 @@ public class HPSklad {
 	public JLabel position;
 	public PJGUI PJInfo;
 	public JLabel statusBar;
+	public ColorPicker clr;
+	public Color color=Color.WHITE;
 	
 	public ArrayList<HPEntity> souradky;
 	public ArrayList<HPEntity> databazePostav = new ArrayList<>();
@@ -65,7 +68,7 @@ public class HPSklad {
 	public HexaClient client;
 	public LangFile str;
 
-	public final String VERSION = "v0.3c";
+	public final String VERSION = "v0.3d";
 	public String lastName = "Player";
 
 	public void send(Object o, String header) throws IOException {
@@ -107,7 +110,7 @@ public class HPSklad {
 			instance = new HPSklad();
 		}
 		return instance;
-	}
+	}	
 
 	public void setupInserting(HPEntity insert, boolean repeat) {
 		if (insert == null) {

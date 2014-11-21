@@ -15,16 +15,18 @@ public class ConnectThread implements Runnable{
 	private String name;
 	public void registerClient(ObjectInputStream IStream) throws ClassNotFoundException, IOException{
     	MessagePacket connectMessage;
+    	ClientInfo clientInfo;
     	IStream.readObject();
     	connectMessage = (MessagePacket) IStream.readObject();
-		if(!sk.clients.containsKey(connectMessage.getNick())){
+		if(!sk.clients.containsKey(connectMessage.getNick())&&checkNick(connectMessage.getNick())){
 	    	name=connectMessage.getNick();
-			ClientInfo c = new ClientInfo(client.getRemoteSocketAddress().toString(), client.getLocalPort(),connectMessage.getNick() , client,IStream,OStream);
-			sk.clients.put(c.getNick(),c);
-			sk.callClientConnectEvent(c);
+			clientInfo = new ClientInfo(client.getRemoteSocketAddress().toString(), client.getLocalPort(),connectMessage.getNick() , client,IStream,OStream);
+			sk.clients.put(clientInfo.getNick(),clientInfo);
+			sk.callClientConnectEvent(clientInfo);
 		}
 		else{
 			try {
+				OStream.writeObject(new MessagePacket(connectMessage.getNick(),"corekick",0));
 				OStream.close();
 				IStream.close();
 			} catch (IOException e) {
@@ -41,10 +43,7 @@ public class ConnectThread implements Runnable{
 			OStream=new ObjectOutputStream(client.getOutputStream());
 			IStream=new ObjectInputStream(client.getInputStream());
 			OStream.writeObject(null);
-			registerClient(IStream);
-			Thread t=new Thread(new PacketReceiveHandler(IStream,name)); 
-			t.setName("PacketReceiveHandler-"+name);
-			t.start();            
+			registerClient(IStream);        
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -56,7 +55,16 @@ public class ConnectThread implements Runnable{
 		}
 		
 	}
-	public ConnectThread(ServerSocket s){
-		this.server=s;
+	public boolean checkNick(String nick){
+		String[] banned={"ě","š","č","ř","ž","ý","á","í","ů","ú"," "};
+		for(String chars:banned){
+			if(nick.contains(chars)){
+				return false;
+			}
+		}
+		return true;		
+	}
+	public ConnectThread(ServerSocket server){
+		this.server=server;
 	}
 }
