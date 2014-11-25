@@ -198,8 +198,8 @@ public class HPListenery {
 					if ((sk.isConnected && sk.isPJ) || !sk.isConnected) {
 						if(sk.colorAdd){
 							sk.souradky.get(idx.get(0).getIdx()).setBcg(sk.color);
-							Object[] o={sk.souradky.indexOf(idx.get(0).getIdx()),sk.color};
-							sk.send(o,"paintEntity",true);
+							Object[] o={idx.get(0).getIdx(),sk.color};
+							sk.send(o,"paintEnt",true);
 						}
 						sk.RMenu.redrawProperities(idx.get(0));
 						ins = true;
