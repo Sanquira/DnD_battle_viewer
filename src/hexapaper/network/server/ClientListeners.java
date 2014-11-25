@@ -90,9 +90,6 @@ public class ClientListeners {
 		@Override
 		public void packetReceive(MessagePacket p) {
 <<<<<<< HEAD
-			System.out.println("s");
-			Object[] table = (Object[]) p.getObject();
-			if ((Integer) table[0] < storage.souradky.size()) {
 =======
 			Object[] table=(Object[]) p.getObject();
 			if((Integer) table[0]<storage.souradky.size()){
@@ -101,7 +98,6 @@ public class ClientListeners {
 				storage.hraciPlocha.repaint();
 			}
 <<<<<<< HEAD
-		}
 =======
 			//System.out.println(storage.souradky.get((Integer) table[0]).getBcg().getRGB());
 		}		
