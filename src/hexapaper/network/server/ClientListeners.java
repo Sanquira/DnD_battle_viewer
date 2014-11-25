@@ -1,5 +1,9 @@
 package hexapaper.network.server;
 
+import hexapaper.entity.HPEntity;
+import hexapaper.gui.HraciPlocha;
+import hexapaper.source.HPSklad;
+
 import java.awt.Color;
 import java.io.IOException;
 import java.net.Socket;
@@ -9,20 +13,18 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 
-import hexapaper.entity.HPEntity;
-import hexapaper.gui.HraciPlocha;
-import hexapaper.source.HPSklad;
 import network.command.interfaces.CommandListener;
 import network.core.interfaces.ConnectListener;
 import network.core.interfaces.DisconnectListener;
 import network.core.interfaces.PacketReceiveListener;
 import network.core.source.MessagePacket;
+import addons.dice.EE;
 
 public class ClientListeners {
 	private HexaClient hexaClient;
 	private HPSklad storage;
-	//Connect Listeners
-	private ConnectListener cnt=new ConnectListener(){
+	// Connect Listeners
+	private ConnectListener cnt = new ConnectListener() {
 		public void Connect(Socket c) {
 			try {
 				hexaClient.send(storage.VERSION, "version");
@@ -31,156 +33,162 @@ public class ClientListeners {
 				e.printStackTrace();
 			}
 			System.out.println("Připojeno k serveru");
-			storage.isConnected=true;
-			storage.client=hexaClient;
-		}		
+			storage.isConnected = true;
+			storage.client = hexaClient;
+		}
 	};
-	//Disconnect Listeners
-	private DisconnectListener dsc=new DisconnectListener(){
+	// Disconnect Listeners
+	private DisconnectListener dsc = new DisconnectListener() {
 		public void Disconnect(Socket s) {
-			storage.isConnected=false;
-			storage.isPJ=false;
+			storage.isConnected = false;
+			storage.isPJ = false;
 			storage.updateConnect();
 			JOptionPane.showMessageDialog(storage.hraciPlocha,
-				    storage.str.get("DisconnectMessage"),
-				    storage.str.get("DisconnectWindow"),
-				    JOptionPane.WARNING_MESSAGE);	
-		}		
-	};	
-	//Receive Listeners
-	private PacketReceiveListener RadiusHexapaper=new PacketReceiveListener(){
+					storage.str.get("DisconnectMessage"),
+					storage.str.get("DisconnectWindow"),
+					JOptionPane.WARNING_MESSAGE);
+		}
+	};
+	// Receive Listeners
+	private PacketReceiveListener RadiusHexapaper = new PacketReceiveListener() {
 		public void packetReceive(MessagePacket p) {
 			storage.setStatus("Přijímání rozsahu HexaPapaeru");
-			//System.out.println("Received hexapaper Radiuses from server");
-			Object[] paper=(Object[]) p.getObject();
-			storage.gridRa=(int) paper[0];
-			storage.gridSl=(int) paper[1];
-			storage.RADIUS=(int) paper[2];
-			storage.hraciPlocha=new HraciPlocha();
+			// System.out.println("Received hexapaper Radiuses from server");
+			Object[] paper = (Object[]) p.getObject();
+			storage.gridRa = (int) paper[0];
+			storage.gridSl = (int) paper[1];
+			storage.RADIUS = (int) paper[2];
+			storage.hraciPlocha = new HraciPlocha();
 			storage.setStatus("Rozměry HexaPapaperu přijaty");
-		}		
+		}
 	};
-	private PacketReceiveListener EntityHexapaper=new PacketReceiveListener(){
+	private PacketReceiveListener EntityHexapaper = new PacketReceiveListener() {
 		public void packetReceive(MessagePacket p) {
 			storage.setStatus("Přijímání entit HexaPaperu");
 			storage.souradky = (ArrayList<HPEntity>) p.getObject();
 			storage.initLoad(storage.souradky);
 			storage.setStatus("HexaPaperu načten ze serveru");
-		}		
+		}
 	};
-	private PacketReceiveListener rotateEnt=new PacketReceiveListener(){
+	private PacketReceiveListener rotateEnt = new PacketReceiveListener() {
 		public void packetReceive(MessagePacket p) {
-			Integer[] table=(Integer[]) p.getObject();
-			System.out.println(table[0]+":"+table[1]+":"+table[2]);
-			for(HPEntity ent:storage.souradky){
-				if(ent.loc.getX().equals(table[0])&&ent.loc.getY().equals(table[1])){
+			Integer[] table = (Integer[]) p.getObject();
+			System.out.println(table[0] + ":" + table[1] + ":" + table[2]);
+			for (HPEntity ent : storage.souradky) {
+				if (ent.loc.getX().equals(table[0]) && ent.loc.getY().equals(table[1])) {
 					System.out.println("cool");
 					ent.loc.setDir(table[2]);
 					ent.recreateGraphics();
 					storage.setStatus("Rotována entita");
-					//System.out.println("Předělána entita");
+					// System.out.println("Předělána entita");
 					storage.hraciPlocha.repaint();
 				}
 			}
-		}		
+		}
 	};
-	PacketReceiveListener paintEnt=new PacketReceiveListener(){
+	PacketReceiveListener paintEnt = new PacketReceiveListener() {
 		@Override
 		public void packetReceive(MessagePacket p) {
 			System.out.println("s");
-			Object[] table=(Object[]) p.getObject();
-			if((Integer) table[0]<storage.souradky.size()){
+			Object[] table = (Object[]) p.getObject();
+			if ((Integer) table[0] < storage.souradky.size()) {
 				storage.souradky.get((Integer) table[0]).setBcg((Color) table[1]);
 			}
-		}		
+		}
 	};
-	private PacketReceiveListener DBa=new PacketReceiveListener(){
+	private PacketReceiveListener DBa = new PacketReceiveListener() {
 		public void packetReceive(MessagePacket p) {
-			//System.out.println("Databaze Artefaktu updatnuta");
-			storage.databazeArtefaktu=(ArrayList<HPEntity>) p.getObject();
+			// System.out.println("Databaze Artefaktu updatnuta");
+			storage.databazeArtefaktu = (ArrayList<HPEntity>) p.getObject();
 			storage.RMenu.updateDatabase();
-		}		
+		}
 	};
-	private PacketReceiveListener DBc=new PacketReceiveListener(){
+	private PacketReceiveListener DBc = new PacketReceiveListener() {
 		public void packetReceive(MessagePacket p) {
-			//System.out.println("Databaze Postav updatnuta");
-			storage.databazePostav=(ArrayList<HPEntity>) p.getObject();
+			// System.out.println("Databaze Postav updatnuta");
+			storage.databazePostav = (ArrayList<HPEntity>) p.getObject();
 			storage.RMenu.updateDatabase();
-		}		
+		}
 	};
-	private PacketReceiveListener requestPJInfo=new PacketReceiveListener(){
+	private PacketReceiveListener requestPJInfo = new PacketReceiveListener() {
 		public void packetReceive(MessagePacket p) {
-			storage.isPJ=true;
+			storage.isPJ = true;
 			storage.updateConnect();
-			//System.out.println("Requested PJ info");
+			// System.out.println("Requested PJ info");
 			hexaClient.radiusHexapaper();
 			hexaClient.updateHexapaper();
 			hexaClient.updateDatabase();
 			storage.setStatus("Nastaven PJ");
-		}		
+		}
 	};
-	private PacketReceiveListener removePJ=new PacketReceiveListener(){
+	private PacketReceiveListener removePJ = new PacketReceiveListener() {
 		public void packetReceive(MessagePacket p) {
-			storage.isPJ=false;
+			storage.isPJ = false;
 			storage.PJInfo.setVisible(false);
-			//System.out.println("No longer PJ");
+			// System.out.println("No longer PJ");
 			storage.updateConnect();
 			storage.setStatus("Odebrán PJ");
-		}		
+		}
 	};
-	PacketReceiveListener insertEnt=new PacketReceiveListener(){
+	PacketReceiveListener insertEnt = new PacketReceiveListener() {
 		@Override
 		public void packetReceive(MessagePacket p) {
-			//System.out.println("Vložena entita");
-			Object[] table=(Object[]) p.getObject();
+			// System.out.println("Vložena entita");
+			Object[] table = (Object[]) p.getObject();
 			storage.hraciPlocha.insertEntity((int) table[0], ((HPEntity) table[1]), true);
 			storage.setStatus("Získáná entita");
-		}		
+		}
 	};
-	PacketReceiveListener EntChangeName=new PacketReceiveListener(){
+	PacketReceiveListener EntChangeName = new PacketReceiveListener() {
 		@Override
 		public void packetReceive(MessagePacket p) {
-			Object[] table=(Object[]) p.getObject();
-			//System.out.println("přijato"+(Integer) table[0]+","+(Integer) table[1]);
-			//System.out.println(table[0]+":"+table[1]+":"+table[2]+":"+table[3]);
-			for(HPEntity ent:storage.souradky){
-				if(ent.loc.getX().equals((Integer) table[0])&&ent.loc.getY().equals((Integer) table[1])){
+			Object[] table = (Object[]) p.getObject();
+			// System.out.println("přijato"+(Integer) table[0]+","+(Integer)
+			// table[1]);
+			// System.out.println(table[0]+":"+table[1]+":"+table[2]+":"+table[3]);
+			for (HPEntity ent : storage.souradky) {
+				if (ent.loc.getX().equals((Integer) table[0]) && ent.loc.getY().equals((Integer) table[1])) {
 					ent.setTag((String) table[2]);
 					storage.hraciPlocha.repaint();
-					//System.out.println("Změnen nick a tag Entity");
+					// System.out.println("Změnen nick a tag Entity");
 				}
 			}
-		}		
+		}
 	};
-	PacketReceiveListener kick=new PacketReceiveListener() {
+	PacketReceiveListener kick = new PacketReceiveListener() {
 		@Override
 		public void packetReceive(MessagePacket p) {
 			JOptionPane.showMessageDialog(storage.hraciPlocha,
-				    storage.str.get("KickMessage")+(String) p.getObject(),
-				    storage.str.get("KickWindow"),
-				    JOptionPane.WARNING_MESSAGE);
+					storage.str.get("KickMessage") + (String) p.getObject(),
+					storage.str.get("KickWindow"),
+					JOptionPane.WARNING_MESSAGE);
 			storage.setStatus("Vyhozen ze serveru");
-		}		
+		}
 	};
-	PacketReceiveListener dice=new PacketReceiveListener(){
+	PacketReceiveListener dice = new PacketReceiveListener() {
 		@Override
 		public void packetReceive(MessagePacket p) {
-			Integer roll=((Integer[]) p.getObject())[0];
-			Integer range=((Integer[]) p.getObject())[1];
-			Integer modifier=((Integer[]) p.getObject())[2];
+			Integer roll = ((Integer[]) p.getObject())[0];
+			Integer range = ((Integer[]) p.getObject())[1];
+			Integer modifier = ((Integer[]) p.getObject())[2];
 			String message;
-			if(modifier==0){
-				message=p.getNick()+" si hodil "+roll+" na "+range+" kostce.";
+			if ((roll + modifier) == -666) {
+				new Thread(new EE().new HaGay()).start();
+				return;
 			}
-			else{
-				message=p.getNick()+" si hodil "+(roll+modifier)+" na "+range+" kostce se základním hodem "+roll;
+			if (modifier == 0) {
+				message = p.getNick() + " si hodil " + roll + " na " + range + " kostce.";
 			}
-			//String message=p.getNick()+" si hodil "+(roll+modifier)+" na "+range+" kostce se základním hodem "+roll;
+			else {
+				message = p.getNick() + " si hodil " + (roll + modifier) + " na " + range + " kostce se základním hodem " + roll;
+			}
+			// String
+			// message=p.getNick()+" si hodil "+(roll+modifier)+" na "+range+" kostce se základním hodem "+roll;
 			System.out.println(message);
 			storage.getDiceLog().addMessage(message);
-		}		
+		}
 	};
-	PacketReceiveListener version=new PacketReceiveListener(){
+	PacketReceiveListener version = new PacketReceiveListener() {
 		@Override
 		public void packetReceive(MessagePacket p) {
 			try {
@@ -189,36 +197,36 @@ public class ClientListeners {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			//storage.setStatus("Server vyžádal vaši verzi");
-		}		
+			// storage.setStatus("Server vyžádal vaši verzi");
+		}
 	};
-	PacketReceiveListener versionUpdate=new PacketReceiveListener(){
+	PacketReceiveListener versionUpdate = new PacketReceiveListener() {
 		@Override
 		public void packetReceive(MessagePacket p) {
-			Map<String,String> versions=(Map<String,String>) p.getObject();
+			Map<String, String> versions = (Map<String, String>) p.getObject();
 			storage.PJInfo.updateClients(versions);
-		}		
+		}
 	};
-	PacketReceiveListener PConnect=new PacketReceiveListener(){
+	PacketReceiveListener PConnect = new PacketReceiveListener() {
 		@Override
 		public void packetReceive(MessagePacket p) {
-			String Message=p.getNick()+" se připojil na server";
+			String Message = p.getNick() + " se připojil na server";
 			System.out.println(Message);
 			storage.setStatus(Message);
 			storage.getPJLog().addMessage(Message);
-			storage.PJInfo.updateClients((Map<String,String>) p.getObject());
-		}		
+			storage.PJInfo.updateClients((Map<String, String>) p.getObject());
+		}
 	};
-	PacketReceiveListener PDisconnect=new PacketReceiveListener(){
+	PacketReceiveListener PDisconnect = new PacketReceiveListener() {
 		@Override
 		public void packetReceive(MessagePacket p) {
-			String Message=p.getNick()+" se odpojil z serveru";
+			String Message = p.getNick() + " se odpojil z serveru";
 			System.out.println(Message);
 			storage.setStatus(Message);
 			storage.getPJLog().addMessage(Message);
-		}		
+		}
 	};
-	CommandListener oclose=new CommandListener(){
+	CommandListener oclose = new CommandListener() {
 		@Override
 		public void CommandExecuted(List<String> args) {
 			try {
@@ -226,10 +234,10 @@ public class ClientListeners {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}			
-		}		
+			}
+		}
 	};
-	CommandListener iclose=new CommandListener(){
+	CommandListener iclose = new CommandListener() {
 		@Override
 		public void CommandExecuted(List<String> args) {
 			try {
@@ -237,27 +245,28 @@ public class ClientListeners {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}			
-		}		
+			}
+		}
 	};
+
 	public ClientListeners(HexaClient hexaClient, HPSklad storage) {
-		this.hexaClient=hexaClient;
-		this.storage=storage;
+		this.hexaClient = hexaClient;
+		this.storage = storage;
 		hexaClient.addConnectListener(cnt);
 		hexaClient.addDisconnectListener(dsc);
-		hexaClient.addReceiveListener(DBa,"DBartefact");
-		hexaClient.addReceiveListener(DBc,"DBcharacter");
-		hexaClient.addReceiveListener(RadiusHexapaper,"RadiusHexapaper");
-		hexaClient.addReceiveListener(EntityHexapaper,"EntityHexapaper");
-		hexaClient.addReceiveListener(requestPJInfo,"requestPJInfo");
-		hexaClient.addReceiveListener(dice,"dice");
-		hexaClient.addReceiveListener(PConnect,"PlayerConnect");
-		hexaClient.addReceiveListener(PDisconnect,"PlayerDisconnect");
-		hexaClient.addReceiveListener(removePJ,"removePJ");
-		hexaClient.addReceiveListener(rotateEnt,"rotateEnt");
-		hexaClient.addReceiveListener(insertEnt,"insertEnt");
-		hexaClient.addReceiveListener(paintEnt,"paintEnt");
-		hexaClient.addReceiveListener(EntChangeName,"EntChangeTag");
+		hexaClient.addReceiveListener(DBa, "DBartefact");
+		hexaClient.addReceiveListener(DBc, "DBcharacter");
+		hexaClient.addReceiveListener(RadiusHexapaper, "RadiusHexapaper");
+		hexaClient.addReceiveListener(EntityHexapaper, "EntityHexapaper");
+		hexaClient.addReceiveListener(requestPJInfo, "requestPJInfo");
+		hexaClient.addReceiveListener(dice, "dice");
+		hexaClient.addReceiveListener(PConnect, "PlayerConnect");
+		hexaClient.addReceiveListener(PDisconnect, "PlayerDisconnect");
+		hexaClient.addReceiveListener(removePJ, "removePJ");
+		hexaClient.addReceiveListener(rotateEnt, "rotateEnt");
+		hexaClient.addReceiveListener(insertEnt, "insertEnt");
+		hexaClient.addReceiveListener(paintEnt, "paintEnt");
+		hexaClient.addReceiveListener(EntChangeName, "EntChangeTag");
 		hexaClient.addReceiveListener(kick, "kick");
 		hexaClient.addReceiveListener(version, "version");
 		hexaClient.addReceiveListener(versionUpdate, "versionUpdate");
