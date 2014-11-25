@@ -73,20 +73,19 @@ public class HPSklad {
 	public final String VERSION = "v0.3e";
 	public String lastName = "Player";
 
-	public void send(Object o, String header,boolean PJ) {
-		try{
-		if (isConnected) {
-			if(PJ&&isPJ){
-				client.send(o,header);
-				return;
+	public void send(Object o, String header, boolean PJ) {
+		try {
+			if (isConnected) {
+				if (PJ && isPJ) {
+					client.send(o, header);
+					return;
+				}
+				if (!PJ && !isPJ) {
+					client.send(o, header);
+					return;
+				}
 			}
-			if(!PJ&&!isPJ){
-				client.send(o, header);
-				return;
-			}
-		}
-		}
-		catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -145,11 +144,10 @@ public class HPSklad {
 	public void initLoad(ArrayList<HPEntity> souradky) {
 		hraciPlocha = new HraciPlocha();
 		for (int i = 0; i < souradky.size(); i++) {
-			if (souradky.get(i) instanceof FreeSpace) {
-			} else {
-				// System.out.println(i);
-				hraciPlocha.insertEntity(i, souradky.get(i), true);
-			}
+			// if (souradky.get(i) instanceof FreeSpace) {
+			// } else {
+			hraciPlocha.insertEntity(i, souradky.get(i), true);
+			// }
 		}
 		hexapaper.HPfrm.repaint();
 		HPListenery lis = new HPListenery();
