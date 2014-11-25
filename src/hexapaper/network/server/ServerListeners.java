@@ -2,6 +2,7 @@ package hexapaper.network.server;
 
 import hexapaper.entity.HPEntity;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,6 @@ import network.core.source.MessagePacket;
 public class ServerListeners {
 	private CommandServer server;
 	private int gridSl,gridRa,RADIUS;
-	private Integer[] Cursorloc;
 	private ArrayList<HPEntity> souradky=null;
 	private ArrayList<HPEntity> DBArtefact=null;
 	private ArrayList<HPEntity> DBCharacter=null;
@@ -29,18 +29,13 @@ public class ServerListeners {
 	ClientConnectListener connect=new ClientConnectListener(){
 		public void clientConnect(ClientInfo c) {
 			if(PJ!=null){
-				try {					
-					Object[] o={gridSl,gridRa,RADIUS};
-					c.send(o, "RadiusHexapaper");
-					c.send(souradky, "EntityHexapaper");
-					PJ.send(c.getNick(),versions,"PlayerConnect");
-					//c.send(Cursorloc,"PJcursor");
-					//c.send(DBArtefact,"DBartefact");
-					//c.send(DBCharacter,"DBcharacter");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				Object[] o={gridSl,gridRa,RADIUS};
+				c.send(o, "RadiusHexapaper");
+				c.send(souradky, "EntityHexapaper");
+				PJ.send(c.getNick(),versions,"PlayerConnect");
+				//c.send(Cursorloc,"PJcursor");
+				//c.send(DBArtefact,"DBartefact");
+				//c.send(DBCharacter,"DBcharacter");
 			}
 			System.out.println("Client připojen "+(String) c.getNick());
 //			try {
@@ -62,12 +57,7 @@ public class ServerListeners {
 					PJ=null;					
 				}
 				else{
-					try {
-						PJ.send(c.getNick(), 0,"PlayerDisconnect");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					PJ.send(c.getNick(), 0,"PlayerDisconnect");
 				}
 			}
 			System.out.println(Message);
@@ -149,6 +139,21 @@ public class ServerListeners {
 			}
 		}		
 	};
+	PacketReceiveListener paintEnt=new PacketReceiveListener(){
+		@Override
+		public void packetReceive(MessagePacket p) {
+			Object[] table=(Object[]) p.getObject();
+			if((Integer) table[0]<souradky.size()){
+				souradky.get((Integer) table[0]).setBcg((Color) table[1]);
+				try {
+					server.rebroadcast(p.getNick(), p.getObject(),p.getHeader());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}		
+	};
 	PacketReceiveListener DBc=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
 			System.out.println("Postavy přijaty"); 
@@ -196,13 +201,8 @@ public class ServerListeners {
 				Message=p.getNick()+" si hodil "+(roll+modifier)+" na "+range+" kostce se základním hodem "+roll;
 			}
 			System.out.println(Message);
-			try {
-				if(PJ!=null){
-					PJ.send(p.getNick(), p.getObject(), "dice");
-				}	
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(PJ!=null){
+				PJ.send(p.getNick(), p.getObject(), "dice");
 			}
 		}		
 	};
@@ -212,12 +212,7 @@ public class ServerListeners {
 			versions.put(p.getNick(),(String) p.getObject());
 			System.out.println(p.getNick()+" má verzi "+(String) p.getObject());
 			if(PJ!=null){
-				try {
-					PJ.send(versions,"versionUpdate");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				PJ.send(versions,"versionUpdate");
 			}
 		}		
 	};
@@ -226,17 +221,12 @@ public class ServerListeners {
 		public void CommandExecuted(List<String> args) {
 			ClientInfo c=server.getNetworkStorage().getClientByName(args.get(0));
 			if (c!=null){
-				try {
-					if(PJ!=null){
-						PJ.send(0, "removePJ");
-					}	
-					PJ=c;
-					c.send(0, "requestPJInfo");
-					System.out.println("Hráči " +c.getNick()+" byl nastaven PJ");					
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				if(PJ!=null){
+					PJ.send(0, "removePJ");
+				}	
+				PJ=c;
+				c.send(0, "requestPJInfo");
+				System.out.println("Hráči " +c.getNick()+" byl nastaven PJ");
 				return;
 			}
 			System.out.println("Player "+args.get(0)+" is not connected");
@@ -254,15 +244,9 @@ public class ServerListeners {
 	private CommandListener kick=new CommandListener(){
 		@Override
 		public void CommandExecuted(List<String> args) {
-			ClientInfo client = server.getNetworkStorage().getClientByName(args.get(0));
-			try {
-				String message=(String) args.get(1);
-				client.send((Object) message,"kick");
-				client.remove();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}			
+			ClientInfo client = server.getNetworkStorage().getClientByName(args.get(0));			
+			String message=(String) args.get(1);
+			client.kick(message);	
 		}		
 	};
 	private CommandListener dicecmd=new CommandListener(){
@@ -270,26 +254,18 @@ public class ServerListeners {
 		public void CommandExecuted(List<String> args) {
 			Integer[] o = {(Integer) Integer.valueOf(args.get(0)),(Integer) Integer.valueOf(args.get(1))};
 			if(PJ!=null){
-				try {
-					System.out.println("(Příkaz)"+args.get(2)+" si hodil "+args.get(0)+" na "+args.get(1)+" kostce.");
-					PJ.send(args.get(2), o, "dice");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}			
+				System.out.println("(Příkaz)"+args.get(2)+" si hodil "+args.get(0)+" na "+args.get(1)+" kostce.");
+				PJ.send(args.get(2), o, "dice");
+				return;
+			}
+			System.out.println("PJ is not selected");
 		}		
 	};
 	private CommandListener version=new CommandListener(){
 		@Override
 		public void CommandExecuted(List<String> args) {
 			ClientInfo c=server.getNetworkStorage().getClientByName(args.get(0));
-			try {
-				c.send(0, "version");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			c.send(0, "version");
 		}		
 	};
 	public ServerListeners(CommandServer s){
@@ -302,6 +278,7 @@ public class ServerListeners {
 		s.addReceiveListener(DBc, "DBcharacter");
 		s.addReceiveListener(rotateEnt, "rotateEnt");
 		s.addReceiveListener(insertEnt, "insertEnt");
+		s.addReceiveListener(paintEnt,"paintEnt");
 		s.addReceiveListener(EntChangeName, "EntChangeTag");
 		s.addReceiveListener(dice, "dice");
 		s.addReceiveListener(versionReceive,"version");

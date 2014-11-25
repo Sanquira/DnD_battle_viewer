@@ -70,12 +70,24 @@ public class HPSklad {
 	public HexaClient client;
 	public LangFile str;
 
-	public final String VERSION = "v0.3d";
+	public final String VERSION = "v0.3e";
 	public String lastName = "Player";
 
-	public void send(Object o, String header) throws IOException {
+	public void send(Object o, String header,boolean PJ) {
+		try{
 		if (isConnected) {
-			client.send(o, header);
+			if(PJ&&isPJ){
+				client.send(o,header);
+				return;
+			}
+			if(!PJ&&!isPJ){
+				client.send(o, header);
+				return;
+			}
+		}
+		}
+		catch(IOException e){
+			e.printStackTrace();
 		}
 	}
 

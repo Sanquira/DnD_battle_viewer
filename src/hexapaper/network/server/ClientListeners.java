@@ -1,5 +1,6 @@
 package hexapaper.network.server;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -82,7 +83,17 @@ public class ClientListeners {
 				}
 			}
 		}		
-	};	
+	};
+	PacketReceiveListener paintEnt=new PacketReceiveListener(){
+		@Override
+		public void packetReceive(MessagePacket p) {
+			System.out.println("s");
+			Object[] table=(Object[]) p.getObject();
+			if((Integer) table[0]<storage.souradky.size()){
+				storage.souradky.get((Integer) table[0]).setBcg((Color) table[1]);
+			}
+		}		
+	};
 	private PacketReceiveListener DBa=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
 			//System.out.println("Databaze Artefaktu updatnuta");
@@ -245,6 +256,7 @@ public class ClientListeners {
 		hexaClient.addReceiveListener(removePJ,"removePJ");
 		hexaClient.addReceiveListener(rotateEnt,"rotateEnt");
 		hexaClient.addReceiveListener(insertEnt,"insertEnt");
+		hexaClient.addReceiveListener(paintEnt,"paintEnt");
 		hexaClient.addReceiveListener(EntChangeName,"EntChangeTag");
 		hexaClient.addReceiveListener(kick, "kick");
 		hexaClient.addReceiveListener(version, "version");

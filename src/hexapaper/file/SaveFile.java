@@ -8,6 +8,7 @@ import hexapaper.entity.Wall;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPStrings;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -53,7 +54,7 @@ public class SaveFile {
 	public SaveFile(ArrayList<HPEntity> man, int Radius, int gridSl, int gridRA) {
 		JSONObject entity = new JSONObject();
 		for (int i = 0; i < man.size(); i++) {
-			if (!(man.get(i) instanceof FreeSpace)) {
+			if (!(man.get(i) instanceof FreeSpace)||man.get(i).background!=Color.WHITE) {
 				entity.put(i, saveChar(man.get(i)));
 			}
 		}
@@ -74,26 +75,32 @@ public class SaveFile {
 		save(Db_ext, Db_text);
 	}
 
-	private JSONObject saveChar(HPEntity c) {
-		JSONObject p = new JSONObject();
-		p.put("Location", c.loc);
-		if (c instanceof Postava) {
-			Postava m = (Postava) c;
-			p.put("Type", "Postava");
-			p.put("Name", m.getNick());
-			p.put("PJ", m.isPJ());
-			p.put("List", m.getParam());
+	private JSONObject saveChar(HPEntity entity) {
+		JSONObject section = new JSONObject();
+		section.put("Location", entity.loc);
+		if (entity instanceof Postava) {
+			Postava m = (Postava) entity;
+			section.put("Type", "Postava");
+			section.put("Name", m.getNick());
+			section.put("PJ", m.isPJ());
+			section.put("List", m.getParam());
+			section.put("Bcg", m.getBcg().getRGB());
 		}
-		if (c instanceof Artefact) {
-			Artefact m = (Artefact) c;
-			p.put("Type", "Artefact");
-			p.put("Name", m.getNick());
-			p.put("List", m.getParam());
+		if (entity instanceof Artefact) {
+			Artefact m = (Artefact) entity;
+			section.put("Type", "Artefact");
+			section.put("Name", m.getNick());
+			section.put("List", m.getParam());
+			section.put("Bcg", m.getBcg().getRGB());			
 		}
-		if (c instanceof Wall) {
-			p.put("Type", "Wall");
+		if (entity instanceof Wall) {
+			section.put("Type", "Wall");
 		}
-		return p;
+		if(entity instanceof FreeSpace) {
+			section.put("Type", "Free");
+			section.put("Bcg", entity.getBcg().getRGB());
+		}
+		return section;
 	}
 
 	public void save(String ext, String desc) {

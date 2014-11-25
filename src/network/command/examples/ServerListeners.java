@@ -56,23 +56,13 @@ public class ServerListeners {
 	CommandListener broadcast= new CommandListener(){
 		@Override
 		public void CommandExecuted(List<String> args) {
-			try {
-				server.broadcast(server.getCommandStorage().ArgsString(0, args));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}			
+			server.broadcast(server.getCommandStorage().ArgsString(0, args),"broadcast");			
 		}		
 	};
 	CommandListener defaultsend=new CommandListener(){
 		@Override
 		public void CommandExecuted(List<String> args) {
-			try {
-				server.broadcast(server.getCommandStorage().ArgsString(0, args), "broadcast");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}				
+			server.broadcast(server.getCommandStorage().ArgsString(0, args), "broadcast");				
 		}
 		
 	};
@@ -93,12 +83,7 @@ public class ServerListeners {
 	CommandListener announce=new CommandListener(){
 		@Override
 		public void CommandExecuted(List<String> args) {
-			try {
-				server.broadcast(args.get(0), "announce");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}			
+			server.broadcast(args.get(0), "announce");			
 		}		
 	};
 	CommandListener list=new CommandListener(){
@@ -112,28 +97,21 @@ public class ServerListeners {
 	CommandListener send=new CommandListener(){
 		@Override
 		public void CommandExecuted(List<String> args) {
-			try {					
-				ClientInfo client=server.getNetworkStorage().getClientByName(args.get(0));;
-				client.send(server.getCommandStorage().ArgsString(1, args));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}			
+			ClientInfo client=server.getNetworkStorage().getClientByName(args.get(0));;
+			if(client!=null){
+				client.send(server.getCommandStorage().ArgsString(1, args),"message");
+			}						
 		}		
 	};
 	PacketReceiveListener listreceive=new PacketReceiveListener(){
 		@Override
-		public void packetReceive(MessagePacket p) {
+		public void packetReceive(MessagePacket p){
 			ClientInfo asker=server.getNetworkStorage().getClientByName(p.getNick());
 			List<String> names=new ArrayList<>();
 			for(String client:server.getNetworkStorage().clients.keySet()){
 				names.add(client);
 			}	
-			try {
-				asker.send(names, "list");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			asker.send(names, "list");
 		}		
 	};
 	public ServerListeners(CommandServer server){

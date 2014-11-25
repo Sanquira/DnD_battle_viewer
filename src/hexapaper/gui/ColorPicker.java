@@ -4,15 +4,11 @@ import hexapaper.source.HPSklad;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
-
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import java.awt.GridLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -67,6 +63,6 @@ public class ColorPicker extends JFrame {
 			}			
 		});
 		panel.add(close);
-		setVisible(true);
+		//setVisible(true);
 	}
 }

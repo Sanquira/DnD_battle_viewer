@@ -138,14 +138,10 @@ public class HraciPlocha extends JPanel {
 				if ((sk.isConnected && sk.isPJ) || !sk.isConnected) {
 					ent.loc.setDir(smer);
 					ent.recreateGraphics();
-					try {
-						Integer[] obj = { ent.loc.getX(), ent.loc.getY(), ent.loc.getDir() };
-						// System.out.println(obj[0]+":"+obj[1]+":"+obj[2]);
-						sk.send(obj, "rotateEnt");
-						// System.out.println(ent.loc.getDir());
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+					Integer[] obj = { ent.loc.getX(), ent.loc.getY(), ent.loc.getDir() };
+					// System.out.println(obj[0]+":"+obj[1]+":"+obj[2]);
+					sk.send(obj, "rotateEnt",true);
+					// System.out.println(ent.loc.getDir());
 					return;
 				}
 				System.out.println("No permission: Rotate");

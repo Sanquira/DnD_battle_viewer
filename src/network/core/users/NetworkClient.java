@@ -77,9 +77,12 @@ public class NetworkClient extends AbstractNetworkUser{
 	       	}	       	
 	    }
 	    public void disconnect() throws IOException{
-			if(!socket.isClosed()){
+	    	o.close();
+	    	i.close();
+	    	if(!socket.isClosed()){
 				socket.close();
 			}
+			
 			thread.interrupt();
 	    	//socket.close();    	    	
 	    }

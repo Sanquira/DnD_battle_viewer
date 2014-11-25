@@ -65,17 +65,7 @@ public class ClientInfo {
 	public void setInputStream(ObjectInputStream inputStream) {
 		this.inputStream = inputStream;
 	}
-	public void send(Object o) throws IOException{
-		try{
-			outputStream.writeObject(new MessagePacket("Server",o));
-			outputStream.flush();
-		}
-		catch(IOException e){
-			e.printStackTrace();
-			remove();
-		}
-	}
-	public void send(Object o,String header) throws IOException{
+	public void send(Object o,String header){
 		try{
 			outputStream.writeObject(new MessagePacket("Server",header,o));
 			outputStream.flush();
@@ -85,17 +75,7 @@ public class ClientInfo {
 			remove();
 		}
 	}
-	public void send(String nick,Object o) throws IOException{
-		try{
-			outputStream.writeObject(new MessagePacket(nick,"none",o));
-			outputStream.flush();
-		}
-		catch(IOException e){
-			e.printStackTrace();
-			remove();
-		}
-	}
-	public void send(String nick,Object o,String header) throws IOException{
+	public void send(String nick,Object o,String header){
 		try{
 			outputStream.writeObject(new MessagePacket(nick,header,o));
 			outputStream.flush();
@@ -105,14 +85,21 @@ public class ClientInfo {
 			remove();
 		}
 	}
-	public void remove() throws IOException{
-		if(!socket.isClosed()){
-			socket.close();
-		}
-		thread.interrupt();
+	public void remove(){
+    	try{
+    		outputStream.close();
+    		inputStream.close();
+    		if(!socket.isClosed()){
+    			socket.close();
+    		}
+    		thread.interrupt();
+    	}	
 		//socket.close();
+		catch(IOException e){
+			e.printStackTrace();
+		}
 	}
-	public void kick(String reason) throws IOException{
+	public void kick(String reason){
 		send(nick,reason,"corekick");
 		remove();
 	}

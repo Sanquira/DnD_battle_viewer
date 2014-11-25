@@ -8,6 +8,7 @@ import hexapaper.entity.Wall;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.PropPair;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -88,19 +89,30 @@ public class LoadFile {
 			int i = Integer.valueOf((String) t);
 			JSONObject value = (JSONObject) j.get(t);
 			if (((String) value.get("Type")).equals("Artefact")) {
-				souradky.set(i, new Artefact((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), loadList(value)));
+				souradky.set(i, new Artefact((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), loadList(value)).setBcg(new Color((int)(long) value.get("Bcg"))));
 				continue;
 			}
 			if (((String) value.get("Type")).equals("Postava")) {
-				souradky.set(i, new Postava((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), (boolean) value.get("PJ"), loadList(value)));
+				souradky.set(i, new Postava((String) value.get("Name"), loadLoc((JSONObject) value.get("Location")), (boolean) value.get("PJ"), loadList(value)).setBcg(new Color((int)(long) value.get("Bcg"))));
 				continue;
 			}
 			if (((String) value.get("Type")).equals("Wall")) {
 				souradky.set(i, new Wall(loadLoc((JSONObject) value.get("Location"))));
 				continue;
 			}
+			if (((String) value.get("Type")).equals("Free")){
+//				FreeSpace s=new FreeSpace(loadLoc((JSONObject) value.get("Location")));
+//				s.background=new Color((int)(long) value.get("Bcg"));
+				souradky.set(i, new FreeSpace(loadLoc((JSONObject) value.get("Location"))).setBcg(new Color((int)(long) value.get("Bcg"))));
+				continue;
+			}
 		}
 	}
+
+//	private Color loadClr(JSONObject jsonObject) {
+//		Color color=new Color(Integer.valueOf((long) jsonObject.get("value")));
+//		return color;
+//	}
 
 	public ArrayList<HPEntity> getSouradky() {
 		return souradky;
