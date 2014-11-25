@@ -89,12 +89,23 @@ public class ClientListeners {
 	PacketReceiveListener paintEnt = new PacketReceiveListener() {
 		@Override
 		public void packetReceive(MessagePacket p) {
+<<<<<<< HEAD
 			System.out.println("s");
 			Object[] table = (Object[]) p.getObject();
 			if ((Integer) table[0] < storage.souradky.size()) {
+=======
+			Object[] table=(Object[]) p.getObject();
+			if((Integer) table[0]<storage.souradky.size()){
+>>>>>>> 10ebf153fcfd66752282cff9add0d6aa008e301a
 				storage.souradky.get((Integer) table[0]).setBcg((Color) table[1]);
+				storage.hraciPlocha.repaint();
 			}
+<<<<<<< HEAD
 		}
+=======
+			//System.out.println(storage.souradky.get((Integer) table[0]).getBcg().getRGB());
+		}		
+>>>>>>> 10ebf153fcfd66752282cff9add0d6aa008e301a
 	};
 	private PacketReceiveListener DBa = new PacketReceiveListener() {
 		public void packetReceive(MessagePacket p) {

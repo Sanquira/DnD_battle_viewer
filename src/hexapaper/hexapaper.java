@@ -7,7 +7,10 @@ import hexapaper.source.HPSklad;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Toolkit;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -19,6 +22,11 @@ import javax.swing.JPanel;
 
 import java.awt.FlowLayout;
 import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 
 public class hexapaper extends JFrame {
 
@@ -44,7 +52,16 @@ public class hexapaper extends JFrame {
 		getContentPane().setLayout(new BorderLayout());
 		initializace();
 		setVisible(true);
-		sk.PJInfo=new PJGUI();
+		sk.PJInfo=new PJGUI();	
+
+		try {
+			InputStream stream = hexapaper.class.getResourceAsStream( "/icon.png" );
+			BufferedImage image = ImageIO.read( stream );
+			setIconImage(image);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}			
 		
 //		System.err.println("hexapaper 49-54");
 //		sk.gridRa = 10;
