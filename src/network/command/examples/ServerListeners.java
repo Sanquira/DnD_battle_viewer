@@ -19,11 +19,7 @@ public class ServerListeners {
 		@Override
 		public void clientConnect(ClientInfo c) {
 			System.out.println("Client připojen "+(String) c.getNick());
-			try {
-				server.rebroadcast(c.getNick(), c.getNick(),"connect");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			server.rebroadcast(c.getNick(), c.getNick(),"connect");
 		}			
 	};
 	ClientDisconnectListener disconnect=new ClientDisconnectListener(){
@@ -31,11 +27,7 @@ public class ServerListeners {
 		@Override
 		public void clientDisconnect(ClientInfo c) {
 			System.out.println("Client odpojen: "+c.getNick());
-			try {
-				server.rebroadcast(c.getNick(), c.getNick(),"disconnect");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			server.rebroadcast(c.getNick(), c.getNick(),"disconnect");
 		}		
 	};
 	PacketReceiveListener rebroadcast=new PacketReceiveListener(){
@@ -44,12 +36,7 @@ public class ServerListeners {
 		public void packetReceive(MessagePacket p) {
 			System.out.println(p.getNick()+":"+(String) p.getObject());
 			ClientInfo c=server.getNetworkStorage().getClientByName(p.getNick());
-			try {
-				server.rebroadcast(c.getNick(), p.getObject(),"broadcast");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			server.rebroadcast(c.getNick(), p.getObject(),"broadcast");
 		}
 		
 	};
@@ -69,15 +56,10 @@ public class ServerListeners {
 	CommandListener kick=new CommandListener(){
 		@Override
 		public void CommandExecuted(List<String> args) {
-			try {					
-				ClientInfo client = server.getNetworkStorage().getClientByName(args.get(0));
-				client.send("Server","Byl jsi vykopnut ze serveru z důvodu: "+args.get(1),"announce");
-				server.rebroadcast(client.getNick(), "Hráč "+client.getNick()+" byl vyhozen ze serveru z důvodu: "+args.get(1), "broadcast");
-				client.remove();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}			
+			ClientInfo client = server.getNetworkStorage().getClientByName(args.get(0));
+			client.send("Server","Byl jsi vykopnut ze serveru z důvodu: "+args.get(1),"announce");
+			server.rebroadcast(client.getNick(), "Hráč "+client.getNick()+" byl vyhozen ze serveru z důvodu: "+args.get(1), "broadcast");
+			client.remove();			
 		}		
 	};
 	CommandListener announce=new CommandListener(){

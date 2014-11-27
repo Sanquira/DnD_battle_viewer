@@ -38,7 +38,7 @@ public class CommandServer extends NetworkServer {
 	public CommandStorage getCommandStorage(){
 		return cmd;
 	}
-	public void rebroadcast(String sender, Object o,String header) throws IOException{
+	public void rebroadcast(String sender, Object o,String header){
 		for(ClientInfo c:getNetworkStorage().clients.values()){
 			if(!c.getNick().equals(sender)){
 				c.send(sender,o,header);

@@ -32,12 +32,13 @@ public class ServerListeners {
 				Object[] o={gridSl,gridRa,RADIUS};
 				c.send(o, "RadiusHexapaper");
 				c.send(souradky, "EntityHexapaper");
-				PJ.send(c.getNick(),versions,"PlayerConnect");
+				//PJ.send(c.getNick(),versions,"PlayerConnect");
 				//c.send(Cursorloc,"PJcursor");
 				//c.send(DBArtefact,"DBartefact");
 				//c.send(DBCharacter,"DBcharacter");
 			}
 			System.out.println("Client připojen "+(String) c.getNick());
+			server.rebroadcast(c.getNick(),versions,"PlayerConnect");
 //			try {
 //				c.send(0, "version");
 //			} catch (IOException e) {
@@ -72,24 +73,14 @@ public class ServerListeners {
 			gridSl=(int) List[0];
 			gridRa=(int) List[1];
 			RADIUS=(int) List[2];
-			try {
-				server.rebroadcast(p.getNick(), List,"RadiusHexapaper");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			server.rebroadcast(p.getNick(), List,"RadiusHexapaper");
 		}		
 	};
 	PacketReceiveListener EntityHexapaper=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
 			System.out.println("Entity Hexapaperu přijaty"); 
 			souradky=(ArrayList<HPEntity>) p.getObject();
-			try {
-				server.rebroadcast(p.getNick(), souradky,"EntityHexapaper");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			server.rebroadcast(p.getNick(), souradky,"EntityHexapaper");
 		}		
 	};
 	PacketReceiveListener EntChangeName=new PacketReceiveListener(){
@@ -103,24 +94,14 @@ public class ServerListeners {
 					System.out.println("Změnen nick a tag Entity");
 				}
 			}
-			try {
-				server.rebroadcast(p.getNick(), p.getObject(),"EntChangeTag");
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			server.rebroadcast(p.getNick(), p.getObject(),"EntChangeTag");
 		}		
 	};
 	PacketReceiveListener DBa=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
 			System.out.println("Artefacty přijaty"); 
 			DBArtefact=(ArrayList<HPEntity>) p.getObject();
-			try {
-				server.rebroadcast(p.getNick(), DBArtefact,"DBartefact");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			server.rebroadcast(p.getNick(), DBArtefact,"DBartefact");
 		}		
 	};
 	PacketReceiveListener insertEnt=new PacketReceiveListener(){
@@ -130,12 +111,7 @@ public class ServerListeners {
 			Object[] table=(Object[]) p.getObject();
 			if((Integer) table[0]<souradky.size()){
 				souradky.set((Integer) table[0], ((HPEntity) table[1]).clone());
-				try {
-					server.rebroadcast(p.getNick(), p.getObject(),p.getHeader());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				server.rebroadcast(p.getNick(), p.getObject(),p.getHeader());
 			}
 		}		
 	};
@@ -145,12 +121,7 @@ public class ServerListeners {
 			Object[] table=(Object[]) p.getObject();
 			if((Integer) table[0]<souradky.size()){
 				souradky.get((Integer) table[0]).setBcg((Color) table[1]);
-				try {
-					server.rebroadcast(p.getNick(), p.getObject(),p.getHeader());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				server.rebroadcast(p.getNick(), p.getObject(),p.getHeader());
 			}
 		}		
 	};
@@ -158,12 +129,7 @@ public class ServerListeners {
 		public void packetReceive(MessagePacket p) {
 			System.out.println("Postavy přijaty"); 
 			DBCharacter=(ArrayList<HPEntity>) p.getObject();
-			try {
-				server.rebroadcast(p.getNick(), DBCharacter,"DBcharacter");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			server.rebroadcast(p.getNick(), DBCharacter,"DBcharacter");
 		}		
 	};
 	PacketReceiveListener rotateEnt=new PacketReceiveListener(){
@@ -178,12 +144,7 @@ public class ServerListeners {
 					//System.out.println("Předělána entita");
 				}
 			}
-			try {
-				server.rebroadcast(p.getNick(), p.getObject(),"rotateEnt");
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			server.rebroadcast(p.getNick(), p.getObject(),"rotateEnt");
 		}
 		
 	};
@@ -212,7 +173,7 @@ public class ServerListeners {
 			versions.put(p.getNick(),(String) p.getObject());
 			System.out.println(p.getNick()+" má verzi "+(String) p.getObject());
 			if(PJ!=null){
-				PJ.send(versions,"versionUpdate");
+				//PJ.send(versions,"versionUpdate");
 			}
 		}		
 	};
