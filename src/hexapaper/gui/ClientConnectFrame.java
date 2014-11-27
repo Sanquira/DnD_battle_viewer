@@ -74,7 +74,6 @@ public class ClientConnectFrame extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent paramActionEvent) {
 				connect();
-				sk.odblokujListenery();
 			}
 		});
 
