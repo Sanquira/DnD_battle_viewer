@@ -1,5 +1,7 @@
 package dungeonmapper;
 
+import hexapaper.Listeners.HPListenery.ScrollListener;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -13,7 +15,6 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 import core.Grids;
-
 import dungeonmapper.gui.DMRightMenu;
 import dungeonmapper.gui.DrawPlane;
 import dungeonmapper.listeners.DMListenery;
@@ -74,11 +75,12 @@ public class dungeonMapper extends JFrame {
 	}
 
 	private JScrollPane drawPanel() {
-		JScrollPane DPSC = new JScrollPane();
-		JPanel drawPlane = new DrawPlane();
-		DPSC.setViewportView(drawPlane);
-		DPSC.getVerticalScrollBar().setUnitIncrement(8);
-		DPSC.getHorizontalScrollBar().setUnitIncrement(8);
-		return DPSC;
+		sk.drawPlane = new DrawPlane();
+		sk.DPSC = new JScrollPane();
+		sk.DPSC.setViewportView(sk.drawPlane);
+		sk.DPSC.getViewport().addChangeListener(lis.new ScrollListener());
+		sk.DPSC.getVerticalScrollBar().setUnitIncrement(8);
+		sk.DPSC.getHorizontalScrollBar().setUnitIncrement(8);
+		return sk.DPSC;
 	}
 }

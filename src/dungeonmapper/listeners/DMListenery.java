@@ -8,6 +8,8 @@ import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import dungeonmapper.dungeonMapper;
 import dungeonmapper.source.DMSklad;
@@ -87,5 +89,13 @@ public class DMListenery {
 			}
 		}
 	}
+	
+	public class ScrollListener implements ChangeListener {
 
+		@Override
+		public void stateChanged(ChangeEvent e) {
+			sk.drawPlane.repaint();
+		}
+
+	}
 }

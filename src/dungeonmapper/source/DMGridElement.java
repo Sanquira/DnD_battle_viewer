@@ -1,5 +1,7 @@
 package dungeonmapper.source;
 
+import java.awt.Point;
+
 public class DMGridElement {
 
 	int X = -1, Y = -1;
@@ -20,6 +22,10 @@ public class DMGridElement {
 
 	public void setY(int y) {
 		Y = y;
+	}
+	
+	public Point getPoint(){
+		return new Point(X, Y);
 	}
 
 	public DMMapTypesEnum getType() {

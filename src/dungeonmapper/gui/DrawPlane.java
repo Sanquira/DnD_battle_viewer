@@ -56,11 +56,13 @@ public class DrawPlane extends JPanel implements MouseMotionListener, MouseListe
 		super.paintComponent(g);
 		int[] shapeParam = getShapeParam();
 		for (DMGridElement gridEl : layers.get(chsnLay)) {
-			g.setColor(setColorInsideShape(gridEl, shapeParam));
-			g.fillRect(gridEl.getX(), gridEl.getY(), sk.CSIZE - 1, sk.CSIZE - 1);
-			try {
-				g.drawImage(gridEl.getType().getIcon().getImage(), gridEl.getX(), gridEl.getY(), sk.CSIZE - 1, sk.CSIZE - 1, this);
-			} catch (NullPointerException e) {
+			if (sk.DPSC.getViewport().getViewRect().contains(gridEl.getPoint())) {
+				g.setColor(setColorInsideShape(gridEl, shapeParam));
+				g.fillRect(gridEl.getX(), gridEl.getY(), sk.CSIZE - 1, sk.CSIZE - 1);
+				try {
+					g.drawImage(gridEl.getType().getIcon().getImage(), gridEl.getX(), gridEl.getY(), sk.CSIZE - 1, sk.CSIZE - 1, this);
+				} catch (NullPointerException e) {
+				}
 			}
 		}
 
