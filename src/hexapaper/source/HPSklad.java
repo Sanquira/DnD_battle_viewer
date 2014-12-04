@@ -71,6 +71,7 @@ public class HPSklad {
 	public LangFile str;
 
 	public final String VERSION = "v0.3e";
+	public final String FILEVERSION = "0.2";
 	public String lastName = "Player";
 
 	public void send(Object o, String header, boolean PJ) {

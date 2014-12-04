@@ -117,7 +117,7 @@ public class ClientListeners {
 		c.addReceiveListener(listReceive,"list");
 		c.addReceiveListener(connectReceive,"connect");
 		c.addReceiveListener(disconnectReceive,"disconnect");
-		c.addReceiveListener(announce,"announce");
+		c.addReceiveListener(announce,"announce");		
 		c.setDefaultCommand(defaultsend);
 		c.registerCommand("exit",0,"Exit","Ukončí clienta",quit);
 		c.registerCommand("list",0,"List","Vypíše seznam clientů",list);

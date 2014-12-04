@@ -1,8 +1,12 @@
 package hexapaper.Listeners;
 
 import hexapaper.hexapaper;
+import hexapaper.entity.FreeSpace;
+import hexapaper.entity.HPEntity;
 import hexapaper.file.LoadFile;
 import hexapaper.file.SaveFile;
+import hexapaper.file.Wrappers;
+import hexapaper.file.Wrappers.HexWrapper;
 import hexapaper.gui.ArtefactAddFrame;
 import hexapaper.gui.ChangeZoomFrame;
 import hexapaper.gui.ClientConnectFrame;
@@ -31,13 +35,17 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.google.gson.Gson;
+
 import network.command.users.CommandClient;
 import addons.dice.Dice;
 import core.kNN;
+import core.file.FileHandler;
 
 public class HPListenery {
 
 	HPSklad sk = HPSklad.getInstance();
+	Wrappers wrappers=new Wrappers();
 
 	public class ScrollListener implements ChangeListener {
 
@@ -64,11 +72,17 @@ public class HPListenery {
 			if (sk.isConnected && !sk.isPJ) {
 				return;
 			}
-			LoadFile load = new LoadFile(sk.str.get("Hex_text"), sk.str.get("Hex_ext"));
-			sk.initLoad(load.getSouradky());
-			if (sk.isConnected && sk.isPJ) {
-				sk.client.radiusHexapaper();
-				sk.client.updateHexapaper();
+			FileHandler fileHandler=FileHandler.showDialog("hex", "Hexa",false);
+			HexWrapper HWrapper=fileHandler.load(HexWrapper.class);
+			if(HWrapper.checkVersion()){
+				sk.RADIUS=HWrapper.Radius;
+				sk.gridRa=HWrapper.GridRA;
+				sk.gridSl=HWrapper.GridSl;
+				sk.initLoad(HWrapper.load());
+				if (sk.isConnected && sk.isPJ) {
+					sk.client.radiusHexapaper();
+					sk.client.updateHexapaper();
+				}
 			}
 		}
 	}
@@ -76,7 +90,16 @@ public class HPListenery {
 	public class UlozListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new SaveFile(sk.souradky, sk.RADIUS, sk.gridSl, sk.gridRa);
+			//new SaveFile(sk.souradky, sk.RADIUS, sk.gridSl, sk.gridRa);
+			FileHandler fileHandler=FileHandler.showDialog("hex", "Hexa",true);
+			HexWrapper HWrapper=wrappers.new HexWrapper(sk.gridSl,sk.RADIUS,sk.gridRa,sk.FILEVERSION);
+			HWrapper.addEntities(sk.souradky);
+			try {
+				fileHandler.write(HWrapper);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 

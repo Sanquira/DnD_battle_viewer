@@ -85,6 +85,12 @@ public class HPStrings {
 	public static String Reset = "Reset";
 	public static String konec = "Konec";
 	
+	//FileVersionCheck
+	public static String OldFileVersionText = "Vybrany soubor je uložen ve starší verzi formátu, chcete se ho přesto pokusit načíst?";
+	public static String OldFileVersionYes = "Ano";
+	public static String OldFileVersionNo = "Ne";
+	public static String OldFileVersionHeader = "Detekována stará verze";
+	
 	public static String ztrataDat = "Ztráta dat";
 	public static String zpravaZtrataDat = "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVšechny neuložené změny budou ztraceny. \nChcete opravdu skončit?";
 	
