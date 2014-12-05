@@ -6,6 +6,7 @@ import hexapaper.entity.HPEntity;
 import hexapaper.file.LoadFile;
 import hexapaper.file.SaveFile;
 import hexapaper.file.Wrappers;
+import hexapaper.file.Wrappers.DatabaseWrapper;
 import hexapaper.file.Wrappers.HexWrapper;
 import hexapaper.gui.ArtefactAddFrame;
 import hexapaper.gui.ChangeZoomFrame;
@@ -45,8 +46,7 @@ import core.file.FileHandler;
 public class HPListenery {
 
 	HPSklad sk = HPSklad.getInstance();
-	Wrappers wrappers=new Wrappers();
-
+	
 	public class ScrollListener implements ChangeListener {
 
 		@Override
@@ -72,9 +72,9 @@ public class HPListenery {
 			if (sk.isConnected && !sk.isPJ) {
 				return;
 			}
-			FileHandler fileHandler=FileHandler.showDialog("hex", "Hexa",false);
+			FileHandler fileHandler=FileHandler.showDialog(sk.str.get("Hex_ext"), sk.str.get("Hex_text"),false);
 			HexWrapper HWrapper=fileHandler.load(HexWrapper.class);
-			if(HWrapper.checkVersion()){
+			if(sk.checkVersion(HWrapper.Version)){
 				sk.RADIUS=HWrapper.Radius;
 				sk.gridRa=HWrapper.GridRA;
 				sk.gridSl=HWrapper.GridSl;
@@ -91,8 +91,8 @@ public class HPListenery {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			//new SaveFile(sk.souradky, sk.RADIUS, sk.gridSl, sk.gridRa);
-			FileHandler fileHandler=FileHandler.showDialog("hex", "Hexa",true);
-			HexWrapper HWrapper=wrappers.new HexWrapper(sk.gridSl,sk.RADIUS,sk.gridRa,sk.FILEVERSION);
+			FileHandler fileHandler=FileHandler.showDialog(sk.str.get("Hex_ext"), sk.str.get("Hex_text"),true);
+			HexWrapper HWrapper=sk.wrappers.new HexWrapper(sk.gridSl,sk.RADIUS,sk.gridRa,sk.FILEVERSION);
 			HWrapper.addEntities(sk.souradky);
 			try {
 				fileHandler.write(HWrapper);
@@ -260,7 +260,16 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			new SaveFile(sk.databazeArtefaktu);
+			FileHandler fh=FileHandler.showDialog(sk.str.get("Db_ext"), sk.str.get("Db_text"), true);
+			DatabaseWrapper db=sk.wrappers.new DatabaseWrapper();
+			db.Version=sk.FILEVERSION;
+			db.addEntities(sk.databazeArtefaktu);
+			try {
+				fh.write(db);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -276,7 +285,16 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			new SaveFile(sk.databazePostav);
+			FileHandler fh=FileHandler.showDialog(sk.str.get("Db_ext"), sk.str.get("Db_text"), true);
+			DatabaseWrapper db=sk.wrappers.new DatabaseWrapper();
+			db.Version=sk.FILEVERSION;
+			db.addEntities(sk.databazePostav);
+			try {
+				fh.write(db);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -295,8 +313,10 @@ public class HPListenery {
 			if (sk.isConnected && !sk.isPJ) {
 				return;
 			}
-			new LoadFile(sk.str.get("desc"), sk.str.get("File_ext"), sk.str.get("Db_ext"));
-			sk.RMenu.updateDatabase();
+			FileHandler fh=FileHandler.showDialog(sk.str.get("Db_ext"), sk.str.get("Db_text"), false);
+			fh.load(DatabaseWrapper.class).loadDatabase();
+			//new LoadFile(sk.str.get("desc"), sk.str.get("File_ext"), sk.str.get("Db_ext"));
+			//sk.RMenu.updateDatabase();
 
 		}
 	}

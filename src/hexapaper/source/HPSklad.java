@@ -4,6 +4,7 @@ import hexapaper.hexapaper;
 import hexapaper.Listeners.HPListenery;
 import hexapaper.entity.FreeSpace;
 import hexapaper.entity.HPEntity;
+import hexapaper.file.Wrappers;
 import hexapaper.gui.ColorPicker;
 import hexapaper.gui.Gprvky;
 import hexapaper.gui.HraciPlocha;
@@ -22,6 +23,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import addons.dice.DiceLog;
@@ -51,6 +53,8 @@ public class HPSklad {
 	public JLabel statusBar;
 	public ColorPicker clr;
 	public Color color = Color.WHITE;
+	
+	public Wrappers wrappers=new Wrappers();
 
 	public ArrayList<HPEntity> souradky;
 	public ArrayList<HPEntity> databazePostav = new ArrayList<>();
@@ -70,7 +74,7 @@ public class HPSklad {
 	public HexaClient client;
 	public LangFile str;
 
-	public final String VERSION = "v0.3e";
+	public final String VERSION = "v0.3f";
 	public final String FILEVERSION = "0.2";
 	public String lastName = "Player";
 
@@ -90,7 +94,24 @@ public class HPSklad {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public boolean checkVersion(String Version){
+		HPSklad sk=HPSklad.getInstance();
+		if(Version!=null){
+			if(Version==sk.FILEVERSION){
+				return true;
+			}
+		}
+		Object[] options = {sk.str.get("OldFileVersionYes"),sk.str.get("OldFileVersionNo")};
+		int n = JOptionPane.showOptionDialog(null, sk.str.get("OldFileVersionText"),
+					sk.str.get("OldFileVersionHeader"),
+					JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,null);
+		if(n==JOptionPane.YES_OPTION){
+			return true;
+		}
+		return false;
+	}
+	
 	public void reload() {
 		initLoad(souradky);
 	}

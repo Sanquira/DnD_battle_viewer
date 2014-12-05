@@ -38,7 +38,7 @@ public class ArtefactAddFrame extends JPanel {
 
 	JFrame frame;
 	HPSklad sk = HPSklad.getInstance();
-	protected String[] defaultProp = { sk.str.get("name"), sk.str.get("type") };
+	protected String[] defaultProp = { sk.str.get("name")};
 	protected ArrayList<PropPair> param = new ArrayList<PropPair>();
 	JPanel vpg;
 	JPanel spg;

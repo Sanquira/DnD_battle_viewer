@@ -90,9 +90,9 @@ public class LangFile {
 			File jar = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
 			String joinedPath = new File(jar.getParent(), cls.getSimpleName() + ".lang.json").getAbsolutePath();
 			f = new File(joinedPath);
-			// System.out.println(f.getAbsolutePath());
+			//System.out.println(f.getAbsolutePath());
 			if (f.exists() && !f.isDirectory()) {
-				// System.out.println("Soubor nalezen");
+				//System.out.println("Soubor nalezen");
 				fr = new FileReader(f);
 				JSONObject a = (JSONObject) new JSONParser().parse(new BufferedReader(new InputStreamReader(new FileInputStream(f), "UTF-8")));
 				for (Object o : a.keySet()) {

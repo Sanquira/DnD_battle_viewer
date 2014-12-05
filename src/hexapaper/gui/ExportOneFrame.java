@@ -4,15 +4,17 @@ import hexapaper.entity.Artefact;
 import hexapaper.entity.HPEntity;
 import hexapaper.entity.Postava;
 import hexapaper.file.SaveFile;
+import hexapaper.file.Wrappers;
+import hexapaper.file.Wrappers.DatabaseWrapper;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.PropPair;
-import hexapaper.source.HPStrings;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -24,6 +26,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import core.file.FileHandler;
 
 public class ExportOneFrame extends JPanel {
 
@@ -107,7 +111,16 @@ public class ExportOneFrame extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (beExported != null) {
-					new SaveFile(beExported);
+					FileHandler fh=FileHandler.showDialog(sk.str.get("Db_ext"), sk.str.get("Db_text"), true);
+					DatabaseWrapper db=sk.wrappers.new DatabaseWrapper();
+					db.Version=sk.FILEVERSION;
+					db.addEntity(beExported, null);
+					try {
+						fh.write(db);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					beExported = null;
 				}
 			}

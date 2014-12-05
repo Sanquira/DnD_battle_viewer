@@ -16,18 +16,44 @@ import javax.swing.JOptionPane;
 import core.Location;
 
 public class Wrappers {
-	public HPSklad sk=HPSklad.getInstance();
-	
+
 	public class HexWrapper{
 		public Integer GridSl, Radius, GridRA;
 		public String Version;
+		public DatabaseWrapper Database=new DatabaseWrapper(); 
 		public ArrayList<EntityWrapper> Entity=new ArrayList<EntityWrapper>();
 		public HexWrapper(Integer GridSl,Integer Radius, Integer GridRA,String Version){
 			this.GridSl=GridSl;
 			this.Radius=Radius;
 			this.GridRA=GridRA;
 			this.Version=Version;
+		}		
+		public ArrayList<HPEntity> load(){
+			return Database.load(GridRA, GridSl);
 		}
+		public void addEntities(ArrayList<HPEntity> c){
+			Database.addEntities(c);
+		}
+		
+	}
+	
+	public class EntityWrapper{
+		public String Type, Name;
+		public Integer Bcg, pos;
+		public Location loc;
+		public ArrayList<PropPair> List;
+		public EntityWrapper(String Type,Integer bcg,Location loc,String name,Integer pos,ArrayList<PropPair> List){
+			this.Type=Type;
+			this.Bcg=bcg;
+			this.pos=pos;
+			this.Name=name;
+			this.loc=loc;
+			this.List=List;
+		}
+	}
+	public class DatabaseWrapper{
+		public String Version;
+		public ArrayList<EntityWrapper> Entity=new ArrayList<EntityWrapper>();
 		public void addEntity(HPEntity e,Integer position){
 			ArrayList<PropPair> List=new ArrayList<PropPair>();
 			String Type="FreeSpace";
@@ -46,7 +72,6 @@ public class Wrappers {
 				Type="Wall";
 			}
 			Entity.add(new EntityWrapper(Type,e.getBcg().getRGB(),e.loc,Name,position,List));
-			//Entity.add();
 		}
 		public void addEntities(ArrayList<HPEntity> coords){
 			for(HPEntity e:coords){
@@ -55,10 +80,10 @@ public class Wrappers {
 				}
 			}
 		}
-		public ArrayList<HPEntity> load(){
+		public ArrayList<HPEntity> load(Integer GridRA,Integer GridSl){
 			ArrayList<HPEntity> souradky=new ArrayList<HPEntity>();
 			for (int i = 0; i < GridRA * GridSl; i++) {
-				souradky.add(new FreeSpace(HPSklad.getInstance().LocDontCare));
+					souradky.add(new FreeSpace(HPSklad.getInstance().LocDontCare));
 			}
 			for (EntityWrapper wrap : Entity) {
 				if(wrap.Type.equals("Artefact")){
@@ -76,36 +101,20 @@ public class Wrappers {
 			}
 			return souradky;
 		}
-		public boolean checkVersion(){
+		public void loadDatabase(){
 			HPSklad sk=HPSklad.getInstance();
-			if(Version!=null){
-				if(Version==sk.FILEVERSION){
-					return true;
-				}
+			for (EntityWrapper wrap : Entity){
+				loadEntity(wrap,sk);
 			}
-			Object[] options = {sk.str.get("OldFileVersionYes"),sk.str.get("OldFileVersionNo")};
-			int n = JOptionPane.showOptionDialog(null, sk.str.get("OldFileVersionText"),
-						sk.str.get("OldFileVersionHeader"),
-						JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,null);
-			if(n==JOptionPane.YES_OPTION){
-				return true;
-			}
-			return false;
+			sk.RMenu.updateDatabase();
 		}
-	}
-	
-	public class EntityWrapper{
-		public String Type, Name;
-		public Integer Bcg, pos;
-		public Location loc;
-		public ArrayList<PropPair> List;
-		public EntityWrapper(String Type,Integer bcg,Location loc,String name,Integer pos,ArrayList<PropPair> List){
-			this.Type=Type;
-			this.Bcg=bcg;
-			this.pos=pos;
-			this.Name=name;
-			this.loc=loc;
-			this.List=List;
+		public void loadEntity(EntityWrapper wrap,HPSklad sk){
+			if(wrap.Type.equals("Artefact")){
+				sk.databazeArtefaktu.add(new Artefact(wrap.Name,wrap.loc,wrap.List).setBcg(new Color(wrap.Bcg)));
+			}
+			if(wrap.Type.equals("Postava")){
+				sk.databazePostav.add(new Postava(wrap.Name,wrap.loc,false,wrap.List).setBcg(new Color(wrap.Bcg)));
+			}
 		}
 	}
 }

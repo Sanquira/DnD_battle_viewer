@@ -43,7 +43,7 @@ public class PostavaAddFrame extends JPanel {
 	private static final long serialVersionUID = 1L;
 	JFrame frame;
 	HPSklad sk = HPSklad.getInstance();
-	protected String[] defaultProp = { sk.str.get("name"), sk.str.get("race"), sk.str.get("health"), sk.str.get("mags"), sk.str.get("weapon"), sk.str.get("armor") };
+	protected String[] defaultProp = { sk.str.get("name")};
 	protected ArrayList<PropPair> param = new ArrayList<PropPair>();
 	JPanel vpg;
 	JPanel spg;
