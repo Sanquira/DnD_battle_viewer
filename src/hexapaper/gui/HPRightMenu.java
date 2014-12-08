@@ -45,6 +45,11 @@ import core.EditableJLabel;
 
 public class HPRightMenu extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5637331808007212483L;
+
 	HPSklad sk = HPSklad.getInstance();
 
 	JPanel prop, clrP;

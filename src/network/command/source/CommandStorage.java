@@ -88,6 +88,16 @@ public class CommandStorage {
 	public void reset(){
 		cmdlisteners=new ArrayList<>();
 		defaultCommand=null;
-	}	
+	}
+	public boolean executeCommand(String userInput){
+		ArrayList<String> array=cutString(userInput);
+		CommandInfo c=getCommand(array.get(0));
+		array.remove(0);
+		if(c!=null){
+			c.execute(array);
+			return true;
+		}
+		return false;
+	}
 	
 }

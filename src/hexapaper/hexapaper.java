@@ -7,10 +7,7 @@ import hexapaper.source.HPSklad;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Toolkit;
-
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -23,10 +20,8 @@ import javax.swing.JPanel;
 import java.awt.FlowLayout;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 
 public class hexapaper extends JFrame {
 
@@ -152,15 +147,16 @@ public class hexapaper extends JFrame {
 
 		JMenuItem kostka = new JMenuItem(sk.str.get("kostka"));
 		JMenuItem PJInfo = new JMenuItem(sk.str.get("PJInfo"));
-		JMenuItem ColorPicker = new JMenuItem("ColorPicker");
+		JMenuItem ExportLang = new JMenuItem(sk.str.get("ExportLang"));
+		//JMenuItem ColorPicker = new JMenuItem("ColorPicker");
 
 		kostka.addActionListener(lis.new DiceListener());
 		PJInfo.addActionListener(lis.new PJInfoListener());
-		ColorPicker.addActionListener(lis.new ColorListener());
+		ExportLang.addActionListener(lis.new ExportLangListener());
 
 		addons.add(kostka);
 		addons.add(PJInfo);
-		addons.add(ColorPicker);
+		addons.add(ExportLang);
 
 		HlavniMenu.add(hraMenu);
 		HlavniMenu.add(upravy);

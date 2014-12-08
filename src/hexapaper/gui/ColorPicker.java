@@ -16,6 +16,10 @@ import javax.swing.JButton;
 
 public class ColorPicker extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5049953320327190756L;
 	private JPanel contentPane;
 	private HPSklad sk=HPSklad.getInstance();
 	private JColorChooser colorPick;

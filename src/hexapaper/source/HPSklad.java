@@ -2,7 +2,6 @@ package hexapaper.source;
 
 import hexapaper.hexapaper;
 import hexapaper.Listeners.HPListenery;
-import hexapaper.entity.FreeSpace;
 import hexapaper.entity.HPEntity;
 import hexapaper.file.Wrappers;
 import hexapaper.gui.ColorPicker;
@@ -14,13 +13,9 @@ import hexapaper.network.server.HexaClient;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
@@ -74,7 +69,7 @@ public class HPSklad {
 	public HexaClient client;
 	public LangFile str;
 
-	public final String VERSION = "v0.3f";
+	public final String VERSION = "v0.3h";
 	public final String FILEVERSION = "0.2";
 	public String lastName = "Player";
 

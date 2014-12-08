@@ -9,9 +9,9 @@ import java.util.Map;
 
 public class ClientInfo {
 	private int port;
-	private String hostName;
-	private String nick;
+	private String hostName, nick;
 	private Socket socket;
+	private boolean initialized;
 	private ObjectInputStream inputStream;
 	private ObjectOutputStream outputStream;
 	private Thread thread;
@@ -105,5 +105,11 @@ public class ClientInfo {
 	}
 	public Map<String,Object> getAtributes() {
 		return atributes;
+	}
+	public boolean isInitialized() {
+		return initialized;
+	}
+	public void setInitialized(boolean initialized) {
+		this.initialized = initialized;
 	}	
 }

@@ -1,8 +1,6 @@
 package hexapaper.gui;
 
 import hexapaper.source.HPSklad;
-import hexapaper.source.HPStrings;
-
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

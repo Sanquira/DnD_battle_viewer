@@ -39,13 +39,14 @@ public class HPStrings {
 	public static String addFreeSpace = "Odeber";
 
 	public static String player = "Hráč";
-	public static String name = "Jméno";
-	public static String race = "Rasa";
-	public static String health = "Zdraví";
-	public static String mags = "Magy";
-	public static String weapon = "Zbraň";
-	public static String armor = "Armor";
-	public static String type = "Typ";
+	public static String LangFileLoaded = "Jazykový soubor načten";
+//	public static String name = "Jméno";
+//	public static String race = "Rasa";
+//	public static String health = "Zdraví";
+//	public static String mags = "Magy";
+//	public static String weapon = "Zbraň";
+//	public static String armor = "Armor";
+//	public static String type = "Typ";
 	public static String addPropBut = "Přidej";
 	public static String delPropBut = "Odeber";
 
@@ -61,7 +62,8 @@ public class HPStrings {
 	public static String utility = "Utility";
 	public static String kostka = "Kostka";
 	public static String PJInfo = "PJGUI";
-	
+	public static String ExportLang = "ExportLang";
+		
 	public static String ipField = "IP serveru";
 	public static String portField = "Port serveru";
 	public static String nameField = "Nick";
@@ -90,6 +92,13 @@ public class HPStrings {
 	public static String OldFileVersionYes = "Ano";
 	public static String OldFileVersionNo = "Ne";
 	public static String OldFileVersionHeader = "Detekována stará verze";
+	
+	//CreateServerFrame
+	public static String ServerCreate = "Vytvořit";
+	public static String ServerCreateFrame = "Vytváření serveru";
+	public static String ServerIOError = "Chyba při vytváření";
+	public static String ServerError = "Nepodařilo se vytvořit server z důvodu: ";
+		
 	
 	public static String ztrataDat = "Ztráta dat";
 	public static String zpravaZtrataDat = "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVšechny neuložené změny budou ztraceny. \nChcete opravdu skončit?";

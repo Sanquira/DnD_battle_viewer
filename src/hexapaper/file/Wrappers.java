@@ -10,8 +10,7 @@ import hexapaper.source.HPSklad.PropPair;
 
 import java.awt.Color;
 import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
+import java.util.HashMap;
 
 import core.Location;
 
@@ -116,5 +115,8 @@ public class Wrappers {
 				sk.databazePostav.add(new Postava(wrap.Name,wrap.loc,false,wrap.List).setBcg(new Color(wrap.Bcg)));
 			}
 		}
+	}
+	public class LangWrapper{
+		public HashMap<String,String> lang=new HashMap<String,String>();		
 	}
 }

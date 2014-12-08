@@ -24,21 +24,11 @@ public class PacketReceiveHandler implements Runnable{
        		}
        		else{
        			if(sk.clients.containsKey(nick)){
-           			try{
-           				ClientInfo c=sk.clients.get(nick);
-           				c.getSocket().close();
-           				sk.clients.remove(c.getNick());
-           				sk.callClientDisconnectEvent(c);
-           			}
-           			catch(IOException p){
-           				p.printStackTrace();
-           				try {
-							socket.close();
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-           			}
+       				ClientInfo c = null;
+       				c=sk.clients.get(nick);
+					c.remove();
+					sk.clients.remove(c.getNick());
+					sk.callClientDisconnectEvent(c);
        			}	      			
        		}
         }

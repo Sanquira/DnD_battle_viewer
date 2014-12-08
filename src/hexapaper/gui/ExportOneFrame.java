@@ -3,8 +3,6 @@ package hexapaper.gui;
 import hexapaper.entity.Artefact;
 import hexapaper.entity.HPEntity;
 import hexapaper.entity.Postava;
-import hexapaper.file.SaveFile;
-import hexapaper.file.Wrappers;
 import hexapaper.file.Wrappers.DatabaseWrapper;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.PropPair;

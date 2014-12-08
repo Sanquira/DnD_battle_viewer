@@ -1,6 +1,9 @@
 package hexapaper.gui;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,6 +14,7 @@ import javax.swing.border.TitledBorder;
 
 import addons.dice.DiceLog;
 
+import javax.swing.BoxLayout;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JTextPane;
@@ -76,41 +80,73 @@ public class PJGUI extends JFrame {
 	 */
 	public PJGUI() {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setResizable(false);
+		//setResizable(false);
 		setBounds(100, 100, 580, 321);
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.weightx =0.5;
+		gbc.weighty = 0.5;
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(new GridBagLayout());
 		
+		gbc.gridx = 3;
+		gbc.gridy = 0;
+		gbc.gridheight = 2;
+		gbc.gridwidth = 1;
 		JPanel control = new JPanel();
-		control.setBounds(236, 5, 91, 227);
+		//control.setBounds(236, 5, 91, 227);
 		control.setBorder(new TitledBorder("ControlPanel"));
-		contentPane.add(control);
+		contentPane.add(control,gbc);
 		control.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		textPane = new JTextPane();
 		textPane.setEditable(false);
 		control.add(textPane);
 		
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.weightx = 1;
+		gbc.gridheight = 7;
+		gbc.gridwidth = 3;
 		Dicelog = new DiceLog();
-		Dicelog.setBounds(0, 5, 237, 227);
+		//Dicelog.setBounds(0, 5, 237, 227);
 		Dicelog.setBorder(new TitledBorder("DiceLog"));
 		//Dicelog.addMessage("Kostka Načtena");
-		contentPane.add(Dicelog);
+		contentPane.add(Dicelog,gbc);
 		
-		PJLog = new DiceLog();
-		PJLog.setBounds(327, 5, 237, 227);
-		PJLog.setBorder(new TitledBorder("PJLog"));
-		//PJLog.addMessage("PJLog initializován");
-		contentPane.add(PJLog);
-		
+		gbc.gridx = 4;
+		gbc.gridy = 0;
+		gbc.gridheight = 7;
+		gbc.gridwidth = 3;
+		JPanel PJControl = new JPanel();
+		PJControl.setLayout(new BoxLayout(PJControl, BoxLayout.Y_AXIS));
+		PJControl.setBorder(new TitledBorder("PJLog"));
+		PJLog = new DiceLog();	
+
 		CmdField = new JTextField();
 		CmdField.setHorizontalAlignment(SwingConstants.LEFT);
-		CmdField.setBounds(327, 229, 237, 20);
 		CmdField.addActionListener(sendCmd);
-		contentPane.add(CmdField);
 		CmdField.setColumns(10);
+		CmdField.setMaximumSize(new Dimension(Integer.MAX_VALUE, CmdField.getPreferredSize().height));
+		PJControl.setLayout(new BoxLayout(PJControl, BoxLayout.Y_AXIS));
+		
+		PJControl.add(PJLog);
+		PJControl.add(CmdField);
+		contentPane.add(PJControl);
+		
+		contentPane.add(PJControl,gbc);
+		
+
+		gbc.gridx = 0;
+		gbc.gridy = 7;
+		gbc.weighty = 0.1;
+		gbc.gridheight = 1;
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		JPanel buttonPane=new JPanel();
+		contentPane.add(buttonPane,gbc);
+
 		
 	}
 }

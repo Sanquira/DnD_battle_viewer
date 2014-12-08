@@ -8,13 +8,11 @@ import hexapaper.source.HPSklad.prvekkNN;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.io.IOException;
 import java.util.ArrayList;
 

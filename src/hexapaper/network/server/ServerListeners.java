@@ -3,7 +3,6 @@ package hexapaper.network.server;
 import hexapaper.entity.HPEntity;
 
 import java.awt.Color;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,7 +26,7 @@ public class ServerListeners {
 	private ClientInfo PJ=null;
 	//ClientConnectListeners
 	ClientConnectListener connect=new ClientConnectListener(){
-		public void clientConnect(ClientInfo c) {
+		public void clientConnect(ClientInfo c) {			
 			if(PJ!=null){
 				Object[] o={gridSl,gridRa,RADIUS};
 				c.send(o, "RadiusHexapaper");
@@ -213,7 +212,7 @@ public class ServerListeners {
 	private CommandListener dicecmd=new CommandListener(){
 		@Override
 		public void CommandExecuted(List<String> args) {
-			Integer[] o = {(Integer) Integer.valueOf(args.get(0)),(Integer) Integer.valueOf(args.get(1))};
+			Integer[] o = {(Integer) Integer.valueOf(args.get(0)),(Integer) Integer.valueOf(args.get(1)),0};
 			if(PJ!=null){
 				System.out.println("(Příkaz)"+args.get(2)+" si hodil "+args.get(0)+" na "+args.get(1)+" kostce.");
 				PJ.send(args.get(2), o, "dice");

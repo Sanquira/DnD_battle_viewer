@@ -3,8 +3,6 @@ package hexapaper.gui;
 import hexapaper.entity.Artefact;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.PropPair;
-import hexapaper.source.HPStrings;
-
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -36,6 +34,10 @@ import core.EditableJLabel;
 
 public class ArtefactAddFrame extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7870716336621081145L;
 	JFrame frame;
 	HPSklad sk = HPSklad.getInstance();
 	protected String[] defaultProp = { sk.str.get("name")};

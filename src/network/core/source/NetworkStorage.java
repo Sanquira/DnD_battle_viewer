@@ -41,6 +41,7 @@ public class NetworkStorage {
 		for(ClientConnectListener l:clientconnectListeners){
 			l.clientConnect(c);
 		}
+		c.setInitialized(true);
 	}
 	public void callDisconnectEvent(Socket s){
 		for(DisconnectListener l:disconnectListeners){

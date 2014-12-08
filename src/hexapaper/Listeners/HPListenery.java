@@ -1,17 +1,11 @@
 package hexapaper.Listeners;
 
 import hexapaper.hexapaper;
-import hexapaper.entity.FreeSpace;
-import hexapaper.entity.HPEntity;
-import hexapaper.file.LoadFile;
-import hexapaper.file.SaveFile;
-import hexapaper.file.Wrappers;
 import hexapaper.file.Wrappers.DatabaseWrapper;
 import hexapaper.file.Wrappers.HexWrapper;
 import hexapaper.gui.ArtefactAddFrame;
 import hexapaper.gui.ChangeZoomFrame;
 import hexapaper.gui.ClientConnectFrame;
-import hexapaper.gui.ColorPicker;
 import hexapaper.gui.ExportOneFrame;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.NewPaperFrame;
@@ -19,7 +13,6 @@ import hexapaper.gui.PostavaAddFrame;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.prvekkNN;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -31,12 +24,9 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import javax.swing.JColorChooser;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import com.google.gson.Gson;
 
 import network.command.users.CommandClient;
 import addons.dice.Dice;
@@ -374,11 +364,11 @@ public class HPListenery {
 		}
 
 	}
-	public class ColorListener implements ActionListener {
+	public class ExportLangListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			sk.clr.setVisible(true);
+			sk.str.saveLang();
 		}
 
 	}

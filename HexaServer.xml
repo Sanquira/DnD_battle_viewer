@@ -9,8 +9,7 @@
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="C:/Users/Petr/OneDrive/eclipse/DnD_battle_viewer/bin"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/Petr/OneDrive/eclipse/DnD_battle_viewer/lib/gson-2.3.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/Petr/OneDrive/eclipse/DnD_battle_viewer/lib/json-simple-1.1.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/Petr/OneDrive/eclipse/DnD_battle_viewer/lib/gson-2.3.jar"/>            
         </jar>
         <jar destfile="C:/Users/Petr/Documents/ServerTest/HexaClient.jar" filesetmanifest="mergewithoutmain">
             <manifest>
@@ -18,8 +17,7 @@
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="C:/Users/Petr/OneDrive/eclipse/DnD_battle_viewer/bin"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/Petr/OneDrive/eclipse/DnD_battle_viewer/lib/gson-2.3.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/Petr/OneDrive/eclipse/DnD_battle_viewer/lib/json-simple-1.1.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/Petr/OneDrive/eclipse/DnD_battle_viewer/lib/gson-2.3.jar"/>            
         </jar>
     </target>
 </project>
