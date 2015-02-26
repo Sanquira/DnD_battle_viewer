@@ -5,6 +5,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.util.List;
 
+import network.core.annotations.AnnotationChecker;
 import network.core.interfaces.ClientConnectListener;
 import network.core.interfaces.ClientDisconnectListener;
 import network.core.source.ClientInfo;
@@ -15,6 +16,7 @@ public class NetworkServer extends AbstractNetworkUser{
     static ServerSocket serverSocket=null;
     public NetworkServer(){
     	sk.reset();
+    	super.start();
     }
     public void addClientDisconnectListener(ClientDisconnectListener l){
     	sk.clientdisconnectListeners.add(l);
@@ -30,7 +32,10 @@ public class NetworkServer extends AbstractNetworkUser{
         serverSocket = new ServerSocket();
         serverSocket.bind(new InetSocketAddress(hostname,portNumber));
         createThread();
-
+    }
+    public void create(String hostname,int portNumber,int timeout) throws IOException{
+    	create(hostname,portNumber);
+    	serverSocket.setSoTimeout(timeout);
     }
     public void createThread(){
         System.out.println("Server zahájen "+serverSocket.getLocalSocketAddress());
@@ -55,4 +60,12 @@ public class NetworkServer extends AbstractNetworkUser{
 			c.send(o,header);
 		}
 	}
+    public void registerClass(Object obj){
+    	try {
+			new AnnotationChecker(obj,this).processClass();
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 }

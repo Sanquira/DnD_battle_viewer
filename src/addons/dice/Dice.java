@@ -32,6 +32,7 @@ import java.awt.GridLayout;
 
 import java.awt.FlowLayout;
 import java.awt.Dimension;
+import java.awt.Component;
 
 public class Dice {
 
@@ -175,9 +176,15 @@ public class Dice {
 		panel.add(RollButton);
 		
 		JPanel SidePane = new JPanel();
+		SidePane.setToolTipText("Sides");
 		SettingPane.add(SidePane);
 		
 		SideField = new JNumberTextField();
+		SideField.setPreferredSize(new Dimension(75, 19));
+		SideField.setAlignmentY(Component.TOP_ALIGNMENT);
+		SideField.setAlignmentX(Component.LEFT_ALIGNMENT);
+		SideField.setToolTipText("Sides");
+		SideField.setMaxLength(4);
 		SideField.setHorizontalAlignment(SwingConstants.CENTER);
 		SideField.setText("6");
 		SidePane.add(SideField);
@@ -188,6 +195,7 @@ public class Dice {
 		SettingPane.add(ModPane);
 		
 		ModField = new JNumberTextField();
+		ModField.setToolTipText("Modifier");
 		ModField.setHorizontalAlignment(SwingConstants.CENTER);
 		ModField.setText("0");
 		ModPane.add(ModField);
@@ -294,21 +302,30 @@ public class Dice {
 	private void initialize() {
 		// nastaveni titulku okna, velikosti a layoutu
 		frmKostka.setTitle("Kostka");
-		frmKostka.setSize(546, 300);
+		frmKostka.setSize(567, 300);
 		list.add(6);
 		list.add(10);
 		list.add(100);
 		list.add(7);
-		generatePresets(list);
+		generatePresets(Pane,list);
 	}
-	private void generatePresets(ArrayList<Integer> presets){
-		Pane.removeAll();
+	private void generatePresets(JPanel pane, ArrayList<Integer> presets){
+		pane.removeAll();
 		//PresetsPane.setLayout(new BoxLayout(PresetsPane,)
 			for(Integer i:presets){
 				JButton but=new JButton(String.valueOf(i));
 				but.setPreferredSize(new Dimension(PresetsPane.getSize().width,but.getPreferredSize().height));
 				but.addActionListener(fastValueButtonListener);
-				Pane.add(but);
+				pane.add(but);
 			}	
+	}
+	private JScrollPane generatePresetPane(){
+		JScrollPane presetsPane = new JScrollPane();
+		presetsPane.setLayout(new ScrollPaneLayout());
+		
+		JPanel Pane = new JPanel();
+		presetsPane.setColumnHeaderView(Pane);
+		Pane.setLayout(new GridLayout(6, 0, 0, 0));
+		return presetsPane;
 	}
 }

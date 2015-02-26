@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 public class LoggingStream extends OutputStream {
     private JTextArea textControl;
@@ -26,12 +28,26 @@ public class LoggingStream extends OutputStream {
 			e.printStackTrace();
 		}    	
     }
-    public void write( int b ) throws IOException {
-        // append the data as characters to the JTextArea control
-    	writer.write(b);
-    	writer.flush();
-    	if(textControl!=null){
-    		textControl.append( String.valueOf( ( char )b ) );
-    	}
+    @Override
+    public void write(byte[] buffer, int offset, int length) throws IOException
+    {
+        final String text = new String (buffer, offset, length);
+		writer.write(text);
+		writer.flush();      	
+		if(textControl!=null){
+	        Runnable  runnable = new Runnable() {
+	            public void run(){
+	            	textControl.append(text);
+	            }
+	        };
+	        SwingUtilities.invokeLater(runnable);		
+		}
     }
+
+    @Override
+    public void write(int b) throws IOException
+    {
+        write (new byte [] {(byte)b}, 0, 1);
+    }
+
 }

@@ -17,7 +17,7 @@ public class CommandStorage {
 			}
 		}		
 	};
-	public static int UNLIMITED=Integer.MAX_VALUE;
+	public static final int UNLIMITED=Integer.MAX_VALUE;
 	public List<CommandInfo> cmdlisteners=new ArrayList<>();
 	public CommandInfo defaultCommand=null;
 	

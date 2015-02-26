@@ -87,17 +87,21 @@ public class ClientInfo {
 	}
 	public void remove(){
     	try{
-    		outputStream.close();
-    		inputStream.close();
+    		if(socket.isInputShutdown()){
+    			socket.shutdownInput();
+    		}
+    		if(socket.isOutputShutdown()){
+    			socket.shutdownOutput();
+    		}
     		if(!socket.isClosed()){
     			socket.close();
     		}
-    		thread.interrupt();
     	}	
 		//socket.close();
 		catch(IOException e){
 			e.printStackTrace();
 		}
+		thread.interrupt();
 	}
 	public void kick(String reason){
 		send(nick,reason,"corekick");

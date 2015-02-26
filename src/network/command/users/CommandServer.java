@@ -2,6 +2,7 @@ package network.command.users;
 
 import java.io.IOException;
 
+import network.command.annotations.CommandAnnotationChecker;
 import network.command.interfaces.CommandListener;
 import network.command.source.CommandHandler;
 import network.command.source.CommandInfo;
@@ -47,5 +48,15 @@ public class CommandServer extends NetworkServer {
 	}
 	public void registerInitialcommands(){
 		registerCommand("help", 0, "Help", "Zobrazí všechny dostupné příkazy", cmd.help);
+	}
+	@Override
+	public void registerClass(Object obj){
+		super.registerClass(obj);
+		try {
+			new CommandAnnotationChecker(obj,this).processClass();
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

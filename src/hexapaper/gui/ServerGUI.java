@@ -1,5 +1,8 @@
 package hexapaper.gui;
 
+import hexapaper.network.server.HexaServer;
+import hexapaper.source.HPSklad;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -20,7 +23,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
 
 import javax.swing.border.TitledBorder;
 
@@ -43,6 +45,7 @@ public class ServerGUI extends JFrame {
 			if(!server.getCommandStorage().checkCommand(textField.getText())){
 				System.out.println("Neznámý příkaz");
 			}
+			textField.setText("");
 		}		
 	};
 	private JPanel panel;
@@ -74,9 +77,10 @@ public class ServerGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public void initialize() {
+	public void initialize(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		setTitle("HexaServer "+HPSklad.getInstance().VERSION);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -115,12 +119,7 @@ public class ServerGUI extends JFrame {
 		contentPane.add(textField, gbc_textField);
 		textField.addActionListener(sendCmd);
 		textField.setColumns(10);
-		try {
-			System.setOut(new PrintStream(new LoggingStream("HexaServer",textArea),true,"UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		System.setOut(new PrintStream(new LoggingStream("HexaServer",textArea)));
 	}
 
 }

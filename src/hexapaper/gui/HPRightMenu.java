@@ -29,6 +29,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
@@ -42,6 +43,7 @@ import javax.swing.text.BadLocationException;
 
 import core.DocumentAdapter;
 import core.EditableJLabel;
+import core.ValueChangedListener;
 
 public class HPRightMenu extends JPanel {
 
@@ -61,6 +63,7 @@ public class HPRightMenu extends JPanel {
 	HPEntity vlastnosti = null;
 	boolean isPostava = false, isDel = false;
 	ArrayList<PropPair> param = new ArrayList<PropPair>();
+	int position;
 
 	public HPRightMenu() {
 		praveMenu();
@@ -314,54 +317,86 @@ public class HPRightMenu extends JPanel {
 
 		EditableJLabel nameL = new EditableJLabel(vlastnosti.getNick());
 		nameL.setPreferredSize(new Dimension(-1, 35));
-		nameL.getTextField().getDocument().addDocumentListener(new DocumentAdapter() {
+		nameL.addValueChangedListener(new ValueChangedListener(){
+
 			@Override
-			public void insertUpdate(DocumentEvent e) {
+			public void valueChanged(String value, JComponent source) {
 				if (sk.isConnected && !sk.isPJ) {
 					return;
 				}
-				String chtag = "";
-				try {
-					chtag = e.getDocument().getText(0, e.getDocument().getLength());
-				} catch (BadLocationException er) {
-					er.printStackTrace();
-				}
-				vlastnosti.setNick(chtag);
+				vlastnosti.setNick(value);
+				updateEnt();
 			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				insertUpdate(e);
-			}
+			
 		});
+//		nameL.getTextField().getDocument().addDocumentListener(new DocumentAdapter() {
+//			@Override
+//			public void insertUpdate(DocumentEvent e) {
+//				if (sk.isConnected && !sk.isPJ) {
+//					return;
+//				}
+//				String chtag = "";
+//				try {
+//					chtag = e.getDocument().getText(0, e.getDocument().getLength());
+//				} catch (BadLocationException er) {
+//					er.printStackTrace();
+//				}
+//				vlastnosti.setNick(chtag);
+//			}
+//
+//			@Override
+//			public void removeUpdate(DocumentEvent e) {
+//				insertUpdate(e);
+//			}
+//		});
 
 		EditableJLabel tagL = new EditableJLabel(vlastnosti.tag);
 		tagL.setPreferredSize(new Dimension(35, 35));
-		tagL.getTextField().getDocument().addDocumentListener(new DocumentAdapter() {
+		tagL.addValueChangedListener(new ValueChangedListener(){
 
 			@Override
-			public void insertUpdate(DocumentEvent arg0) {
+			public void valueChanged(String value, JComponent source) {
 				if (sk.isConnected && !sk.isPJ) {
 					return;
 				}
-				String chtag = vlastnosti.tag;
-				try {
-					if (arg0.getDocument().getLength() <= 2) {
-						chtag = arg0.getDocument().getText(0, arg0.getDocument().getLength());
+				String chtag = value;
+				if (value.length() <= 2) {
+					chtag = value.substring(0, chtag.length());
 
-					}
-				} catch (BadLocationException e) {
-					e.printStackTrace();
 				}
 				vlastnosti.setTag(chtag);
+				updateEnt();
 				hexapaper.HPfrm.repaint();
+				
 			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				insertUpdate(e);
-			}
+			
 		});
+//		tagL.getTextField().getDocument().addDocumentListener(new DocumentAdapter() {
+//
+//			@Override
+//			public void insertUpdate(DocumentEvent arg0) {
+//				if (sk.isConnected && !sk.isPJ) {
+//					return;
+//				}
+//				String chtag = vlastnosti.tag;
+//				try {
+//					if (arg0.getDocument().getLength() <= 2) {
+//						chtag = arg0.getDocument().getText(0, arg0.getDocument().getEndPosition().getOffset());
+//						System.out.println(chtag);
+//
+//					}
+//				} catch (BadLocationException e) {
+//					e.printStackTrace();
+//				}
+//				vlastnosti.setTag(chtag);
+//				hexapaper.HPfrm.repaint();
+//			}
+//
+//			@Override
+//			public void removeUpdate(DocumentEvent e) {
+//				insertUpdate(e);
+//			}
+//		});
 
 		nameatag.add(nameL, BorderLayout.CENTER);
 		nameatag.add(tagL, BorderLayout.EAST);
@@ -502,6 +537,7 @@ public class HPRightMenu extends JPanel {
 	protected void updateCreate() {
 		removeAll();
 		praveMenu();
+		updateEnt();
 		revalidate();
 		repaint();
 		sk.colorJMenu();
@@ -509,11 +545,11 @@ public class HPRightMenu extends JPanel {
 
 	public void redrawProperities(prvekkNN prvekkNN) {
 		if (prvekkNN.getIdx() < sk.souradky.size() && prvekkNN.getIdx() >= 0) {
-			int i = prvekkNN.getIdx();
-			HPEntity ent = sk.souradky.get(i);
+			position = prvekkNN.getIdx();
+			HPEntity ent = sk.souradky.get(position);
 			if (ent instanceof Postava ||
 					ent instanceof Artefact) {
-				vlastnosti = sk.souradky.get(prvekkNN.getIdx());
+				vlastnosti = ent;
 				if (vlastnosti instanceof Postava) {
 					isPostava = true;
 				} else {
@@ -525,5 +561,8 @@ public class HPRightMenu extends JPanel {
 				repaint();
 			}
 		}
+	}
+	public void updateEnt(){
+		sk.souradky.set(position, vlastnosti);
 	}
 }

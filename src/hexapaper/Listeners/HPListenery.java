@@ -20,6 +20,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import javax.swing.event.ChangeListener;
 import network.command.users.CommandClient;
 import addons.dice.Dice;
 import core.kNN;
+import core.file.Config;
 import core.file.FileHandler;
 
 public class HPListenery {
@@ -64,14 +66,16 @@ public class HPListenery {
 			}
 			FileHandler fileHandler=FileHandler.showDialog(sk.str.get("Hex_ext"), sk.str.get("Hex_text"),false);
 			HexWrapper HWrapper=fileHandler.load(HexWrapper.class);
-			if(sk.checkVersion(HWrapper.Version)){
-				sk.RADIUS=HWrapper.Radius;
-				sk.gridRa=HWrapper.GridRA;
-				sk.gridSl=HWrapper.GridSl;
-				sk.initLoad(HWrapper.load());
-				if (sk.isConnected && sk.isPJ) {
-					sk.client.radiusHexapaper();
-					sk.client.updateHexapaper();
+			if(HWrapper!=null){
+				if(sk.checkVersion(HWrapper.Version)){
+					sk.c.RADIUS=HWrapper.Radius;
+					sk.c.gridRa=HWrapper.GridRA;
+					sk.c.gridSl=HWrapper.GridSl;
+					sk.initLoad(HWrapper.load());
+					if (sk.isConnected && sk.isPJ) {
+						sk.client.radiusHexapaper();
+						sk.client.updateHexapaper();
+					}
 				}
 			}
 		}
@@ -81,11 +85,12 @@ public class HPListenery {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			//new SaveFile(sk.souradky, sk.RADIUS, sk.gridSl, sk.gridRa);
-			FileHandler fileHandler=FileHandler.showDialog(sk.str.get("Hex_ext"), sk.str.get("Hex_text"),true);
-			HexWrapper HWrapper=sk.wrappers.new HexWrapper(sk.gridSl,sk.RADIUS,sk.gridRa,sk.FILEVERSION);
-			HWrapper.addEntities(sk.souradky);
+			if(sk.souradky.size() == 0){
+				return;
+			}
+			FileHandler fileHandler = FileHandler.showDialog(sk.str.get("Hex_ext"), sk.str.get("Hex_text"),true);
 			try {
-				fileHandler.write(HWrapper);
+				sk.saveMap(fileHandler);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -134,6 +139,13 @@ public class HPListenery {
 			 * opt, opt[0]); if (t == JOptionPane.OK_OPTION) { System.exit(0);
 			 * }//
 			 */
+			try {
+				sk.c.saveDb();
+				sk.c.saveMap();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			System.exit(0);
 		}
 
@@ -251,11 +263,8 @@ public class HPListenery {
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
 			FileHandler fh=FileHandler.showDialog(sk.str.get("Db_ext"), sk.str.get("Db_text"), true);
-			DatabaseWrapper db=sk.wrappers.new DatabaseWrapper();
-			db.Version=sk.FILEVERSION;
-			db.addEntities(sk.databazeArtefaktu);
 			try {
-				fh.write(db);
+				sk.saveArtefacts(fh);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -276,11 +285,8 @@ public class HPListenery {
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
 			FileHandler fh=FileHandler.showDialog(sk.str.get("Db_ext"), sk.str.get("Db_text"), true);
-			DatabaseWrapper db=sk.wrappers.new DatabaseWrapper();
-			db.Version=sk.FILEVERSION;
-			db.addEntities(sk.databazePostav);
 			try {
-				fh.write(db);
+				sk.saveCharacters(fh);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -304,7 +310,7 @@ public class HPListenery {
 				return;
 			}
 			FileHandler fh=FileHandler.showDialog(sk.str.get("Db_ext"), sk.str.get("Db_text"), false);
-			fh.load(DatabaseWrapper.class).loadDatabase();
+			if(fh!=null){fh.load(DatabaseWrapper.class).loadDatabase();}
 			//new LoadFile(sk.str.get("desc"), sk.str.get("File_ext"), sk.str.get("Db_ext"));
 			//sk.RMenu.updateDatabase();
 

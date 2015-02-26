@@ -40,7 +40,8 @@ public class HPStrings {
 
 	public static String player = "Hráč";
 	public static String LangFileLoaded = "Jazykový soubor načten";
-//	public static String name = "Jméno";
+	public static String name = "Jméno";
+	public static String Tag = "Tag";
 //	public static String race = "Rasa";
 //	public static String health = "Zdraví";
 //	public static String mags = "Magy";
@@ -99,10 +100,38 @@ public class HPStrings {
 	public static String ServerIOError = "Chyba při vytváření";
 	public static String ServerError = "Nepodařilo se vytvořit server z důvodu: ";
 		
+	//Server
+	public static String ServerVersion = "Verze serveru ";
+	public static String ClientConnected = "Hráč připojen %name";
+	public static String ClientDisconnected = "Odpojen %pj %name z důvodu: %error";
+	public static String PJDisconnected = "Odpojen %pj %name z důvodu: %error";
+	public static String RadiusReceived = "Radius hexapaperu přijat";
+	public static String EntityReceived = "Entity Hexapaperu přijaty";
+	public static String ArtefactsReceived = "Artefacty přijaty";
+	public static String CharactersReceived = "Postavy přijaty";
+	public static String DiceRolled = "%name si hodil %roll na %range kostce.";
+	public static String DiceRolledModifier = "%name si hodil %modifier na %range kostce se základním hodem %roll";
+	public static String ClientVersion = "%name má verzi %version";
+	public static String ClientsetPJ = "Hráči %name byl nastaven PJ";
+	public static String ClientNoPlayer = "Hráč %name není připojen";	
+	public static String ServerNoPJ = "PJ není zvolen";
+	public static String ServerPJ = "PJ je %name";
+	public static String ServerDice = "(Příkaz)%name si hodil %roll na %range kostce.";
 	
 	public static String ztrataDat = "Ztráta dat";
 	public static String zpravaZtrataDat = "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVšechny neuložené změny budou ztraceny. \nChcete opravdu skončit?";
 	
+	public static String diceTitle = "Kostka Log";
 	
-	public static String diceTitle = "Kostka Log"; 
+	//Commands strings
+	public static String pjHelp = "Zkontroluje, zda je hráč PJ";
+	public static String pjUsage = "pj <Name>";
+	public static String setpjUsage = "setpj <Name>";
+	public static String setpjHelp = "Nastaví PJ";
+	public static String kickUsage = "Kick <Name> <Reason>";
+	public static String kickHelp = "Vykopne hráče ze srveru";
+	public static String diceUsage = "Dice <Roll> <Side> <Player>";
+	public static String diceHelp = "Hodí za hráče";
+	public static String versionUsage = "Version <Name>";
+	public static String versionHelp = "Požádá hráče o verzi clienta";
 }

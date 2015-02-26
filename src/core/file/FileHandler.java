@@ -19,7 +19,6 @@ public class FileHandler {
 	public FileHandler(String name){
 		this.name=name;		
 	}
-	
 	public static FileHandler showDialog(String ext,String desc,boolean save){
 		JFileChooser fc = new JFileChooser();	
 		fc.setFileFilter(new FileNameExtensionFilter(desc + " (*." + ext + ")", ext));

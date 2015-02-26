@@ -1,15 +1,22 @@
 package hexapaper.network.server;
 
 import hexapaper.entity.HPEntity;
-
+import hexapaper.source.HPSklad;
 import java.awt.Color;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import network.command.interfaces.CommandListener;
 import network.command.users.CommandServer;
+import network.core.annotations.Annotations.ClientConnectAnnotation;
+import network.core.annotations.Annotations.ClientDisconnectAnnotation;
+import network.core.annotations.Annotations.PacketReceiveAnnotation;
 import network.core.interfaces.ClientConnectListener;
 import network.core.interfaces.ClientDisconnectListener;
 import network.core.interfaces.PacketReceiveListener;
@@ -18,56 +25,50 @@ import network.core.source.MessagePacket;
 
 public class ServerListeners {
 	private CommandServer server;
+	private HPSklad storage=HPSklad.getInstance();
 	private int gridSl,gridRa,RADIUS;
-	private ArrayList<HPEntity> souradky=null;
-	private ArrayList<HPEntity> DBArtefact=null;
-	private ArrayList<HPEntity> DBCharacter=null;
+	private CopyOnWriteArrayList<HPEntity> souradky=null;
 	private ConcurrentMap<String,String> versions=new ConcurrentHashMap<String,String>();
 	private ClientInfo PJ=null;
 	//ClientConnectListeners
+	@ClientConnectAnnotation
 	ClientConnectListener connect=new ClientConnectListener(){
 		public void clientConnect(ClientInfo c) {			
 			if(PJ!=null){
 				Object[] o={gridSl,gridRa,RADIUS};
 				c.send(o, "RadiusHexapaper");
-				c.send(souradky, "EntityHexapaper");
-				//PJ.send(c.getNick(),versions,"PlayerConnect");
-				//c.send(Cursorloc,"PJcursor");
-				//c.send(DBArtefact,"DBartefact");
-				//c.send(DBCharacter,"DBcharacter");
+				c.send(new ArrayList<HPEntity>((CopyOnWriteArrayList<HPEntity>) souradky.clone()), "EntityHexapaper");
 			}
-			System.out.println("Client připojen "+(String) c.getNick());
+			System.out.println(storage.str.sub("ClientConnected","name",c.getNick()));
 			server.rebroadcast(c.getNick(),versions,"PlayerConnect");
-//			try {
-//				c.send(0, "version");
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
 		}			
 	};
 	//ClientDisconnectListeners
+	@ClientDisconnectAnnotation
 	ClientDisconnectListener disconnect=new ClientDisconnectListener(){
-		public void clientDisconnect(ClientInfo c) {
+		public void clientDisconnect(ClientInfo c,IOException e) {
+			Map<String,String> map=new HashMap<String,String>();
+			map.put("name", c.getNick());
+			map.put("error", getErrorMessage(e));
 			String Message;
-			Message="Client odpojen: "+c.getNick();
+			Message="hráč";
 			if(PJ!=null){
 				if(PJ.equals(c)){
-					Message="PJ odpojen: "+c.getNick();
+					Message="PJ";
 					PJ=null;					
 				}
-				else{
-					PJ.send(c.getNick(), 0,"PlayerDisconnect");
-				}
 			}
-			System.out.println(Message);
+			map.put("pj", Message);
+			System.out.println(storage.str.sub("ClientDisconnected",map));
+			server.rebroadcast(c.getNick(),versions,"PlayerDisconnect");
 			
 		}		
 	};
 	//ReceiveListeners
+	@PacketReceiveAnnotation(header = "RadiusHexapaper")
 	PacketReceiveListener RadiusHexapaper=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
-			System.out.println("Radius Hexapaperu přijat"); 
+			System.out.println(storage.str.get("RadiusReceived")); 
 			Object[] List = (Object[]) p.getObject();
 			gridSl=(int) List[0];
 			gridRa=(int) List[1];
@@ -75,13 +76,15 @@ public class ServerListeners {
 			server.rebroadcast(p.getNick(), List,"RadiusHexapaper");
 		}		
 	};
+	@PacketReceiveAnnotation(header = "EntityHexapaper")
 	PacketReceiveListener EntityHexapaper=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
-			System.out.println("Entity Hexapaperu přijaty"); 
-			souradky=(ArrayList<HPEntity>) p.getObject();
-			server.rebroadcast(p.getNick(), souradky,"EntityHexapaper");
+			System.out.println(storage.str.get("EntityReceived")); 
+			souradky=new CopyOnWriteArrayList<HPEntity>((ArrayList<HPEntity>) p.getObject());
+			server.rebroadcast(p.getNick(), new ArrayList<HPEntity>(souradky),"EntityHexapaper");
 		}		
 	};
+	@PacketReceiveAnnotation(header = "EntChangeTag")
 	PacketReceiveListener EntChangeName=new PacketReceiveListener(){
 		@Override
 		public void packetReceive(MessagePacket p) {
@@ -96,13 +99,7 @@ public class ServerListeners {
 			server.rebroadcast(p.getNick(), p.getObject(),"EntChangeTag");
 		}		
 	};
-	PacketReceiveListener DBa=new PacketReceiveListener(){
-		public void packetReceive(MessagePacket p) {
-			System.out.println("Artefacty přijaty"); 
-			DBArtefact=(ArrayList<HPEntity>) p.getObject();
-			server.rebroadcast(p.getNick(), DBArtefact,"DBartefact");
-		}		
-	};
+	@PacketReceiveAnnotation(header = "insertEnt")
 	PacketReceiveListener insertEnt=new PacketReceiveListener(){
 		@Override
 		public void packetReceive(MessagePacket p) {
@@ -114,6 +111,7 @@ public class ServerListeners {
 			}
 		}		
 	};
+	@PacketReceiveAnnotation(header = "paintEnt")
 	PacketReceiveListener paintEnt=new PacketReceiveListener(){
 		@Override
 		public void packetReceive(MessagePacket p) {
@@ -124,13 +122,7 @@ public class ServerListeners {
 			}
 		}		
 	};
-	PacketReceiveListener DBc=new PacketReceiveListener(){
-		public void packetReceive(MessagePacket p) {
-			System.out.println("Postavy přijaty"); 
-			DBCharacter=(ArrayList<HPEntity>) p.getObject();
-			server.rebroadcast(p.getNick(), DBCharacter,"DBcharacter");
-		}		
-	};
+	@PacketReceiveAnnotation(header = "rotateEnt")
 	PacketReceiveListener rotateEnt=new PacketReceiveListener(){
 
 		@Override
@@ -147,18 +139,24 @@ public class ServerListeners {
 		}
 		
 	};
+	@PacketReceiveAnnotation(header = "dice")
 	PacketReceiveListener dice=new PacketReceiveListener(){
 		@Override
 		public void packetReceive(MessagePacket p) {
 			Integer roll=((Integer[]) p.getObject())[0];
 			Integer range=((Integer[]) p.getObject())[1];
 			Integer modifier=((Integer[]) p.getObject())[2];
+			Map<String,String> map=new HashMap<String,String>();
+			map.put("name",p.getNick());
+			map.put("roll",String.valueOf(roll+modifier));
+			map.put("range",String.valueOf(range));
+			map.put("modifier",String.valueOf(modifier));
 			String Message;
 			if(modifier==0){
-				Message=p.getNick()+" si hodil "+roll+" na "+range+" kostce.";
+				Message=storage.str.sub("DiceRolled", map);
 			}
 			else{
-				Message=p.getNick()+" si hodil "+(roll+modifier)+" na "+range+" kostce se základním hodem "+roll;
+				Message=storage.str.sub("DiceRolledModifier", map);
 			}
 			System.out.println(Message);
 			if(PJ!=null){
@@ -166,11 +164,15 @@ public class ServerListeners {
 			}
 		}		
 	};
+	@PacketReceiveAnnotation(header = "version")
 	PacketReceiveListener versionReceive=new PacketReceiveListener(){
 		@Override
 		public void packetReceive(MessagePacket p) {
+			Map<String,String> map=new HashMap<String,String>();
+			map.put("name",p.getNick());
+			map.put("version",(String) p.getObject());
 			versions.put(p.getNick(),(String) p.getObject());
-			System.out.println(p.getNick()+" má verzi "+(String) p.getObject());
+			System.out.println(storage.str.sub("ClientVersion", map));
 			if(PJ!=null){
 				//PJ.send(versions,"versionUpdate");
 			}
@@ -186,66 +188,72 @@ public class ServerListeners {
 				}	
 				PJ=c;
 				c.send(0, "requestPJInfo");
-				System.out.println("Hráči " +c.getNick()+" byl nastaven PJ");
+				System.out.println(storage.str.sub("ClientsetPJ","name",c.getNick()));
 				return;
 			}
-			System.out.println("Player "+args.get(0)+" is not connected");
+			System.out.println(storage.str.sub("ClientNoPlayer","name",c.getNick()));
 		}		
 	};
 	private CommandListener isPJ=new CommandListener(){
 		public void CommandExecuted(List<String> args) {
 			if(PJ!=null){
-				System.out.println("PJ is "+PJ.getNick());
+				System.out.println(storage.str.sub("ServerPJ","name",args.get(0)));
 				return;
 			}
-			System.out.println("PJ is not defined");		
+			System.out.println(storage.str.get("ServerNoPJ"));		
 		}	
 	};
+
 	private CommandListener kick=new CommandListener(){
 		@Override
 		public void CommandExecuted(List<String> args) {
 			ClientInfo client = server.getNetworkStorage().getClientByName(args.get(0));			
-			String message=(String) args.get(1);
-			client.kick(message);	
+			if(client!=null){
+				String message=(String) args.get(1);
+				client.kick(message);
+			}
 		}		
 	};
 	private CommandListener dicecmd=new CommandListener(){
 		@Override
 		public void CommandExecuted(List<String> args) {
+			Map<String,String> map=new HashMap<String,String>();
+			map.put("name",args.get(2));
+			map.put("roll",args.get(0));
+			map.put("range", args.get(1));
 			Integer[] o = {(Integer) Integer.valueOf(args.get(0)),(Integer) Integer.valueOf(args.get(1)),0};
 			if(PJ!=null){
-				System.out.println("(Příkaz)"+args.get(2)+" si hodil "+args.get(0)+" na "+args.get(1)+" kostce.");
+				System.out.println("(Příkaz)"+storage.str.sub("DiceRolled", map));
 				PJ.send(args.get(2), o, "dice");
 				return;
 			}
-			System.out.println("PJ is not selected");
+			System.out.println(storage.str.get("ServerNoPJ"));
 		}		
 	};
 	private CommandListener version=new CommandListener(){
 		@Override
 		public void CommandExecuted(List<String> args) {
 			ClientInfo c=server.getNetworkStorage().getClientByName(args.get(0));
-			c.send(0, "version");
+			if(c!=null){
+				c.send(0, "version");
+			}
 		}		
 	};
+	private String getErrorMessage(Exception e){
+		if(e.getMessage()!=null){
+			return e.getMessage();
+		}
+		else{
+			return "Exit";
+		}
+	}
 	public ServerListeners(CommandServer s){
 		this.server=s;
-		s.addClientConnectListener(connect);
-		s.addClientDisconnectListener(disconnect);
-		s.addReceiveListener(EntityHexapaper, "EntityHexapaper");
-		s.addReceiveListener(RadiusHexapaper, "RadiusHexapaper");
-		s.addReceiveListener(DBa, "DBartefact");
-		s.addReceiveListener(DBc, "DBcharacter");
-		s.addReceiveListener(rotateEnt, "rotateEnt");
-		s.addReceiveListener(insertEnt, "insertEnt");
-		s.addReceiveListener(paintEnt,"paintEnt");
-		s.addReceiveListener(EntChangeName, "EntChangeTag");
-		s.addReceiveListener(dice, "dice");
-		s.addReceiveListener(versionReceive,"version");
-		s.registerCommand("pj", 1, "pj <Name>", "Check if player is PJ", isPJ);
-		s.registerCommand("setpj", 1, "setpj <Name>", "Set PJ", setPJ);
-		s.registerCommand("kick", 2, "Kick <Name> <Reason>", "Kick player", kick);
-		s.registerCommand("dice", 3, "Dice <Roll> <Side> <Player>", "Hodí za hráče", dicecmd);
-		s.registerCommand("version", 1, "Version <Name>", "Požádá hráče o verzi clienta", version);
+		server.registerClass(this);
+		s.registerCommand("pj", 1, storage.str.get("pjUsage"), storage.str.get("pjHelp"), isPJ);
+		s.registerCommand("setpj", 1, storage.str.get("setpjUsage"), storage.str.get("setpjHelp"), setPJ);
+		s.registerCommand("kick", 2, storage.str.get("kickUsage"), storage.str.get("kickHelp"), kick);
+		s.registerCommand("dice", 3, storage.str.get("diceUsage"), storage.str.get("diceHelp"), dicecmd);
+		s.registerCommand("version", 1, storage.str.get("versionUsage"), storage.str.get("versionHelp"), version);
 	}
 }

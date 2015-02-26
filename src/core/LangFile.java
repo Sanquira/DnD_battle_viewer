@@ -3,17 +3,13 @@ package core;
 import hexapaper.file.Wrappers.LangWrapper;
 import hexapaper.source.HPSklad;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,14 +31,31 @@ public class LangFile {
 		strings.put(key, value);
 	}
 
-	public String get(String key) {
+	public final String get(String key) {
 		if (strings.containsKey(key)) {
 			return strings.get(key);
 		}
-		// System.out.println(key);
 		return getVariable(key);
 	}
-
+	
+	public String sub(String key,Map<String,String> map){
+		String str=get(key);
+		for(Entry<String, String> entry:map.entrySet()){
+			String subKey=entry.getKey();
+			String sub=entry.getValue();
+			if(sub!=null){
+				String replaced=str.replace("%"+subKey, sub);
+				if(replaced!=null){
+					str=replaced;
+				}
+			}
+		}
+		return str;		
+	}
+	public String sub(String key,String name,String value){
+		String str=get(key);
+		return str.replace("%"+name, value);
+	}
 	private String getVariable(String key) {
 		String value = "";
 		for (Field field : cls.getFields()) {
@@ -54,6 +67,7 @@ public class LangFile {
 				}
 			}
 		}
+		if(value.equals("")){ System.out.println(key+" není známý řetězec");}
 		return value;
 	}
 

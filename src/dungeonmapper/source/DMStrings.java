@@ -7,8 +7,17 @@ public class DMStrings {
 	public static String ztrataDat = "Ztráta dat";
 	public static String zpravaZtrataDat = "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVěechny neuložené změny budou ztraceny. \nChcete opravdu skončit?";
 	public static String gameMenu = "Hra";
+	public static String saveGame = "Uložit hru";
+	public static String loadGame = "Načíst hru";
 	public static String endGame = "Konec";
+	public static String newGame = "Nová hra";
 
+	public static String CreatePaperFrame = "Tvorba plochy";
+	public static String CreatePaperButton = "Vytvor plochu";
+	public static String Size = "Velikost políčka";
+	public static String Rows = "Počet řádků";
+	public static String Columns = "Počet sloupců";
+	
 	public static String DMm_ext = "map";
 	public static String DMm_text = "Mapa dungeonu";
 

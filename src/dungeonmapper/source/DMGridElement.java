@@ -5,6 +5,7 @@ import java.awt.Point;
 public class DMGridElement {
 
 	int X = -1, Y = -1;
+	public int pos;
 	DMMapTypesEnum type = DMMapTypesEnum.W;
 	int meta = -1;
 
@@ -12,7 +13,7 @@ public class DMGridElement {
 		return X;
 	}
 
-	public void setX(int x) {
+	public void setX(Integer x) {
 		X = x;
 	}
 

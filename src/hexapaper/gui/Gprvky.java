@@ -15,8 +15,8 @@ public class Gprvky {
 	public BPolygon emptyHexagon(Location loc) {
 		Polygon sprite = new Polygon();
 		for (int i = 0; i < 6; i++) {
-			sprite.addPoint((int) Math.round(loc.getX() + Math.cos(Math.toRadians(60 * i)) * sk.RADIUS),
-					(int) Math.round(loc.getY() + Math.sin(Math.toRadians(60 * i)) * sk.RADIUS));
+			sprite.addPoint((int) Math.round(loc.getX() + Math.cos(Math.toRadians(60 * i)) * sk.c.RADIUS),
+					(int) Math.round(loc.getY() + Math.sin(Math.toRadians(60 * i)) * sk.c.RADIUS));
 		}
 
 		return new BPolygon(sprite);
@@ -26,9 +26,9 @@ public class Gprvky {
 		ArrayList<BPolygon> sprite = new ArrayList<BPolygon>();
 		Polygon poly = new Polygon();
 		int cislo = loc.getDir() * 60;
-		poly.addPoint(loc.getX() + pol2kar(-60 + cislo, sk.RADIUS, 0), loc.getY() + pol2kar(-60 + cislo, sk.RADIUS, 1));
-		poly.addPoint(loc.getX() + pol2kar(-120 + cislo, sk.RADIUS, 0), loc.getY() + pol2kar(-120 + cislo, sk.RADIUS, 1));
-		poly.addPoint(loc.getX() + pol2kar(-90 + cislo, sk.RADIUS / 2, 0), loc.getY() + pol2kar(-90 + cislo, sk.RADIUS / 2, 1));
+		poly.addPoint(loc.getX() + pol2kar(-60 + cislo, sk.c.RADIUS, 0), loc.getY() + pol2kar(-60 + cislo, sk.c.RADIUS, 1));
+		poly.addPoint(loc.getX() + pol2kar(-120 + cislo, sk.c.RADIUS, 0), loc.getY() + pol2kar(-120 + cislo, sk.c.RADIUS, 1));
+		poly.addPoint(loc.getX() + pol2kar(-90 + cislo, sk.c.RADIUS / 2, 0), loc.getY() + pol2kar(-90 + cislo, sk.c.RADIUS / 2, 1));
 		sprite.add(new BPolygon(poly, true));
 		sprite.add(emptyHexagon(loc));
 		return sprite;
@@ -42,7 +42,7 @@ public class Gprvky {
 		ArrayList<BPolygon> arr = new ArrayList<BPolygon>();
 		arr.add(emptyHexagon(loc));
 		Polygon sprite = new Polygon();
-		double newRadius = sk.RADIUS * 0.85;
+		double newRadius = sk.c.RADIUS * 0.85;
 		for (int i = 0; i < 6; i++) {
 			sprite.addPoint((int) Math.round(loc.getX() + Math.cos(Math.toRadians(60 * i)) * newRadius),
 					(int) Math.round(loc.getY() + Math.sin(Math.toRadians(60 * i)) * newRadius));

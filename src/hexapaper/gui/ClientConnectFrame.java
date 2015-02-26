@@ -2,6 +2,7 @@ package hexapaper.gui;
 
 import hexapaper.network.server.HexaClient;
 import hexapaper.source.HPSklad;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import core.JNumberTextField;
+import core.file.Config;
 
 
 public class ClientConnectFrame extends JPanel {
@@ -42,13 +44,13 @@ public class ClientConnectFrame extends JPanel {
 	}
 
 	JTextField ipfield;
-	JTextField portfield;
+	JNumberTextField portfield;
 	JTextField namefield;
 
 	protected void init() {
 		JPanel first = new JPanel(new GridLayout(1, 2, 10, 0));
 		JLabel polhex = new JLabel(sk.str.get("ipField"));
-		ipfield = new JTextField("212.96.186.28");
+		ipfield = new JTextField(sk.c.IP);
 		ipfield.addFocusListener(new Listener());
 		first.add(polhex);
 		first.add(ipfield);
@@ -56,14 +58,14 @@ public class ClientConnectFrame extends JPanel {
 		JPanel second = new JPanel(new GridLayout(1, 2, 10, 0));
 		JLabel numRow = new JLabel(sk.str.get("portField"));
 		portfield = new JNumberTextField();
-		portfield.setText("10555");
+		portfield.setNumber(sk.c.port);
 		portfield.addFocusListener(new Listener());
 		second.add(numRow);
 		second.add(portfield);
 
 		JPanel third = new JPanel(new GridLayout(1, 2, 10, 0));
 		JLabel numCol = new JLabel(sk.str.get("nameField"));
-		namefield = new JTextField(sk.lastName);
+		namefield = new JTextField(sk.c.lastName);
 		namefield.addFocusListener(new Listener());
 		third.add(numCol);
 		third.add(namefield);
@@ -84,31 +86,12 @@ public class ClientConnectFrame extends JPanel {
 	}
 
 	private void connect() {
-		if(sk.isConnected){
-			try {
-				sk.client.close();
-				sk.client=null;
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		String ip = ipfield.getText();
-		Integer port = Integer.valueOf(portfield.getText());
-		String nick = namefield.getText();
-		
-		sk.lastName = nick;
-		HexaClient c=new HexaClient();
-		try {
-			c.connect(ip, port, nick);
-			frame.dispose();
-			sk.updateConnect();
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(frame,
-				    sk.str.get("ConnectError")+e.getMessage(),
-				    sk.str.get("IOError"),
-				    JOptionPane.ERROR_MESSAGE);		
-		}
+		sk.c.IP = ipfield.getText();
+		sk.c.port = portfield.getInt();
+		sk.c.lastName = namefield.getText();
+		sk.c.saveConfig();
+		sk.connect();
+		frame.setVisible(false);
 	}
 
 	private class Listener extends FocusAdapter {

@@ -1,8 +1,8 @@
 package dungeonmapper.source;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import core.JNumberTextField;
 import core.LangFile;
 import dungeonmapper.gui.DrawPlane;
 
@@ -22,7 +22,8 @@ public class DMSklad {
 	public String drawShape = "null";
 	public String drawOrder = "null";
 	
-	public JPanel drawPlane;
+	public DrawPlane drawPlane;
+	public JNumberTextField layer;
 	public JScrollPane DPSC;
 
 	private static DMSklad instance = null;

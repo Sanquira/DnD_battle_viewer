@@ -1,5 +1,6 @@
 package network.core.source;
 
+import java.io.IOException;
 import java.net.Socket;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -43,14 +44,14 @@ public class NetworkStorage {
 		}
 		c.setInitialized(true);
 	}
-	public void callDisconnectEvent(Socket s){
+	public void callDisconnectEvent(Socket s,IOException e){
 		for(DisconnectListener l:disconnectListeners){
-			l.Disconnect(s);
+			l.Disconnect(s,e);
 		}
 	}
-	public void callClientDisconnectEvent(ClientInfo c){
+	public void callClientDisconnectEvent(ClientInfo c,IOException e){
 		for(ClientDisconnectListener l:clientdisconnectListeners){
-			l.clientDisconnect(c);
+			l.clientDisconnect(c,e);
 		}
 	}
 	public void callConnectEvent(Socket s){

@@ -1,6 +1,7 @@
-package hexapaper.gui;
+package dungeonmapper.gui;
 
 import hexapaper.source.HPSklad;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import core.JNumberTextField;
+import dungeonmapper.source.DMSklad;
 
 
 public class NewPaperFrame extends JPanel {
@@ -23,16 +25,16 @@ public class NewPaperFrame extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	HPSklad sk = HPSklad.getInstance();
+	DMSklad sk = DMSklad.getInstance();
 	JFrame frame;
 
 	public NewPaperFrame() {
-		frame = new JFrame(sk.str.get("vytvorPaper"));
+		frame = new JFrame(sk.str.get("CreatePaperFrame"));
 		frame.setSize(300, 200);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setResizable(false);
 		setLayout(new GridLayout(4, 1, 0, 10));
-		setBorder(new TitledBorder(sk.str.get("vytvorPaper")));
+		setBorder(new TitledBorder(sk.str.get("CreatePaperFrame")));
 		init();
 		frame.add(this);
 		frame.setVisible(true);
@@ -44,36 +46,36 @@ public class NewPaperFrame extends JPanel {
 
 	protected void init() {
 		JPanel prvni = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel polhex = new JLabel(sk.str.get("polomerHexu"));
+		JLabel polhex = new JLabel(sk.str.get("Size"));
 		polhexvalue = new JNumberTextField();
-		polhexvalue.setText(String.valueOf(sk.c.RADIUS));
+		polhexvalue.setText("20");
 		polhexvalue.addFocusListener(new Listener());
 		prvni.add(polhex);
 		prvni.add(polhexvalue);
 
 		JPanel druhy = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel numRow = new JLabel(sk.str.get("pocetRadku"));
+		JLabel numRow = new JLabel(sk.str.get("Rows"));
 		numRowValue = new JNumberTextField();
-		numRowValue.setText(String.valueOf(sk.c.gridRa));
+		numRowValue.setText("300");
 		numRowValue.addFocusListener(new Listener());
 		druhy.add(numRow);
 		druhy.add(numRowValue);
 
 		JPanel treti = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel numCol = new JLabel(sk.str.get("pocetSloupcu"));
+		JLabel numCol = new JLabel(sk.str.get("Columns"));
 		numColValue = new JNumberTextField();
-		numColValue.setText(String.valueOf(sk.c.gridSl));
+		numColValue.setText("300");
 		numColValue.addFocusListener(new Listener());
 		treti.add(numCol);
 		treti.add(numColValue);
 
-		JButton hotovo = new JButton(sk.str.get("vytvorPaper"));
+		JButton hotovo = new JButton(sk.str.get("CreatePaperButton"));
 		hotovo.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent paramActionEvent) {
 				vytvorHexu();
-				sk.odblokujListenery();
+				
 			}
 		});
 
@@ -84,18 +86,11 @@ public class NewPaperFrame extends JPanel {
 	}
 
 	private void vytvorHexu() {
-		sk.c.RADIUS = Integer.valueOf(polhexvalue.getText());
-		sk.c.gridRa = Integer.valueOf(numRowValue.getText());
-		sk.c.gridSl = Integer.valueOf(numColValue.getText());
+		sk.CSIZE = Integer.valueOf(polhexvalue.getText());
+		sk.ROWS = Integer.valueOf(numRowValue.getText());
+		sk.COLS = Integer.valueOf(numColValue.getText());
 		frame.dispose();
-		sk.c.saveConfig();
-		sk.hraciPlocha.init(sk.c.gridSl,sk.c.gridRa,sk.c.RADIUS);
-		sk.hraciPlocha.revalidate();
-		sk.hraciPlocha.repaint();
-		if(sk.isConnected&&sk.isPJ){
-			sk.client.radiusHexapaper();
-			sk.client.updateHexapaper();	
-		}	
+		sk.drawPlane.init();
 	}
 
 	private class Listener extends FocusAdapter {

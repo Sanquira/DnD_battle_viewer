@@ -114,7 +114,9 @@ public class ExportOneFrame extends JPanel {
 					db.Version=sk.FILEVERSION;
 					db.addEntity(beExported, null);
 					try {
-						fh.write(db);
+						if(fh!=null){
+							fh.write(db);
+						}
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

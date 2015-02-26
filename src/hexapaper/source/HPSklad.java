@@ -4,6 +4,8 @@ import hexapaper.hexapaper;
 import hexapaper.Listeners.HPListenery;
 import hexapaper.entity.HPEntity;
 import hexapaper.file.Wrappers;
+import hexapaper.file.Wrappers.DatabaseWrapper;
+import hexapaper.file.Wrappers.HexWrapper;
 import hexapaper.gui.ColorPicker;
 import hexapaper.gui.Gprvky;
 import hexapaper.gui.HraciPlocha;
@@ -16,6 +18,7 @@ import java.awt.Component;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
@@ -24,6 +27,8 @@ import javax.swing.JScrollPane;
 import addons.dice.DiceLog;
 import core.LangFile;
 import core.Location;
+import core.file.Config;
+import core.file.FileHandler;
 
 public class HPSklad {
 
@@ -32,13 +37,10 @@ public class HPSklad {
 	public Gprvky prvky;
 	public HraciPlocha hraciPlocha;
 	public HPRightMenu RMenu;
-
-	public int RADIUS = 25;
-	public int gridSl = 0;
-	public int gridRa = 0;
-
+	public Config c = Config.getInstance();
+	
 	public JScrollPane scroll;
-	public Location LocDontCare = new Location(RADIUS, RADIUS, 0);
+	public Location LocDontCare = new Location(c.RADIUS, c.RADIUS, 0);
 	public HPEntity insertedEntity;
 	public JMenu GameMenu;
 	public JMenu ExportMenu;
@@ -69,9 +71,8 @@ public class HPSklad {
 	public HexaClient client;
 	public LangFile str;
 
-	public final String VERSION = "v0.3h";
+	public final String VERSION = "v0.3k";
 	public final String FILEVERSION = "0.2";
-	public String lastName = "Player";
 
 	public void send(Object o, String header, boolean PJ) {
 		try {
@@ -93,7 +94,7 @@ public class HPSklad {
 	public boolean checkVersion(String Version){
 		HPSklad sk=HPSklad.getInstance();
 		if(Version!=null){
-			if(Version==sk.FILEVERSION){
+			if(Version.equals(sk.FILEVERSION)){
 				return true;
 			}
 		}
@@ -126,15 +127,18 @@ public class HPSklad {
 	}
 
 	public void init() {
-		str = new LangFile(HPStrings.class);
-		str.loadLang();
-
+		initLang();
 		hraciPlocha = new HraciPlocha();
 
 		prvky = new Gprvky();
 		RMenu = new HPRightMenu();
 	}
-
+	
+	public void initLang(){
+		str = new LangFile(HPStrings.class);
+		str.loadLang();
+	}
+	
 	public static HPSklad getInstance() {
 		if (instance == null) {
 			instance = new HPSklad();
@@ -159,13 +163,12 @@ public class HPSklad {
 	}
 
 	public void initLoad(ArrayList<HPEntity> souradky) {
-		hraciPlocha = new HraciPlocha();
+		hraciPlocha = new HraciPlocha(c.gridSl,c.gridRa,c.RADIUS);
 		for (int i = 0; i < souradky.size(); i++) {
 			// if (souradky.get(i) instanceof FreeSpace) {
-			// } else {
 			hraciPlocha.insertEntity(i, souradky.get(i), true);
 			// }
-		}
+		}	
 		hexapaper.HPfrm.repaint();
 		HPListenery lis = new HPListenery();
 		hraciPlocha.addMouseListener(lis.new HraciPlochaListener());
@@ -180,8 +183,8 @@ public class HPSklad {
 	}
 
 	public void updatePosition(double x1, double y1) {
-		double r = Math.cos(Math.toRadians(30)) * RADIUS;
-		position.setText(str.get("Posititon") + Math.round(((x1 / RADIUS) - 1) * (2 / 3.) + 1) + "," + Math.round(((y1 / r) - ((y1 / r) + 1) % 2 - 1) / 2));
+		double r = Math.cos(Math.toRadians(30)) * c.RADIUS;
+		position.setText(str.get("Position") + Math.round(((x1 / c.RADIUS) - 1) * (2 / 3.) + 1) + "," + Math.round(((y1 / r) - ((y1 / r) + 1) % 2 - 1) / 2));
 		position.repaint();
 	}
 
@@ -201,7 +204,28 @@ public class HPSklad {
 		connected.setText(str.get("ConnectLabel") + "{" + isConnected + "," + isPJ + "}");
 		colorJMenu();
 	}
-
+	public void connect(){
+		if(client!=null){
+			try {
+				client.disconnect();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			client=null;
+		}
+		client=new HexaClient();
+		try {
+			client.connect(c.IP, c.port, c.lastName);
+			isConnected=true;
+			updateConnect();			
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null,
+				    str.get("ConnectError")+e.getMessage(),
+				    str.get("IOError"),
+				    JOptionPane.ERROR_MESSAGE);		
+		}
+	}
 	public DiceLog getDiceLog() {
 		return PJInfo.getLog();
 	}
@@ -213,7 +237,32 @@ public class HPSklad {
 	public void setStatus(String Message) {
 		statusBar.setText(Message);
 	}
-
+	
+	public void saveArtefacts(FileHandler fh) throws IOException{
+		if(databazeArtefaktu.size()>0 && fh!=null){
+			DatabaseWrapper db = wrappers.new DatabaseWrapper();
+			db.Version=FILEVERSION;
+			db.addEntities(databazeArtefaktu);
+			if(fh!=null){
+				fh.write(db);
+			}
+		}
+	}
+	public void saveCharacters(FileHandler fh) throws IOException{
+		if(databazePostav.size()>0 && fh!=null){
+			DatabaseWrapper db = wrappers.new DatabaseWrapper();
+			db.Version=FILEVERSION;
+			db.addEntities(databazePostav);
+			fh.write(db);
+		}
+	}
+	public void saveMap(FileHandler fh) throws IOException{
+		if(souradky.size()>0 && fh!=null){
+			HexWrapper HWrapper=wrappers.new HexWrapper(c.gridSl,c.RADIUS,c.gridRa,FILEVERSION);
+			HWrapper.addEntities(souradky);
+			fh.write(HWrapper);
+		}
+	}
 	public static class prvekkNN implements Cloneable {
 		private double x1, y1, vzd;
 		private int idx;

@@ -33,6 +33,11 @@ public class Postava extends HPEntity implements Serializable {
 		this.PJ = PJ;
 
 	}
+	
+	public Postava(String name, String tag, Location loc, boolean PJ, ArrayList<PropPair> prop) {
+		this(name,loc,PJ,prop);
+		this.setTag(tag);
+	}
 
 	@Override
 	public void recreateGraphics() {

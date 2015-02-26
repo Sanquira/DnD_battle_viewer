@@ -7,9 +7,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import network.core.interfaces.PacketReceiveListener;
 import network.core.source.NetworkStorage;
 
-public class AbstractNetworkUser {
+public class AbstractNetworkUser extends Thread{
 	NetworkStorage sk=NetworkStorage.getInstance();
 	
+	public AbstractNetworkUser(){
+		super("NetworkThread");
+	}
 	public Map<String, CopyOnWriteArrayList<PacketReceiveListener>> getReceiveListeners(){
 		return sk.receiveListeners;
 	}

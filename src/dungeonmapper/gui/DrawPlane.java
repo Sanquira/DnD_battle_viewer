@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JPanel;
 
@@ -18,7 +19,7 @@ import dungeonmapper.source.DMSklad;
 public class DrawPlane extends JPanel implements MouseMotionListener, MouseListener {
 
 	private DMSklad sk = DMSklad.getInstance();
-	private ArrayList<ArrayList<DMGridElement>> layers = new ArrayList<>();
+	public HashMap<Integer,ArrayList<DMGridElement>> layers = new HashMap<Integer,ArrayList<DMGridElement>>();
 	private int chsnLay = 0;
 	private int[] startCoor = new int[2];
 	private int[] endCoorTmp = new int[2];
@@ -28,13 +29,19 @@ public class DrawPlane extends JPanel implements MouseMotionListener, MouseListe
 
 	public DrawPlane() {
 		setBackground(Color.gray);
-		genDefaultGrid(chsnLay);
-		setPreferredSize(new Dimension(sk.COLS * sk.CSIZE, sk.ROWS * sk.CSIZE));
+		init();
 		addMouseMotionListener(this);
 		addMouseListener(this);
 	}
-
-	private void genDefaultGrid(int lay) {
+	
+	public void init(){
+		layers=new HashMap<Integer,ArrayList<DMGridElement>>();
+		genDefaultGrid(chsnLay);
+		setPreferredSize(new Dimension(sk.COLS * sk.CSIZE, sk.ROWS * sk.CSIZE));
+		revalidate();
+		repaint();
+	}
+	public void genDefaultGrid(int lay) {
 		// sk.COLS = 10;
 		// sk.ROWS = 5;
 		ArrayList<DMGridElement> grid = new ArrayList<>();
@@ -42,12 +49,12 @@ public class DrawPlane extends JPanel implements MouseMotionListener, MouseListe
 		for (int[] is : coor) {
 			grid.add(new DMGridElement(is[0], is[1], "W"));
 		}
-		grid.get(1).setType(DMMapTypesEnum.F);
-		grid.get(2).setType(DMMapTypesEnum.H);
-		grid.get(3).setType(DMMapTypesEnum.s);
-		grid.get(4).setType(DMMapTypesEnum.S);
+		//grid.get(1).setType(DMMapTypesEnum.F);
+		//grid.get(2).setType(DMMapTypesEnum.H);
+		//grid.get(3).setType(DMMapTypesEnum.s);
+		//grid.get(4).setType(DMMapTypesEnum.S);
 
-		layers.add(lay, grid);
+		layers.put(lay, grid);
 
 	}
 
@@ -55,6 +62,9 @@ public class DrawPlane extends JPanel implements MouseMotionListener, MouseListe
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		int[] shapeParam = getShapeParam();
+		if(!layers.containsKey(chsnLay)){
+			genDefaultGrid(chsnLay);
+		}
 		for (DMGridElement gridEl : layers.get(chsnLay)) {
 			if (sk.DPSC.getViewport().getViewRect().contains(gridEl.getPoint())) {
 				g.setColor(setColorInsideShape(gridEl, shapeParam));
@@ -184,6 +194,21 @@ public class DrawPlane extends JPanel implements MouseMotionListener, MouseListe
 
 		}
 
+	}
+
+	public int getChsnLay() {
+		return chsnLay;
+	}
+
+	public void setChsnLay(int chsnLay) {
+		this.chsnLay = chsnLay;
+		revalidate();
+		repaint();
+	}
+	
+	public void addChsnLay(int chsnLay) {
+		sk.layer.setInt(this.chsnLay+chsnLay);
+		setChsnLay(this.chsnLay+chsnLay);
 	}
 
 	private Color setColorInsideShape(DMGridElement gridEl, int[] shapeParam) {

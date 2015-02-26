@@ -31,25 +31,28 @@ public class HraciPlocha extends JPanel {
 	HPEntity cursor = null;
 	int oldIdx = -1;
 
-	int fontSize = (int) Math.round(sk.RADIUS * 0.75);
+	int fontSize = (int) Math.round(sk.c.RADIUS * 0.75);
 
 	public HraciPlocha() {
-		init();
+		init(0,0,0);
+	}
+	public HraciPlocha(int gridSl, int gridRa, int RADIUS){
+		init(gridSl, gridRa, RADIUS);
 	}
 
-	public void init() {
-		setPreferredSize(new Dimension((int) Math.round((Math.round(sk.gridSl / 2.0) * 2 + ((int) sk.gridSl / 2.5) + 2) * sk.RADIUS),
-				(int) Math.round(Math.cos(Math.toRadians(30)) * sk.RADIUS * 2 * (sk.gridRa + 0.5))));
+	public void init(int gridSl, int gridRa, int RADIUS) {
+		setPreferredSize(new Dimension((int) Math.round((Math.round(gridSl / 2.0) * 2 + ((int) gridSl / 2.5) + 2) * RADIUS),
+				(int) Math.round(Math.cos(Math.toRadians(30)) * RADIUS * 2 * (gridRa + 0.5))));
 		setBackground(Color.black);
-		sk.souradky = genGrid(sk.gridSl, sk.gridRa);
+		sk.souradky = genGrid(gridSl, gridRa);
 	}
 
 	private ArrayList<HPEntity> genGrid(int sloupcu, int radku) {
 		ArrayList<HPEntity> grid = new ArrayList<HPEntity>();
-		int[][] souradky = Grids.gridHexa(sloupcu, radku, sk.RADIUS);
+		int[][] souradky = Grids.gridHexa(sloupcu, radku, sk.c.RADIUS);
 		for (int i = 0; i < souradky.length; i++) {
-			souradky[i][0] += sk.RADIUS;
-			souradky[i][1] += Math.round(sk.RADIUS * Math.cos(Math.toRadians(30)));
+			souradky[i][0] += sk.c.RADIUS;
+			souradky[i][1] += Math.round(sk.c.RADIUS * Math.cos(Math.toRadians(30)));
 			grid.add(new FreeSpace(new Location(souradky[i][0], souradky[i][1], 0)));
 		}
 		return grid;
@@ -153,7 +156,7 @@ public class HraciPlocha extends JPanel {
 		if (type == null) {
 			return false;
 		}
-
+		
 		HPEntity ent = sk.souradky.get(idx).clone();
 		if (ent.isColidable || hard) {
 			Location loc = ent.loc;

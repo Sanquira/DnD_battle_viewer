@@ -37,16 +37,17 @@ public class Wrappers {
 	}
 	
 	public class EntityWrapper{
-		public String Type, Name;
+		public String Type, Name, Tag;
 		public Integer Bcg, pos;
 		public Location loc;
 		public ArrayList<PropPair> List;
-		public EntityWrapper(String Type,Integer bcg,Location loc,String name,Integer pos,ArrayList<PropPair> List){
+		public EntityWrapper(String Type, int pos,HPEntity ent, ArrayList<PropPair> List){
 			this.Type=Type;
-			this.Bcg=bcg;
+			this.Bcg=ent.background.getRGB();
 			this.pos=pos;
-			this.Name=name;
-			this.loc=loc;
+			this.Name=ent.getNick();
+			this.Tag = ent.tag;
+			this.loc=ent.loc;
 			this.List=List;
 		}
 	}
@@ -56,21 +57,18 @@ public class Wrappers {
 		public void addEntity(HPEntity e,Integer position){
 			ArrayList<PropPair> List=new ArrayList<PropPair>();
 			String Type="FreeSpace";
-			String Name=null;
 			if(e instanceof Artefact){
 				Type="Artefact";
-				Name=((Artefact) e).getNick();
 				List=((Artefact) e).getParam();
 			}
 			if(e instanceof Postava){
 				Type="Postava";
-				Name=((Postava) e).getNick();
 				List=((Postava) e).getParam();
 			}
 			if(e instanceof Wall){
 				Type="Wall";
 			}
-			Entity.add(new EntityWrapper(Type,e.getBcg().getRGB(),e.loc,Name,position,List));
+			Entity.add(new EntityWrapper(Type,position,e,List));
 		}
 		public void addEntities(ArrayList<HPEntity> coords){
 			for(HPEntity e:coords){
@@ -109,10 +107,10 @@ public class Wrappers {
 		}
 		public void loadEntity(EntityWrapper wrap,HPSklad sk){
 			if(wrap.Type.equals("Artefact")){
-				sk.databazeArtefaktu.add(new Artefact(wrap.Name,wrap.loc,wrap.List).setBcg(new Color(wrap.Bcg)));
+				sk.databazeArtefaktu.add(new Artefact(wrap.Name,wrap.Tag,wrap.loc,wrap.List).setBcg(new Color(wrap.Bcg)));
 			}
 			if(wrap.Type.equals("Postava")){
-				sk.databazePostav.add(new Postava(wrap.Name,wrap.loc,false,wrap.List).setBcg(new Color(wrap.Bcg)));
+				sk.databazePostav.add(new Postava(wrap.Name,wrap.Tag,wrap.loc,false,wrap.List).setBcg(new Color(wrap.Bcg)));
 			}
 		}
 	}

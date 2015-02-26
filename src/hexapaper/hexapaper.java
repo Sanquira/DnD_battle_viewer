@@ -7,6 +7,7 @@ import hexapaper.source.HPSklad;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -16,6 +17,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JPanel;
+
+import core.file.Config;
 
 import java.awt.FlowLayout;
 import java.awt.Dimension;
@@ -48,7 +51,7 @@ public class hexapaper extends JFrame {
 		initializace();
 		setVisible(true);
 		sk.PJInfo=new PJGUI();	
-
+		Config.loadTmp();
 		try {
 			InputStream stream = hexapaper.class.getResourceAsStream( "/icon.png" );
 			BufferedImage image = ImageIO.read( stream );
@@ -154,14 +157,15 @@ public class hexapaper extends JFrame {
 		PJInfo.addActionListener(lis.new PJInfoListener());
 		ExportLang.addActionListener(lis.new ExportLangListener());
 
-		addons.add(kostka);
 		addons.add(PJInfo);
+		addons.add(kostka);
 		addons.add(ExportLang);
 
 		HlavniMenu.add(hraMenu);
 		HlavniMenu.add(upravy);
 		HlavniMenu.add(addons);
 		
+		sk.serverbanned.add(PJInfo);
 		sk.serverbanned.add(novyPaper);
 		sk.serverbanned.add(nactiPaper);
 		sk.serverbanned.add(pridejArt);

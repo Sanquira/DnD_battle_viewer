@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="create_run_jar" name="Create Runnable Jar for Project DnD_battle_viewer">
+<project default="build_all" name="Create Runnable Jar for Project DnD_battle_viewer">
     <!--this file was created by Eclipse Runnable JAR Export Wizard-->
-    <!--ANT 1.7 is required                                        -->
-    <target name="create_run_jar">
-        <jar destfile="C:/Users/Petr/Documents/ServerTest/HexaServer.jar" filesetmanifest="mergewithoutmain">
-            <manifest>
-                <attribute name="Main-Class" value="hexapaper.network.server.HexaServer"/>
-                <attribute name="Class-Path" value="."/>
-            </manifest>
-            <fileset dir="C:/Users/Petr/OneDrive/eclipse/DnD_battle_viewer/bin"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/Petr/OneDrive/eclipse/DnD_battle_viewer/lib/gson-2.3.jar"/>            
-        </jar>
-        <jar destfile="C:/Users/Petr/Documents/ServerTest/HexaClient.jar" filesetmanifest="mergewithoutmain">
+    <!--ANT 1.7 is required                              -->
+    <property name="dest" value="C:/Users/Petr/Documents/ServerTest"/>
+    <property name="path" value="C:/Users/Petr/OneDrive/eclipse/DnD_battle_viewer"/> 
+	<target name="build_all">
+        <jar destfile="${dest}/Hexa.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="mainClass"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
-            <fileset dir="C:/Users/Petr/OneDrive/eclipse/DnD_battle_viewer/bin"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/Petr/OneDrive/eclipse/DnD_battle_viewer/lib/gson-2.3.jar"/>            
+            <fileset dir="${path}/bin"/>
+        	<zipfileset excludes="META-INF/*.SF" src="${path}/lib/args4j-2.0.21.jar"/> 
+            <zipfileset excludes="META-INF/*.SF" src="${path}/lib/gson-2.3.jar"/>            
         </jar>
     </target>
 </project>

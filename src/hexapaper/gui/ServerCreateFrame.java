@@ -26,9 +26,12 @@ public class ServerCreateFrame extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	HPSklad sk = HPSklad.getInstance();
+	HexaServer server;
+	boolean GUI=true;
 	JFrame frame;
 
-	public ServerCreateFrame() {
+	public ServerCreateFrame(HexaServer s) {
+		server=s;
 		frame = new JFrame(sk.str.get("ConnectFrame"));
 		frame.setSize(300, 200);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -39,14 +42,18 @@ public class ServerCreateFrame extends JPanel {
 		frame.getContentPane().add(this);
 		frame.setVisible(true);
 	}
-
+	
+	public ServerCreateFrame(boolean GUI,HexaServer s){
+		this(s);
+		this.GUI=GUI;
+	}
 	JTextField ipfield;
-	JTextField portfield;
+	JNumberTextField portfield;
 
 	protected void init() {
 		JPanel first = new JPanel(new GridLayout(1, 2, 10, 0));
 		JLabel polhex = new JLabel(sk.str.get("ipField"));
-		ipfield = new JTextField("192.168.0.10x");
+		ipfield = new JTextField(sk.c.serverIP);
 		ipfield.addFocusListener(new Listener());
 		first.add(polhex);
 		first.add(ipfield);
@@ -54,7 +61,7 @@ public class ServerCreateFrame extends JPanel {
 		JPanel second = new JPanel(new GridLayout(1, 2, 10, 0));
 		JLabel numRow = new JLabel(sk.str.get("portField"));
 		portfield = new JNumberTextField();
-		portfield.setText("10555");
+		portfield.setInt(sk.c.serverport);
 		portfield.addFocusListener(new Listener());
 		second.add(numRow);
 		second.add(portfield);
@@ -74,17 +81,10 @@ public class ServerCreateFrame extends JPanel {
 	}
 
 	private void connect() {
-		String ip = ipfield.getText();
-		String port = portfield.getText();
-		String[] o ={ip,port};
-		Exception fail=HexaServer.consoleStart(o);
-		if(fail!=null){
-			JOptionPane.showMessageDialog(frame,
-				    sk.str.get("ServerError")+fail.getMessage(),
-				    sk.str.get("ServerIOError"),
-				    JOptionPane.ERROR_MESSAGE);
-			System.exit(ERROR);
-		}
+		sk.c.IP = ipfield.getText();
+		sk.c.port = portfield.getInt();
+		sk.c.saveConfig();
+		server.start();
 		frame.setVisible(false);
 	}
 

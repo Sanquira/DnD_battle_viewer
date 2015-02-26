@@ -19,7 +19,12 @@ public class Artefact extends HPEntity implements Serializable {
 		super(name, loc, false, true, new Gprvky().artefact(loc));
 		this.param = prop;
 	}
-
+	
+	public Artefact(String name, String tag, Location loc, ArrayList<PropPair> prop) {
+		this(name,loc,prop);
+		this.setTag(tag);
+	}
+	
 	@Override
 	public void recreateGraphics() {
 		prvek.clear();

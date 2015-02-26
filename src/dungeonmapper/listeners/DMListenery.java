@@ -4,14 +4,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import core.JNumberTextField;
+import core.file.FileHandler;
 import dungeonmapper.dungeonMapper;
+import dungeonmapper.file.DMWrapper;
+import dungeonmapper.gui.NewPaperFrame;
+import dungeonmapper.source.DMGridElement;
 import dungeonmapper.source.DMSklad;
 
 public class DMListenery {
@@ -97,5 +105,53 @@ public class DMListenery {
 			sk.drawPlane.repaint();
 		}
 
+	}
+	public class SaveGame implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			DMWrapper wrapper=new DMWrapper(sk.COLS,sk.ROWS,sk.CSIZE);
+			wrapper.addEntities(new HashMap<Integer,ArrayList<DMGridElement>>(sk.drawPlane.layers));
+			FileHandler fileHandler=FileHandler.showDialog(sk.str.get("DMm_ext"), sk.str.get("DMm_text"),true);
+			try {
+				if(fileHandler!=null){fileHandler.write(wrapper);}
+				System.out.println("hotovo");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}		
+	}
+	public class LoadGame implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			FileHandler fh=FileHandler.showDialog(sk.str.get("DMm_ext"), sk.str.get("DMm_text"),false);
+			if(fh!=null){
+				fh.load(DMWrapper.class).loadEntities();
+			}
+		}		
+	}
+	public class NewPaper implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			new NewPaperFrame();
+		}		
+	}
+	public class ChangeLayer implements ActionListener {
+		private int change;
+		public ChangeLayer(int change){
+			this.change=change;
+		}
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			sk.drawPlane.addChsnLay(change);			
+		}		
+	}
+	public class SetLayer implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JNumberTextField txt=(JNumberTextField) e.getSource();
+			sk.drawPlane.setChsnLay(txt.getInt());			
+		}		
 	}
 }

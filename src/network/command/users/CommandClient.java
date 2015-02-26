@@ -3,6 +3,7 @@ package network.command.users;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import network.command.annotations.CommandAnnotationChecker;
 import network.command.interfaces.CommandListener;
 import network.command.source.CommandHandler;
 import network.command.source.CommandInfo;
@@ -16,6 +17,9 @@ public class CommandClient extends NetworkClient {
 	}
 	public void registerCommand(String name,int arguments,String usage,String help, CommandListener listener){
 		cmd.cmdlisteners.add(new CommandInfo(name, arguments,usage,help,listener));
+	}
+	public void registerCommand(String name,int min,int max,String usage,String help, CommandListener listener){
+		cmd.cmdlisteners.add(new CommandInfo(name, min,max,usage,help,listener));
 	}
 	public void setDefaultCommand(CommandListener commandListener){
 		cmd.setDefaultCommand(new CommandInfo("default",CommandStorage.UNLIMITED,"","",commandListener));
@@ -32,5 +36,15 @@ public class CommandClient extends NetworkClient {
 	}
 	public void registerInitialcommands(){
 		registerCommand("help", 0, "Help", "Zobrazí všechny dostupné příkazy", cmd.help);
+	}
+	@Override
+	public void registerClass(Object obj){
+		super.registerClass(obj);
+		try {
+			new CommandAnnotationChecker(obj,this).processClass();
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

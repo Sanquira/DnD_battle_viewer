@@ -1,6 +1,8 @@
 package hexapaper.network.server;
 
 import java.io.IOException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 import hexapaper.entity.HPEntity;
 import hexapaper.source.HPSklad;
@@ -9,6 +11,12 @@ import network.command.users.CommandClient;
 public class HexaClient extends CommandClient{
 	private HPSklad storage=HPSklad.getInstance();
 	public HexaClient(){
+		try {
+			getSocket().setKeepAlive(true);
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		new ClientListeners(this,storage);
 	}
 	public void updateDatabase(){
@@ -30,7 +38,7 @@ public class HexaClient extends CommandClient{
 		}
 	}
 	public void radiusHexapaper(){
-		Object[] hexapaper={storage.gridRa,storage.gridSl,storage.RADIUS};
+		Object[] hexapaper={storage.c.gridRa,storage.c.gridSl,storage.c.RADIUS};
 		try {
 			send(hexapaper, "RadiusHexapaper");
 		} catch (IOException e) {
@@ -55,5 +63,9 @@ public class HexaClient extends CommandClient{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public void connect(String ip,int port,String name) throws UnknownHostException, IOException{
+		super.connect(ip, port, name);
+		storage.updateConnect();
 	}
 }
