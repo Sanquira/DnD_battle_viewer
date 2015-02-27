@@ -23,6 +23,7 @@ import core.file.Config;
 import java.awt.FlowLayout;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -53,7 +54,7 @@ public class hexapaper extends JFrame {
 		sk.PJInfo=new PJGUI();	
 		Config.loadTmp();
 		try {
-			InputStream stream = hexapaper.class.getResourceAsStream( "/icon.png" );
+			InputStream stream = hexapaper.class.getResourceAsStream( File.separatorChar+"icon.png" );
 			BufferedImage image = ImageIO.read( stream );
 			setIconImage(image);
 		} catch (IOException e) {

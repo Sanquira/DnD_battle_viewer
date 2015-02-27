@@ -71,7 +71,7 @@ public class HPSklad {
 	public HexaClient client;
 	public LangFile str;
 
-	public final String VERSION = "v0.3k";
+	public final String VERSION = "v0.3l";
 	public final String FILEVERSION = "0.2";
 
 	public void send(Object o, String header, boolean PJ) {

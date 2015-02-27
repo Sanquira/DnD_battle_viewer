@@ -1,7 +1,9 @@
 package hexapaper.network.server;
 
+import hexapaper.entity.FreeSpace;
 import hexapaper.entity.HPEntity;
 import hexapaper.source.HPSklad;
+
 import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,6 +14,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import core.Grids;
+import core.Location;
+import network.command.annotations.CommandAnnotation;
 import network.command.interfaces.CommandListener;
 import network.command.users.CommandServer;
 import network.core.annotations.Annotations.ClientConnectAnnotation;
@@ -38,30 +43,18 @@ public class ServerListeners {
 				Object[] o={gridSl,gridRa,RADIUS};
 				c.send(o, "RadiusHexapaper");
 				c.send(new ArrayList<HPEntity>((CopyOnWriteArrayList<HPEntity>) souradky.clone()), "EntityHexapaper");
+				PJ.send(c.getNick(),versions,"PlayerConnect");
 			}
 			System.out.println(storage.str.sub("ClientConnected","name",c.getNick()));
-			server.rebroadcast(c.getNick(),versions,"PlayerConnect");
+			//server.rebroadcast(c.getNick(),versions,"PlayerConnect");
 		}			
 	};
 	//ClientDisconnectListeners
 	@ClientDisconnectAnnotation
 	ClientDisconnectListener disconnect=new ClientDisconnectListener(){
 		public void clientDisconnect(ClientInfo c,IOException e) {
-			Map<String,String> map=new HashMap<String,String>();
-			map.put("name", c.getNick());
-			map.put("error", getErrorMessage(e));
-			String Message;
-			Message="hráč";
-			if(PJ!=null){
-				if(PJ.equals(c)){
-					Message="PJ";
-					PJ=null;					
-				}
-			}
-			map.put("pj", Message);
-			System.out.println(storage.str.sub("ClientDisconnected",map));
-			server.rebroadcast(c.getNick(),versions,"PlayerDisconnect");
-			
+			System.out.println(getDisconnectMessage(c,e.getMessage()));
+			server.rebroadcast(c.getNick(),versions,"PlayerDisconnect");			
 		}		
 	};
 	//ReceiveListeners
@@ -73,6 +66,7 @@ public class ServerListeners {
 			gridSl=(int) List[0];
 			gridRa=(int) List[1];
 			RADIUS=(int) List[2];
+			souradky = genGrid(gridSl,gridRa,RADIUS);
 			server.rebroadcast(p.getNick(), List,"RadiusHexapaper");
 		}		
 	};
@@ -105,7 +99,8 @@ public class ServerListeners {
 		public void packetReceive(MessagePacket p) {
 			//System.out.println("Test ent!");
 			Object[] table=(Object[]) p.getObject();
-			if((Integer) table[0]<souradky.size()){
+			Integer i = (Integer) table[0];
+			if(i<souradky.size()){
 				souradky.set((Integer) table[0], ((HPEntity) table[1]).clone());
 				server.rebroadcast(p.getNick(), p.getObject(),p.getHeader());
 			}
@@ -191,7 +186,7 @@ public class ServerListeners {
 				System.out.println(storage.str.sub("ClientsetPJ","name",c.getNick()));
 				return;
 			}
-			System.out.println(storage.str.sub("ClientNoPlayer","name",c.getNick()));
+			System.out.println(storage.str.sub("ClientNoPlayer","name",args.get(0)));
 		}		
 	};
 	private CommandListener isPJ=new CommandListener(){
@@ -207,11 +202,11 @@ public class ServerListeners {
 	private CommandListener kick=new CommandListener(){
 		@Override
 		public void CommandExecuted(List<String> args) {
-			ClientInfo client = server.getNetworkStorage().getClientByName(args.get(0));			
-			if(client!=null){
-				String message=(String) args.get(1);
-				client.kick(message);
+			if(server.getNetworkStorage().isConnected(args.get(0))){
+				server.getNetworkStorage().kick(args.get(0), args.get(1));
+				System.out.println(getDisconnectMessage(server.getNetworkStorage().getClientByName(args.get(0)),"Vyhozen"));
 			}
+			//System.out.println("Player is not connected");
 		}		
 	};
 	private CommandListener dicecmd=new CommandListener(){
@@ -239,6 +234,20 @@ public class ServerListeners {
 			}
 		}		
 	};
+	@CommandAnnotation(help = "Zorazí hráče", name = "list", usage = "list", arg = 0)
+	private CommandListener list=new CommandListener(){
+		@Override
+		public void CommandExecuted(List<String> args) {
+			System.out.println("Seznam clientů:");
+			for(ClientInfo ci:server.getNetworkStorage().clients){
+				System.out.println(ci.getNick()+",");
+				if(ci.getNick().equalsIgnoreCase("Sprt")){
+					System.out.println("true");
+				}
+			}
+			//System.out.println(server.getNetworkStorage().getClientByName("Sprt")==null);
+		}		
+	};
 	private String getErrorMessage(Exception e){
 		if(e.getMessage()!=null){
 			return e.getMessage();
@@ -246,6 +255,31 @@ public class ServerListeners {
 		else{
 			return "Exit";
 		}
+	}
+	private CopyOnWriteArrayList<HPEntity> genGrid(int sloupcu, int radku,int radius) {
+		CopyOnWriteArrayList<HPEntity> grid = new CopyOnWriteArrayList<HPEntity>();
+		int[][] souradky = Grids.gridHexa(sloupcu, radku, radius);
+		for (int i = 0; i < souradky.length; i++) {
+			souradky[i][0] += radius;
+			souradky[i][1] += Math.round(radius * Math.cos(Math.toRadians(30)));
+			grid.add(new FreeSpace(new Location(souradky[i][0], souradky[i][1], 0)));
+		}
+		return grid;
+	}
+	private String getDisconnectMessage(ClientInfo c, String message){
+		Map<String,String> map=new HashMap<String,String>();
+		map.put("name", c.getNick());
+		map.put("error", message);
+		String Message;
+		Message="hráč";
+		if(PJ!=null){
+			if(PJ.equals(c)){
+				Message="PJ";
+				PJ=null;					
+			}
+		}
+		map.put("pj", Message);
+		return storage.str.sub("ClientDisconnected",map);
 	}
 	public ServerListeners(CommandServer s){
 		this.server=s;

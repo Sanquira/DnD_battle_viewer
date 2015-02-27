@@ -5,6 +5,9 @@ import hexapaper.source.HPSklad;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -25,6 +28,7 @@ public class DiceLog extends JScrollPane {
 	JTextPane textPane = new JTextPane(document);
 	StyleContext context = new StyleContext();
 	Style style = context.addStyle("test", null);
+	DateFormat dateFormat = new SimpleDateFormat("HH:mm");
 
 	public DiceLog() throws HeadlessException {
 		setPreferredSize(new Dimension(400, 300));

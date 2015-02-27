@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import hexapaper.entity.FreeSpace;
 import hexapaper.entity.HPEntity;
 import hexapaper.source.HPSklad;
 import network.command.users.CommandClient;
@@ -31,7 +32,19 @@ public class HexaClient extends CommandClient{
 	public void updateHexapaper() {
 		//Object[] hexapaper={storage.souradky};
 		try {
-			send(storage.souradky, "EntityHexapaper");
+			for(Integer i=0;i<storage.souradky.size();i++){
+				HPEntity e = storage.souradky.get(i);
+				if(!(e instanceof FreeSpace)){
+					Object[] o = {i,e};
+					send(o,"insertEnt");
+				}
+			}
+//			for(HPEntity e:storage.souradky){
+//				if(!(e instanceof FreeSpace)){
+//					Object[] o = {(Integer) storage.souradky.indexOf(e),e};
+//					send(o,"insertEnt");
+//				}
+//			}
 		} catch (IOException e) {
 			System.out.println("Failed to send Hexapaper");
 			e.printStackTrace();

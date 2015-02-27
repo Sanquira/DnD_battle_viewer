@@ -22,7 +22,7 @@ public class CommandAnnotationChecker {
 	public void processClass() throws IllegalArgumentException, IllegalAccessException{
 		for(Field f:obj.getClass().getDeclaredFields()){
 			f.setAccessible(true);
-			if(f.isAnnotationPresent(CommandAnnotation.class)){
+			if(f.isAnnotationPresent(CommandAnnotation.class) && f.get(obj) instanceof CommandListener){
 				CommandAnnotation ann = f.getAnnotation(CommandAnnotation.class);
 				if(srv!=null){
 					if(ann.arg()>=0){
@@ -31,7 +31,7 @@ public class CommandAnnotationChecker {
 					else{
 						srv.registerCommand(ann.name(), ann.min(), ann.max() , ann.usage(), ann.help(), (CommandListener) f.get(obj));
 					}
-					System.out.println("Zaregistrován listener");
+					//System.out.println("Zaregistrován listener");
 				}
 				else{
 					if(ann.arg()>=0){

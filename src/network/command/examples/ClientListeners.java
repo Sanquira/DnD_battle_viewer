@@ -31,7 +31,7 @@ public class ClientListeners {
 	@DisconnectAnnotation
 	DisconnectListener disconnect=new DisconnectListener(){
 		@Override
-		public void Disconnect(Socket s,IOException e) {
+		public void Disconnect(Socket s, IOException e, String reason, boolean kicked) {
 			System.out.println("Odpojeno od serveru");
 			System.exit(1);
 			

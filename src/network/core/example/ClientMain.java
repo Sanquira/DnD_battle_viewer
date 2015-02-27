@@ -14,6 +14,7 @@ import network.core.users.NetworkClient;
 import network.core.annotations.Annotations.*;
 
 public class ClientMain {
+	static NetworkClient c;
 	@ConnectAnnotation
 	ConnectListener t=new ConnectListener(){
 		@Override
@@ -25,7 +26,7 @@ public class ClientMain {
 	DisconnectListener d=new DisconnectListener(){
 
 		@Override
-		public void Disconnect(Socket s,IOException e) {
+		public void Disconnect(Socket s, IOException e, String reason, boolean kicked) {
 			System.out.println("Odpojeno od serveru");
 			System.exit(1);
 			
@@ -43,7 +44,7 @@ public class ClientMain {
 		
 	};
 	public static void main(String[] args) {
-		NetworkClient c=new NetworkClient();
+		c=new NetworkClient();
 		BufferedReader stdIn = new BufferedReader(
 		    new InputStreamReader(System.in));
 		c.registerClass(new ClientMain());

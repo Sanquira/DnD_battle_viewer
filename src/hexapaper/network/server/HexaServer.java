@@ -29,7 +29,7 @@ public class HexaServer {
 		s=new CommandServer();
 		new ServerListeners(s);
 		try {
-			s.create(storage.c.IP,storage.c.port);
+			s.create(storage.c.serverIP,storage.c.port);
 			if(!isConsole){
 				new ServerGUI(s).setVisible(true);
 			}
@@ -40,6 +40,7 @@ public class HexaServer {
 			  storage.str.get("ServerError")+e.getMessage(),
 			  storage.str.get("ServerIOError"),
 			  JOptionPane.ERROR_MESSAGE);
+			System.exit(0);
 		}
 		
 	}

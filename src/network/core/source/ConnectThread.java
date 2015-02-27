@@ -6,32 +6,35 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ConnectThread implements Runnable{
+public class ConnectThread extends Thread{
 	private ServerSocket server;
 	final private NetworkStorage sk=NetworkStorage.getInstance();
 	private Socket client;
-	private ObjectInputStream IStream;
-	private ObjectOutputStream OStream;
-	private String name;
-	public void registerClient(ObjectInputStream IStream) throws ClassNotFoundException, IOException{
+	public void registerClient(ObjectInputStream IStream, ObjectOutputStream OStream) throws ClassNotFoundException, IOException{
     	MessagePacket connectMessage;
-    	ClientInfo clientInfo;
     	IStream.readObject();
     	connectMessage = (MessagePacket) IStream.readObject();
-		if(!sk.clients.containsKey(connectMessage.getNick())&&checkNick(connectMessage.getNick())){
-	    	name=connectMessage.getNick();
-			clientInfo = new ClientInfo(client.getRemoteSocketAddress().toString(), client.getLocalPort(),connectMessage.getNick() , client,IStream,OStream);
-			sk.clients.put(clientInfo.getNick(),clientInfo);
-			sk.callClientConnectEvent(clientInfo);
-		}
+    	if(!sk.isConnected(connectMessage.getNick())){
+    		ClientInfo clientInfo = new ClientInfo(connectMessage.getNick() , client,IStream,OStream);
+    		if(checkNick(connectMessage.getNick())){
+    			sk.clients.add(clientInfo);
+    			sk.callClientConnectEvent(clientInfo);
+    		}
+    		else{
+    			clientInfo.kick("Unsupported chars");
+    		}
+    	}
 		else{
-			try {
-				OStream.writeObject(new MessagePacket(connectMessage.getNick(),"corekick",0));
-				OStream.close();
-				IStream.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			OStream.writeObject(new MessagePacket(connectMessage.getNick(), "corekick", "Same nick playing"));
+			OStream.flush();
+			if (!client.isInputShutdown()) {
+				client.shutdownInput();
+			}
+			if (!client.isOutputShutdown()) {
+				client.shutdownOutput();
+			}
+			if (!client.isClosed()) {
+				client.close();
 			}
 		}
 	}
@@ -40,10 +43,10 @@ public class ConnectThread implements Runnable{
 		while(true){
 		try {
 			client=server.accept();
-			OStream=new ObjectOutputStream(client.getOutputStream());
-			IStream=new ObjectInputStream(client.getInputStream());
+			ObjectOutputStream OStream = new ObjectOutputStream(client.getOutputStream());
+			ObjectInputStream IStream = new ObjectInputStream(client.getInputStream());
 			OStream.writeObject(null);
-			registerClient(IStream);        
+			registerClient(IStream,OStream);        
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -65,6 +68,8 @@ public class ConnectThread implements Runnable{
 		return true;		
 	}
 	public ConnectThread(ServerSocket server){
+		super("Connect Thread");
 		this.server=server;
+		super.start();
 	}
 }

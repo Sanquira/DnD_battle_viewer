@@ -8,12 +8,17 @@ import java.util.List;
 import network.core.annotations.AnnotationChecker;
 import network.core.interfaces.ClientConnectListener;
 import network.core.interfaces.ClientDisconnectListener;
+import network.core.source.ServerSyncThread;
 import network.core.source.ClientInfo;
 import network.core.source.ConnectThread;
+import network.core.source.NetworkStorage;
 
 public class NetworkServer extends AbstractNetworkUser{
    	static int portNumber = 1055;
+   	private ServerSyncThread check;
+   	private ConnectThread connect;
     static ServerSocket serverSocket=null;
+   
     public NetworkServer(){
     	sk.reset();
     	super.start();
@@ -25,23 +30,21 @@ public class NetworkServer extends AbstractNetworkUser{
 		return sk.clientdisconnectListeners;
 	}
     public void create(int portNumber) throws IOException{
-            serverSocket = new ServerSocket(portNumber);
-            createThread();
+    	serverSocket = new ServerSocket(portNumber);
+    	createThread(sk.defaultserverTimeout);
     }
     public void create(String hostname,int portNumber) throws IOException{
-        serverSocket = new ServerSocket();
-        serverSocket.bind(new InetSocketAddress(hostname,portNumber));
-        createThread();
+    	create(hostname,portNumber,sk.defaultserverTimeout);
     }
     public void create(String hostname,int portNumber,int timeout) throws IOException{
-    	create(hostname,portNumber);
-    	serverSocket.setSoTimeout(timeout);
+        serverSocket = new ServerSocket();
+        serverSocket.bind(new InetSocketAddress(hostname,portNumber));
+        createThread(timeout);
     }
-    public void createThread(){
-        System.out.println("Server zahájen "+serverSocket.getLocalSocketAddress());
-        Thread t=new Thread(new ConnectThread(serverSocket));            
-        t.start();
-        t.setName("ConnectThread");
+    public void createThread(int timeout){
+        System.out.println("Server zahájen "+serverSocket.getLocalSocketAddress()+", verze jádra "+NetworkStorage.version);
+        connect = new ConnectThread(serverSocket);
+        check = new ServerSyncThread(timeout,this);
     }
     public void close() throws IOException {
     	serverSocket.close();
@@ -56,7 +59,7 @@ public class NetworkServer extends AbstractNetworkUser{
 		sk.clientconnectListeners.add(l);
 	}
 	public void broadcast(Object o,String header){
-		for(ClientInfo c:sk.clients.values()){
+		for(ClientInfo c:sk.clients){
 			c.send(o,header);
 		}
 	}

@@ -44,13 +44,17 @@ public class ClientListeners {
 	// Disconnect Listeners
 	@DisconnectAnnotation
 	private DisconnectListener dsc = new DisconnectListener() {
-		public void Disconnect(Socket s,IOException e) {
+		public void Disconnect(Socket s, IOException e, String reason, boolean kicked) {
 			e.printStackTrace();
 			storage.isConnected = false;
 			storage.isPJ = false;
 			storage.updateConnect();
+			String message = storage.str.get("DisconnectMessage");
+			if(kicked){
+				message = storage.str.get("KickMessage");
+			}
 			JOptionPane.showMessageDialog(storage.hraciPlocha,
-					storage.str.get("DisconnectMessage"),
+					message+reason,
 					storage.str.get("DisconnectWindow"),
 					JOptionPane.WARNING_MESSAGE);
 		}
@@ -64,7 +68,7 @@ public class ClientListeners {
 			storage.c.gridRa = (int) paper[0];
 			storage.c.gridSl = (int) paper[1];
 			storage.c.RADIUS = (int) paper[2];
-			storage.hraciPlocha = new HraciPlocha();
+			storage.initLoad(new ArrayList<HPEntity>());
 			storage.setStatus("Rozměry HexaPapaperu přijaty");
 		}
 	};

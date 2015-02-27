@@ -56,7 +56,7 @@ public class PJGUI extends JFrame {
 		for(Entry<String, String> entry:versions.entrySet()){
 			Message+=entry.getKey()+"("+entry.getValue()+")\n";
 		}
-		System.out.println(Message);
+		//System.out.println(Message);
 		textPane.setText(Message);
 	}
 	/**

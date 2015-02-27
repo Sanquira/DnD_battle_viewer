@@ -74,7 +74,7 @@ public class HPStrings {
 	public static String ConnectError = "Nepodařilo se připojit na server z důvodu: ";
 	public static String Position = "Pozice: ";
 	public static String ConnectLabel = "Připojeno: ";
-	public static String DisconnectMessage = "Odpojeno od serveru";
+	public static String DisconnectMessage = "Odpojeno od serveru z duvodu: ";
 	public static String DisconnectWindow = "Odpojeno";
 	public static String KickMessage = "Vyhozen ze serveru z duvodu: ";
 	public static String KickWindow = "Vyhozen ze serveru";

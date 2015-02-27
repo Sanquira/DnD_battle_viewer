@@ -84,27 +84,40 @@ public class Config {
 		}	
 	}
 	public static void loadTmp(){
-		if(new File(getConfigDir()+File.separatorChar+dbcFile).exists()){
-			new FileHandler(getConfigDir()+File.separatorChar+dbcFile).load(DatabaseWrapper.class).loadDatabase();
-		}
-		if(new File(getConfigDir()+File.separatorChar+dbaFile).exists()){
-			new FileHandler(getConfigDir()+File.separatorChar+dbaFile).load(DatabaseWrapper.class).loadDatabase();
-		}
-		if(new File(getConfigDir()+File.separatorChar+mapFile).exists()){
-			System.out.println("Dočasná mapa načtena");
-			HPSklad sk = HPSklad.getInstance();
-			HexWrapper HWrapper=new FileHandler(getConfigDir()+File.separatorChar+mapFile).load(HexWrapper.class);
-			if(HWrapper!=null){
-				sk.c.RADIUS=HWrapper.Radius;
-				sk.c.gridRa=HWrapper.GridRA;
-				sk.c.gridSl=HWrapper.GridSl;
-				sk.initLoad(HWrapper.load());
-				if (sk.isConnected && sk.isPJ) {
-					sk.client.radiusHexapaper();
-					sk.client.updateHexapaper();
+		try {
+			if (new File(getConfigDir() + File.separatorChar + dbcFile)
+					.exists()) {
+				new FileHandler(getConfigDir() + File.separatorChar + dbcFile)
+						.load(DatabaseWrapper.class).loadDatabase();
+			}
+			if (new File(getConfigDir() + File.separatorChar + dbaFile)
+					.exists()) {
+				new FileHandler(getConfigDir() + File.separatorChar + dbaFile)
+						.load(DatabaseWrapper.class).loadDatabase();
+			}
+			if (new File(getConfigDir() + File.separatorChar + mapFile)
+					.exists()) {
+				System.out.println("Dočasná mapa načtena");
+				HPSklad sk = HPSklad.getInstance();
+				HexWrapper HWrapper = new FileHandler(getConfigDir()
+						+ File.separatorChar + mapFile).load(HexWrapper.class);
+				if (HWrapper != null) {
+					sk.c.RADIUS = HWrapper.Radius;
+					sk.c.gridRa = HWrapper.GridRA;
+					sk.c.gridSl = HWrapper.GridSl;
+					sk.initLoad(HWrapper.load());
+					if (sk.isConnected && sk.isPJ) {
+						sk.client.radiusHexapaper();
+						sk.client.updateHexapaper();
+					}
 				}
 			}
+		} catch (NullPointerException e) {
+			new File(getConfigDir() + File.separatorChar + dbcFile).delete();
+			new File(getConfigDir() + File.separatorChar + dbaFile).delete();
+			new File(getConfigDir() + File.separatorChar + mapFile).delete();
 		}
+
 	}
 	public static Config getInstance() {
 //		if (instance == null) {

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import network.core.users.NetworkClient;
 
-public class PacketReceiveHandler implements Runnable{
+public class PacketReceiveHandler extends Thread{
 	private ObjectInputStream input;
 	private NetworkStorage sk=NetworkStorage.getInstance();
 	private String nick;
@@ -19,7 +19,11 @@ public class PacketReceiveHandler implements Runnable{
         	while (end) {
         		o = input.readObject();
         		if(o instanceof MessagePacket){
-        			sk.callReceiveEvent((MessagePacket) o);
+        			MessagePacket packet = (MessagePacket) o;
+        			sk.callReceiveEvent(packet);
+        			if(socket==null){
+        				sk.callReceiveEvent(new MessagePacket(packet.getNick(),"check",null));
+        			}
         		}
         		else{
         			end = false;
@@ -35,12 +39,16 @@ public class PacketReceiveHandler implements Runnable{
 		}
 	}
 	public PacketReceiveHandler(ObjectInputStream input,NetworkClient s){
+		super("PacketReceiveHandler - Main");
 		this.input=input;
-		this.socket=s;		
+		this.socket=s;
+		super.start();
 	}
 	public PacketReceiveHandler(ObjectInputStream input,String nick){
+		super("PacketReceiveHandler - "+nick);
 		this.input=input;
 		this.nick=nick;
+		super.start();
 	}
 	public void disconnect(IOException e){
    		if(socket!=null){
@@ -53,13 +61,7 @@ public class PacketReceiveHandler implements Runnable{
    			sk.callDisconnectEvent(socket.getSocket(),e);
    		}
    		else{
-   			if(sk.clients.containsKey(nick)){
-   				ClientInfo c = null;
-   				c=sk.clients.get(nick);
-				c.remove();
-				sk.clients.remove(c.getNick());
-				sk.callClientDisconnectEvent(c,e);
-   			}	      			
+   			sk.disconnectClient(nick, e);
    		}
 	}
 }

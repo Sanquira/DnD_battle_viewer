@@ -40,7 +40,7 @@ public class CommandServer extends NetworkServer {
 		return cmd;
 	}
 	public void rebroadcast(String sender, Object o,String header){
-		for(ClientInfo c:getNetworkStorage().clients.values()){
+		for(ClientInfo c:getNetworkStorage().clients){
 			if(!c.getNick().equals(sender)){
 				c.send(sender,o,header);
 			}

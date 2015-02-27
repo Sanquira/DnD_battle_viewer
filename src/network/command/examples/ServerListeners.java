@@ -75,7 +75,7 @@ public class ServerListeners {
 	CommandListener list=new CommandListener(){
 		@Override
 		public void CommandExecuted(List<String> args) {	
-			for(ClientInfo c:server.getNetworkStorage().clients.values()){
+			for(ClientInfo c:server.getNetworkStorage().clients){
 				System.out.println(c.getNick()+":"+c.getHostName());
 			}			
 		}			
@@ -96,8 +96,8 @@ public class ServerListeners {
 		public void packetReceive(MessagePacket p){
 			ClientInfo asker=server.getNetworkStorage().getClientByName(p.getNick());
 			List<String> names=new ArrayList<>();
-			for(String client:server.getNetworkStorage().clients.keySet()){
-				names.add(client);
+			for(ClientInfo ci:server.getNetworkStorage().clients){
+				names.add(ci.getNick());
 			}	
 			asker.send(names, "list");
 		}		

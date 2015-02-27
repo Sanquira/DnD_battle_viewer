@@ -17,34 +17,50 @@ public class AnnotationChecker {
 	private NetworkServer srv;
 	private AbstractNetworkUser usr;
 	private NetworkClient cln;
-	public AnnotationChecker(Object obj, NetworkServer server){
-		this.obj = obj;
+
+	public AnnotationChecker(Object obj, NetworkServer server) {
+		this(server, obj);
 		this.srv = server;
-		this.usr = server;
-	}
-	public AnnotationChecker(Object obj, NetworkClient cln){
-		this.obj = obj;
-		this.cln = cln;
-		this.usr = cln;
 	}
 	
-	public void processClass() throws IllegalArgumentException, IllegalAccessException{
-		for(Field f:obj.getClass().getDeclaredFields()){
+	public AnnotationChecker(Object obj, NetworkClient cln) {
+		this(cln, obj);
+		this.cln = cln;
+	}
+	
+	private AnnotationChecker(AbstractNetworkUser cln, Object obj){
+		this.obj = obj;
+		this.usr = cln;
+	}
+
+	public void processClass() throws IllegalArgumentException,
+			IllegalAccessException {
+		for (Field f : obj.getClass().getDeclaredFields()) {
 			f.setAccessible(true);
-			if(f.isAnnotationPresent(Annotations.ClientConnectAnnotation.class)){
+			if (f.isAnnotationPresent(Annotations.ClientConnectAnnotation.class)
+					&& f.get(obj) instanceof ClientConnectListener) {
 				srv.addClientConnectListener((ClientConnectListener) f.get(obj));
 			}
-			if(f.isAnnotationPresent(Annotations.ClientDisconnectAnnotation.class)){
-				srv.addClientDisconnectListener((ClientDisconnectListener) f.get(obj));
+			if (f.isAnnotationPresent(Annotations.ClientDisconnectAnnotation.class)
+					&& f.get(obj) instanceof ClientDisconnectListener) {
+				srv.addClientDisconnectListener((ClientDisconnectListener) f
+						.get(obj));
 			}
-			if(f.isAnnotationPresent(Annotations.ConnectAnnotation.class)){
+			if (f.isAnnotationPresent(Annotations.ConnectAnnotation.class)
+					&& f.get(obj) instanceof ConnectListener) {
 				cln.addConnectListener((ConnectListener) f.get(obj));
 			}
-			if(f.isAnnotationPresent(Annotations.DisconnectAnnotation.class)){
+			if (f.isAnnotationPresent(Annotations.DisconnectAnnotation.class)
+					&& f.get(obj) instanceof DisconnectListener) {
 				cln.addDisconnectListener((DisconnectListener) f.get(obj));
 			}
-			if(f.isAnnotationPresent(Annotations.PacketReceiveAnnotation.class)){
-				usr.addReceiveListener((PacketReceiveListener) f.get(obj), f.getAnnotation(Annotations.PacketReceiveAnnotation.class).header());
+			if (f.isAnnotationPresent(Annotations.PacketReceiveAnnotation.class)
+					&& f.get(obj) instanceof PacketReceiveListener) {
+				usr.addReceiveListener(
+						(PacketReceiveListener) f.get(obj),
+						f.getAnnotation(
+								Annotations.PacketReceiveAnnotation.class)
+								.header());
 			}
 		}
 	}
