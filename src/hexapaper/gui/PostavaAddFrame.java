@@ -3,8 +3,6 @@ package hexapaper.gui;
 import hexapaper.entity.Postava;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.PropPair;
-import hexapaper.source.HPStrings;
-
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -234,7 +232,7 @@ public class PostavaAddFrame extends JPanel {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				JList<PropPair> lsm = (JList) e.getSource();
+				JList<PropPair> lsm = (JList<PropPair>) e.getSource();
 				boolean isAdjusting = e.getValueIsAdjusting();
 				if (!lsm.isSelectionEmpty()) {
 					int minIndex = lsm.getMinSelectionIndex();

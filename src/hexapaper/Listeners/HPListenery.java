@@ -4,7 +4,6 @@ import hexapaper.hexapaper;
 import hexapaper.file.Wrappers.DatabaseWrapper;
 import hexapaper.file.Wrappers.HexWrapper;
 import hexapaper.gui.ArtefactAddFrame;
-import hexapaper.gui.ChangeZoomFrame;
 import hexapaper.gui.ClientConnectFrame;
 import hexapaper.gui.ExportOneFrame;
 import hexapaper.gui.HraciPlocha;
@@ -355,13 +354,6 @@ public class HPListenery {
 			}
 		}		
 	}
-	public class Zoom implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent paramActionEvent) {
-			new ChangeZoomFrame();
-		}
-	}
-
 	public class DiceListener implements ActionListener {
 
 		@Override

@@ -71,18 +71,18 @@ public class HPSklad {
 	public HexaClient client;
 	public LangFile str;
 
-	public final String VERSION = "v0.3l";
-	public final String FILEVERSION = "0.2";
+	public final static String VERSION = "v0.4a";
+	public final static String FILEVERSION = "0.2";
 
 	public void send(Object o, String header, boolean PJ) {
 		try {
 			if (isConnected) {
 				if (PJ && isPJ) {
-					client.send(o, header);
+					client.send((Serializable) o, header);
 					return;
 				}
 				if (!PJ && !isPJ) {
-					client.send(o, header);
+					client.send((Serializable) o, header);
 					return;
 				}
 			}
@@ -94,7 +94,7 @@ public class HPSklad {
 	public boolean checkVersion(String Version){
 		HPSklad sk=HPSklad.getInstance();
 		if(Version!=null){
-			if(Version.equals(sk.FILEVERSION)){
+			if(Version.equals(HPSklad.FILEVERSION)){
 				return true;
 			}
 		}

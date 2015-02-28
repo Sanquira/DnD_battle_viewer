@@ -3,6 +3,7 @@ package network.core.users;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -52,7 +53,8 @@ public class NetworkClient extends AbstractNetworkUser{
     	PacketReceiveThread = new PacketReceiveHandler(i,this);
     	o.writeObject(null);
     	o.writeObject(new MessagePacket(nick,"connect", null));
-    	o.writeObject(null); 
+    	o.writeObject(null);
+    	o.flush();
     	new DefaultListeners(this);
     	ClientSyncThread = new ClientSyncThread(timeout,this);
     	sk.callConnectEvent(socket);
@@ -66,20 +68,19 @@ public class NetworkClient extends AbstractNetworkUser{
     public Socket getSocket(){
     	return socket;
     }
-    public void send(Object ob) throws IOException{
-    	try{
-    		o.writeObject(new MessagePacket(nick, ob));
-    		o.flush();
-    	}
-    	catch(IOException e){
-    		e.printStackTrace();
-    		disconnect();
-    	}
-    }
-    public void send(Object ob,String header) throws IOException{
+//    public void send(Serializable ob) throws IOException{
+//    	try{
+//    		o.writeObject(new MessagePacket(nick, ob));
+//    		o.flush();
+//    	}
+//    	catch(IOException e){
+//    		e.printStackTrace();
+//    		disconnect();
+//    	}
+//    }
+    public void send(Serializable ob,String header) throws IOException{
     	try{
     		if(!socket.isOutputShutdown()){
-    			o.writeObject(new MessagePacket(nick,"check", 1));
     			o.writeObject(new MessagePacket(nick,header, ob));
     			o.flush();
     		}
@@ -92,10 +93,10 @@ public class NetworkClient extends AbstractNetworkUser{
     public void disconnect() throws IOException{
     	if(socket.isConnected()){
     		if(!socket.isInputShutdown()){
-    			socket.shutdownInput();
+    			i.close();
     		}
     		if(!socket.isOutputShutdown()){
-    			socket.shutdownOutput();
+    			o.close();
     		}	
     		if(!socket.isClosed()){
     			socket.close();
@@ -103,7 +104,9 @@ public class NetworkClient extends AbstractNetworkUser{
     		PacketReceiveThread.interrupt();
     	}
     	this.interrupt();
-    	ClientSyncThread.interrupt();
+    	if(ClientSyncThread!=null){
+    		ClientSyncThread.interrupt();
+    	}
     	//socket.close();    	    	
     }
     public void registerClass(Object obj){

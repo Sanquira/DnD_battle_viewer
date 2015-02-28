@@ -7,11 +7,11 @@ import network.command.interfaces.CommandListener;
 import network.command.source.CommandHandler;
 import network.command.source.CommandInfo;
 import network.command.source.CommandStorage;
-import network.core.source.ClientInfo;
 import network.core.users.NetworkServer;
 
 public class CommandServer extends NetworkServer {
 	CommandStorage cmd=CommandStorage.getInstance();
+	private CommandHandler cmdThread;
 	public CommandServer(){
 		cmd.reset();
 	}	
@@ -24,28 +24,26 @@ public class CommandServer extends NetworkServer {
 	public void registerCommand(String name,int min,int max,String usage,String help, CommandListener listener){
 		cmd.cmdlisteners.add(new CommandInfo(name, min,max,usage,help,listener));
 	}
-	public void create(String hostname, int port) throws IOException{
-		super.create(hostname,port);
+	public void create(int timeout,String hostname, int port) throws IOException{
+		super.create(hostname,port,timeout);
 		registerInitialcommands();
-		Thread cmd=new Thread(new CommandHandler());
-		cmd.setName("CommandThread");
-		cmd.start();
+		cmdThread=new CommandHandler();
+	}
+	public void create(String hostname, int port) throws IOException{
+		create(getNetworkStorage().defaultserverTimeout,hostname,port);
+	}
+	public void create(int port, int timeout) throws IOException{
+		super.create(port, timeout);
+		registerInitialcommands();
+		cmdThread=new CommandHandler();
 	}
 	public void create(int port) throws IOException{
-		super.create(port);
-		registerInitialcommands();
-		new Thread(new CommandHandler()).start();
+		create(port,getNetworkStorage().defaultserverTimeout);
 	}
 	public CommandStorage getCommandStorage(){
 		return cmd;
 	}
-	public void rebroadcast(String sender, Object o,String header){
-		for(ClientInfo c:getNetworkStorage().clients){
-			if(!c.getNick().equals(sender)){
-				c.send(sender,o,header);
-			}
-		}
-	}
+
 	public void registerInitialcommands(){
 		registerCommand("help", 0, "Help", "Zobrazí všechny dostupné příkazy", cmd.help);
 	}
@@ -58,5 +56,10 @@ public class CommandServer extends NetworkServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	@Override
+	public void shutdown() throws IOException{
+		super.shutdown();
+		cmdThread.interrupt();
 	}
 }

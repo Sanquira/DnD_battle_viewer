@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class CommandHandler implements Runnable {
+public class CommandHandler extends Thread {
 	private CommandStorage cs=CommandStorage.getInstance();
     BufferedReader stdIn =
             new BufferedReader(
@@ -14,10 +14,13 @@ public class CommandHandler implements Runnable {
 	public void run() {
         String userInput;
 		try {
-			while ((userInput = stdIn.readLine()) != null) {
-				if(!cs.checkCommand(userInput)){
-					unknownCommand(userInput);
-				};
+			while (!interrupted()) {
+				userInput = stdIn.readLine();
+				if (userInput != null) {
+					if (!cs.checkCommand(userInput)) {
+						unknownCommand(userInput);
+					}
+				}
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -32,10 +35,8 @@ public class CommandHandler implements Runnable {
 		}
 		System.out.println(Language.unknownCommand);
 	}
-
-
-
-
-
-	
+	public CommandHandler(){
+		super("CommandHandler");
+		super.start();
+	}
 }

@@ -12,6 +12,7 @@ import network.core.users.NetworkClient;
 
 public class CommandClient extends NetworkClient {
 	CommandStorage cmd=CommandStorage.getInstance();
+	private CommandHandler cmdThread;
 	public CommandClient(){
 		cmd.reset();
 	}
@@ -24,12 +25,15 @@ public class CommandClient extends NetworkClient {
 	public void setDefaultCommand(CommandListener commandListener){
 		cmd.setDefaultCommand(new CommandInfo("default",CommandStorage.UNLIMITED,"","",commandListener));
 	}
-	public void connect(String hostName,int port, String name) throws UnknownHostException, IOException{
-		super.connect(hostName, port, name);
+	@Override
+	public void connect(int timeout, String hostName, int port, String name) throws UnknownHostException, IOException{
+		super.connect(timeout, hostName, port, name);
 		registerInitialcommands();
-		Thread cmd=new Thread(new CommandHandler());
-		cmd.setName("CommandThread");
-		cmd.start();
+		cmdThread=new CommandHandler();
+	}
+	@Override
+	public void connect(String hostName, int port, String name) throws UnknownHostException, IOException{
+		connect(getNetworkStorage().defaultclientTimeout,hostName,port,name);
 	}
 	public CommandStorage getCommandStorage(){
 		return cmd;
@@ -46,5 +50,10 @@ public class CommandClient extends NetworkClient {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	@Override
+	public void disconnect() throws IOException{
+		super.disconnect();
+		cmdThread.interrupt();
 	}
 }

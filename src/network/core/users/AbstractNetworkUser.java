@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import network.core.annotations.AnnotationChecker;
 import network.core.interfaces.PacketReceiveListener;
 import network.core.source.NetworkStorage;
 

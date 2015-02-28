@@ -9,27 +9,26 @@ public class PacketReceiveHandler extends Thread{
 	private NetworkStorage sk=NetworkStorage.getInstance();
 	private String nick;
 	private NetworkClient socket;
-	private boolean end = true;
 	@Override
 	public void run() {
 		try{
-        	Object o;
-        	input.readObject();
+        	MessagePacket packet;
+        	//input.readObject();
         	
-        	while (end) {
-        		o = input.readObject();
-        		if(o instanceof MessagePacket){
-        			MessagePacket packet = (MessagePacket) o;
-        			sk.callReceiveEvent(packet);
-        			if(socket==null){
-        				sk.callReceiveEvent(new MessagePacket(packet.getNick(),"check",null));
-        			}
-        		}
-        		else{
-        			end = false;
-        		}
+        	while (!interrupted()) {
+        		packet = (MessagePacket) input.readObject();
+				if (packet != null) {
+					sk.callReceiveEvent(packet);
+					if (socket == null) {
+						sk.callReceiveEvent(new MessagePacket(packet.getNick(),
+								"clientCheck", null));
+					} else {
+						sk.callReceiveEvent(new MessagePacket(packet.getNick(),
+								"serverCheck", null));
+					}
+				}
         	}
-        	disconnect(new IOException("EOS"));
+        	//disconnect(new IOException("EOS"));
         }
         catch(IOException e){
         	disconnect(e);

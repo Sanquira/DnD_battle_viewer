@@ -101,7 +101,7 @@ public class HPStrings {
 	public static String ServerError = "Nepodařilo se vytvořit server z důvodu: ";
 		
 	//Server
-	public static String ServerVersion = "Verze serveru ";
+	public static String ServerVersion = "Verze serveru %Version, verze jádra %coreVersion";
 	public static String ClientConnected = "Hráč připojen %name";
 	public static String ClientDisconnected = "Odpojen %pj %name z důvodu: %error";
 	public static String PJDisconnected = "Odpojen %pj %name z důvodu: %error";

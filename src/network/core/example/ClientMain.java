@@ -52,7 +52,7 @@ public class ClientMain {
 			c.connect("localhost", 1055, args[0]);
 			String userInput;
 			while ((userInput = stdIn.readLine()) != null) {
-               c.send(userInput);
+               c.send(userInput,"msg");
             }        
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block

@@ -18,7 +18,7 @@ public class NetworkStorage {
 	public int defaultserverTimeout = 5000;
 	public int defaultclientTimeout = 7000;
 	public static String defaultReason = "Server closed";
-	public static String version = "0.4";
+	public static String version = "0.4b";
 	//public ConcurrentMap<String,ClientInfo> clients=new ConcurrentHashMap<String,ClientInfo>();
 	public CopyOnWriteArrayList<ClientInfo> clients=new CopyOnWriteArrayList<>();
 	public ConcurrentMap<String,CopyOnWriteArrayList<PacketReceiveListener>> receiveListeners=new ConcurrentHashMap<String,CopyOnWriteArrayList<PacketReceiveListener>>();

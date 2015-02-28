@@ -40,7 +40,7 @@ public class ConnectThread extends Thread{
 	}
 	@Override
 	public void run() {
-		while(true){
+		while(!interrupted()){
 		try {
 			client=server.accept();
 			ObjectOutputStream OStream = new ObjectOutputStream(client.getOutputStream());
@@ -48,8 +48,7 @@ public class ConnectThread extends Thread{
 			OStream.writeObject(null);
 			registerClient(IStream,OStream);        
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.interrupt();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

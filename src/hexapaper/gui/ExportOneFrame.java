@@ -111,7 +111,7 @@ public class ExportOneFrame extends JPanel {
 				if (beExported != null) {
 					FileHandler fh=FileHandler.showDialog(sk.str.get("Db_ext"), sk.str.get("Db_text"), true);
 					DatabaseWrapper db=sk.wrappers.new DatabaseWrapper();
-					db.Version=sk.FILEVERSION;
+					db.Version=HPSklad.FILEVERSION;
 					db.addEntity(beExported, null);
 					try {
 						if(fh!=null){

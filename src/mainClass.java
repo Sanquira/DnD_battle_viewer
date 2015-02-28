@@ -36,11 +36,24 @@ public class mainClass {
 		ParseArgument(args);
 		System.out.println(Config.getConfigFile());
 		Config.loadConfig();
-		if(ip!=null){Config.getInstance().IP=ip;}
-		if(port!=null){Config.getInstance().port=port;}
-		if(name!=null){Config.getInstance().lastName=name;}
+		Config cfg = Config.getInstance();
 		boolean s=(ip!=null && port!=null);
 		boolean connect=(s && name!=null);
+		if (ip != null) {
+			if (server) {
+				cfg.serverIP = ip;
+			} else {
+				cfg.IP = ip;
+			}
+		}
+		if (port != null) {
+			if (server) {
+				cfg.serverport = port;
+			} else {
+				cfg.port = port;
+			}
+		}
+		if(name!=null){cfg.lastName=name;}
 		if(server){
 			new HexaServer(console,s);
 			return;
@@ -63,7 +76,7 @@ public class mainClass {
 
 	private static void ParseArgument(String[] args) {
 		try {
-			parser.parseArgument(args);
+			parser.parseArgument(removeChars(args));
 		} catch (CmdLineException e) {
 			 System.err.println(e.getMessage());
 			 System.err.println("HexaClient [options...] arguments...");
@@ -71,6 +84,13 @@ public class mainClass {
 			 parser.printUsage(System.err);
 			 System.err.println();
 		}		
+	}
+
+	private static String[] removeChars(String[] args) {
+		for(int i = 0;i<args.length;i++){
+			args[i] = args[i].replaceAll("[^\\x20-\\x7e]", "");
+		}
+		return args;		
 	}
 
 }

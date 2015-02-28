@@ -1,21 +1,18 @@
 package hexapaper.network.server;
 
-import hexapaper.entity.FreeSpace;
 import hexapaper.entity.HPEntity;
 import hexapaper.source.HPSklad;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-import core.Grids;
-import core.Location;
 import network.command.annotations.CommandAnnotation;
 import network.command.interfaces.CommandListener;
 import network.command.users.CommandServer;
@@ -32,9 +29,10 @@ public class ServerListeners {
 	private CommandServer server;
 	private HPSklad storage=HPSklad.getInstance();
 	private int gridSl,gridRa,RADIUS;
-	private CopyOnWriteArrayList<HPEntity> souradky=null;
+	private ConcurrentMap<Integer,HPEntity> entity;
 	private ConcurrentMap<String,String> versions=new ConcurrentHashMap<String,String>();
 	private ClientInfo PJ=null;
+	private String[] allowedVersions={HPSklad.VERSION};
 	//ClientConnectListeners
 	@ClientConnectAnnotation
 	ClientConnectListener connect=new ClientConnectListener(){
@@ -42,19 +40,26 @@ public class ServerListeners {
 			if(PJ!=null){
 				Object[] o={gridSl,gridRa,RADIUS};
 				c.send(o, "RadiusHexapaper");
-				c.send(new ArrayList<HPEntity>((CopyOnWriteArrayList<HPEntity>) souradky.clone()), "EntityHexapaper");
-				PJ.send(c.getNick(),versions,"PlayerConnect");
+				sendEntities(c);
+				//PJ.send(c.getNick(),versions,"PlayerConnect");
 			}
 			System.out.println(storage.str.sub("ClientConnected","name",c.getNick()));
 			//server.rebroadcast(c.getNick(),versions,"PlayerConnect");
+		}
+
+		private void sendEntities(ClientInfo cln) {
+			for(Entry<Integer,HPEntity> entry:entity.entrySet()){
+				Object[] o = {entry.getKey(),entry.getValue()};
+				cln.send(o, "insertEnt");
+			}
 		}			
 	};
 	//ClientDisconnectListeners
 	@ClientDisconnectAnnotation
 	ClientDisconnectListener disconnect=new ClientDisconnectListener(){
 		public void clientDisconnect(ClientInfo c,IOException e) {
-			System.out.println(getDisconnectMessage(c,e.getMessage()));
-			server.rebroadcast(c.getNick(),versions,"PlayerDisconnect");			
+			System.out.println(getDisconnectMessage(c,getErrorMessage(e)));
+			server.rebroadcast(c.getNick(),(Serializable) versions,"PlayerDisconnect");			
 		}		
 	};
 	//ReceiveListeners
@@ -66,31 +71,8 @@ public class ServerListeners {
 			gridSl=(int) List[0];
 			gridRa=(int) List[1];
 			RADIUS=(int) List[2];
-			souradky = genGrid(gridSl,gridRa,RADIUS);
+			entity = new ConcurrentHashMap<Integer,HPEntity>();
 			server.rebroadcast(p.getNick(), List,"RadiusHexapaper");
-		}		
-	};
-	@PacketReceiveAnnotation(header = "EntityHexapaper")
-	PacketReceiveListener EntityHexapaper=new PacketReceiveListener(){
-		public void packetReceive(MessagePacket p) {
-			System.out.println(storage.str.get("EntityReceived")); 
-			souradky=new CopyOnWriteArrayList<HPEntity>((ArrayList<HPEntity>) p.getObject());
-			server.rebroadcast(p.getNick(), new ArrayList<HPEntity>(souradky),"EntityHexapaper");
-		}		
-	};
-	@PacketReceiveAnnotation(header = "EntChangeTag")
-	PacketReceiveListener EntChangeName=new PacketReceiveListener(){
-		@Override
-		public void packetReceive(MessagePacket p) {
-			Object[] table=(Object[]) p.getObject();
-			System.out.println(table[0]+":"+table[1]+":"+table[2]);
-			for(HPEntity ent:souradky){
-				if(ent.loc.getX()==(Integer) table[0]&&ent.loc.getY()==(Integer) table[1]){
-					ent.setTag((String) table[2]);
-					System.out.println("Změnen nick a tag Entity");
-				}
-			}
-			server.rebroadcast(p.getNick(), p.getObject(),"EntChangeTag");
 		}		
 	};
 	@PacketReceiveAnnotation(header = "insertEnt")
@@ -100,10 +82,8 @@ public class ServerListeners {
 			//System.out.println("Test ent!");
 			Object[] table=(Object[]) p.getObject();
 			Integer i = (Integer) table[0];
-			if(i<souradky.size()){
-				souradky.set((Integer) table[0], ((HPEntity) table[1]).clone());
-				server.rebroadcast(p.getNick(), p.getObject(),p.getHeader());
-			}
+			entity.put(i,((HPEntity) table[1]).clone());
+			server.rebroadcast(p);
 		}		
 	};
 	@PacketReceiveAnnotation(header = "paintEnt")
@@ -111,9 +91,11 @@ public class ServerListeners {
 		@Override
 		public void packetReceive(MessagePacket p) {
 			Object[] table=(Object[]) p.getObject();
-			if((Integer) table[0]<souradky.size()){
-				souradky.get((Integer) table[0]).setBcg((Color) table[1]);
-				server.rebroadcast(p.getNick(), p.getObject(),p.getHeader());
+			Integer pos = (Integer) table[0];
+			Color clr = (Color) table[1];
+			if(entity.containsKey(pos)){
+				entity.get(pos).setBcg(clr);
+				server.rebroadcast(p);
 			}
 		}		
 	};
@@ -124,13 +106,14 @@ public class ServerListeners {
 		public void packetReceive(MessagePacket p) {
 			Integer[] table=(Integer[]) p.getObject();
 			//System.out.println(table[0]+":"+table[1]+":"+table[2]);
-			for(HPEntity ent:souradky){
+			System.out.println("rotace");
+			for(HPEntity ent:entity.values()){
 				if(ent.loc.getX()==table[0]&&ent.loc.getY()==table[1]){
 					ent.loc.setDir(table[2]);
 					//System.out.println("Předělána entita");
 				}
 			}
-			server.rebroadcast(p.getNick(), p.getObject(),"rotateEnt");
+			server.rebroadcast(p);
 		}
 		
 	};
@@ -155,7 +138,7 @@ public class ServerListeners {
 			}
 			System.out.println(Message);
 			if(PJ!=null){
-				PJ.send(p.getNick(), p.getObject(), "dice");
+				PJ.send(p);
 			}
 		}		
 	};
@@ -168,6 +151,9 @@ public class ServerListeners {
 			map.put("version",(String) p.getObject());
 			versions.put(p.getNick(),(String) p.getObject());
 			System.out.println(storage.str.sub("ClientVersion", map));
+			if(!checkVersion((String) p.getObject())){
+				server.getNetworkStorage().getClientByName(p.getNick()).kick("Unsupported version");
+			}
 			if(PJ!=null){
 				//PJ.send(versions,"versionUpdate");
 			}
@@ -256,16 +242,6 @@ public class ServerListeners {
 			return "Exit";
 		}
 	}
-	private CopyOnWriteArrayList<HPEntity> genGrid(int sloupcu, int radku,int radius) {
-		CopyOnWriteArrayList<HPEntity> grid = new CopyOnWriteArrayList<HPEntity>();
-		int[][] souradky = Grids.gridHexa(sloupcu, radku, radius);
-		for (int i = 0; i < souradky.length; i++) {
-			souradky[i][0] += radius;
-			souradky[i][1] += Math.round(radius * Math.cos(Math.toRadians(30)));
-			grid.add(new FreeSpace(new Location(souradky[i][0], souradky[i][1], 0)));
-		}
-		return grid;
-	}
 	private String getDisconnectMessage(ClientInfo c, String message){
 		Map<String,String> map=new HashMap<String,String>();
 		map.put("name", c.getNick());
@@ -280,6 +256,14 @@ public class ServerListeners {
 		}
 		map.put("pj", Message);
 		return storage.str.sub("ClientDisconnected",map);
+	}
+	private boolean checkVersion(String version){
+		for(String s:allowedVersions){
+			if(s.equals(version)){
+				return true;
+			}
+		}
+		return false;
 	}
 	public ServerListeners(CommandServer s){
 		this.server=s;

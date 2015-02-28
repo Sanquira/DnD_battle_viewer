@@ -5,10 +5,12 @@ import hexapaper.gui.ServerGUI;
 import hexapaper.source.HPSklad;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
 import network.command.users.CommandServer;
+import network.core.source.NetworkStorage;
 
 public class HexaServer {
 	private static boolean isConsole=false;
@@ -33,7 +35,10 @@ public class HexaServer {
 			if(!isConsole){
 				new ServerGUI(s).setVisible(true);
 			}
-			System.out.println(storage.str.get("ServerVersion")+HPSklad.getInstance().VERSION);
+			HashMap<String,String> map = new HashMap<String,String>();
+			map.put("Version", HPSklad.VERSION);
+			map.put("coreVersion", NetworkStorage.version);
+			System.out.println(storage.str.sub("ServerVersion", map));
 		} catch (NumberFormatException | IOException e) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null,

@@ -42,7 +42,7 @@ public class hexapaper extends JFrame {
 	public hexapaper() {
 		sk.init();
 		HPfrm = this;
-		setTitle("Hexapaper " + sk.VERSION);
+		setTitle("Hexapaper " + HPSklad.VERSION);
 		setSize(800, 600);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 

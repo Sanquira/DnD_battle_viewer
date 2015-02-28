@@ -1,19 +1,16 @@
 package hexapaper.network.server;
 
 import hexapaper.entity.HPEntity;
-import hexapaper.gui.HraciPlocha;
 import hexapaper.source.HPSklad;
 
 import java.awt.Color;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.JOptionPane;
 
-import network.command.interfaces.CommandListener;
 import network.core.annotations.Annotations.ConnectAnnotation;
 import network.core.annotations.Annotations.DisconnectAnnotation;
 import network.core.annotations.Annotations.PacketReceiveAnnotation;
@@ -31,7 +28,7 @@ public class ClientListeners {
 	private ConnectListener cnt = new ConnectListener() {
 		public void Connect(Socket c) {
 			try {
-				hexaClient.send(storage.VERSION, "version");
+				hexaClient.send(HPSklad.VERSION, "version");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -199,7 +196,7 @@ public class ClientListeners {
 		@Override
 		public void packetReceive(MessagePacket p) {
 			try {
-				hexaClient.send(storage.VERSION, "version");
+				hexaClient.send(HPSklad.VERSION, "version");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

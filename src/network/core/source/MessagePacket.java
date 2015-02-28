@@ -1,8 +1,5 @@
 package network.core.source;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class MessagePacket implements Serializable{
@@ -14,23 +11,23 @@ public class MessagePacket implements Serializable{
 	 * 
 	 */
 	private String nick;
-	private Object object;
+	private Serializable object;
 	private String header;
 		
-	public MessagePacket(String nick,Object object){
-		this.nick=nick;
-		this.object=object;
-		this.setHeader("none");
-	}
-	public MessagePacket(String nick,String header,Object object){
+//	public MessagePacket(String nick,Serializable object){
+//		this.nick=nick;
+//		this.object=object;
+//		this.setHeader("none");
+//	}
+	public MessagePacket(String nick,String header,Serializable object){
 		this.nick=nick;
 		this.object=object;
 		this.setHeader(header);
 	}
-	public Object getObject() {
+	public Serializable getObject() {
 		return object;
 	}
-	public void setObject(Object object) {
+	public void setObject(Serializable object) {
 		this.object = object;
 	}
 	public String getNick() {
@@ -39,18 +36,18 @@ public class MessagePacket implements Serializable{
 	public void setNick(String nick) {
 		this.nick = nick;
 	}
-    private void writeObject(
-    	      ObjectOutputStream aOutputStream
-    	    ) throws IOException {
-    	      //perform the default serialization for all non-transient, non-static fields
-    	      aOutputStream.defaultWriteObject();
-      }
-    private void readObject(
-    	     ObjectInputStream aInputStream
-    	   ) throws ClassNotFoundException, IOException {
-    	     //always perform the default de-serialization first
-    	     aInputStream.defaultReadObject();
-    	  }
+//    private void writeObject(
+//    	      ObjectOutputStream aOutputStream
+//    	    ) throws IOException {
+//    	      //perform the default serialization for all non-transient, non-static fields
+//    	      aOutputStream.defaultWriteObject();
+//      }
+//    private void readObject(
+//    	     ObjectInputStream aInputStream
+//    	   ) throws ClassNotFoundException, IOException {
+//    	     //always perform the default de-serialization first
+//    	     aInputStream.defaultReadObject();
+//    	  }
 	public String getHeader() {
 		return header;
 	}

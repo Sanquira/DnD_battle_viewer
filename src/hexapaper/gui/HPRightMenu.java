@@ -38,10 +38,6 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JViewport;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.text.BadLocationException;
-
-import core.DocumentAdapter;
 import core.EditableJLabel;
 import core.ValueChangedListener;
 
@@ -64,6 +60,8 @@ public class HPRightMenu extends JPanel {
 	boolean isPostava = false, isDel = false;
 	ArrayList<PropPair> param = new ArrayList<PropPair>();
 	int position;
+
+	private EditableJLabel tagL;
 
 	public HPRightMenu() {
 		praveMenu();
@@ -350,7 +348,7 @@ public class HPRightMenu extends JPanel {
 //			}
 //		});
 
-		EditableJLabel tagL = new EditableJLabel(vlastnosti.tag);
+		tagL = new EditableJLabel(vlastnosti.tag);
 		tagL.setPreferredSize(new Dimension(35, 35));
 		tagL.addValueChangedListener(new ValueChangedListener(){
 
@@ -362,7 +360,10 @@ public class HPRightMenu extends JPanel {
 				String chtag = value;
 				if (value.length() <= 2) {
 					chtag = value.substring(0, chtag.length());
-
+				}
+				if(value.length()>2){
+					chtag = value.substring(0, 2);
+					tagL.setText(chtag);
 				}
 				vlastnosti.setTag(chtag);
 				updateEnt();
@@ -544,6 +545,7 @@ public class HPRightMenu extends JPanel {
 	}
 
 	public void redrawProperities(prvekkNN prvekkNN) {
+		requestFocusInWindow();
 		if (prvekkNN.getIdx() < sk.souradky.size() && prvekkNN.getIdx() >= 0) {
 			position = prvekkNN.getIdx();
 			HPEntity ent = sk.souradky.get(position);
@@ -563,6 +565,6 @@ public class HPRightMenu extends JPanel {
 		}
 	}
 	public void updateEnt(){
-		sk.souradky.set(position, vlastnosti);
+		sk.hraciPlocha.insertEntity(position, vlastnosti,true);
 	}
 }

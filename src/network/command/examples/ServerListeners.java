@@ -1,6 +1,7 @@
 package network.command.examples;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,7 +100,7 @@ public class ServerListeners {
 			for(ClientInfo ci:server.getNetworkStorage().clients){
 				names.add(ci.getNick());
 			}	
-			asker.send(names, "list");
+			asker.send((Serializable) names, "list");
 		}		
 	};
 	public ServerListeners(CommandServer server){

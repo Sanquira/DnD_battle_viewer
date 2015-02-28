@@ -19,7 +19,6 @@ import core.file.FileHandler;
 public class LangFile {
 
 	private HPSklad sk=HPSklad.getInstance();
-	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	Class cls;
 	private Map<String, String> strings = new HashMap<String, String>();
 
