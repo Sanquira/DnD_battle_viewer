@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import core.LangFile;
 import network.command.annotations.CommandAnnotation;
 import network.command.interfaces.CommandListener;
 import network.command.users.CommandServer;
@@ -30,7 +31,8 @@ public class ServerListeners {
 	private HPSklad storage=HPSklad.getInstance();
 	private int gridSl,gridRa,RADIUS;
 	private ConcurrentMap<Integer,HPEntity> entity;
-	private ConcurrentMap<String,String> versions=new ConcurrentHashMap<String,String>();
+	private ConcurrentMap<String,String> versions = new ConcurrentHashMap<String,String>();
+	private ConcurrentMap<Integer,Color> colors = new ConcurrentHashMap<Integer,Color>();
 	private ClientInfo PJ=null;
 	private String[] allowedVersions={HPSklad.VERSION};
 	//ClientConnectListeners
@@ -41,10 +43,19 @@ public class ServerListeners {
 				Object[] o={gridSl,gridRa,RADIUS};
 				c.send(o, "RadiusHexapaper");
 				sendEntities(c);
+				sendColors(c);
 				//PJ.send(c.getNick(),versions,"PlayerConnect");
 			}
-			System.out.println(storage.str.sub("ClientConnected","name",c.getNick()));
-			//server.rebroadcast(c.getNick(),versions,"PlayerConnect");
+			System.out.println(LangFile.sub(storage.str.ClientConnected,"name",c.getNick()));
+			server.rebroadcast(c.getNick(),(Serializable) versions,"PlayerConnect");
+		}
+
+		private void sendColors(ClientInfo c) {
+			for(Entry<Integer, Color> entry:colors.entrySet()){
+				Object[] o = {entry.getKey(),entry.getValue()};
+				c.send(o, "paintEnt");
+			}
+			
 		}
 
 		private void sendEntities(ClientInfo cln) {
@@ -57,7 +68,7 @@ public class ServerListeners {
 	//ClientDisconnectListeners
 	@ClientDisconnectAnnotation
 	ClientDisconnectListener disconnect=new ClientDisconnectListener(){
-		public void clientDisconnect(ClientInfo c,IOException e) {
+		public void clientDisconnect(ClientInfo c,IOException e, String reason, boolean kicked) {
 			System.out.println(getDisconnectMessage(c,getErrorMessage(e)));
 			server.rebroadcast(c.getNick(),(Serializable) versions,"PlayerDisconnect");			
 		}		
@@ -66,7 +77,7 @@ public class ServerListeners {
 	@PacketReceiveAnnotation(header = "RadiusHexapaper")
 	PacketReceiveListener RadiusHexapaper=new PacketReceiveListener(){
 		public void packetReceive(MessagePacket p) {
-			System.out.println(storage.str.get("RadiusReceived")); 
+			System.out.println(storage.str.RadiusReceived); 
 			Object[] List = (Object[]) p.getObject();
 			gridSl=(int) List[0];
 			gridRa=(int) List[1];
@@ -93,10 +104,8 @@ public class ServerListeners {
 			Object[] table=(Object[]) p.getObject();
 			Integer pos = (Integer) table[0];
 			Color clr = (Color) table[1];
-			if(entity.containsKey(pos)){
-				entity.get(pos).setBcg(clr);
-				server.rebroadcast(p);
-			}
+			colors.put(pos, clr);
+			server.rebroadcast(p);
 		}		
 	};
 	@PacketReceiveAnnotation(header = "rotateEnt")
@@ -131,10 +140,10 @@ public class ServerListeners {
 			map.put("modifier",String.valueOf(modifier));
 			String Message;
 			if(modifier==0){
-				Message=storage.str.sub("DiceRolled", map);
+				Message=LangFile.sub(storage.str.DiceRolled, map);
 			}
 			else{
-				Message=storage.str.sub("DiceRolledModifier", map);
+				Message=LangFile.sub(storage.str.DiceRolledModifier, map);
 			}
 			System.out.println(Message);
 			if(PJ!=null){
@@ -150,7 +159,7 @@ public class ServerListeners {
 			map.put("name",p.getNick());
 			map.put("version",(String) p.getObject());
 			versions.put(p.getNick(),(String) p.getObject());
-			System.out.println(storage.str.sub("ClientVersion", map));
+			System.out.println(LangFile.sub(storage.str.ClientVersion, map));
 			if(!checkVersion((String) p.getObject())){
 				server.getNetworkStorage().getClientByName(p.getNick()).kick("Unsupported version");
 			}
@@ -169,19 +178,20 @@ public class ServerListeners {
 				}	
 				PJ=c;
 				c.send(0, "requestPJInfo");
-				System.out.println(storage.str.sub("ClientsetPJ","name",c.getNick()));
+				c.send((Serializable) versions, "versionUpdate");
+				System.out.println(LangFile.sub(storage.str.ClientsetPJ,"name",c.getNick()));
 				return;
 			}
-			System.out.println(storage.str.sub("ClientNoPlayer","name",args.get(0)));
+			System.out.println(LangFile.sub(storage.str.ClientNoPlayer,"name",args.get(0)));
 		}		
 	};
 	private CommandListener isPJ=new CommandListener(){
 		public void CommandExecuted(List<String> args) {
 			if(PJ!=null){
-				System.out.println(storage.str.sub("ServerPJ","name",args.get(0)));
+				System.out.println(LangFile.sub(storage.str.ServerPJ,"name",args.get(0)));
 				return;
 			}
-			System.out.println(storage.str.get("ServerNoPJ"));		
+			System.out.println(storage.str.ServerNoPJ);		
 		}	
 	};
 
@@ -190,7 +200,6 @@ public class ServerListeners {
 		public void CommandExecuted(List<String> args) {
 			if(server.getNetworkStorage().isConnected(args.get(0))){
 				server.getNetworkStorage().kick(args.get(0), args.get(1));
-				System.out.println(getDisconnectMessage(server.getNetworkStorage().getClientByName(args.get(0)),"Vyhozen"));
 			}
 			//System.out.println("Player is not connected");
 		}		
@@ -204,11 +213,11 @@ public class ServerListeners {
 			map.put("range", args.get(1));
 			Integer[] o = {(Integer) Integer.valueOf(args.get(0)),(Integer) Integer.valueOf(args.get(1)),0};
 			if(PJ!=null){
-				System.out.println("(Příkaz)"+storage.str.sub("DiceRolled", map));
+				System.out.println("(Příkaz)"+LangFile.sub(storage.str.DiceRolled, map));
 				PJ.send(args.get(2), o, "dice");
 				return;
 			}
-			System.out.println(storage.str.get("ServerNoPJ"));
+			System.out.println(storage.str.ServerNoPJ);
 		}		
 	};
 	private CommandListener version=new CommandListener(){
@@ -245,17 +254,22 @@ public class ServerListeners {
 	private String getDisconnectMessage(ClientInfo c, String message){
 		Map<String,String> map=new HashMap<String,String>();
 		map.put("name", c.getNick());
+		String msg = storage.str.ClientDisconnected;
+		if(c.isKicked()){
+			msg = storage.str.ClientKicked;
+			message = c.getReason();
+		}
 		map.put("error", message);
-		String Message;
-		Message="hráč";
+		String Player;
+		Player="hráč";
 		if(PJ!=null){
 			if(PJ.equals(c)){
-				Message="PJ";
+				Player="PJ";
 				PJ=null;					
 			}
 		}
-		map.put("pj", Message);
-		return storage.str.sub("ClientDisconnected",map);
+		map.put("pj", Player);
+		return LangFile.sub(msg,map);
 	}
 	private boolean checkVersion(String version){
 		for(String s:allowedVersions){
@@ -268,10 +282,10 @@ public class ServerListeners {
 	public ServerListeners(CommandServer s){
 		this.server=s;
 		server.registerClass(this);
-		s.registerCommand("pj", 1, storage.str.get("pjUsage"), storage.str.get("pjHelp"), isPJ);
-		s.registerCommand("setpj", 1, storage.str.get("setpjUsage"), storage.str.get("setpjHelp"), setPJ);
-		s.registerCommand("kick", 2, storage.str.get("kickUsage"), storage.str.get("kickHelp"), kick);
-		s.registerCommand("dice", 3, storage.str.get("diceUsage"), storage.str.get("diceHelp"), dicecmd);
-		s.registerCommand("version", 1, storage.str.get("versionUsage"), storage.str.get("versionHelp"), version);
+		s.registerCommand("pj", 1, storage.str.pjUsage, storage.str.pjHelp, isPJ);
+		s.registerCommand("setpj", 1, storage.str.setpjUsage, storage.str.setpjHelp, setPJ);
+		s.registerCommand("kick", 2, storage.str.kickUsage, storage.str.kickHelp, kick);
+		s.registerCommand("dice", 3, storage.str.diceUsage, storage.str.diceHelp, dicecmd);
+		s.registerCommand("version", 1, storage.str.versionUsage, storage.str.versionHelp, version);
 	}
 }

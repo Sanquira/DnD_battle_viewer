@@ -12,6 +12,7 @@ import hexapaper.gui.PostavaAddFrame;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.prvekkNN;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -19,7 +20,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -31,7 +31,6 @@ import javax.swing.event.ChangeListener;
 import network.command.users.CommandClient;
 import addons.dice.Dice;
 import core.kNN;
-import core.file.Config;
 import core.file.FileHandler;
 
 public class HPListenery {
@@ -63,7 +62,7 @@ public class HPListenery {
 			if (sk.isConnected && !sk.isPJ) {
 				return;
 			}
-			FileHandler fileHandler=FileHandler.showDialog(sk.str.get("Hex_ext"), sk.str.get("Hex_text"),false);
+			FileHandler fileHandler=FileHandler.showDialog(sk.str.Hex_ext, sk.str.Hex_text,false);
 			HexWrapper HWrapper=fileHandler.load(HexWrapper.class);
 			if(HWrapper!=null){
 				if(sk.checkVersion(HWrapper.Version)){
@@ -87,7 +86,7 @@ public class HPListenery {
 			if(sk.souradky.size() == 0){
 				return;
 			}
-			FileHandler fileHandler = FileHandler.showDialog(sk.str.get("Hex_ext"), sk.str.get("Hex_text"),true);
+			FileHandler fileHandler = FileHandler.showDialog(sk.str.Hex_ext, sk.str.Hex_text,true);
 			try {
 				sk.saveMap(fileHandler);
 			} catch (IOException e1) {
@@ -175,9 +174,12 @@ public class HPListenery {
 
 	boolean ins = false;
 	boolean ins2 = false;
-
+	
 	public class HraciPlochaListener implements MouseListener, MouseMotionListener {
-
+		
+		private Point startPos = new Point(0,0);
+		private Point endPos = new Point(0,0);
+		private boolean dragging = false;
 		private kNN NN = new kNN();
 
 		@Override
@@ -197,7 +199,12 @@ public class HPListenery {
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
+			ArrayList<prvekkNN> idx = NN.getkNNindexes(e.getX(), e.getY());
 			if (SwingUtilities.isLeftMouseButton(e)) {
+				if (sk.insertingEntity) {
+					HraciPlocha t = (HraciPlocha) e.getComponent();
+					t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
+				}
 				ins2 = true;
 				HraciPlocha t = (HraciPlocha) e.getComponent();
 				t.drawCursor(e.getX(), e.getY());
@@ -214,21 +221,23 @@ public class HPListenery {
 					HraciPlocha t = (HraciPlocha) e.getComponent();
 					t.rotateEntity(idx);
 				}
-				if (e.getButton() == MouseEvent.BUTTON1 && sk.insertingEntity) {
-					HraciPlocha t = (HraciPlocha) e.getComponent();
-					t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
-				}
-				if (e.getButton() == MouseEvent.BUTTON1 && !sk.insertingEntity) {
-					if ((sk.isConnected && sk.isPJ) || !sk.isConnected) {
-						if(sk.colorAdd){
-							sk.souradky.get(idx.get(0).getIdx()).setBcg(sk.color);
-							Object[] o={idx.get(0).getIdx(),sk.color};
-							sk.send(o,"paintEnt",true);
-						}
-						sk.RMenu.redrawProperities(idx.get(0));
-						ins = true;
+				if(SwingUtilities.isLeftMouseButton(e)){
+					if (sk.insertingEntity) {
 						HraciPlocha t = (HraciPlocha) e.getComponent();
-						t.saveEntity(idx.get(0).getIdx());
+						t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
+					}
+					else {
+						if ((sk.isConnected && sk.isPJ) || !sk.isConnected) {
+							if(sk.colorAdd){
+								sk.souradky.get(idx.get(0).getIdx()).setBcg(sk.color);
+								Object[] o={idx.get(0).getIdx(),sk.color};
+								sk.send(o,"paintEnt",true);
+							}
+							sk.RMenu.redrawProperities(idx.get(0));
+							ins = true;
+							HraciPlocha t = (HraciPlocha) e.getComponent();
+							t.saveEntity(idx.get(0).getIdx());
+						}
 					}
 				}
 			}
@@ -261,7 +270,7 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			FileHandler fh=FileHandler.showDialog(sk.str.get("Db_ext"), sk.str.get("Db_text"), true);
+			FileHandler fh=FileHandler.showDialog(sk.str.Db_ext, sk.str.Db_text, true);
 			try {
 				sk.saveArtefacts(fh);
 			} catch (IOException e) {
@@ -283,7 +292,7 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			FileHandler fh=FileHandler.showDialog(sk.str.get("Db_ext"), sk.str.get("Db_text"), true);
+			FileHandler fh=FileHandler.showDialog(sk.str.Db_ext, sk.str.Db_text, true);
 			try {
 				sk.saveCharacters(fh);
 			} catch (IOException e) {
@@ -308,7 +317,7 @@ public class HPListenery {
 			if (sk.isConnected && !sk.isPJ) {
 				return;
 			}
-			FileHandler fh=FileHandler.showDialog(sk.str.get("Db_ext"), sk.str.get("Db_text"), false);
+			FileHandler fh=FileHandler.showDialog(sk.str.Db_ext, sk.str.Db_text, false);
 			if(fh!=null){fh.load(DatabaseWrapper.class).loadDatabase();}
 			//new LoadFile(sk.str.get("desc"), sk.str.get("File_ext"), sk.str.get("Db_ext"));
 			//sk.RMenu.updateDatabase();
@@ -366,7 +375,7 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			sk.str.saveLang();
+			
 		}
 
 	}

@@ -18,10 +18,7 @@ import dungeonmapper.listeners.DMListenery;
 import dungeonmapper.source.DMSklad;
 
 import javax.swing.JButton;
-import javax.swing.JTextField;
-
 import core.JNumberTextField;
-import java.awt.Font;
 
 public class dungeonMapper extends JFrame {
 
@@ -58,22 +55,22 @@ public class dungeonMapper extends JFrame {
 
 	private JMenuBar menu() {
 		JMenuBar MB = new JMenuBar();
-		JMenu hra = new JMenu(sk.str.get("gameMenu"));
+		JMenu hra = new JMenu(sk.str.gameMenu);
 		MB.add(hra);
 
 //		JMenuItem konec = new JMenuItem(sk.str.get("endGame"));
 //		konec.addActionListener(lis.new KonecListener());
 //		MB.add(konec);
 		
-		JMenuItem newPaper = new JMenuItem(sk.str.get("newGame"));
+		JMenuItem newPaper = new JMenuItem(sk.str.newGame);
 		newPaper.addActionListener(lis.new NewPaper());
 		hra.add(newPaper);
 		
-		JMenuItem save = new JMenuItem(sk.str.get("saveGame"));
+		JMenuItem save = new JMenuItem(sk.str.saveGame);
 		save.addActionListener(lis.new SaveGame());
 		hra.add(save);
 		
-		JMenuItem load = new JMenuItem(sk.str.get("loadGame"));
+		JMenuItem load = new JMenuItem(sk.str.loadGame);
 		load.addActionListener(lis.new LoadGame());
 		hra.add(load);
 		

@@ -1,137 +1,166 @@
 package hexapaper.source;
 
+import java.io.File;
+import java.net.URISyntaxException;
+
+import com.google.gson.annotations.Expose;
+
+import core.file.Config;
+import core.file.FileHandler;
+
 public class HPStrings {
 
-	public static String varovani = "Varování­";
-	public static String warningNameIsEmpty = "Hodnota jméno nesmí být prázdná!!!";
-	public static String vytvorPostavu = "Vytvoř postavu";
-	public static String vytvorenePostavy = "Vytvořené postavy";
-	public static String vytvorArtefakt = "Vytvoř artefakt";
-	public static String vytvoreneArtefakty = "Vytvořené artefakty";
-	public static String vytvorPaper = "Vytvoř hexu";
-	public static String ano = "Ano";
-	public static String ne = "Ne";
-	public static String NPC = "NPC";
-	public static String artefakt = "Artefakt";
-	public static String polomerHexu = "Polomšr Hexu";
-	public static String pocetRadku = "Počet řádků";
-	public static String pocetSloupcu = "Počet sloupců";
+	@Expose
+	public static HPStrings instance;
 
-	public static String Hex_ext = "hex";
-	public static String Hex_text = "Hexovy papir";
-	public static String Db_ext = "entd";
-	public static String Db_text = "Database entit";
-	public static String File_ext = "ent";
-	public static String File_text = "Soubory entit";
-	public static String desc = "HexaPaper soubory";
+	public String varovani = "Varování­";
+	public String warningNameIsEmpty = "Hodnota jméno nesmí být prázdná!!!";
+	public String vytvorPostavu = "Vytvoř postavu";
+	public String vytvorenePostavy = "Vytvořené postavy";
+	public String vytvorArtefakt = "Vytvoř artefakt";
+	public String vytvoreneArtefakty = "Vytvořené artefakty";
+	public String vytvorPaper = "Vytvoř hexu";
+	public String Yes = "Ano";
+	public String No = "Ne";
+	public String NPC = "NPC";
+	public String Artefact = "Artefakt";
+	public String Radius = "Poloměr Hexu";
+	public String LineCount = "Počet řádků";
+	public String CollumnCount = "Počet sloupců";
 
-	public static String newPaper = "Nový papír";
-	public static String savePaper = "Ulož papír";
-	public static String loadPaper = "Načti papír";
-	public static String addArt = "Přidej artefakt";
-	public static String addPost = "Přidej postavu";
+	public String Hex_ext = "hex";
+	public String Hex_text = "Hexovy papir";
+	public String Db_ext = "entd";
+	public String Db_text = "Database entit";
+	public String File_ext = "ent";
+	public String File_text = "Soubory entit";
+	public String desc = "HexaPaper soubory";
 
-	public static String ovladaniBitvy = "Ovládání bitvy";
-	public static String vlastnostiObj = "Vlastnosti objektu";
-	public static String showPlayerColor = "Skrýt hráče";
-	public static String showNPCColor = "Skrýt NPC";
-	public static String addWall = "Přidej zeď";
-	public static String addFreeSpace = "Odeber";
+	public String newPaper = "Nový papír";
+	public String savePaper = "Ulož papír";
+	public String loadPaper = "Načti papír";
+	public String addArt = "Přidej artefakt";
+	public String addPost = "Přidej postavu";
 
-	public static String player = "Hráč";
-	public static String LangFileLoaded = "Jazykový soubor načten";
-	public static String name = "Jméno";
-	public static String Tag = "Tag";
-//	public static String race = "Rasa";
-//	public static String health = "Zdraví";
-//	public static String mags = "Magy";
-//	public static String weapon = "Zbraň";
-//	public static String armor = "Armor";
-//	public static String type = "Typ";
-	public static String addPropBut = "Přidej";
-	public static String delPropBut = "Odeber";
+	public String Battlecontrol = "Ovládání bitvy";
+	public String Objproperties = "Vlastnosti objektu";
+	public String showPlayerColor = "Skrýt hráče";
+	public String showNPCColor = "Skrýt NPC";
+	public String addWall = "Přidej zeď";
+	public String addFreeSpace = "Odeber";
 
-	public static String hra = "Hra";
-	public static String upravy = "Úpravy";
-	public static String export = "Export";
-	public static String exportAP = "Export ...";
-	public static String importAP = "Import";
-	public static String exportArtDat = "... databáze artefaktů";
-	public static String exportPostDat = "... databáze postav";
-	public static String exportArtOne = "... jednoho artefaktu";
-	public static String exportPostOne = "... jedné postavy";
-	public static String utility = "Utility";
-	public static String kostka = "Kostka";
-	public static String PJInfo = "PJGUI";
-	public static String ExportLang = "ExportLang";
-		
-	public static String ipField = "IP serveru";
-	public static String portField = "Port serveru";
-	public static String nameField = "Nick";
-	public static String Connect = "Připojit";
-	public static String ConnectFrame = "Připojení k serveru";
-	public static String IOError = "Chyba při připojování";
-	public static String ConnectError = "Nepodařilo se připojit na server z důvodu: ";
-	public static String Position = "Pozice: ";
-	public static String ConnectLabel = "Připojeno: ";
-	public static String DisconnectMessage = "Odpojeno od serveru z duvodu: ";
-	public static String DisconnectWindow = "Odpojeno";
-	public static String KickMessage = "Vyhozen ze serveru z duvodu: ";
-	public static String KickWindow = "Vyhozen ze serveru";
-	public static String Range = "Rozsah";
-	public static String Modifier = "Bonus";	
-	//public static String Player = "Play";
+	public String player = "Hráč";
+	public String LangFileLoaded = "Jazykový soubor načten";
+	public String name = "Jméno";
+	public String Tag = "Tag";
+	public String addPropBut = "Přidej";
+	public String delPropBut = "Odeber";
+
+	public String GameMenu = "Hra";
+	public String EditMenu = "Úpravy";
+	public String export = "Export";
+	public String exportAP = "Export ...";
+	public String importAP = "Import";
+	public String exportArtDat = "... databáze artefaktů";
+	public String exportPostDat = "... databáze postav";
+	public String exportArtOne = "... jednoho artefaktu";
+	public String exportPostOne = "... jedné postavy";
+	public String utility = "Utility";
+	public String Dice = "Kostka";
+	public String PJInfo = "PJGUI";
+	public String ExportLang = "ExportLang";
+
+	public String ipField = "IP serveru";
+	public String portField = "Port serveru";
+	public String nameField = "Nick";
+	public String Connect = "Připojit";
+	public String ConnectFrame = "Připojení k serveru";
+	public String IOError = "Chyba při připojování";
+	public String ConnectError = "Nepodařilo se připojit na server z důvodu: ";
+	public String Position = "Pozice: ";
+	public String ConnectLabel = "Připojeno: ";
+	public String DisconnectMessage = "Odpojeno od serveru z duvodu: ";
+	public String DisconnectWindow = "Odpojeno";
+	public String KickMessage = "Vyhozen ze serveru z duvodu: ";
+	public String KickWindow = "Vyhozen ze serveru";
+	public String Range = "Rozsah";
+	public String Modifier = "Bonus";
+	// public static String Player = "Play";
+
+	// Dialogové překlady
+	public String Close = "Zavřít";
+	public String Confirm = "Ok";
+	public String Reset = "Reset";
+	public String End = "Konec";
+
+	// FileVersionCheck
+	public String OldFileVersionText = "Vybrany soubor je uložen ve starší verzi formátu, chcete se ho přesto pokusit načíst?";
+	public String OldFileVersionYes = "Ano";
+	public String OldFileVersionNo = "Ne";
+	public String OldFileVersionHeader = "Detekována stará verze";
+
+	// CreateServerFrame
+	public String ServerCreate = "Vytvořit";
+	public String ServerCreateFrame = "Vytváření serveru";
+	public String ServerIOError = "Chyba při vytváření";
+	public String ServerError = "Nepodařilo se vytvořit server z důvodu: ";
+
+	// Server
+	public String ServerVersion = "Verze serveru %Version, verze jádra %coreVersion";
+	public String ClientConnected = "Hráč připojen %name";
+	public String ClientDisconnected = "Odpojen %pj %name z důvodu: %error";
+	public String ClientKicked = "Vyhozen %pj %name z důvodu: %error";
+	public String PJDisconnected = "Odpojen %pj %name z důvodu: %error";
+	public String RadiusReceived = "Radius hexapaperu přijat";
+	public String EntityReceived = "Entity Hexapaperu přijaty";
+	public String ArtefactsReceived = "Artefacty přijaty";
+	public String CharactersReceived = "Postavy přijaty";
+	public String DiceRolled = "%name si hodil %roll na %range kostce.";
+	public String DiceRolledModifier = "%name si hodil %modifier na %range kostce se základním hodem %roll";
+	public String ClientVersion = "%name má verzi %version";
+	public String ClientsetPJ = "Hráči %name byl nastaven PJ";
+	public String ClientNoPlayer = "Hráč %name není připojen";
+	public String ServerNoPJ = "PJ není zvolen";
+	public String ServerPJ = "PJ je %name";
+	public String ServerDice = "(Příkaz)%name si hodil %roll na %range kostce.";
+
+	public String DataLoss = "Ztráta dat";
+	public String DataLossMessage = "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVšechny neuložené změny budou ztraceny. \nChcete opravdu skončit?";
+
+	public String diceTitle = "Kostka Log";
+
+	// Commands strings
+	public String pjHelp = "Zkontroluje, zda je hráč PJ";
+	public String pjUsage = "pj <Name>";
+	public String setpjUsage = "setpj <Name>";
+	public String setpjHelp = "Nastaví PJ";
+	public String kickUsage = "Kick <Name> <Reason>";
+	public String kickHelp = "Vykopne hráče ze srveru";
+	public String diceUsage = "Dice <Roll> <Side> <Player>";
+	public String diceHelp = "Hodí za hráče";
+	public String versionUsage = "Version <Name>";
+	public String versionHelp = "Požádá hráče o verzi clienta";
 	
-	//Dialogové překlady
-	public static String Close = "Zavřít";
-	public static String Confirm = "Ok";
-	public static String Reset = "Reset";
-	public static String konec = "Konec";
-	
-	//FileVersionCheck
-	public static String OldFileVersionText = "Vybrany soubor je uložen ve starší verzi formátu, chcete se ho přesto pokusit načíst?";
-	public static String OldFileVersionYes = "Ano";
-	public static String OldFileVersionNo = "Ne";
-	public static String OldFileVersionHeader = "Detekována stará verze";
-	
-	//CreateServerFrame
-	public static String ServerCreate = "Vytvořit";
-	public static String ServerCreateFrame = "Vytváření serveru";
-	public static String ServerIOError = "Chyba při vytváření";
-	public static String ServerError = "Nepodařilo se vytvořit server z důvodu: ";
-		
-	//Server
-	public static String ServerVersion = "Verze serveru %Version, verze jádra %coreVersion";
-	public static String ClientConnected = "Hráč připojen %name";
-	public static String ClientDisconnected = "Odpojen %pj %name z důvodu: %error";
-	public static String PJDisconnected = "Odpojen %pj %name z důvodu: %error";
-	public static String RadiusReceived = "Radius hexapaperu přijat";
-	public static String EntityReceived = "Entity Hexapaperu přijaty";
-	public static String ArtefactsReceived = "Artefacty přijaty";
-	public static String CharactersReceived = "Postavy přijaty";
-	public static String DiceRolled = "%name si hodil %roll na %range kostce.";
-	public static String DiceRolledModifier = "%name si hodil %modifier na %range kostce se základním hodem %roll";
-	public static String ClientVersion = "%name má verzi %version";
-	public static String ClientsetPJ = "Hráči %name byl nastaven PJ";
-	public static String ClientNoPlayer = "Hráč %name není připojen";	
-	public static String ServerNoPJ = "PJ není zvolen";
-	public static String ServerPJ = "PJ je %name";
-	public static String ServerDice = "(Příkaz)%name si hodil %roll na %range kostce.";
-	
-	public static String ztrataDat = "Ztráta dat";
-	public static String zpravaZtrataDat = "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVšechny neuložené změny budou ztraceny. \nChcete opravdu skončit?";
-	
-	public static String diceTitle = "Kostka Log";
-	
-	//Commands strings
-	public static String pjHelp = "Zkontroluje, zda je hráč PJ";
-	public static String pjUsage = "pj <Name>";
-	public static String setpjUsage = "setpj <Name>";
-	public static String setpjHelp = "Nastaví PJ";
-	public static String kickUsage = "Kick <Name> <Reason>";
-	public static String kickHelp = "Vykopne hráče ze srveru";
-	public static String diceUsage = "Dice <Roll> <Side> <Player>";
-	public static String diceHelp = "Hodí za hráče";
-	public static String versionUsage = "Version <Name>";
-	public static String versionHelp = "Požádá hráče o verzi clienta";
+	public static HPStrings getInstance() {
+		if (instance == null) {			
+			try {
+				instance = loadFile();
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return instance;
+	}
+	private static HPStrings loadFile() throws URISyntaxException{
+		File j = new File(Config.getConfigDir() + File.separatorChar + HPStrings.class.getSimpleName() + ".lang.json");
+		if(j.exists()&&!j.isDirectory()){
+			FileHandler fh=new FileHandler(j.getAbsolutePath());
+			return fh.load(HPStrings.class);
+		}
+		return new HPStrings();
+	}
+//	public static void load(){
+//		instance = loadFile();
+//	}
 }

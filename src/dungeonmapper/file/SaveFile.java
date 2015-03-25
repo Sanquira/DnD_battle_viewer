@@ -16,8 +16,8 @@ public class SaveFile {
 
 	DMSklad sk = DMSklad.getInstance();
 
-	private String DMm_ext = sk.str.get("DMm_ext");
-	private String DMm_text = sk.str.get("DMm_text");
+	private String DMm_ext = sk.str.DMm_ext;
+	private String DMm_text = sk.str.DMm_text;
 
 	public SaveFile(ArrayList<DMGridElement> e, int rows, int cols, int size) {
 		//TODO - in progress

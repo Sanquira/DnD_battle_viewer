@@ -3,7 +3,6 @@ package dungeonmapper.source;
 import javax.swing.JScrollPane;
 
 import core.JNumberTextField;
-import core.LangFile;
 import dungeonmapper.gui.DrawPlane;
 
 public class DMSklad {
@@ -13,8 +12,8 @@ public class DMSklad {
 	public int COLS = 600;
 	public int ROWS = 420;
 	public int CSIZE = 20;
-	public String VERSION = "0.1";
-	public LangFile str;
+	public String VERSION = "0.1b";
+	public DMStrings str;
 
 	public String[] drawShapes = { "pen", "rect", "circ" };
 	public String[] drawOrders = { "draw", "erase", "negate", "SU", "SD", "hole" };
@@ -32,8 +31,7 @@ public class DMSklad {
 	}
 
 	public void init() {
-		str = new LangFile(DMStrings.class);
-		str.loadLang();
+		str = DMStrings.getInstance();
 	}
 
 	public static DMSklad getInstance() {

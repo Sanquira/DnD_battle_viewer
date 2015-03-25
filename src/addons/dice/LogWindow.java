@@ -7,8 +7,6 @@ import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
@@ -17,7 +15,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
-public class DiceLog extends JScrollPane {
+public class LogWindow extends JScrollPane {
 
 	/**
 	 * 
@@ -30,7 +28,7 @@ public class DiceLog extends JScrollPane {
 	Style style = context.addStyle("test", null);
 	DateFormat dateFormat = new SimpleDateFormat("HH:mm");
 
-	public DiceLog() throws HeadlessException {
+	public LogWindow() throws HeadlessException {
 		setPreferredSize(new Dimension(400, 300));
 		textPane.setEditable(false);
 		add(textPane);

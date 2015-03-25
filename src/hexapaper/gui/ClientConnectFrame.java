@@ -27,12 +27,12 @@ public class ClientConnectFrame extends JPanel {
 	JFrame frame;
 
 	public ClientConnectFrame() {
-		frame = new JFrame(sk.str.get("ConnectFrame"));
+		frame = new JFrame(sk.str.ConnectFrame);
 		frame.setSize(300, 200);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setResizable(false);
 		setLayout(new GridLayout(4, 1, 0, 10));
-		setBorder(new TitledBorder(sk.str.get("ConnectFrame")));
+		setBorder(new TitledBorder(sk.str.ConnectFrame));
 		init();
 		frame.getContentPane().add(this);
 		frame.setVisible(true);
@@ -44,14 +44,14 @@ public class ClientConnectFrame extends JPanel {
 
 	protected void init() {
 		JPanel first = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel polhex = new JLabel(sk.str.get("ipField"));
+		JLabel polhex = new JLabel(sk.str.ipField);
 		ipfield = new JTextField(sk.c.IP);
 		ipfield.addFocusListener(new Listener());
 		first.add(polhex);
 		first.add(ipfield);
 
 		JPanel second = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel numRow = new JLabel(sk.str.get("portField"));
+		JLabel numRow = new JLabel(sk.str.portField);
 		portfield = new JNumberTextField();
 		portfield.setNumber(sk.c.port);
 		portfield.addFocusListener(new Listener());
@@ -59,13 +59,13 @@ public class ClientConnectFrame extends JPanel {
 		second.add(portfield);
 
 		JPanel third = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel numCol = new JLabel(sk.str.get("nameField"));
+		JLabel numCol = new JLabel(sk.str.nameField);
 		namefield = new JTextField(sk.c.lastName);
 		namefield.addFocusListener(new Listener());
 		third.add(numCol);
 		third.add(namefield);
 
-		JButton hotovo = new JButton(sk.str.get("Connect"));
+		JButton hotovo = new JButton(sk.str.Connect);
 		hotovo.addActionListener(new ActionListener() {
 
 			@Override

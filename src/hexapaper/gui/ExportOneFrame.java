@@ -40,7 +40,7 @@ public class ExportOneFrame extends JPanel {
 	HPSklad sk = HPSklad.getInstance();
 
 	public ExportOneFrame(ArrayList<HPEntity> exportList) {
-		frame = new JFrame(sk.str.get("export"));
+		frame = new JFrame(sk.str.export);
 		frame.setSize(225, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(new GridLayout(1, 2, 0, 10));
@@ -56,13 +56,13 @@ public class ExportOneFrame extends JPanel {
 
 	private JPanel databazeArtefactu() {
 		JPanel SP = new JPanel();
-		String title = sk.str.get("export");
+		String title = sk.str.export;
 		if (exportList.size() != 0) {
 			if (exportList.get(0) instanceof Artefact) {
-				title = sk.str.get("vytvoreneArtefakty");
+				title = sk.str.vytvoreneArtefakty;
 			}
 			if (exportList.get(0) instanceof Postava) {
-				title = sk.str.get("vytvorenePostavy");
+				title = sk.str.vytvorenePostavy;
 			}
 		}
 		SP.setBorder(new TitledBorder(title));
@@ -103,13 +103,13 @@ public class ExportOneFrame extends JPanel {
 		gbl.setConstraints(datPo, gbc);
 		SP.add(datPo);
 
-		JButton del = new JButton(sk.str.get("export"));
+		JButton del = new JButton(sk.str.export);
 		del.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (beExported != null) {
-					FileHandler fh=FileHandler.showDialog(sk.str.get("Db_ext"), sk.str.get("Db_text"), true);
+					FileHandler fh=FileHandler.showDialog(sk.str.Db_ext, sk.str.Db_text, true);
 					DatabaseWrapper db=sk.wrappers.new DatabaseWrapper();
 					db.Version=HPSklad.FILEVERSION;
 					db.addEntity(beExported, null);

@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import addons.dice.DiceLog;
+import addons.dice.LogWindow;
 
 import javax.swing.BoxLayout;
 import javax.swing.JTextField;
@@ -31,8 +31,8 @@ public class PJGUI extends JFrame {
 	private static final long serialVersionUID = 8970551322101463562L;
 	private JPanel contentPane;
 	private Map<String,String> versions;
-	private DiceLog Dicelog;
-	private DiceLog PJLog;
+	private LogWindow Dicelog;
+	private LogWindow PJLog;
 	private JTextField CmdField;
 	private ActionListener sendCmd=new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -41,10 +41,10 @@ public class PJGUI extends JFrame {
 	};
 	private JTextPane textPane;
 
-	public DiceLog getLog(){
+	public LogWindow getLog(){
 		return Dicelog;
 	}
-	public DiceLog getInfo(){
+	public LogWindow getInfo(){
 		return PJLog;
 	}
 	public void updateClients(Map<String,String> ver){
@@ -110,7 +110,7 @@ public class PJGUI extends JFrame {
 		gbc.weightx = 1;
 		gbc.gridheight = 7;
 		gbc.gridwidth = 3;
-		Dicelog = new DiceLog();
+		Dicelog = new LogWindow();
 		//Dicelog.setBounds(0, 5, 237, 227);
 		Dicelog.setBorder(new TitledBorder("DiceLog"));
 		//Dicelog.addMessage("Kostka Načtena");
@@ -123,7 +123,7 @@ public class PJGUI extends JFrame {
 		JPanel PJControl = new JPanel();
 		PJControl.setLayout(new BoxLayout(PJControl, BoxLayout.Y_AXIS));
 		PJControl.setBorder(new TitledBorder("PJLog"));
-		PJLog = new DiceLog();	
+		PJLog = new LogWindow();	
 
 		CmdField = new JTextField();
 		CmdField.setHorizontalAlignment(SwingConstants.LEFT);

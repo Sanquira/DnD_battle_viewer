@@ -38,6 +38,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JViewport;
 import javax.swing.border.TitledBorder;
+
 import core.EditableJLabel;
 import core.ValueChangedListener;
 
@@ -62,6 +63,10 @@ public class HPRightMenu extends JPanel {
 	int position;
 
 	private EditableJLabel tagL;
+
+	private JToggleButton addAB;
+
+	private JToggleButton addPB;
 
 	public HPRightMenu() {
 		praveMenu();
@@ -100,7 +105,7 @@ public class HPRightMenu extends JPanel {
 	private JPanel ovladani() {
 		JPanel prvni = new JPanel();
 		prvni.setPreferredSize(new Dimension(-1, 180));
-		prvni.setBorder(new TitledBorder(sk.str.get("ovladaniBitvy")));
+		prvni.setBorder(new TitledBorder(sk.str.Battlecontrol));
 		prvni.setLayout(new GridLayout(5, 1, 0, 10));
 
 		clrB = new JToggleButton("Barva");
@@ -129,7 +134,7 @@ public class HPRightMenu extends JPanel {
 
 		JPanel wallFreeSpace = new JPanel(new GridLayout(1, 2, 10, 0));
 
-		wall = new JToggleButton(sk.str.get("addWall"));
+		wall = new JToggleButton(sk.str.addWall);
 		wall.addActionListener(new ActionListener() {
 
 			@Override
@@ -138,7 +143,7 @@ public class HPRightMenu extends JPanel {
 			}
 		});
 
-		freespace = new JToggleButton(sk.str.get("addFreeSpace"));
+		freespace = new JToggleButton(sk.str.addFreeSpace);
 		freespace.addActionListener(new ActionListener() {
 
 			@Override
@@ -150,37 +155,48 @@ public class HPRightMenu extends JPanel {
 		wallFreeSpace.add(wall);
 		wallFreeSpace.add(freespace);
 
-		JPanel addA = new JPanel(new BorderLayout(10, 10));
+		JPanel addA = new JPanel(new BorderLayout(10,10));
 
 		// addA.setBorder(new TitledBorder(Strings.addArt));
 		Object[] artlist = sk.databazeArtefaktu.toArray();
 		addAC = new JComboBox<>();
 		addAC.setModel(new DefaultComboBoxModel<>(artlist));
+		addAC.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				osetriAddAB((Artefact) ((JComboBox) arg0.getSource()).getSelectedItem(),false,true);
+			}
+		});
 
-		JButton addAB = new JButton("+");
+		addAB = new JToggleButton("++");
 		// addAB.setPreferredSize(new Dimension(45, 45));
 		addAB.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				osetriAddAB();
+				osetriAddAB((Artefact) addAC.getSelectedItem(),true,((JToggleButton) arg0.getSource()).isSelected());
 			}
 		});
 
 		addA.add(addAC, BorderLayout.CENTER);
 		addA.add(addAB, BorderLayout.EAST);
-
+		
 		JPanel addP = new JPanel(new BorderLayout(10, 10));
 		Object[] postlist = sk.databazePostav.toArray();
 		addPC = new JComboBox<>(postlist);
-
-		JButton addPB = new JButton("+");
+		addPC.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				osetriAddPB((Postava) addPC.getSelectedItem(),false,true);
+			}
+		});
+		addPB = new JToggleButton("++");
 		// addPB.setPreferredSize(new Dimension(45, 45));
 		addPB.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				osetriAddPB();
+				osetriAddPB((Postava) addPC.getSelectedItem(),true,((JToggleButton) arg0.getSource()).isSelected());
 			}
 		});
 		addP.add(addPC, BorderLayout.CENTER);
@@ -233,6 +249,8 @@ public class HPRightMenu extends JPanel {
 		if (isActive) {
 			freespace.setSelected(false);
 			clrB.setSelected(false);
+			addAB.setSelected(false);
+			addPB.setSelected(false);
 			osetriColor(false);
 			osetriFreeSpace(false);
 			sk.setupColor(false);
@@ -249,6 +267,8 @@ public class HPRightMenu extends JPanel {
 		if (isActive) {
 			wall.setSelected(false);
 			clrB.setSelected(false);
+			addAB.setSelected(false);
+			addPB.setSelected(false);
 			osetriColor(false);
 			osetriWall(false);
 			sk.setupColor(false);
@@ -258,25 +278,38 @@ public class HPRightMenu extends JPanel {
 		}
 	}
 
-	private void osetriAddAB() {
-		wall.setSelected(false);
-		freespace.setSelected(false);
-		if (addAC.getSelectedItem() != null) {
-			sk.setupInserting(((Artefact) addAC.getSelectedItem()).clone(), false);
+	private void osetriAddAB(Artefact art, boolean repeat,boolean isActive) {
+		if(isActive){
+			wall.setSelected(false);
+			clrB.setSelected(false);
+			addPB.setSelected(false);
+			freespace.setSelected(false);
+			if (addAC.getSelectedItem() != null) {
+				sk.setupInserting(art.clone(), repeat);
+			}
+		}
+		else{
+			sk.setupInserting(null, false);
 		}
 	}
 
-	private void osetriAddPB() {
-		wall.setSelected(false);
-		freespace.setSelected(false);
-		if (addPC.getSelectedItem() != null) {
-			sk.setupInserting(((Postava) addPC.getSelectedItem()).clone(), false);
+	private void osetriAddPB(Postava pos, boolean repeat, boolean isActive) {
+		if(isActive){
+			wall.setSelected(false);
+			freespace.setSelected(false);
+			addAB.setSelected(false);
+			if (addPC.getSelectedItem() != null) {
+				sk.setupInserting(pos.clone(), repeat);
+			}
+		}
+		else{
+			sk.setupInserting(null, false);
 		}
 	}
 
 	private JPanel vlastnosti() {
 		JPanel VP = new JPanel();
-		VP.setBorder(new TitledBorder(sk.str.get("vlastnostiObj")));
+		VP.setBorder(new TitledBorder(sk.str.Objproperties));
 		if (vlastnosti == null) {
 			return VP;
 		}
@@ -284,22 +317,22 @@ public class HPRightMenu extends JPanel {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		VP.setLayout(gbl);
-		VP.setBorder(new TitledBorder(sk.str.get("vytvorPostavu")));
+		VP.setBorder(new TitledBorder(sk.str.vytvorPostavu));
 
 		JPanel prvni = new JPanel(new BorderLayout(10, 10));
 
 		String name = "";
 		if (isPostava) {
 			if (((Postava) vlastnosti).isPJ()) {
-				name = sk.str.get("NPC");
+				name = sk.str.NPC;
 			} else {
-				name = sk.str.get("player");
+				name = sk.str.player;
 			}
 		} else {
-			name = sk.str.get("artefakt");
+			name = sk.str.Artefact;
 		}
 		JLabel nameLabel = new JLabel(name);
-		JLabel tag = new JLabel(sk.str.get("Tag"));
+		JLabel tag = new JLabel(sk.str.Tag);
 		tag.setPreferredSize(new Dimension(35, -1));
 		prvni.add(nameLabel, BorderLayout.CENTER);
 		prvni.add(tag, BorderLayout.EAST);
@@ -491,7 +524,7 @@ public class HPRightMenu extends JPanel {
 		VP.add(druhySc);
 
 		JPanel treti = new JPanel(new GridLayout(1, 2, 10, 0));
-		JButton add = new JButton(sk.str.get("addPropBut"));
+		JButton add = new JButton(sk.str.addPropBut);
 		add.addActionListener(new ActionListener() {
 
 			@Override
@@ -503,7 +536,7 @@ public class HPRightMenu extends JPanel {
 			}
 		});
 		add.setEnabled(!skryj);
-		JToggleButton del = new JToggleButton(sk.str.get("delPropBut"), isDel);
+		JToggleButton del = new JToggleButton(sk.str.delPropBut, isDel);
 		del.addActionListener(new ActionListener() {
 
 			@Override

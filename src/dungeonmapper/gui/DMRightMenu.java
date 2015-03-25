@@ -19,11 +19,17 @@ import javax.swing.JToggleButton;
 import javax.swing.border.TitledBorder;
 
 import core.DeselectButtonGroup;
+import core.LangFile;
 import dungeonmapper.listeners.DMListenery;
 import dungeonmapper.source.DMSklad;
+import dungeonmapper.source.DMStrings;
 
 public class DMRightMenu extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6395253068781710783L;
 	DMSklad sk = DMSklad.getInstance();
 	HashMap<String, Icon> icons = new HashMap<>();
 
@@ -58,7 +64,7 @@ public class DMRightMenu extends JPanel {
 	private JPanel panelDrawOrder() {
 		JPanel PDO = new JPanel();
 		PDO.setLayout(new FlowLayout(FlowLayout.LEFT));
-		PDO.setBorder(new TitledBorder(sk.str.get("drawOrder")));
+		PDO.setBorder(new TitledBorder(sk.str.drawOrder));
 
 		ButtonGroup grpOrder = new ButtonGroup();
 
@@ -76,7 +82,7 @@ public class DMRightMenu extends JPanel {
 
 	private JPanel panelDrawShape() {
 		JPanel PDS = new JPanel();
-		PDS.setBorder(new TitledBorder(sk.str.get("drawShape")));
+		PDS.setBorder(new TitledBorder(sk.str.drawShape));
 		PDS.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		DeselectButtonGroup grpOrder = new DeselectButtonGroup();
@@ -92,7 +98,7 @@ public class DMRightMenu extends JPanel {
 
 	private JComponent makeToggleButton(String name) {
 		JToggleButton tmp = new JToggleButton(icons.get("icon" + name));
-		tmp.setToolTipText(sk.str.get(name + "Tooltip"));
+		tmp.setToolTipText(LangFile.get(DMStrings.class, name + "Tooltip"));
 		tmp.setBackground(Color.gray);
 		tmp.setPreferredSize(new Dimension(icons.get("icon" + name).getIconHeight(),
 				icons.get("icon" + name).getIconWidth()));

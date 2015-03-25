@@ -29,7 +29,7 @@ public class DMListenery {
 	public class KonecHardListener implements WindowListener {
 		@Override
 		public void windowClosing(WindowEvent paramWindowEvent) {
-			Object[] opt = { sk.str.get("ano"), sk.str.get("ne") };
+			Object[] opt = { sk.str.ano, sk.str.ne };
 			// int t =
 			// JOptionPane.showOptionDialog(paramWindowEvent.getComponent(),
 			// sk.str.get("zpravaZtrataDat"), sk.str.get("ztrataDat"),
@@ -111,7 +111,7 @@ public class DMListenery {
 		public void actionPerformed(ActionEvent arg0) {
 			DMWrapper wrapper=new DMWrapper(sk.COLS,sk.ROWS,sk.CSIZE);
 			wrapper.addEntities(new HashMap<Integer,ArrayList<DMGridElement>>(sk.drawPlane.layers));
-			FileHandler fileHandler=FileHandler.showDialog(sk.str.get("DMm_ext"), sk.str.get("DMm_text"),true);
+			FileHandler fileHandler=FileHandler.showDialog(sk.str.DMm_ext, sk.str.DMm_text,true);
 			try {
 				if(fileHandler!=null){fileHandler.write(wrapper);}
 				System.out.println("hotovo");
@@ -124,7 +124,7 @@ public class DMListenery {
 	public class LoadGame implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			FileHandler fh=FileHandler.showDialog(sk.str.get("DMm_ext"), sk.str.get("DMm_text"),false);
+			FileHandler fh=FileHandler.showDialog(sk.str.DMm_ext, sk.str.DMm_text,false);
 			if(fh!=null){
 				fh.load(DMWrapper.class).loadEntities();
 			}

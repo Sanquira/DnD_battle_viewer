@@ -39,7 +39,7 @@ public class ColorPicker extends JFrame {
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.SOUTH);
 		
-		JButton confirm = new JButton(sk.str.get("Confirm"));
+		JButton confirm = new JButton(sk.str.Confirm);
 		confirm.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -50,7 +50,7 @@ public class ColorPicker extends JFrame {
 		});
 		panel.add(confirm);
 		
-		JButton reset = new JButton(sk.str.get("Reset"));
+		JButton reset = new JButton(sk.str.Reset);
 		reset.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -59,7 +59,7 @@ public class ColorPicker extends JFrame {
 		});
 		panel.add(reset);
 		
-		JButton close = new JButton(sk.str.get("Close"));
+		JButton close = new JButton(sk.str.Close);
 		close.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

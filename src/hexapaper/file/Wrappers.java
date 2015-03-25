@@ -114,7 +114,4 @@ public class Wrappers {
 			}
 		}
 	}
-	public class LangWrapper{
-		public HashMap<String,String> lang=new HashMap<String,String>();		
-	}
 }

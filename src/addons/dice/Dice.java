@@ -13,6 +13,7 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneLayout;
 import javax.swing.SwingConstants;
@@ -29,10 +30,14 @@ import java.awt.Insets;
 import javax.swing.border.TitledBorder;
 
 import java.awt.GridLayout;
-
 import java.awt.FlowLayout;
 import java.awt.Dimension;
 import java.awt.Component;
+
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
 
 public class Dice {
 
@@ -41,26 +46,20 @@ public class Dice {
 	// /////////////////////////////////////////////////////////////////////////////
 	
 	private JFrame frmKostka;
-	private ArrayList<Integer> list=new ArrayList<Integer>();
+	private ArrayList<Preset> list=new ArrayList<Preset>();
 	final Random rand = new Random();
 	private HPSklad sk=HPSklad.getInstance();
 	private JNumberTextField SideField;
 	private JNumberTextField ModField;
+	private JNumberTextField CountField;
 	private JLabel RollLabel;
 	private JLabel ModLabel;
 	private JLabel SideLabel;
 	private JPanel DiceLogPane;
 	private JButton RollButton;
-	private DiceLog log;
+	private LogWindow log;
 	private JScrollPane PresetsPane;
 
-	private ActionListener fastValueButtonListener = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			JButton button = (JButton) e.getSource();
-			SideField.setText(String.valueOf(button.getText()));
-			
-		}
-	};
 //	
 //	private ActionListener preventNull = new ActionListener(){
 //		@Override
@@ -71,30 +70,14 @@ public class Dice {
 //			}
 //		}		
 //	};	
-	private ActionListener rollListener = new ActionListener() {
+	protected ActionListener rollListener = new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			final int min = 1;	
-			final int bonus = ModField.getInt();
-			final int max = SideField.getInt();
-			Integer number=rand.nextInt((max - min) + 1) + min;
-			RollLabel.setText(String.valueOf(number+bonus));
-			SideLabel.setText(String.valueOf(max));
-			ModLabel.setText(String.valueOf(bonus));
-			log.addMessage("["+(number+bonus)+";"+max+";"+bonus+"]");
-			if(sk.isConnected&&!sk.isPJ){
-				Integer[] i={number,max,bonus};
-				try {
-					sk.client.send(i, "dice");
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}	
+			multipleRoll(SideField.getInt(),ModField.getInt(),CountField.getInt());
 		}
 	};
-	private JPanel Pane;
+	private JMenuBar menuBar;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -109,11 +92,12 @@ public class Dice {
 	}
 	public Dice() {
 		frmKostka = new JFrame();
+		initialize();
 		//frmKostka.setResizable(false);
 		frmKostka.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.rowWeights = new double[]{0.0};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0};
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0};
 //		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
 //		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
@@ -123,7 +107,7 @@ public class Dice {
 		
 		DiceLogPane = new JPanel();
 		DiceLogPane.setBorder(new TitledBorder(null, "DiceLog", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		log=new DiceLog();
+		log=new LogWindow();
 		GridBagConstraints gbc_DiceLogPane = new GridBagConstraints();
 		gbc_DiceLogPane.weightx = 0.2;
 		gbc_DiceLogPane.insets = new Insets(0, 0, 5, 0);
@@ -135,37 +119,18 @@ public class Dice {
 		DiceLogPane.add(log);
 		frmKostka.getContentPane().add(DiceLogPane, gbc_DiceLogPane);
 		
-		JPanel DicePane = new JPanel();
-		GridBagConstraints gbc_DicePane = new GridBagConstraints();
-		gbc_DicePane.weightx = 0.1;
-		gbc_DicePane.weighty = 1.0;
-		gbc_DicePane.gridwidth = 2;
-		gbc_DicePane.fill = GridBagConstraints.BOTH;
-		gbc_DicePane.gridx = 0;
-		gbc_DicePane.gridy = 0;
-		frmKostka.getContentPane().add(DicePane, gbc_DicePane);
-		GridBagLayout gbl_DicePane = new GridBagLayout();
-		gbl_DicePane.columnWidths = new int[]{300, 22, 70, 0};
-		gbl_DicePane.rowHeights = new int[]{167, 0, 0, 0, 0, 0};
-		gbl_DicePane.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_DicePane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		DicePane.setLayout(gbl_DicePane);
-		
 		JPanel SettingPane = new JPanel();
 		GridBagConstraints gbc_SettingPane = new GridBagConstraints();
 		gbc_SettingPane.fill = GridBagConstraints.BOTH;
-		gbc_SettingPane.weighty = 0.5;
-		gbc_SettingPane.weightx = 0.5;
 		gbc_SettingPane.gridwidth = 4;
-		gbc_SettingPane.anchor = GridBagConstraints.WEST;
-		gbc_SettingPane.insets = new Insets(0, 0, 0, 5);
+		gbc_SettingPane.gridy = 1;
 		gbc_SettingPane.gridx = 0;
-		gbc_SettingPane.gridy = 4;
-		DicePane.add(SettingPane, gbc_SettingPane);
+		frmKostka.getContentPane().add(SettingPane, gbc_SettingPane);
 		SettingPane.setBorder(new TitledBorder(null, "Settings", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		SettingPane.setLayout(new GridLayout(0, 3, 0, 0));
+		SettingPane.setLayout(new GridLayout(0, 4, 0, 0));
 		
 		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Roll", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(51, 51, 51)));
 		SettingPane.add(panel);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
@@ -176,6 +141,7 @@ public class Dice {
 		panel.add(RollButton);
 		
 		JPanel SidePane = new JPanel();
+		SidePane.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Sides", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(51, 51, 51)));
 		SidePane.setToolTipText("Sides");
 		SettingPane.add(SidePane);
 		
@@ -191,6 +157,7 @@ public class Dice {
 		SideField.setColumns(10);
 		
 		JPanel ModPane = new JPanel();
+		ModPane.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Modifier", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(51, 51, 51)));
 		ModPane.getLayout();
 		SettingPane.add(ModPane);
 		
@@ -201,23 +168,50 @@ public class Dice {
 		ModPane.add(ModField);
 		ModField.setColumns(10);
 		
-		PresetsPane = new JScrollPane();
+		JPanel CountPane = new JPanel();
+		CountPane.setBorder(new TitledBorder(null, "Count", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, null));
+		SettingPane.add(CountPane);
+		
+		CountField = new JNumberTextField();
+		CountField.setToolTipText("Count");
+		CountField.setText("1");
+		CountField.setPreferredSize(new Dimension(75, 19));
+		CountField.setMaxLength(4);
+		CountField.setHorizontalAlignment(SwingConstants.CENTER);
+		CountField.setColumns(10);
+		CountField.setAlignmentY(0.0f);
+		CountField.setAlignmentX(0.0f);
+		CountPane.add(CountField);
+		
+		JPanel DicePane = new JPanel();
+		GridBagConstraints gbc_DicePane = new GridBagConstraints();
+		gbc_DicePane.weightx = 0.1;
+		gbc_DicePane.weighty = 1.0;
+		gbc_DicePane.gridwidth = 1;
+		gbc_DicePane.fill = GridBagConstraints.BOTH;
+		gbc_DicePane.gridx = 0;
+		gbc_DicePane.gridy = 0;
+		frmKostka.getContentPane().add(DicePane, gbc_DicePane);
+		GridBagLayout gbl_DicePane = new GridBagLayout();
+		gbl_DicePane.columnWidths = new int[]{300, 22, 70, 0};
+		gbl_DicePane.rowHeights = new int[]{167, 0, 0, 0, 0, 0};
+//		gbl_DicePane.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+//		gbl_DicePane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		DicePane.setLayout(gbl_DicePane);
+		
+		PresetsPane = generatePresetPane(list);
 		GridBagConstraints gbc_PresetsPane = new GridBagConstraints();
 		gbc_PresetsPane.fill = GridBagConstraints.BOTH;
 		gbc_PresetsPane.weighty = 1.0;
 		gbc_PresetsPane.weightx = 1.0;
 		gbc_PresetsPane.gridheight = 4;
+		gbc_PresetsPane.gridwidth = 2;
 		gbc_PresetsPane.anchor = GridBagConstraints.WEST;
 		gbc_PresetsPane.insets = new Insets(0, 0, 0, 5);
-		gbc_PresetsPane.gridx = 2;
+		gbc_PresetsPane.gridx = 1;
 		gbc_PresetsPane.gridy = 0;
 		DicePane.add(PresetsPane, gbc_PresetsPane);
 		PresetsPane.setBorder(new TitledBorder(null, "Presets", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		PresetsPane.setLayout(new ScrollPaneLayout());
-		
-		Pane = new JPanel();
-		PresetsPane.setColumnHeaderView(Pane);
-		Pane.setLayout(new GridLayout(6, 0, 0, 0));
 		
 		JPanel DiceRollPane = new JPanel();
 		GridBagConstraints gbc_DiceRollPane = new GridBagConstraints();
@@ -225,7 +219,7 @@ public class Dice {
 		gbc_DiceRollPane.weighty = 1.0;
 		gbc_DiceRollPane.weightx = 1.0;
 		gbc_DiceRollPane.gridheight = 4;
-		gbc_DiceRollPane.gridwidth = 2;
+		gbc_DiceRollPane.gridwidth = 1;
 		gbc_DiceRollPane.anchor = GridBagConstraints.NORTHWEST;
 		gbc_DiceRollPane.gridx = 0;
 		gbc_DiceRollPane.gridy = 0;
@@ -285,7 +279,8 @@ public class Dice {
 		SideLabel = new JLabel("0");
 		SideLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		SidesPane.add(SideLabel);
-		initialize();
+		
+		constructMenu();
 		frmKostka.setVisible(true);
 		//if(sk.isPJ){
 			//sk.log.setVisible(true);
@@ -296,6 +291,19 @@ public class Dice {
 	// Konec negrafickych metod
 	// /////////////////////////////////////////////////////////////////////////////
 
+	private void constructMenu() {
+		menuBar = new JMenuBar();
+		frmKostka.setJMenuBar(menuBar);
+		
+		JMenu Action = new JMenu("Akce");
+		JMenuItem multiple = new JMenuItem("Vícenásobný Hod");
+		JMenuItem presets = new JMenuItem("Presets");
+		
+		Action.add(multiple);
+		Action.add(presets);
+		menuBar.add(Action);
+		
+	}
 	/**
 	 * TOHLE budes upravovat
 	 */
@@ -303,29 +311,71 @@ public class Dice {
 		// nastaveni titulku okna, velikosti a layoutu
 		frmKostka.setTitle("Kostka");
 		frmKostka.setSize(567, 300);
-		list.add(6);
-		list.add(10);
-		list.add(100);
-		list.add(7);
-		generatePresets(Pane,list);
+		list.add(new Preset(6,0,1));
+		list.add(new Preset(10,0,1));
+		list.add(new Preset(100,0,1));
+		list.add(new Preset(7,0,1));
+		//generatePresets(Pane,list);
 	}
-	private void generatePresets(JPanel pane, ArrayList<Integer> presets){
-		pane.removeAll();
-		//PresetsPane.setLayout(new BoxLayout(PresetsPane,)
-			for(Integer i:presets){
-				JButton but=new JButton(String.valueOf(i));
-				but.setPreferredSize(new Dimension(PresetsPane.getSize().width,but.getPreferredSize().height));
-				but.addActionListener(fastValueButtonListener);
-				pane.add(but);
-			}	
-	}
-	private JScrollPane generatePresetPane(){
+//	private JPanel generatePresets(ArrayList<Integer> presets){
+//		JPanel pane = new JPanel();
+//		//PresetsPane.setLayout(new BoxLayout(PresetsPane,)
+//			for(Integer i:presets){
+//				JButton but=new JButton(String.valueOf(i));
+//				but.setPreferredSize(new Dimension(PresetsPane.getSize().width,but.getPreferredSize().height));
+//				but.addActionListener(fastValueButtonListener);
+//				pane.add(but);
+//			}	
+//	}
+	private JScrollPane generatePresetPane(ArrayList<Preset> presets){
 		JScrollPane presetsPane = new JScrollPane();
 		presetsPane.setLayout(new ScrollPaneLayout());
 		
-		JPanel Pane = new JPanel();
-		presetsPane.setColumnHeaderView(Pane);
-		Pane.setLayout(new GridLayout(6, 0, 0, 0));
+		JPanel pane = new JPanel();
+		presetsPane.add(pane);
+		int col = 5;
+		presetsPane.getVerticalScrollBar().setEnabled(false);
+		if(presets.size()>5){
+			col = presets.size();
+			presetsPane.getVerticalScrollBar().setEnabled(true);
+		}
+		pane.setLayout(new GridLayout(col,1,10,0));
+		for(Preset pr:presets){
+//			JPanel j = new JPanel();
+//			j.setPreferredSize(new Dimension(0,30));
+//			j.add(new PresetButton(pr,this));
+			pane.add(new PresetButton(pr,this));
+		}
+		presetsPane.setViewportView(pane);
 		return presetsPane;
+	}
+	private Integer getRoll(int sides){
+		return rand.nextInt(sides) + 1;
+	}
+	private void roll(int sides, int modifier){
+		final Integer number = getRoll(sides);
+		RollLabel.setText(String.valueOf(number+modifier));
+		SideLabel.setText(String.valueOf(sides));
+		ModLabel.setText(String.valueOf(modifier));
+		log.addMessage("["+(number+modifier)+";"+sides+";"+modifier+"]");
+		if(sk.isConnected&&!sk.isPJ){
+			Integer[] i={number,sides,modifier};
+			try {
+				sk.client.send(i, "dice");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+	}
+	protected void setText(int sides, int modifier, int count){
+		SideField.setInt(sides);
+		ModField.setInt(modifier);
+		CountField.setInt(count);
+	}
+	protected void multipleRoll(int sides, int modifier, int count){
+		for(int i=0;i<count;i++){
+			roll(sides,modifier);
+		}
 	}
 }

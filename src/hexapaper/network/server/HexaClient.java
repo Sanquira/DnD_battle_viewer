@@ -1,5 +1,6 @@
 package hexapaper.network.server;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -34,7 +35,7 @@ public class HexaClient extends CommandClient{
 		try {
 			for(Integer i=0;i<storage.souradky.size();i++){
 				HPEntity e = storage.souradky.get(i);
-				if(!(e instanceof FreeSpace)){
+				if(!(e instanceof FreeSpace) || e.getBcg()!= Color.WHITE){
 					Object[] o = {i,e};
 					send(o,"insertEnt");
 				}

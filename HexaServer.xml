@@ -12,7 +12,8 @@
             </manifest>
             <fileset dir="${path}/bin"/>
         	<zipfileset excludes="META-INF/*.SF" src="${path}/lib/args4j-2.0.21.jar"/> 
-            <zipfileset excludes="META-INF/*.SF" src="${path}/lib/gson-2.3.jar"/>            
+            <zipfileset excludes="META-INF/*.SF" src="${path}/lib/gson-2.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${path}/lib/network-core.jar"/>  
         </jar>
     </target>
 </project>

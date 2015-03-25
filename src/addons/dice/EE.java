@@ -20,6 +20,10 @@ public class EE {
 
 	public class HaGay extends JFrame implements Runnable {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1683763407461041330L;
 		JFrame frm = this;
 
 		public HaGay() throws HeadlessException {

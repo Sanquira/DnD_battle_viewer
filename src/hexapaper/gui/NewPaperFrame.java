@@ -27,12 +27,12 @@ public class NewPaperFrame extends JPanel {
 	JFrame frame;
 
 	public NewPaperFrame() {
-		frame = new JFrame(sk.str.get("vytvorPaper"));
+		frame = new JFrame(sk.str.vytvorPaper);
 		frame.setSize(300, 200);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setResizable(false);
 		setLayout(new GridLayout(4, 1, 0, 10));
-		setBorder(new TitledBorder(sk.str.get("vytvorPaper")));
+		setBorder(new TitledBorder(sk.str.vytvorPaper));
 		init();
 		frame.add(this);
 		frame.setVisible(true);
@@ -44,7 +44,7 @@ public class NewPaperFrame extends JPanel {
 
 	protected void init() {
 		JPanel prvni = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel polhex = new JLabel(sk.str.get("polomerHexu"));
+		JLabel polhex = new JLabel(sk.str.Radius);
 		polhexvalue = new JNumberTextField();
 		polhexvalue.setText(String.valueOf(sk.c.RADIUS));
 		polhexvalue.addFocusListener(new Listener());
@@ -52,7 +52,7 @@ public class NewPaperFrame extends JPanel {
 		prvni.add(polhexvalue);
 
 		JPanel druhy = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel numRow = new JLabel(sk.str.get("pocetRadku"));
+		JLabel numRow = new JLabel(sk.str.LineCount);
 		numRowValue = new JNumberTextField();
 		numRowValue.setText(String.valueOf(sk.c.gridRa));
 		numRowValue.addFocusListener(new Listener());
@@ -60,14 +60,14 @@ public class NewPaperFrame extends JPanel {
 		druhy.add(numRowValue);
 
 		JPanel treti = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel numCol = new JLabel(sk.str.get("pocetSloupcu"));
+		JLabel numCol = new JLabel(sk.str.CollumnCount);
 		numColValue = new JNumberTextField();
 		numColValue.setText(String.valueOf(sk.c.gridSl));
 		numColValue.addFocusListener(new Listener());
 		treti.add(numCol);
 		treti.add(numColValue);
 
-		JButton hotovo = new JButton(sk.str.get("vytvorPaper"));
+		JButton hotovo = new JButton(sk.str.vytvorPaper);
 		hotovo.addActionListener(new ActionListener() {
 
 			@Override

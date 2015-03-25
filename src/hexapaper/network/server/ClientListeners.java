@@ -46,13 +46,13 @@ public class ClientListeners {
 			storage.isConnected = false;
 			storage.isPJ = false;
 			storage.updateConnect();
-			String message = storage.str.get("DisconnectMessage");
+			String message = storage.str.DisconnectMessage;
 			if(kicked){
-				message = storage.str.get("KickMessage");
+				message = storage.str.KickMessage;
 			}
 			JOptionPane.showMessageDialog(storage.hraciPlocha,
 					message+reason,
-					storage.str.get("DisconnectWindow"),
+					storage.str.DisconnectWindow,
 					JOptionPane.WARNING_MESSAGE);
 		}
 	};
@@ -161,8 +161,8 @@ public class ClientListeners {
 		@Override
 		public void packetReceive(MessagePacket p) {
 			JOptionPane.showMessageDialog(storage.hraciPlocha,
-					storage.str.get("KickMessage") + (String) p.getObject(),
-					storage.str.get("KickWindow"),
+					storage.str.KickMessage + (String) p.getObject(),
+					storage.str.KickWindow,
 					JOptionPane.WARNING_MESSAGE);
 			storage.setStatus("Vyhozen ze serveru");
 		}

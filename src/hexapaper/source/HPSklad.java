@@ -24,8 +24,7 @@ import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
-import addons.dice.DiceLog;
-import core.LangFile;
+import addons.dice.LogWindow;
 import core.Location;
 import core.file.Config;
 import core.file.FileHandler;
@@ -69,9 +68,9 @@ public class HPSklad {
 	public boolean colorAdd = false;
 
 	public HexaClient client;
-	public LangFile str;
-
-	public final static String VERSION = "v0.4a";
+	public HPStrings str;
+	
+	public final static String VERSION = "v0.4d";
 	public final static String FILEVERSION = "0.2";
 
 	public void send(Object o, String header, boolean PJ) {
@@ -92,15 +91,14 @@ public class HPSklad {
 	}
 	
 	public boolean checkVersion(String Version){
-		HPSklad sk=HPSklad.getInstance();
 		if(Version!=null){
 			if(Version.equals(HPSklad.FILEVERSION)){
 				return true;
 			}
 		}
-		Object[] options = {sk.str.get("OldFileVersionYes"),sk.str.get("OldFileVersionNo")};
-		int n = JOptionPane.showOptionDialog(null, sk.str.get("OldFileVersionText"),
-					sk.str.get("OldFileVersionHeader"),
+		Object[] options = {str.OldFileVersionYes,str.OldFileVersionNo};
+		int n = JOptionPane.showOptionDialog(null, str.OldFileVersionText,
+					str.OldFileVersionHeader,
 					JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,null);
 		if(n==JOptionPane.YES_OPTION){
 			return true;
@@ -125,7 +123,9 @@ public class HPSklad {
 			item.repaint();
 		}
 	}
-
+	public void initLang(){
+		str = HPStrings.getInstance();
+	}
 	public void init() {
 		initLang();
 		hraciPlocha = new HraciPlocha();
@@ -134,10 +134,9 @@ public class HPSklad {
 		RMenu = new HPRightMenu();
 	}
 	
-	public void initLang(){
-		str = new LangFile(HPStrings.class);
-		str.loadLang();
-	}
+//	public void initLang(){
+//		HPStrings.load();
+//	}
 	
 	public static HPSklad getInstance() {
 		if (instance == null) {
@@ -184,7 +183,7 @@ public class HPSklad {
 
 	public void updatePosition(double x1, double y1) {
 		double r = Math.cos(Math.toRadians(30)) * c.RADIUS;
-		position.setText(str.get("Position") + Math.round(((x1 / c.RADIUS) - 1) * (2 / 3.) + 1) + "," + Math.round(((y1 / r) - ((y1 / r) + 1) % 2 - 1) / 2));
+		position.setText(str.Position + Math.round(((x1 / c.RADIUS) - 1) * (2 / 3.) + 1) + "," + Math.round(((y1 / r) - ((y1 / r) + 1) % 2 - 1) / 2));
 		position.repaint();
 	}
 
@@ -201,7 +200,7 @@ public class HPSklad {
 			connected.setForeground(Color.RED);
 			banned = false;
 		}
-		connected.setText(str.get("ConnectLabel") + "{" + isConnected + "," + isPJ + "}");
+		connected.setText(str.ConnectLabel + "{" + isConnected + "," + isPJ + "}");
 		colorJMenu();
 	}
 	public void connect(){
@@ -221,16 +220,16 @@ public class HPSklad {
 			updateConnect();			
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null,
-				    str.get("ConnectError")+e.getMessage(),
-				    str.get("IOError"),
+				    str.ConnectError+e.getMessage(),
+				    str.IOError,
 				    JOptionPane.ERROR_MESSAGE);		
 		}
 	}
-	public DiceLog getDiceLog() {
+	public LogWindow getDiceLog() {
 		return PJInfo.getLog();
 	}
 
-	public DiceLog getPJLog() {
+	public LogWindow getPJLog() {
 		return PJInfo.getInfo();
 	}
 

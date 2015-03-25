@@ -94,13 +94,13 @@ public class hexapaper extends JFrame {
 	private JMenuBar menu() {
 		JMenuBar HlavniMenu = new JMenuBar();
 
-		JMenu hraMenu = new JMenu(sk.str.get("hra"));
-		JMenuItem novyPaper = new JMenuItem(sk.str.get("newPaper"));
-		JMenuItem nactiPaper = new JMenuItem(sk.str.get("loadPaper"));
-		JMenuItem ulozPaper = new JMenuItem(sk.str.get("savePaper"));
+		JMenu hraMenu = new JMenu(sk.str.GameMenu);
+		JMenuItem novyPaper = new JMenuItem(sk.str.newPaper);
+		JMenuItem nactiPaper = new JMenuItem(sk.str.loadPaper);
+		JMenuItem ulozPaper = new JMenuItem(sk.str.savePaper);
 		JMenuItem Server = new JMenuItem("Server");
 		JMenuItem Client = new JMenuItem("Client");
-		JMenuItem konec = new JMenuItem(sk.str.get("konec"));
+		JMenuItem konec = new JMenuItem(sk.str.End);
 
 		novyPaper.addActionListener(lis.new NovaListener());
 		Client.addActionListener(lis.new Client());
@@ -115,16 +115,16 @@ public class hexapaper extends JFrame {
 		hraMenu.add(Server);
 		hraMenu.add(konec);
 
-		JMenu upravy = new JMenu(sk.str.get("upravy"));
-		JMenuItem pridejArt = new JMenuItem(sk.str.get("addArt"));
-		JMenuItem pridejPost = new JMenuItem(sk.str.get("addPost"));
-		JMenu exportAP = new JMenu(sk.str.get("exportAP"));
-		JMenuItem exportArtDat = new JMenuItem(sk.str.get("exportArtDat"));
-		JMenuItem exportPostDat = new JMenuItem(sk.str.get("exportPostDat"));
-		JMenuItem exportArtOne = new JMenuItem(sk.str.get("exportArtOne"));
-		JMenuItem exportPostOne = new JMenuItem(sk.str.get("exportPostOne"));
+		JMenu upravy = new JMenu(sk.str.EditMenu);
+		JMenuItem pridejArt = new JMenuItem(sk.str.addArt);
+		JMenuItem pridejPost = new JMenuItem(sk.str.addPost);
+		JMenu exportAP = new JMenu(sk.str.exportAP);
+		JMenuItem exportArtDat = new JMenuItem(sk.str.exportArtDat);
+		JMenuItem exportPostDat = new JMenuItem(sk.str.exportPostDat);
+		JMenuItem exportArtOne = new JMenuItem(sk.str.exportArtOne);
+		JMenuItem exportPostOne = new JMenuItem(sk.str.exportPostOne);
 
-		JMenuItem importAP = new JMenuItem(sk.str.get("importAP"));
+		JMenuItem importAP = new JMenuItem(sk.str.importAP);
 
 		pridejArt.addActionListener(lis.new PridejArtefakt());
 		pridejPost.addActionListener(lis.new PridejPostavu());
@@ -147,11 +147,11 @@ public class hexapaper extends JFrame {
 
 		upravy.add(importAP);
 
-		JMenu addons = new JMenu(sk.str.get("utility"));
+		JMenu addons = new JMenu(sk.str.utility);
 
-		JMenuItem kostka = new JMenuItem(sk.str.get("kostka"));
-		JMenuItem PJInfo = new JMenuItem(sk.str.get("PJInfo"));
-		JMenuItem ExportLang = new JMenuItem(sk.str.get("ExportLang"));
+		JMenuItem kostka = new JMenuItem(sk.str.Dice);
+		JMenuItem PJInfo = new JMenuItem(sk.str.PJInfo);
+		JMenuItem ExportLang = new JMenuItem(sk.str.ExportLang);
 		//JMenuItem ColorPicker = new JMenuItem("ColorPicker");
 
 		kostka.addActionListener(lis.new DiceListener());
@@ -196,7 +196,7 @@ public class hexapaper extends JFrame {
 		StatusBar.setPreferredSize(new Dimension(300, 14));
 		panel.add(StatusBar);
 		
-		JLabel connected = new JLabel(sk.str.get("ConnectLabel")+"{"+sk.isConnected+","+sk.isPJ+"}");
+		JLabel connected = new JLabel(sk.str.ConnectLabel+"{"+sk.isConnected+","+sk.isPJ+"}");
 		panel.add(connected);
 		connected.setForeground (Color.red);
 		

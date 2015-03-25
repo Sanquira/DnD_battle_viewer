@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
+import core.LangFile;
 import network.command.users.CommandServer;
 import network.core.source.NetworkStorage;
 
@@ -38,12 +39,12 @@ public class HexaServer {
 			HashMap<String,String> map = new HashMap<String,String>();
 			map.put("Version", HPSklad.VERSION);
 			map.put("coreVersion", NetworkStorage.version);
-			System.out.println(storage.str.sub("ServerVersion", map));
+			System.out.println(LangFile.sub(storage.str.ServerVersion, map));
 		} catch (NumberFormatException | IOException e) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null,
-			  storage.str.get("ServerError")+e.getMessage(),
-			  storage.str.get("ServerIOError"),
+			  storage.str.ServerError+e.getMessage(),
+			  storage.str.ServerIOError,
 			  JOptionPane.ERROR_MESSAGE);
 			System.exit(0);
 		}

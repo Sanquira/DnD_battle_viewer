@@ -31,12 +31,12 @@ public class ServerCreateFrame extends JPanel {
 
 	public ServerCreateFrame(HexaServer s) {
 		server=s;
-		frame = new JFrame(sk.str.get("ConnectFrame"));
+		frame = new JFrame(sk.str.ConnectFrame);
 		frame.setSize(300, 200);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setResizable(false);
 		setLayout(new GridLayout(3, 1, 0, 10));
-		setBorder(new TitledBorder(sk.str.get("ServerCreateFrame")));
+		setBorder(new TitledBorder(sk.str.ServerCreateFrame));
 		init();
 		frame.getContentPane().add(this);
 		frame.setVisible(true);
@@ -51,21 +51,21 @@ public class ServerCreateFrame extends JPanel {
 
 	protected void init() {
 		JPanel first = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel polhex = new JLabel(sk.str.get("ipField"));
+		JLabel polhex = new JLabel(sk.str.ipField);
 		ipfield = new JTextField(sk.c.serverIP);
 		ipfield.addFocusListener(new Listener());
 		first.add(polhex);
 		first.add(ipfield);
 
 		JPanel second = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel numRow = new JLabel(sk.str.get("portField"));
+		JLabel numRow = new JLabel(sk.str.portField);
 		portfield = new JNumberTextField();
 		portfield.setInt(sk.c.serverport);
 		portfield.addFocusListener(new Listener());
 		second.add(numRow);
 		second.add(portfield);
 
-		JButton hotovo = new JButton(sk.str.get("ServerCreate"));
+		JButton hotovo = new JButton(sk.str.ServerCreate);
 		hotovo.addActionListener(new ActionListener() {
 
 			@Override

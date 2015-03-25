@@ -1,7 +1,5 @@
 package dungeonmapper.gui;
 
-import hexapaper.source.HPSklad;
-
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,12 +27,12 @@ public class NewPaperFrame extends JPanel {
 	JFrame frame;
 
 	public NewPaperFrame() {
-		frame = new JFrame(sk.str.get("CreatePaperFrame"));
+		frame = new JFrame(sk.str.CreatePaperFrame);
 		frame.setSize(300, 200);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setResizable(false);
 		setLayout(new GridLayout(4, 1, 0, 10));
-		setBorder(new TitledBorder(sk.str.get("CreatePaperFrame")));
+		setBorder(new TitledBorder(sk.str.CreatePaperFrame));
 		init();
 		frame.add(this);
 		frame.setVisible(true);
@@ -46,7 +44,7 @@ public class NewPaperFrame extends JPanel {
 
 	protected void init() {
 		JPanel prvni = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel polhex = new JLabel(sk.str.get("Size"));
+		JLabel polhex = new JLabel(sk.str.Size);
 		polhexvalue = new JNumberTextField();
 		polhexvalue.setText("20");
 		polhexvalue.addFocusListener(new Listener());
@@ -54,7 +52,7 @@ public class NewPaperFrame extends JPanel {
 		prvni.add(polhexvalue);
 
 		JPanel druhy = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel numRow = new JLabel(sk.str.get("Rows"));
+		JLabel numRow = new JLabel(sk.str.Rows);
 		numRowValue = new JNumberTextField();
 		numRowValue.setText("300");
 		numRowValue.addFocusListener(new Listener());
@@ -62,14 +60,14 @@ public class NewPaperFrame extends JPanel {
 		druhy.add(numRowValue);
 
 		JPanel treti = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel numCol = new JLabel(sk.str.get("Columns"));
+		JLabel numCol = new JLabel(sk.str.Columns);
 		numColValue = new JNumberTextField();
 		numColValue.setText("300");
 		numColValue.addFocusListener(new Listener());
 		treti.add(numCol);
 		treti.add(numColValue);
 
-		JButton hotovo = new JButton(sk.str.get("CreatePaperButton"));
+		JButton hotovo = new JButton(sk.str.CreatePaperButton);
 		hotovo.addActionListener(new ActionListener() {
 
 			@Override
