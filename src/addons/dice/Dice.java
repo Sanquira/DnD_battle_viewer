@@ -152,7 +152,7 @@ public class Dice {
 		SideField.setToolTipText("Sides");
 		SideField.setMaxLength(4);
 		SideField.setHorizontalAlignment(SwingConstants.CENTER);
-		SideField.setText("6");
+		SideField.setInt(6);
 		SidePane.add(SideField);
 		SideField.setColumns(10);
 		
@@ -164,7 +164,7 @@ public class Dice {
 		ModField = new JNumberTextField();
 		ModField.setToolTipText("Modifier");
 		ModField.setHorizontalAlignment(SwingConstants.CENTER);
-		ModField.setText("0");
+		ModField.setInt(0);
 		ModPane.add(ModField);
 		ModField.setColumns(10);
 		
@@ -176,11 +176,9 @@ public class Dice {
 		CountField.setToolTipText("Count");
 		CountField.setText("1");
 		CountField.setPreferredSize(new Dimension(75, 19));
-		CountField.setMaxLength(4);
+		CountField.setMaxLength(2);
 		CountField.setHorizontalAlignment(SwingConstants.CENTER);
 		CountField.setColumns(10);
-		CountField.setAlignmentY(0.0f);
-		CountField.setAlignmentX(0.0f);
 		CountPane.add(CountField);
 		
 		JPanel DicePane = new JPanel();
@@ -195,8 +193,6 @@ public class Dice {
 		GridBagLayout gbl_DicePane = new GridBagLayout();
 		gbl_DicePane.columnWidths = new int[]{300, 22, 70, 0};
 		gbl_DicePane.rowHeights = new int[]{167, 0, 0, 0, 0, 0};
-//		gbl_DicePane.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-//		gbl_DicePane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		DicePane.setLayout(gbl_DicePane);
 		
 		PresetsPane = generatePresetPane(list);

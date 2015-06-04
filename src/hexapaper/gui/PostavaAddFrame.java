@@ -50,7 +50,7 @@ public class PostavaAddFrame extends JPanel {
 	JList<Object> list;
 
 	public PostavaAddFrame() {
-		frame = new JFrame(sk.str.vytvorPostavu);
+		frame = new JFrame(sk.str.CreateCharacter);
 		frame.setSize(450, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(new GridLayout(1, 2, 0, 10));
@@ -72,7 +72,7 @@ public class PostavaAddFrame extends JPanel {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		VP.setLayout(gbl);
-		VP.setBorder(new TitledBorder(sk.str.vytvorPostavu));
+		VP.setBorder(new TitledBorder(sk.str.CreateCharacter));
 
 		JPanel prvni = new JPanel(new GridLayout(1, 2, 10, 0));
 		JLabel isNPCL = new JLabel(sk.str.NPC);
@@ -176,7 +176,7 @@ public class PostavaAddFrame extends JPanel {
 		gbl.setConstraints(treti, gbc);
 		VP.add(treti);
 
-		JButton hotovo = new JButton(sk.str.vytvorPostavu);
+		JButton hotovo = new JButton(sk.str.CreateCharacter);
 		hotovo.addActionListener(new ActionListener() {
 
 			@Override
@@ -185,7 +185,7 @@ public class PostavaAddFrame extends JPanel {
 				// System.out.println(param.toString());
 
 				if (param.get(0).value.trim().isEmpty()) {
-					JOptionPane.showMessageDialog(vpg, sk.str.warningNameIsEmpty, sk.str.varovani, JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(vpg, sk.str.WarningNameIsEmpty, sk.str.Warning, JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 				Postava man = new Postava(param.remove(0).value, sk.LocDontCare, isNPSCB.isSelected(), param);
@@ -219,7 +219,7 @@ public class PostavaAddFrame extends JPanel {
 
 	private JPanel databazePostav() {
 		JPanel SP = new JPanel();
-		SP.setBorder(new TitledBorder(sk.str.vytvorenePostavy));
+		SP.setBorder(new TitledBorder(sk.str.CreatedCharacters));
 		GridBagLayout gbl = new GridBagLayout();
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;

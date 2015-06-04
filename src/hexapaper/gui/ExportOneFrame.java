@@ -59,10 +59,10 @@ public class ExportOneFrame extends JPanel {
 		String title = sk.str.export;
 		if (exportList.size() != 0) {
 			if (exportList.get(0) instanceof Artefact) {
-				title = sk.str.vytvoreneArtefakty;
+				title = sk.str.CreatedArtefacts;
 			}
 			if (exportList.get(0) instanceof Postava) {
-				title = sk.str.vytvorenePostavy;
+				title = sk.str.CreatedCharacters;
 			}
 		}
 		SP.setBorder(new TitledBorder(title));

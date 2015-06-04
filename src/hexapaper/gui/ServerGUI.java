@@ -25,6 +25,7 @@ import java.io.PrintStream;
 
 import javax.swing.border.TitledBorder;
 
+import addons.dice.LogWindow;
 import core.file.LoggingStream;
 import network.command.users.CommandServer;
 
@@ -48,7 +49,7 @@ public class ServerGUI extends JFrame {
 		}		
 	};
 	private JPanel panel;
-	private JTextArea textArea;
+	private LogWindow textArea;
 
 	/**
 	 * Launch the application.
@@ -87,7 +88,7 @@ public class ServerGUI extends JFrame {
 		GridBagLayout gbl_contentPane = new GridBagLayout();		
 		contentPane.setLayout(gbl_contentPane);
 		
-		JScrollPane TextPanel = new JScrollPane();
+		JPanel TextPanel = new JPanel();
 		TextPanel.setBorder(new TitledBorder(null, "Log", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_TextPanel = new GridBagConstraints();
 		gbc_TextPanel.weighty = 2.0;
@@ -98,15 +99,10 @@ public class ServerGUI extends JFrame {
 		gbc_TextPanel.gridx = 0;
 		gbc_TextPanel.gridy = 0;
 		contentPane.add(TextPanel, gbc_TextPanel);
-		//TextPanel.setLayout(new GridLayout(0, 1, 0, 0));
+		TextPanel.setLayout(new GridLayout(1, 1, 0, 0));
 		
-		panel = new JPanel();
-		TextPanel.setViewportView(panel);
-		panel.setLayout(new GridLayout(0, 1, 0, 0));
-		
-		textArea = new JTextArea();
-		textArea.setEditable(false);
-		panel.add(textArea);
+		textArea = new LogWindow();
+		TextPanel.add(textArea);
 		
 		textField = new JTextField();
 		

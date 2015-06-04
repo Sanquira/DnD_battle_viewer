@@ -1,6 +1,6 @@
 package dungeonmapper.source;
 
-import hexapaper.source.HPStrings;
+import hexapaper.language.HPStrings;
 
 import java.io.File;
 import java.net.URISyntaxException;

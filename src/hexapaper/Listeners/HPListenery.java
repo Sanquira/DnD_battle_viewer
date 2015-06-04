@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -138,6 +140,7 @@ public class HPListenery {
 			 * }//
 			 */
 			try {
+				sk.c.saveConfig();
 				sk.c.saveDb();
 				sk.c.saveMap();
 			} catch (IOException e) {
@@ -201,12 +204,16 @@ public class HPListenery {
 		public void mouseDragged(MouseEvent e) {
 			ArrayList<prvekkNN> idx = NN.getkNNindexes(e.getX(), e.getY());
 			if (SwingUtilities.isLeftMouseButton(e)) {
-				if (sk.insertingEntity) {
-					HraciPlocha t = (HraciPlocha) e.getComponent();
+				HraciPlocha t = (HraciPlocha) e.getComponent();
+				//System.out.println(sk.insertingEntity);
+				if (sk.repeatableInsert) {
 					t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
+					//System.out.println("inserting");
+				}
+				if (sk.colorAdd){
+					colorHex(idx);
 				}
 				ins2 = true;
-				HraciPlocha t = (HraciPlocha) e.getComponent();
 				t.drawCursor(e.getX(), e.getY());
 			}
 		}
@@ -217,32 +224,36 @@ public class HPListenery {
 				double x = e.getX();
 				double y = e.getY();
 				ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
-				if (e.getButton() == MouseEvent.BUTTON3) {
-					HraciPlocha t = (HraciPlocha) e.getComponent();
+				HraciPlocha t = (HraciPlocha) e.getComponent();
+				if (e.getButton() == MouseEvent.BUTTON3) {					
 					t.rotateEntity(idx);
 				}
 				if(SwingUtilities.isLeftMouseButton(e)){
 					if (sk.insertingEntity) {
-						HraciPlocha t = (HraciPlocha) e.getComponent();
 						t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
 					}
 					else {
 						if ((sk.isConnected && sk.isPJ) || !sk.isConnected) {
 							if(sk.colorAdd){
-								sk.souradky.get(idx.get(0).getIdx()).setBcg(sk.color);
-								Object[] o={idx.get(0).getIdx(),sk.color};
-								sk.send(o,"paintEnt",true);
+								colorHex(idx);
+//								sk.souradky.get(idx.get(0).getIdx()).setBcg(sk.color);
+//								Object[] o={idx.get(0).getIdx(),sk.color};
+//								sk.send(o,"paintEnt",true);
 							}
 							sk.RMenu.redrawProperities(idx.get(0));
 							ins = true;
-							HraciPlocha t = (HraciPlocha) e.getComponent();
 							t.saveEntity(idx.get(0).getIdx());
 						}
 					}
 				}
 			}
 		}
-
+		
+		private void colorHex(ArrayList<prvekkNN> idx){
+			sk.souradky.get(idx.get(0).getIdx()).setBcg(sk.color);
+			Object[] o={idx.get(0).getIdx(),sk.color};
+			sk.send(o,"paintEnt",true);	
+		}
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			if (ins && e.getButton() == MouseEvent.BUTTON1 && sk.canEvent) {
@@ -388,6 +399,25 @@ public class HPListenery {
 			}			
 		}
 
+	}
+	public class ChangeLang implements ActionListener {
+			
+		private String name;
+		private hexapaper frame;
+		public ChangeLang(String name,hexapaper frame){
+			this.name = name;
+			this.frame = frame;
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			sk.SetupLang(name);
+			sk.c.Language = name;
+			JOptionPane.showMessageDialog(frame,
+				    sk.str.LanguageChangeMessage,
+				    sk.str.LanguageChange,
+				    JOptionPane.INFORMATION_MESSAGE);
+		}
+		
 	}
 
 }

@@ -7,12 +7,15 @@ import java.io.OutputStream;
 
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import javax.swing.text.BadLocationException;
+
+import addons.dice.LogWindow;
 
 public class LoggingStream extends OutputStream {
-    private JTextArea textControl;
+    private LogWindow textControl;
     private FileWriter writer;
     
-    public LoggingStream(String name, JTextArea control ) {
+    public LoggingStream(String name, LogWindow control ) {
     	create(name);
         textControl = control;
     }
@@ -37,7 +40,12 @@ public class LoggingStream extends OutputStream {
 		if(textControl!=null){
 	        Runnable  runnable = new Runnable() {
 	            public void run(){
-	            	textControl.append(text);
+	            	try {
+						textControl.insertMessage(text);
+					} catch (BadLocationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 	            }
 	        };
 	        SwingUtilities.invokeLater(runnable);		

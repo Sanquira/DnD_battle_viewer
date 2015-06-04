@@ -1,29 +1,24 @@
-package hexapaper.source;
-
-import java.io.File;
-import java.net.URISyntaxException;
+package hexapaper.language;
 
 import com.google.gson.annotations.Expose;
-
-import core.file.Config;
-import core.file.FileHandler;
 
 public class HPStrings {
 
 	@Expose
 	public static HPStrings instance;
-
-	public String varovani = "Varování­";
-	public String warningNameIsEmpty = "Hodnota jméno nesmí být prázdná!!!";
-	public String vytvorPostavu = "Vytvoř postavu";
-	public String vytvorenePostavy = "Vytvořené postavy";
-	public String vytvorArtefakt = "Vytvoř artefakt";
-	public String vytvoreneArtefakty = "Vytvořené artefakty";
-	public String vytvorPaper = "Vytvoř hexu";
-	public String Yes = "Ano";
-	public String No = "Ne";
+	public static String lang_name = "English";
+	
+	public String Warning = "Warning";
+	public String WarningNameIsEmpty = "Name field must be filled!";
+	public String CreateCharacter = "Create Character";
+	public String CreatedCharacters = "Created Characters";
+	public String CreateArtefact = "Create Artefact";
+	public String CreatedArtefacts = "Created Artefacts";
+	public String CreateHex = "Create Hex";
+	public String Yes = "Yes";
+	public String No = "No";
 	public String NPC = "NPC";
-	public String Artefact = "Artefakt";
+	public String Artefact = "Artefact";
 	public String Radius = "Poloměr Hexu";
 	public String LineCount = "Počet řádků";
 	public String CollumnCount = "Počet sloupců";
@@ -42,7 +37,7 @@ public class HPStrings {
 	public String addArt = "Přidej artefakt";
 	public String addPost = "Přidej postavu";
 
-	public String Battlecontrol = "Ovládání bitvy";
+	public String Battlecontrol;
 	public String Objproperties = "Vlastnosti objektu";
 	public String showPlayerColor = "Skrýt hráče";
 	public String showNPCColor = "Skrýt NPC";
@@ -126,7 +121,9 @@ public class HPStrings {
 
 	public String DataLoss = "Ztráta dat";
 	public String DataLossMessage = "Pozor program automaticky NEUKLÁDÁ změny v databázích. \nVšechny neuložené změny budou ztraceny. \nChcete opravdu skončit?";
-
+	public String LanguageChange = "Změna jazyka";
+	public String LanguageChangeMessage ="Změna se projeví až po restartu aplikace.";
+	
 	public String diceTitle = "Kostka Log";
 
 	// Commands strings
@@ -141,26 +138,10 @@ public class HPStrings {
 	public String versionUsage = "Version <Name>";
 	public String versionHelp = "Požádá hráče o verzi clienta";
 	
-	public static HPStrings getInstance() {
-		if (instance == null) {			
-			try {
-				instance = loadFile();
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return instance;
+	public String LangBar = "Jazyky";
+
+	public static <T extends HPStrings> T loadFile(String name) throws InstantiationException, ClassNotFoundException, IllegalAccessException{
+		Class<T> type = (Class<T>) Class.forName("hexapaper.language."+name);
+		return type.newInstance();
 	}
-	private static HPStrings loadFile() throws URISyntaxException{
-		File j = new File(Config.getConfigDir() + File.separatorChar + HPStrings.class.getSimpleName() + ".lang.json");
-		if(j.exists()&&!j.isDirectory()){
-			FileHandler fh=new FileHandler(j.getAbsolutePath());
-			return fh.load(HPStrings.class);
-		}
-		return new HPStrings();
-	}
-//	public static void load(){
-//		instance = loadFile();
-//	}
 }

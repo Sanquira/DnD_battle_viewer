@@ -48,7 +48,7 @@ public class ArtefactAddFrame extends JPanel {
 	JList<Object> list;
 
 	public ArtefactAddFrame() {
-		frame = new JFrame(sk.str.vytvorArtefakt);
+		frame = new JFrame(sk.str.CreateArtefact);
 		frame.setSize(450, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(new GridLayout(1, 2, 0, 10));
@@ -70,7 +70,7 @@ public class ArtefactAddFrame extends JPanel {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		VP.setLayout(gbl);
-		VP.setBorder(new TitledBorder(sk.str.vytvorArtefakt));
+		VP.setBorder(new TitledBorder(sk.str.CreateArtefact));
 
 		JScrollPane druhySc = new JScrollPane();
 		druhySc.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -155,7 +155,7 @@ public class ArtefactAddFrame extends JPanel {
 		gbl.setConstraints(treti, gbc);
 		VP.add(treti);
 
-		JButton hotovo = new JButton(sk.str.vytvorArtefakt);
+		JButton hotovo = new JButton(sk.str.CreateArtefact);
 		hotovo.addActionListener(new ActionListener() {
 
 			@Override
@@ -164,7 +164,7 @@ public class ArtefactAddFrame extends JPanel {
 				// System.out.println(param.toString());
 
 				if (param.get(0).value.trim().isEmpty()) {
-					JOptionPane.showMessageDialog(vpg, sk.str.warningNameIsEmpty, sk.str.varovani, JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(vpg, sk.str.WarningNameIsEmpty, sk.str.Warning, JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 				Artefact man = new Artefact(param.remove(0).value, sk.LocDontCare, param);
@@ -198,7 +198,7 @@ public class ArtefactAddFrame extends JPanel {
 
 	private JPanel databazeArtefactu() {
 		JPanel SP = new JPanel();
-		SP.setBorder(new TitledBorder(sk.str.vytvoreneArtefakty));
+		SP.setBorder(new TitledBorder(sk.str.CreatedArtefacts));
 		GridBagLayout gbl = new GridBagLayout();
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;

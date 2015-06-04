@@ -27,12 +27,12 @@ public class NewPaperFrame extends JPanel {
 	JFrame frame;
 
 	public NewPaperFrame() {
-		frame = new JFrame(sk.str.vytvorPaper);
+		frame = new JFrame(sk.str.CreateHex);
 		frame.setSize(300, 200);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setResizable(false);
 		setLayout(new GridLayout(4, 1, 0, 10));
-		setBorder(new TitledBorder(sk.str.vytvorPaper));
+		setBorder(new TitledBorder(sk.str.CreateHex));
 		init();
 		frame.add(this);
 		frame.setVisible(true);
@@ -67,7 +67,7 @@ public class NewPaperFrame extends JPanel {
 		treti.add(numCol);
 		treti.add(numColValue);
 
-		JButton hotovo = new JButton(sk.str.vytvorPaper);
+		JButton hotovo = new JButton(sk.str.CreateHex);
 		hotovo.addActionListener(new ActionListener() {
 
 			@Override

@@ -317,7 +317,7 @@ public class HPRightMenu extends JPanel {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		VP.setLayout(gbl);
-		VP.setBorder(new TitledBorder(sk.str.vytvorPostavu));
+		VP.setBorder(new TitledBorder(sk.str.CreateCharacter));
 
 		JPanel prvni = new JPanel(new BorderLayout(10, 10));
 

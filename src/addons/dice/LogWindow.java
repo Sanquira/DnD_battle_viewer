@@ -53,6 +53,10 @@ public class LogWindow extends JScrollPane {
 	public void addMessage(String text){
 		addMessage(text,Color.BLACK);
 	}
+	public void insertMessage(String text) throws BadLocationException{
+		document.insertString(document.getLength(), text, style);
+		this.getVerticalScrollBar().setValue(this.getVerticalScrollBar().getMaximum());
+	}
 
 	// JTextPane textpane = new JTextPane(document);
 	//

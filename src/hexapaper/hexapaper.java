@@ -161,10 +161,13 @@ public class hexapaper extends JFrame {
 		addons.add(PJInfo);
 		addons.add(kostka);
 		addons.add(ExportLang);
-
+		
+		JMenu lang = new JMenu(sk.str.LangBar);
+		addLangs(lang);
 		HlavniMenu.add(hraMenu);
 		HlavniMenu.add(upravy);
 		HlavniMenu.add(addons);
+		HlavniMenu.add(lang);
 		
 		sk.serverbanned.add(PJInfo);
 		sk.serverbanned.add(novyPaper);
@@ -213,6 +216,30 @@ public class hexapaper extends JFrame {
 		return HlavniMenu;
 	}
 
+	private void addLangs(JMenu menu) {		
+		for(String lang:HPSklad.Languages){
+			JMenuItem item = new JMenuItem(getLangName(lang));
+			if(lang.equals(sk.c.Language)){
+				item.setForeground(Color.GREEN);
+			}
+			else{
+				item.addActionListener(lis.new ChangeLang(lang,this));
+			}
+			menu.add(item);
+		}
+	}
+	
+	private String getLangName(String lang){
+		try {
+			Class<?> type = Class.forName("hexapaper.language."+lang);
+			return (String) type.getDeclaredField("lang_name").get(null);
+		} catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
+	}
+
 	private void hraciPlocha() {
 		sk.hraciPlocha.addMouseListener(lis.new HraciPlochaListener());
 		sk.hraciPlocha.addMouseMotionListener(lis.new HraciPlochaListener());
@@ -222,4 +249,5 @@ public class hexapaper extends JFrame {
 		hraciplsc.getViewport().addChangeListener(lis.new ScrollListener());
 		sk.scroll=hraciplsc;
 	}
+
 }

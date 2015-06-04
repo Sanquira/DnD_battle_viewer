@@ -25,6 +25,7 @@ public class Config {
 	public String IP = "212.96.186.28";
 	public String serverIP = "192.168.0.102";
 	public int serverport = 10555;
+	public String Language = "Czech";
 	
 	private static String configDirectory(String name)
 	{

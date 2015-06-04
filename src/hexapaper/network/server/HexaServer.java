@@ -19,7 +19,7 @@ public class HexaServer {
 	private static CommandServer s=null;
 	
 	public HexaServer(boolean GUI,boolean show){
-		storage.initLang();
+		storage.SetupLang("English");
 		if(!show){
 			new ServerCreateFrame(this);
 		}

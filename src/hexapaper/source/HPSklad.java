@@ -11,6 +11,7 @@ import hexapaper.gui.Gprvky;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.HPRightMenu;
 import hexapaper.gui.PJGUI;
+import hexapaper.language.HPStrings;
 import hexapaper.network.server.HexaClient;
 
 import java.awt.Color;
@@ -70,8 +71,9 @@ public class HPSklad {
 	public HexaClient client;
 	public HPStrings str;
 	
-	public final static String VERSION = "v0.4d";
+	public final static String VERSION = "v0.5a";
 	public final static String FILEVERSION = "0.2";
+	public final static String[] Languages = {"HPStrings","Czech"};
 
 	public void send(Object o, String header, boolean PJ) {
 		try {
@@ -123,11 +125,20 @@ public class HPSklad {
 			item.repaint();
 		}
 	}
-	public void initLang(){
-		str = HPStrings.getInstance();
+	public void SetupLang(String lang){
+//		str = new English();
+		try {
+			str = HPStrings.loadFile(lang);
+		} catch (InstantiationException | ClassNotFoundException
+				| IllegalAccessException e) {
+			e.printStackTrace();
+			str = new HPStrings();
+			System.out.println("Unable to load "+lang+" localization");
+		}
 	}
 	public void init() {
-		initLang();
+		System.out.println(c.Language);
+		SetupLang(c.Language);
 		hraciPlocha = new HraciPlocha();
 
 		prvky = new Gprvky();
