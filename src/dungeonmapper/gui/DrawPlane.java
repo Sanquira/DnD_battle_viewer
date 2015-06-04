@@ -19,7 +19,7 @@ import dungeonmapper.source.DMSklad;
 public class DrawPlane extends JPanel implements MouseMotionListener, MouseListener {
 
 	private DMSklad sk = DMSklad.getInstance();
-	public HashMap<Integer,ArrayList<DMGridElement>> layers = new HashMap<Integer,ArrayList<DMGridElement>>();
+	public HashMap<Integer, ArrayList<DMGridElement>> layers = new HashMap<Integer, ArrayList<DMGridElement>>();
 	private int chsnLay = 0;
 	private int[] startCoor = new int[2];
 	private int[] endCoorTmp = new int[2];
@@ -33,14 +33,15 @@ public class DrawPlane extends JPanel implements MouseMotionListener, MouseListe
 		addMouseMotionListener(this);
 		addMouseListener(this);
 	}
-	
-	public void init(){
-		layers=new HashMap<Integer,ArrayList<DMGridElement>>();
+
+	public void init() {
+		layers = new HashMap<Integer, ArrayList<DMGridElement>>();
 		genDefaultGrid(chsnLay);
 		setPreferredSize(new Dimension(sk.COLS * sk.CSIZE, sk.ROWS * sk.CSIZE));
 		revalidate();
 		repaint();
 	}
+
 	public void genDefaultGrid(int lay) {
 		// sk.COLS = 10;
 		// sk.ROWS = 5;
@@ -49,10 +50,10 @@ public class DrawPlane extends JPanel implements MouseMotionListener, MouseListe
 		for (int[] is : coor) {
 			grid.add(new DMGridElement(is[0], is[1], "W"));
 		}
-		//grid.get(1).setType(DMMapTypesEnum.F);
-		//grid.get(2).setType(DMMapTypesEnum.H);
-		//grid.get(3).setType(DMMapTypesEnum.s);
-		//grid.get(4).setType(DMMapTypesEnum.S);
+		// grid.get(1).setType(DMMapTypesEnum.F);
+		// grid.get(2).setType(DMMapTypesEnum.H);
+		// grid.get(3).setType(DMMapTypesEnum.s);
+		// grid.get(4).setType(DMMapTypesEnum.S);
 
 		layers.put(lay, grid);
 
@@ -62,7 +63,7 @@ public class DrawPlane extends JPanel implements MouseMotionListener, MouseListe
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		int[] shapeParam = getShapeParam();
-		if(!layers.containsKey(chsnLay)){
+		if (!layers.containsKey(chsnLay)) {
 			genDefaultGrid(chsnLay);
 		}
 		for (DMGridElement gridEl : layers.get(chsnLay)) {
@@ -132,22 +133,24 @@ public class DrawPlane extends JPanel implements MouseMotionListener, MouseListe
 				{ gridEl.getX(), gridEl.getY() + sk.CSIZE / 2 },
 				{ gridEl.getX() + sk.CSIZE, gridEl.getY() + sk.CSIZE / 2 },
 				{ gridEl.getX() + sk.CSIZE / 2, gridEl.getY() + sk.CSIZE } };
-		if (sk.drawShape.equals(sk.drawShapes[0])) {
-			for (int[] is : drawTrajectory) {
-				if (is[0] >= rohy[0][0] && is[0] < rohy[2][0] && is[1] >= rohy[0][1] && is[1] < rohy[1][1]) {
-					return true;
+		if (sk.DPSC.getViewport().getViewRect().contains(gridEl.getPoint())) {
+			if (sk.drawShape.equals(sk.drawShapes[0])) {
+				for (int[] is : drawTrajectory) {
+					if (is[0] >= rohy[0][0] && is[0] < rohy[2][0] && is[1] >= rohy[0][1] && is[1] < rohy[1][1]) {
+						return true;
+					}
 				}
 			}
-		}
-		for (int[] is : rohy) {
-			if (sk.drawShape.equals(sk.drawShapes[1]) &&
-					is[0] > x && is[0] < x + width && is[1] > y && is[1] < y + height) {
-				return true;
-			}
-			if (sk.drawShape.equals(sk.drawShapes[2]) &&
-					(Math.pow(is[0] - startCoor[0], 2)) / Math.pow(width / 2, 2) +
-							(Math.pow(is[1] - startCoor[1], 2)) / Math.pow(height / 2, 2) <= 1) {
-				return true;
+			for (int[] is : rohy) {
+				if (sk.drawShape.equals(sk.drawShapes[1]) &&
+						is[0] > x && is[0] < x + width && is[1] > y && is[1] < y + height) {
+					return true;
+				}
+				if (sk.drawShape.equals(sk.drawShapes[2]) &&
+						(Math.pow(is[0] - startCoor[0], 2)) / Math.pow(width / 2, 2) +
+								(Math.pow(is[1] - startCoor[1], 2)) / Math.pow(height / 2, 2) <= 1) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -205,10 +208,10 @@ public class DrawPlane extends JPanel implements MouseMotionListener, MouseListe
 		revalidate();
 		repaint();
 	}
-	
+
 	public void addChsnLay(int chsnLay) {
-		sk.layer.setInt(this.chsnLay+chsnLay);
-		setChsnLay(this.chsnLay+chsnLay);
+		sk.layer.setInt(this.chsnLay + chsnLay);
+		setChsnLay(this.chsnLay + chsnLay);
 	}
 
 	private Color setColorInsideShape(DMGridElement gridEl, int[] shapeParam) {

@@ -42,6 +42,8 @@ public class dungeonMapper extends JFrame {
 		getContentPane().setLayout(new BorderLayout());
 		initializace();
 		setVisible(true);
+		sk.DPSC.getHorizontalScrollBar().setValue(sk.COLS * sk.CSIZE / 2);
+		sk.DPSC.getVerticalScrollBar().setValue(sk.ROWS * sk.CSIZE / 2);
 	}
 
 	private void initializace() {
@@ -58,45 +60,45 @@ public class dungeonMapper extends JFrame {
 		JMenu hra = new JMenu(sk.str.gameMenu);
 		MB.add(hra);
 
-//		JMenuItem konec = new JMenuItem(sk.str.get("endGame"));
-//		konec.addActionListener(lis.new KonecListener());
-//		MB.add(konec);
-		
+		// JMenuItem konec = new JMenuItem(sk.str.get("endGame"));
+		// konec.addActionListener(lis.new KonecListener());
+		// MB.add(konec);
+
 		JMenuItem newPaper = new JMenuItem(sk.str.newGame);
 		newPaper.addActionListener(lis.new NewPaper());
 		hra.add(newPaper);
-		
+
 		JMenuItem save = new JMenuItem(sk.str.saveGame);
 		save.addActionListener(lis.new SaveGame());
 		hra.add(save);
-		
+
 		JMenuItem load = new JMenuItem(sk.str.loadGame);
 		load.addActionListener(lis.new LoadGame());
 		hra.add(load);
-		
+
 		JPanel panel = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 		MB.add(panel);
-		
+
 		JButton plusButton = new JButton("+");
 		plusButton.setPreferredSize(new Dimension(41, 20));
 		plusButton.addActionListener(lis.new ChangeLayer(1));
 		panel.add(plusButton);
-		
+
 		layerField = new JNumberTextField();
-		//layerField.setFont(new Font("Sitka Small", Font.PLAIN, 9));
+		// layerField.setFont(new Font("Sitka Small", Font.PLAIN, 9));
 		layerField.setInt(sk.drawPlane.getChsnLay());
 		layerField.addActionListener(lis.new SetLayer());
 		panel.add(layerField);
 		layerField.setColumns(6);
-		
+
 		JButton minusButton = new JButton("-");
 		minusButton.addActionListener(lis.new ChangeLayer(-1));
 		minusButton.setPreferredSize(new Dimension(41, 20));
 		panel.add(minusButton);
 		// TODO Dodelat menu
-		sk.layer=layerField;
+		sk.layer = layerField;
 		return MB;
 	}
 
