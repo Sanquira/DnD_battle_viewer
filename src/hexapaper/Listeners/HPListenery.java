@@ -230,7 +230,9 @@ public class HPListenery {
 				}
 				if(SwingUtilities.isLeftMouseButton(e)){
 					if (sk.insertingEntity) {
-						t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
+						if(idx.get(0).getVzd()<=sk.c.RADIUS){
+							t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
+						}
 					}
 					else {
 						if ((sk.isConnected && sk.isPJ) || !sk.isConnected) {
