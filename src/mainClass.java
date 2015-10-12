@@ -47,6 +47,7 @@ public class mainClass {
 			}
 		}
 		if (port != null) {
+			System.out.println(port);
 			if (server) {
 				cfg.serverport = port;
 			} else {

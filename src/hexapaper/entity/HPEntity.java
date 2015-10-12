@@ -66,7 +66,7 @@ public abstract class HPEntity implements Cloneable,Serializable {
 		return this;
 	}
 
-	public void setTag(String tag) {
+	public HPEntity setTag(String tag) {
 		if (this.tag == null) {
 			try {
 				this.tag = name.substring(0, 2);
@@ -76,6 +76,7 @@ public abstract class HPEntity implements Cloneable,Serializable {
 		} else {
 			this.tag = tag;
 		}
+		return this;
 	}
 
 	public String getNick() {

@@ -124,8 +124,8 @@ public class HPStrings {
 	public String LanguageChange = "Změna jazyka";
 	public String LanguageChangeMessage ="Změna se projeví až po restartu aplikace.";
 	
-	public String diceTitle = "Kostka Log";
-
+	public String diceTitle = "Log kostky";	
+	public String colorPickerTitle = "Color Picker";
 	// Commands strings
 	public String pjHelp = "Zkontroluje, zda je hráč PJ";
 	public String pjUsage = "pj <Name>";
@@ -139,6 +139,7 @@ public class HPStrings {
 	public String versionHelp = "Požádá hráče o verzi clienta";
 	
 	public String LangBar = "Jazyky";
+	public String disconnect = "Odpojit se";
 
 	public static <T extends HPStrings> T loadFile(String name) throws InstantiationException, ClassNotFoundException, IllegalAccessException{
 		Class<T> type = (Class<T>) Class.forName("hexapaper.language."+name);

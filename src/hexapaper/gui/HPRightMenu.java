@@ -1,6 +1,5 @@
 package hexapaper.gui;
 
-import hexapaper.hexapaper;
 import hexapaper.Listeners.ValueListener;
 import hexapaper.entity.Artefact;
 import hexapaper.entity.FreeSpace;
@@ -8,6 +7,7 @@ import hexapaper.entity.HPEntity;
 import hexapaper.entity.Postava;
 import hexapaper.entity.Wall;
 import hexapaper.source.HPSklad;
+import hexapaper.source.HPSklad.LabelSystem;
 import hexapaper.source.HPSklad.PropPair;
 import hexapaper.source.HPSklad.prvekkNN;
 
@@ -39,6 +39,7 @@ import javax.swing.JToggleButton;
 import javax.swing.JViewport;
 import javax.swing.border.TitledBorder;
 
+import net.miginfocom.swing.MigLayout;
 import core.EditableJLabel;
 import core.ValueChangedListener;
 
@@ -87,7 +88,6 @@ public class HPRightMenu extends JPanel {
 		JPanel ovladani = ovladani();
 		gbl.setConstraints(ovladani, gbc);
 		add(ovladani);
-
 		prop = vlastnosti();
 		// JScrollPane prop = vlastnosti();
 		gbc.gridy = 2;
@@ -109,6 +109,7 @@ public class HPRightMenu extends JPanel {
 		prvni.setLayout(new GridLayout(5, 1, 0, 10));
 
 		clrB = new JToggleButton("Barva");
+		sk.addButton(clrB, LabelSystem.SingleOrPJ);
 		clrB.setSelected(sk.colorAdd);
 		clrB.addActionListener(new ActionListener() {
 
@@ -124,7 +125,9 @@ public class HPRightMenu extends JPanel {
 		clrP.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				sk.clr.setVisible(true);
+				if(sk.singleorPJ){
+					sk.clr.setVisible(true);
+				}
 			}
 		});
 		clrP.add(clrB,BorderLayout.EAST);
@@ -135,6 +138,7 @@ public class HPRightMenu extends JPanel {
 		JPanel wallFreeSpace = new JPanel(new GridLayout(1, 2, 10, 0));
 
 		wall = new JToggleButton(sk.str.addWall);
+		sk.addButton(wall, LabelSystem.SingleOrPJ);
 		wall.addActionListener(new ActionListener() {
 
 			@Override
@@ -144,6 +148,7 @@ public class HPRightMenu extends JPanel {
 		});
 
 		freespace = new JToggleButton(sk.str.addFreeSpace);
+		sk.addButton(freespace, LabelSystem.SingleOrPJ);
 		freespace.addActionListener(new ActionListener() {
 
 			@Override
@@ -161,6 +166,7 @@ public class HPRightMenu extends JPanel {
 		Object[] artlist = sk.databazeArtefaktu.toArray();
 		addAC = new JComboBox<>();
 		addAC.setModel(new DefaultComboBoxModel<>(artlist));
+		sk.addButton(addAC, LabelSystem.SingleOrPJ);
 		addAC.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -169,6 +175,7 @@ public class HPRightMenu extends JPanel {
 		});
 
 		addAB = new JToggleButton("++");
+		sk.addButton(addAB, LabelSystem.SingleOrPJ);
 		// addAB.setPreferredSize(new Dimension(45, 45));
 		addAB.addActionListener(new ActionListener() {
 
@@ -184,6 +191,7 @@ public class HPRightMenu extends JPanel {
 		JPanel addP = new JPanel(new BorderLayout(10, 10));
 		Object[] postlist = sk.databazePostav.toArray();
 		addPC = new JComboBox<>(postlist);
+		sk.addButton(addPC, LabelSystem.SingleOrPJ);
 		addPC.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -191,6 +199,7 @@ public class HPRightMenu extends JPanel {
 			}
 		});
 		addPB = new JToggleButton("++");
+		sk.addButton(addPB, LabelSystem.SingleOrPJ);
 		// addPB.setPreferredSize(new Dimension(45, 45));
 		addPB.addActionListener(new ActionListener() {
 
@@ -201,11 +210,6 @@ public class HPRightMenu extends JPanel {
 		});
 		addP.add(addPC, BorderLayout.CENTER);
 		addP.add(addPB, BorderLayout.EAST);
-
-		sk.serverbanned.add(addPB);
-		sk.serverbanned.add(addAB);
-		sk.serverbanned.add(wall);
-		sk.serverbanned.add(freespace);
 
 		prvni.add(clrP);
 		prvni.add(showN);
@@ -310,7 +314,7 @@ public class HPRightMenu extends JPanel {
 	private JPanel vlastnosti() {
 		JPanel VP = new JPanel();
 		VP.setBorder(new TitledBorder(sk.str.Objproperties));
-		if (vlastnosti == null) {
+		if (vlastnosti == null || !sk.singleorPJ) {
 			return VP;
 		}
 		GridBagLayout gbl = new GridBagLayout();
@@ -400,7 +404,7 @@ public class HPRightMenu extends JPanel {
 				}
 				vlastnosti.setTag(chtag);
 				updateEnt();
-				hexapaper.HPfrm.repaint();
+				sk.hraciPlocha.repaint();
 				
 			}
 			
@@ -441,24 +445,24 @@ public class HPRightMenu extends JPanel {
 		VP.add(nameatag);
 
 		JScrollPane druhySc = new JScrollPane();
-		int sizeParam;
 		JScrollBar vert = druhySc.getVerticalScrollBar();
+		vert.setUnitIncrement(30);
 		if (isPostava) {
 			param = ((Postava) vlastnosti).getParam();
 		} else {
 			param = ((Artefact) vlastnosti).getParam();
 		}
 
-		if (param.size() < 8) {
-			sizeParam = 8;
-			vert.setEnabled(false);
-			druhySc.setVerticalScrollBar(vert);
-		} else {
-			sizeParam = param.size();
-			vert.setEnabled(true);
-			druhySc.setVerticalScrollBar(vert);
-		}
-		JPanel druhyIn = new JPanel(new GridLayout(sizeParam, 1));
+//		if (param.size() < 8) {
+//			sizeParam = 8;
+//			vert.setEnabled(false);
+//			druhySc.setVerticalScrollBar(vert);
+//		} else {
+//			sizeParam = param.size();
+//			vert.setEnabled(true);
+//			druhySc.setVerticalScrollBar(vert);
+//		}
+		JPanel druhyIn = new JPanel(new MigLayout("", "[grow]", "[]"));
 		// druhyIn.add
 		MouseListener m = new MouseAdapter() {
 			@Override
@@ -478,7 +482,7 @@ public class HPRightMenu extends JPanel {
 				}
 			}
 		};
-		boolean skryj = false;
+		boolean skryj = sk.isConnected && !sk.isPJ;
 		if (isPostava) {
 			if (((Postava) vlastnosti).isPJ() && sk.hideNPCColor) {
 				skryj = true;
@@ -486,9 +490,6 @@ public class HPRightMenu extends JPanel {
 			if (!((Postava) vlastnosti).isPJ() && sk.hidePlayerColor) {
 				skryj = true;
 			}
-		}
-		if (sk.isConnected && !sk.isPJ) {
-			skryj = true;
 		}
 		if (!skryj) {
 			int i = 0;
@@ -510,7 +511,7 @@ public class HPRightMenu extends JPanel {
 				tfldValue.getDocument().addDocumentListener(list);
 				druhy.add(lblName);
 				druhy.add(tfldValue);
-				druhyIn.add(druhy);
+				druhyIn.add(druhy,"growx, wrap");
 				i += 1;
 			}
 		}
@@ -568,7 +569,7 @@ public class HPRightMenu extends JPanel {
 		}
 	}
 
-	protected void updateCreate() {
+	public void updateCreate() {
 		removeAll();
 		praveMenu();
 		updateEnt();
@@ -585,11 +586,12 @@ public class HPRightMenu extends JPanel {
 			if (ent instanceof Postava ||
 					ent instanceof Artefact) {
 				vlastnosti = ent;
-				if (vlastnosti instanceof Postava) {
-					isPostava = true;
-				} else {
-					isPostava = false;
-				}
+				isPostava = vlastnosti instanceof Postava;
+//				if (vlastnosti instanceof Postava) {
+//					isPostava = true;
+//				} else {
+//					isPostava = false;
+//				}
 				removeAll();
 				praveMenu();
 				revalidate();
@@ -598,6 +600,7 @@ public class HPRightMenu extends JPanel {
 		}
 	}
 	public void updateEnt(){
+		sk.insertedEntity = null;
 		sk.hraciPlocha.insertEntity(position, vlastnosti,true);
 	}
 }

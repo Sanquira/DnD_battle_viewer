@@ -28,6 +28,7 @@ public class ColorPicker extends JFrame {
 	 * Create the frame.
 	 */
 	public ColorPicker() {
+		setTitle(sk.str.colorPickerTitle);
 		setBounds(100, 100, 628, 401);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

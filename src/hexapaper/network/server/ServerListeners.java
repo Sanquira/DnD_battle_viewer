@@ -4,8 +4,6 @@ import hexapaper.entity.HPEntity;
 import hexapaper.source.HPSklad;
 
 import java.awt.Color;
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,10 +26,10 @@ import network.core.source.MessagePacket;
 
 public class ServerListeners {
 	private CommandServer server;
+	private HexaServer hexa;
 	private HPSklad storage=HPSklad.getInstance();
 	private int gridSl,gridRa,RADIUS;
 	private ConcurrentMap<Integer,HPEntity> entity;
-	private ConcurrentMap<String,String> versions = new ConcurrentHashMap<String,String>();
 	private ConcurrentMap<Integer,Color> colors = new ConcurrentHashMap<Integer,Color>();
 	private ClientInfo PJ=null;
 	private String[] allowedVersions={HPSklad.VERSION};
@@ -47,7 +45,8 @@ public class ServerListeners {
 				//PJ.send(c.getNick(),versions,"PlayerConnect");
 			}
 			System.out.println(LangFile.sub(storage.str.ClientConnected,"name",c.getNick()));
-			server.rebroadcast(c.getNick(),(Serializable) versions,"PlayerConnect");
+			server.rebroadcast(c.getNick(),null,"PlayerConnect");
+			hexa.gui.addPlayer(c.getNick());
 		}
 
 		private void sendColors(ClientInfo c) {
@@ -68,9 +67,10 @@ public class ServerListeners {
 	//ClientDisconnectListeners
 	@ClientDisconnectAnnotation
 	ClientDisconnectListener disconnect=new ClientDisconnectListener(){
-		public void clientDisconnect(ClientInfo c,IOException e, String reason, boolean kicked) {
+		public void clientDisconnect(ClientInfo c,Exception e, String reason, boolean kicked) {
 			System.out.println(getDisconnectMessage(c,getErrorMessage(e)));
-			server.rebroadcast(c.getNick(),(Serializable) versions,"PlayerDisconnect");			
+			hexa.gui.removePlayer(c.getNick());
+			server.rebroadcast(c.getNick(),null,"PlayerDisconnect");			
 		}		
 	};
 	//ReceiveListeners
@@ -145,7 +145,7 @@ public class ServerListeners {
 			else{
 				Message=LangFile.sub(storage.str.DiceRolledModifier, map);
 			}
-			System.out.println(Message);
+			hexa.gui.diceLog.addMessage(Message);
 			if(PJ!=null){
 				PJ.send(p);
 			}
@@ -158,13 +158,24 @@ public class ServerListeners {
 			Map<String,String> map=new HashMap<String,String>();
 			map.put("name",p.getNick());
 			map.put("version",(String) p.getObject());
-			versions.put(p.getNick(),(String) p.getObject());
 			System.out.println(LangFile.sub(storage.str.ClientVersion, map));
 			if(!checkVersion((String) p.getObject())){
 				server.getNetworkStorage().getClientByName(p.getNick()).kick("Unsupported version");
 			}
 			if(PJ!=null){
 				//PJ.send(versions,"versionUpdate");
+			}
+		}		
+	};
+	@PacketReceiveAnnotation(header = "clientCmd")
+	PacketReceiveListener executeCmd = new PacketReceiveListener(){
+		@Override
+		public void packetReceive(MessagePacket msg) {
+			//System.out.println("Přijato");
+			if(msg.getNick().equals(PJ.getNick())){
+				String result = server.getCommandStorage().checkCommand((String) msg.getObject(),true); 
+				server.getNetworkStorage().getClientByName(msg.getNick()).send(result, "cmd");
+				//System.out.println("Odeslano");
 			}
 		}		
 	};
@@ -178,7 +189,7 @@ public class ServerListeners {
 				}	
 				PJ=c;
 				c.send(0, "requestPJInfo");
-				c.send((Serializable) versions, "versionUpdate");
+				//c.send((Serializable) versions, "versionUpdate");
 				System.out.println(LangFile.sub(storage.str.ClientsetPJ,"name",c.getNick()));
 				return;
 			}
@@ -199,7 +210,7 @@ public class ServerListeners {
 		@Override
 		public void CommandExecuted(List<String> args) {
 			if(server.getNetworkStorage().isConnected(args.get(0))){
-				server.getNetworkStorage().kick(args.get(0), args.get(1));
+				server.getNetworkStorage().getClientByName(args.get(0)).kick(args.get(1));
 			}
 			//System.out.println("Player is not connected");
 		}		
@@ -279,13 +290,14 @@ public class ServerListeners {
 		}
 		return false;
 	}
-	public ServerListeners(CommandServer s){
-		this.server=s;
+	public ServerListeners(HexaServer hexa){
+		this.server=hexa.server;
+		this.hexa = hexa;
 		server.registerClass(this);
-		s.registerCommand("pj", 1, storage.str.pjUsage, storage.str.pjHelp, isPJ);
-		s.registerCommand("setpj", 1, storage.str.setpjUsage, storage.str.setpjHelp, setPJ);
-		s.registerCommand("kick", 2, storage.str.kickUsage, storage.str.kickHelp, kick);
-		s.registerCommand("dice", 3, storage.str.diceUsage, storage.str.diceHelp, dicecmd);
-		s.registerCommand("version", 1, storage.str.versionUsage, storage.str.versionHelp, version);
+		server.registerCommand("pj", 1, storage.str.pjUsage, storage.str.pjHelp, isPJ);
+		server.registerCommand("setpj", 1, storage.str.setpjUsage, storage.str.setpjHelp, setPJ);
+		server.registerCommand("kick", 2, storage.str.kickUsage, storage.str.kickHelp, kick);
+		server.registerCommand("dice", 3, storage.str.diceUsage, storage.str.diceHelp, dicecmd);
+		server.registerCommand("version", 1, storage.str.versionUsage, storage.str.versionHelp, version);
 	}
 }

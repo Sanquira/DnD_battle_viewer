@@ -10,8 +10,6 @@ import hexapaper.source.HPSklad.PropPair;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import core.Location;
 
 public class Wrappers {
@@ -84,10 +82,10 @@ public class Wrappers {
 			}
 			for (EntityWrapper wrap : Entity) {
 				if(wrap.Type.equals("Artefact")){
-					souradky.set(wrap.pos,new Artefact(wrap.Name,wrap.loc,wrap.List).setBcg(new Color(wrap.Bcg)));
+					souradky.set(wrap.pos,new Artefact(wrap.Name,wrap.loc,wrap.List).setBcg(new Color(wrap.Bcg)).setTag(wrap.Tag));
 				}
 				if(wrap.Type.equals("Postava")){
-					souradky.set(wrap.pos,new Postava(wrap.Name,wrap.loc,false,wrap.List).setBcg(new Color(wrap.Bcg)));
+					souradky.set(wrap.pos,new Postava(wrap.Name,wrap.loc,false,wrap.List).setBcg(new Color(wrap.Bcg)).setTag(wrap.Tag));
 				}
 				if(wrap.Type.equals("Wall")){
 					souradky.set(wrap.pos,new Wall(wrap.loc).setBcg(new Color(wrap.Bcg)));

@@ -353,7 +353,7 @@ public class Dice {
 		RollLabel.setText(String.valueOf(number+modifier));
 		SideLabel.setText(String.valueOf(sides));
 		ModLabel.setText(String.valueOf(modifier));
-		log.addMessage("["+(number+modifier)+";"+sides+";"+modifier+"]");
+		log.addMessage("["+(number+modifier)+";"+sides+";"+modifier+"]",Color.BLACK,false);
 		if(sk.isConnected&&!sk.isPJ){
 			Integer[] i={number,sides,modifier};
 			try {

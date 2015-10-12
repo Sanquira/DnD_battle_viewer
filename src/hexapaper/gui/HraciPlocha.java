@@ -162,6 +162,7 @@ public class HraciPlocha extends JPanel {
 			Location loc = ent.loc;
 			type.loc.setX(loc.getX());
 			type.loc.setY(loc.getY());
+			type.setBcg(sk.color);
 			type.recreateGraphics();
 			sk.souradky.set(idx, type.clone());
 			repaint();

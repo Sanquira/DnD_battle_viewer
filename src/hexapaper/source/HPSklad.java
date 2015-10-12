@@ -16,10 +16,18 @@ import hexapaper.network.server.HexaClient;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
@@ -56,7 +64,9 @@ public class HPSklad {
 	public ArrayList<HPEntity> souradky;
 	public ArrayList<HPEntity> databazePostav = new ArrayList<>();
 	public ArrayList<HPEntity> databazeArtefaktu = new ArrayList<>();
-	public ArrayList<Component> serverbanned = new ArrayList<>();
+	private HashMap<Component,LabelSystem> labels= new HashMap<Component,LabelSystem>();
+//	public ArrayList<Component> needPJ = new ArrayList<>();
+//	public ArrayList<Component> needConnect = new ArrayList<>();
 
 	public boolean hidePlayerColor = false;
 	public boolean hideNPCColor = false;
@@ -65,16 +75,21 @@ public class HPSklad {
 	public boolean isConnected = false;
 	public boolean isPJ = false;
 	public boolean insertingEntity = false;
-	public boolean banned = false;
+	public boolean notServer = false;
 	public boolean colorAdd = false;
-
+	public boolean multipj = isPJ && isConnected;
+	public boolean singleorPJ = !isConnected || multipj;
+	
 	public HexaClient client;
 	public HPStrings str;
 	
-	public final static String VERSION = "v0.5a";
+	public final static String VERSION = "v0.5c";
 	public final static String FILEVERSION = "0.2";
 	public final static String[] Languages = {"HPStrings","Czech"};
-
+	
+	public enum LabelSystem{
+		SingleOnly,MultiOnly,SingleOrPJ,MultiAndPJ
+	}
 	public void send(Object o, String header, boolean PJ) {
 		try {
 			if (isConnected) {
@@ -116,14 +131,46 @@ public class HPSklad {
 	}
 
 	public void colorJMenu() {
-		Color color = Color.DARK_GRAY;
-		if (banned) {
-			color = Color.RED;
+		boolean singleonly = !isConnected;
+		multipj = isConnected && isPJ;
+		singleorPJ = singleonly || multipj;
+		for(Entry<Component, LabelSystem> entry: labels.entrySet()){
+			boolean enabled = false;
+			switch(entry.getValue()){
+			case SingleOnly:
+				enabled = singleonly;
+				break;
+			case MultiAndPJ:
+				enabled = multipj;
+				break;
+			case MultiOnly:
+				enabled = !singleonly;
+				break;
+			case SingleOrPJ:
+				enabled = singleorPJ;
+				break;				
+			}
+			entry.getKey().setEnabled(enabled);
 		}
-		for (Component item : serverbanned) {
-			item.setForeground(color);
-			item.repaint();
-		}
+//		Boolean PJactive = isPJ;
+//		Boolean Connectactive = true;
+//		if (notServer) {
+//			PJactive = true;
+//		}
+//		if (!isConnected){
+//			Connectactive = false;
+//		}
+//		for (Component item : needPJ) {
+//			item.setEnabled(PJactive);
+//			item.repaint();
+//		}
+//		for (Component item : needConnect) {
+//			item.setEnabled(Connectactive);
+//			item.repaint();
+//		}
+	}
+	public void addButton(Component c,LabelSystem l){
+		labels.put(c, l);
 	}
 	public void SetupLang(String lang){
 //		str = new English();
@@ -193,31 +240,46 @@ public class HPSklad {
 	}
 
 	public void updatePosition(double x1, double y1) {
-		double r = Math.cos(Math.toRadians(30)) * c.RADIUS;
-		position.setText(str.Position + Math.round(((x1 / c.RADIUS) - 1) * (2 / 3.) + 1) + "," + Math.round(((y1 / r) - ((y1 / r) + 1) % 2 - 1) / 2));
+		Point point = getPosition(x1,y1);
+		position.setText(str.Position + point.x + "," + point.y);
 		position.repaint();
 	}
-
+	public Point getPosition(double x1, double y1){
+		double r = Math.cos(Math.toRadians(30)) * c.RADIUS;
+		return new Point((int) Math.round(((x1 / c.RADIUS) - 1) * (2 / 3.) + 1),(int) Math.round(((y1 / r) - ((y1 / r) + 1) % 2 - 1) / 2));
+	}
 	public void updateConnect() {
 		if (isConnected && isPJ) {
 			connected.setForeground(Color.BLUE);
-			banned = false;
+			notServer = false;
 		}
 		if (isConnected && !isPJ) {
 			connected.setForeground(Color.GREEN);
-			banned = true;
+			notServer = true;
 		}
 		if (!isConnected) {
 			connected.setForeground(Color.RED);
-			banned = false;
+			notServer = false;
 		}
 		connected.setText(str.ConnectLabel + "{" + isConnected + "," + isPJ + "}");
 		colorJMenu();
 	}
+	public void setIcon(JFrame frame){
+		try {
+			InputStream stream = hexapaper.class.getResourceAsStream( File.separatorChar+"icon.png" );
+			BufferedImage image = ImageIO.read( stream );
+			frame.setIconImage(image);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
 	public void connect(){
 		if(client!=null){
 			try {
+				System.out.println("trying to disc");
 				client.disconnect();
+				System.out.println("Dsc");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -235,9 +297,10 @@ public class HPSklad {
 				    str.IOError,
 				    JOptionPane.ERROR_MESSAGE);		
 		}
+		PJInfo=new PJGUI(client);	
 	}
 	public LogWindow getDiceLog() {
-		return PJInfo.getLog();
+		return PJInfo.getDice();
 	}
 
 	public LogWindow getPJLog() {

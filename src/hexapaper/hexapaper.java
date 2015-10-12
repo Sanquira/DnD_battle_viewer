@@ -2,13 +2,12 @@ package hexapaper;
 
 import hexapaper.Listeners.HPListenery;
 import hexapaper.gui.ColorPicker;
-import hexapaper.gui.PJGUI;
 import hexapaper.source.HPSklad;
+import hexapaper.source.HPSklad.LabelSystem;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -22,10 +21,6 @@ import core.file.Config;
 
 import java.awt.FlowLayout;
 import java.awt.Dimension;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class hexapaper extends JFrame {
 
@@ -51,16 +46,8 @@ public class hexapaper extends JFrame {
 		getContentPane().setLayout(new BorderLayout());
 		initializace();
 		setVisible(true);
-		sk.PJInfo=new PJGUI();	
 		Config.loadTmp();
-		try {
-			InputStream stream = hexapaper.class.getResourceAsStream( File.separatorChar+"icon.png" );
-			BufferedImage image = ImageIO.read( stream );
-			setIconImage(image);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}			
+		sk.setIcon(this);
 		
 //		System.err.println("hexapaper 49-54");
 //		sk.gridRa = 10;
@@ -98,8 +85,9 @@ public class hexapaper extends JFrame {
 		JMenuItem novyPaper = new JMenuItem(sk.str.newPaper);
 		JMenuItem nactiPaper = new JMenuItem(sk.str.loadPaper);
 		JMenuItem ulozPaper = new JMenuItem(sk.str.savePaper);
-		JMenuItem Server = new JMenuItem("Server");
+		//JMenuItem Server = new JMenuItem("Server");
 		JMenuItem Client = new JMenuItem("Client");
+		JMenuItem Disconnect = new JMenuItem(sk.str.disconnect);
 		JMenuItem konec = new JMenuItem(sk.str.End);
 
 		novyPaper.addActionListener(lis.new NovaListener());
@@ -107,12 +95,13 @@ public class hexapaper extends JFrame {
 		nactiPaper.addActionListener(lis.new NactiListener());
 		ulozPaper.addActionListener(lis.new UlozListener());
 		konec.addActionListener(lis.new KonecListener());
+		Disconnect.addActionListener(lis.new Dsc());
 
 		hraMenu.add(novyPaper);
 		hraMenu.add(nactiPaper);
 		hraMenu.add(ulozPaper);
 		hraMenu.add(Client);
-		hraMenu.add(Server);
+		hraMenu.add(Disconnect);
 		hraMenu.add(konec);
 
 		JMenu upravy = new JMenu(sk.str.EditMenu);
@@ -151,16 +140,15 @@ public class hexapaper extends JFrame {
 
 		JMenuItem kostka = new JMenuItem(sk.str.Dice);
 		JMenuItem PJInfo = new JMenuItem(sk.str.PJInfo);
-		JMenuItem ExportLang = new JMenuItem(sk.str.ExportLang);
+		//JMenuItem ExportLang = new JMenuItem(sk.str.ExportLang);
 		//JMenuItem ColorPicker = new JMenuItem("ColorPicker");
 
 		kostka.addActionListener(lis.new DiceListener());
 		PJInfo.addActionListener(lis.new PJInfoListener());
-		ExportLang.addActionListener(lis.new ExportLangListener());
+		//ExportLang.addActionListener(lis.new ExportLangListener());
 
 		addons.add(PJInfo);
-		addons.add(kostka);
-		addons.add(ExportLang);
+		addons.add(kostka);;
 		
 		JMenu lang = new JMenu(sk.str.LangBar);
 		addLangs(lang);
@@ -169,11 +157,13 @@ public class hexapaper extends JFrame {
 		HlavniMenu.add(addons);
 		HlavniMenu.add(lang);
 		
-		sk.serverbanned.add(PJInfo);
-		sk.serverbanned.add(novyPaper);
-		sk.serverbanned.add(nactiPaper);
-		sk.serverbanned.add(pridejArt);
-		sk.serverbanned.add(pridejPost);
+		sk.addButton(PJInfo, LabelSystem.MultiAndPJ);
+		sk.addButton(novyPaper, LabelSystem.SingleOrPJ);
+		sk.addButton(nactiPaper, LabelSystem.SingleOrPJ);
+		sk.addButton(pridejArt, LabelSystem.SingleOrPJ);
+		sk.addButton(pridejPost, LabelSystem.SingleOrPJ);
+		sk.addButton(Disconnect, LabelSystem.MultiOnly);
+		sk.colorJMenu();
 		// TODO Ostranit tohle tlacitko
 //		System.err.println("Nezapomen odstranit tlacitko v hexapaper u TODO");
 //		JButton ulozLangy = new JButton("Uloz langy DOCASNE");

@@ -4,11 +4,8 @@ import hexapaper.entity.HPEntity;
 import hexapaper.source.HPSklad;
 
 import java.awt.Color;
-import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Map;
-
 import javax.swing.JOptionPane;
 
 import network.core.annotations.Annotations.ConnectAnnotation;
@@ -29,19 +26,21 @@ public class ClientListeners {
 		public void Connect(Socket c) {
 			try {
 				hexaClient.send(HPSklad.VERSION, "version");
-			} catch (IOException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			System.out.println("Připojeno k serveru");
 			storage.isConnected = true;
 			storage.client = hexaClient;
+			storage.updateConnect();
+			storage.RMenu.updateCreate();
 		}
 	};
 	// Disconnect Listeners
 	@DisconnectAnnotation
 	private DisconnectListener dsc = new DisconnectListener() {
-		public void Disconnect(Socket s, IOException e, String reason, boolean kicked) {
+		public void Disconnect(Socket s, Exception e, String reason, boolean kicked) {
 			e.printStackTrace();
 			storage.isConnected = false;
 			storage.isPJ = false;
@@ -117,6 +116,7 @@ public class ClientListeners {
 			hexaClient.updateHexapaper();
 			hexaClient.updateDatabase();
 			storage.setStatus("Nastaven PJ");
+			//System.out.println("došel request");
 		}
 	};
 	@PacketReceiveAnnotation(header = "removePJ")
@@ -187,7 +187,7 @@ public class ClientListeners {
 			}
 			// String
 			// message=p.getNick()+" si hodil "+(roll+modifier)+" na "+range+" kostce se základním hodem "+roll;
-			System.out.println(message);
+			//System.out.println(message);
 			storage.getDiceLog().addMessage(message);
 		}
 	};
@@ -197,21 +197,29 @@ public class ClientListeners {
 		public void packetReceive(MessagePacket p) {
 			try {
 				hexaClient.send(HPSklad.VERSION, "version");
-			} catch (IOException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			// storage.setStatus("Server vyžádal vaši verzi");
 		}
 	};
-	@PacketReceiveAnnotation(header = "versionUpdate")
-	PacketReceiveListener versionUpdate = new PacketReceiveListener() {
+/*	@PacketReceiveAnnotation(header = "addPlayer")
+	PacketReceiveListener addPlayer = new PacketReceiveListener() {
 		@Override
 		public void packetReceive(MessagePacket p) {
-			Map<String, String> versions = (Map<String, String>) p.getObject();
-			storage.PJInfo.updateClients(versions);
+			String name = (String) p.getObject();
+			storage.PJInfo.addPlayer(name);
 		}
 	};
+	@PacketReceiveAnnotation(header = "removePlayer")
+	PacketReceiveListener removePlayer = new PacketReceiveListener() {
+		@Override
+		public void packetReceive(MessagePacket p) {
+			String name = (String) p.getObject();
+			storage.PJInfo.removePlayer(name);
+		}
+	};*/
 	@PacketReceiveAnnotation(header = "PlayerConnect")
 	PacketReceiveListener PConnect = new PacketReceiveListener() {
 		@Override
@@ -220,7 +228,7 @@ public class ClientListeners {
 			//System.out.println(Message);
 			storage.setStatus(Message);
 			storage.getPJLog().addMessage(Message);
-			storage.PJInfo.updateClients((Map<String, String>) p.getObject());
+			storage.PJInfo.addPlayer(p.getNick());
 		}
 	};
 	@PacketReceiveAnnotation(header = "PlayerDisconnect")
@@ -231,6 +239,14 @@ public class ClientListeners {
 			//System.out.println(Message);
 			storage.setStatus(Message);
 			storage.getPJLog().addMessage(Message);
+			storage.PJInfo.removePlayer(p.getNick());
+		}
+	};
+	@PacketReceiveAnnotation(header = "cmd")
+	PacketReceiveListener cmd = new PacketReceiveListener() {
+		@Override
+		public void packetReceive(MessagePacket p) {
+			System.out.print((String) p.getObject());
 		}
 	};
 

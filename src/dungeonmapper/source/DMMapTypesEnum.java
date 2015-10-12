@@ -1,8 +1,6 @@
 package dungeonmapper.source;
 
 import java.awt.Color;
-import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 

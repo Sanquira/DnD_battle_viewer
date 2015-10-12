@@ -16,10 +16,11 @@ import network.core.source.NetworkStorage;
 public class HexaServer {
 	private static boolean isConsole=false;
 	private static HPSklad storage=HPSklad.getInstance();
-	private static CommandServer s=null;
+	protected ServerGUI gui;
+	protected CommandServer server;
 	
 	public HexaServer(boolean GUI,boolean show){
-		storage.SetupLang("English");
+		storage.SetupLang("Czech");
 		if(!show){
 			new ServerCreateFrame(this);
 		}
@@ -29,13 +30,16 @@ public class HexaServer {
 		isConsole=show;
 	}
 	public void start() {
-		s=new CommandServer();
-		new ServerListeners(s);
+		server=new CommandServer();
+		new ServerListeners(this);
 		try {
-			s.create(storage.c.serverIP,storage.c.port);
 			if(!isConsole){
-				new ServerGUI(s).setVisible(true);
+				gui = new ServerGUI(server);
+				gui.setVisible(true);
+				//System.out.println("test");
+				//gui.getInfo().insertMessage("test");
 			}
+			server.create(storage.c.serverIP,storage.c.serverport);
 			HashMap<String,String> map = new HashMap<String,String>();
 			map.put("Version", HPSklad.VERSION);
 			map.put("coreVersion", NetworkStorage.version);

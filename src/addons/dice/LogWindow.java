@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
@@ -31,11 +33,19 @@ public class LogWindow extends JScrollPane {
 	public LogWindow() throws HeadlessException {
 		setPreferredSize(new Dimension(400, 300));
 		textPane.setEditable(false);
+		//textPane.setContentType("HTML/plain");
 		add(textPane);
 		setViewportView(textPane);
 	}
 
-	public void addMessage(String text, Color color) {
+	public void addMessage(String text, Color color,boolean prefix) {
+		String added;
+		if(prefix){
+			added = getPrefix()+text;			
+		}
+		else{
+			added = text;
+		}
 		try {
 			StyleConstants.setForeground(style, color);
 			//StyleConstants.setBold(style, true);
@@ -44,19 +54,36 @@ public class LogWindow extends JScrollPane {
 			return;
 		}
 		try {
-			document.insertString(document.getLength(), text + '\n', style);
+			document.insertString(document.getLength(), added + '\n', style);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
 		this.getVerticalScrollBar().setValue(this.getVerticalScrollBar().getMaximum());
 	}
-	public void addMessage(String text){
-		addMessage(text,Color.BLACK);
+	private String getPrefix() {
+		return "["+dateFormat.format(new Date())+"]: ";
 	}
-	public void insertMessage(String text) throws BadLocationException{
-		document.insertString(document.getLength(), text, style);
+	public void addMessage(String text){
+		addMessage(text,Color.BLACK,true);
+	}
+	public void insertMessage(String text){
+		insertMessage(text,Color.BLACK);
+	}
+	public void insertMessage(String text,Color clr){
+		StyleConstants.setForeground(style, clr);
+		try {
+			document.insertString(document.getLength(), text, style);
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.getVerticalScrollBar().setValue(this.getVerticalScrollBar().getMaximum());
 	}
+
+
+//	public void addMessage(String txt){
+//		insertMessage(txt);
+//	}
 
 	// JTextPane textpane = new JTextPane(document);
 	//

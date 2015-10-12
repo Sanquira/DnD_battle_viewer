@@ -1,6 +1,9 @@
 package hexapaper.Listeners;
 
 import hexapaper.hexapaper;
+import hexapaper.entity.Artefact;
+import hexapaper.entity.HPEntity;
+import hexapaper.entity.Postava;
 import hexapaper.file.Wrappers.DatabaseWrapper;
 import hexapaper.file.Wrappers.HexWrapper;
 import hexapaper.gui.ArtefactAddFrame;
@@ -24,7 +27,6 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
@@ -180,9 +182,9 @@ public class HPListenery {
 	
 	public class HraciPlochaListener implements MouseListener, MouseMotionListener {
 		
-		private Point startPos = new Point(0,0);
-		private Point endPos = new Point(0,0);
-		private boolean dragging = false;
+//		private Point startPos = new Point(0,0);
+//		private Point endPos = new Point(0,0);
+//		private boolean dragging = false;
 		private kNN NN = new kNN();
 
 		@Override
@@ -202,19 +204,23 @@ public class HPListenery {
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			ArrayList<prvekkNN> idx = NN.getkNNindexes(e.getX(), e.getY());
 			if (SwingUtilities.isLeftMouseButton(e)) {
+				double x = e.getX();
+				double y = e.getY();
+				ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
 				HraciPlocha t = (HraciPlocha) e.getComponent();
-				//System.out.println(sk.insertingEntity);
-				if (sk.repeatableInsert) {
-					t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
-					//System.out.println("inserting");
-				}
-				if (sk.colorAdd){
-					colorHex(idx);
-				}
-				ins2 = true;
 				t.drawCursor(e.getX(), e.getY());
+				if (idx.get(0).getVzd() <= sk.c.RADIUS) {
+					//System.out.println(sk.insertingEntity);
+					if (sk.repeatableInsert) {
+						t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
+						//System.out.println("inserting");
+					}
+					if (sk.colorAdd){
+						colorHex(idx);
+					}
+					ins2 = true;
+				}
 			}
 		}
 
@@ -224,27 +230,30 @@ public class HPListenery {
 				double x = e.getX();
 				double y = e.getY();
 				ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
-				HraciPlocha t = (HraciPlocha) e.getComponent();
-				if (e.getButton() == MouseEvent.BUTTON3) {					
-					t.rotateEntity(idx);
-				}
-				if(SwingUtilities.isLeftMouseButton(e)){
-					if (sk.insertingEntity) {
-						if(idx.get(0).getVzd()<=sk.c.RADIUS){
+				if (idx.get(0).getVzd() <= sk.c.RADIUS) {
+					HraciPlocha t = (HraciPlocha) e.getComponent();
+					if (e.getButton() == MouseEvent.BUTTON3) {					
+						t.rotateEntity(idx);
+					}
+					if(SwingUtilities.isLeftMouseButton(e)){
+						if (sk.insertingEntity) {
 							t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
 						}
-					}
-					else {
-						if ((sk.isConnected && sk.isPJ) || !sk.isConnected) {
-							if(sk.colorAdd){
-								colorHex(idx);
-//								sk.souradky.get(idx.get(0).getIdx()).setBcg(sk.color);
-//								Object[] o={idx.get(0).getIdx(),sk.color};
-//								sk.send(o,"paintEnt",true);
+						else {
+							if ((sk.isConnected && sk.isPJ) || !sk.isConnected) {
+								if(sk.colorAdd){
+									colorHex(idx);
+	//								sk.souradky.get(idx.get(0).getIdx()).setBcg(sk.color);
+	//								Object[] o={idx.get(0).getIdx(),sk.color};
+	//								sk.send(o,"paintEnt",true);
+								}
+								HPEntity en= sk.souradky.get(idx.get(0).getIdx());
+								if(en instanceof Artefact || en instanceof Postava){
+									sk.RMenu.redrawProperities(idx.get(0));
+									ins = true;
+									t.saveEntity(idx.get(0).getIdx());
+								}	
 							}
-							sk.RMenu.redrawProperities(idx.get(0));
-							ins = true;
-							t.saveEntity(idx.get(0).getIdx());
 						}
 					}
 				}
@@ -420,6 +429,19 @@ public class HPListenery {
 				    JOptionPane.INFORMATION_MESSAGE);
 		}
 		
+	}
+	public class Dsc implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			try {
+				System.out.println("Dsc by button");
+				sk.client.disconnect("Disconnected");
+				sk.client = null;
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}			
+		}		
 	}
 
 }
