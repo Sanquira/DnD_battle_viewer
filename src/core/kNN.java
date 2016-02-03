@@ -16,7 +16,7 @@ public class kNN {
 	}
 
 	public ArrayList<prvekkNN> getkNNindexes(double xp, double yp) {
-
+		//System.out.println("Počítám knn");
 		ArrayList<prvekkNN> dists = new ArrayList<>();
 		if (sk.souradky.size() == 0) {
 			dists.add(new prvekkNN(-1, 0, 0, 0));

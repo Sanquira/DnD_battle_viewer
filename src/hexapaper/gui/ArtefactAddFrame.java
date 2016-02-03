@@ -211,7 +211,7 @@ public class ArtefactAddFrame extends JPanel {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				JList<PropPair> lsm = (JList) e.getSource();
+				JList<PropPair> lsm = (JList<PropPair>) e.getSource();
 				boolean isAdjusting = e.getValueIsAdjusting();
 				if (!lsm.isSelectionEmpty()) {
 					int minIndex = lsm.getMinSelectionIndex();

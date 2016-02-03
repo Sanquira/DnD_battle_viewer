@@ -13,7 +13,6 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -162,17 +161,16 @@ public class HraciPlocha extends JPanel {
 			Location loc = ent.loc;
 			type.loc.setX(loc.getX());
 			type.loc.setY(loc.getY());
-			type.setBcg(sk.color);
+			if(sk.colorAdd){
+				//System.out.println("barvím");
+				type.setBcg(sk.color);
+			}
 			type.recreateGraphics();
 			sk.souradky.set(idx, type.clone());
 			repaint();
 			if (sk.isConnected && sk.isPJ && type != null) {
 				Object[] o = { idx, type.clone() };
-				try {
-					sk.client.send(o, "insertEnt");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				sk.client.send(o, "insertEnt");
 			}
 			if (!sk.repeatableInsert) {
 				type = null;
@@ -194,13 +192,14 @@ public class HraciPlocha extends JPanel {
 	public void drawCursor(int x, int y) {
 		if (sk.insertingEntity) {
 			cursor = sk.insertedEntity.clone();
+			cursor.setBcg(Color.white);
 			cursor.loc = new Location(x, y, cursor.loc.getDir());
 			//cursor.background=Color.BLACK;
 			cursor.recreateGraphics();
+			repaint();
 		} else {
 			cursor = null;
 		}
-		repaint();
 	}
 
 	public void saveEntity(int idx) {
@@ -209,9 +208,9 @@ public class HraciPlocha extends JPanel {
 			sk.setupInserting(null, false);
 			return;
 		}
-
-		sk.setupInserting(sk.souradky.get(idx).clone(), false);
-		Location loc = sk.souradky.get(idx).clone().loc;
+		HPEntity ent = sk.souradky.get(idx).clone();
+		sk.setupInserting(ent, false);
+		Location loc = ent.loc;
 		oldIdx = idx;
 		drawCursor(loc.getX(), loc.getY());
 

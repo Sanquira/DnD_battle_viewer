@@ -115,7 +115,9 @@ public class HPRightMenu extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				osetriColor(((JToggleButton) e.getSource()).isSelected());
+				JToggleButton but = (JToggleButton) e.getSource();
+				sk.setupColor(but.isSelected());
+				osetriColor(but.isSelected());
 			}
 
 		});
@@ -228,9 +230,7 @@ public class HPRightMenu extends JPanel {
 			osetriFreeSpace(false);
 			wall.setSelected(false);
 			osetriWall(false);
-			sk.setupColor(true);
 		} else {
-			sk.setupColor(false);
 		}
 	}
 

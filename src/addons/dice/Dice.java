@@ -356,12 +356,7 @@ public class Dice {
 		log.addMessage("["+(number+modifier)+";"+sides+";"+modifier+"]",Color.BLACK,false);
 		if(sk.isConnected&&!sk.isPJ){
 			Integer[] i={number,sides,modifier};
-			try {
-				sk.client.send(i, "dice");
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			sk.client.send(i, "dice");
 		}
 	}
 	protected void setText(int sides, int modifier, int count){

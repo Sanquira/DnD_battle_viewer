@@ -83,27 +83,23 @@ public class HPSklad {
 	public HexaClient client;
 	public HPStrings str;
 	
-	public final static String VERSION = "v0.5c";
+	public final static String VERSION = "v0.5d";
 	public final static String FILEVERSION = "0.2";
 	public final static String[] Languages = {"HPStrings","Czech"};
 	
 	public enum LabelSystem{
 		SingleOnly,MultiOnly,SingleOrPJ,MultiAndPJ
 	}
-	public void send(Object o, String header, boolean PJ) {
-		try {
-			if (isConnected) {
-				if (PJ && isPJ) {
-					client.send((Serializable) o, header);
-					return;
-				}
-				if (!PJ && !isPJ) {
-					client.send((Serializable) o, header);
-					return;
-				}
+	public void send(Serializable o, String header, boolean PJ) {
+		if (isConnected) {
+			if (PJ && isPJ) {
+				client.send(o, header);
+				return;
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+			if (!PJ && !isPJ) {
+				client.send(o, header);
+				return;
+			}
 		}
 	}
 	
@@ -216,7 +212,7 @@ public class HPSklad {
 	}
 
 	public void setupColor(boolean isActive) {
-		colorAdd = isActive;
+		this.colorAdd = isActive;
 	}
 
 	public void initLoad(ArrayList<HPEntity> souradky) {
@@ -239,12 +235,12 @@ public class HPSklad {
 		canEvent = true;
 	}
 
-	public void updatePosition(double x1, double y1) {
+	public void updatePosition(int x1, int y1) {
 		Point point = getPosition(x1,y1);
 		position.setText(str.Position + point.x + "," + point.y);
-		position.repaint();
+		//position.repaint();
 	}
-	public Point getPosition(double x1, double y1){
+	public Point getPosition(int x1, int y1){
 		double r = Math.cos(Math.toRadians(30)) * c.RADIUS;
 		return new Point((int) Math.round(((x1 / c.RADIUS) - 1) * (2 / 3.) + 1),(int) Math.round(((y1 / r) - ((y1 / r) + 1) % 2 - 1) / 2));
 	}
@@ -286,7 +282,7 @@ public class HPSklad {
 			}
 			client=null;
 		}
-		client=new HexaClient();
+		client = new HexaClient();
 		try {
 			client.connect(c.IP, c.port, c.lastName);
 			isConnected=true;
@@ -297,7 +293,7 @@ public class HPSklad {
 				    str.IOError,
 				    JOptionPane.ERROR_MESSAGE);		
 		}
-		PJInfo=new PJGUI(client);	
+		PJInfo = new PJGUI(client);	
 	}
 	public LogWindow getDiceLog() {
 		return PJInfo.getDice();

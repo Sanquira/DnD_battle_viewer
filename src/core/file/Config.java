@@ -23,8 +23,8 @@ public class Config {
 	
 	public int port = 10555;
 	public String IP = "212.96.186.28";
-	public String serverIP = "192.168.0.102";
-	public int serverport = 10555;
+	public String serverIP = "192.168.0.100";
+	public int serverport = 5222;
 	public String Language = "Czech";
 	
 	private static String configDirectory(String name)

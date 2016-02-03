@@ -81,7 +81,7 @@ public class ServerCreateFrame extends JPanel {
 
 	private void connect() {
 		sk.c.serverIP = ipfield.getText();
-		sk.c.port = portfield.getInt();
+		sk.c.serverport = portfield.getInt();
 		sk.c.saveConfig();
 		server.start();
 		frame.setVisible(false);

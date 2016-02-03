@@ -40,13 +40,13 @@ public class Wrappers {
 		public Location loc;
 		public ArrayList<PropPair> List;
 		public EntityWrapper(String Type, int pos,HPEntity ent, ArrayList<PropPair> List){
-			this.Type=Type;
-			this.Bcg=ent.background.getRGB();
-			this.pos=pos;
-			this.Name=ent.getNick();
+			this.Type = Type;
+			this.Bcg = ent.background.getRGB();
+			this.pos = pos;
+			this.Name = ent.getNick();
 			this.Tag = ent.tag;
-			this.loc=ent.loc;
-			this.List=List;
+			this.loc = ent.loc;
+			this.List = List;
 		}
 	}
 	public class DatabaseWrapper{
@@ -78,7 +78,7 @@ public class Wrappers {
 		public ArrayList<HPEntity> load(Integer GridRA,Integer GridSl){
 			ArrayList<HPEntity> souradky=new ArrayList<HPEntity>();
 			for (int i = 0; i < GridRA * GridSl; i++) {
-					souradky.add(new FreeSpace(HPSklad.getInstance().LocDontCare));
+				souradky.add(new FreeSpace(HPSklad.getInstance().LocDontCare));
 			}
 			for (EntityWrapper wrap : Entity) {
 				if(wrap.Type.equals("Artefact")){

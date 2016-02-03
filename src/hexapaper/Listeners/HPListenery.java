@@ -18,6 +18,7 @@ import hexapaper.source.HPSklad.prvekkNN;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -180,37 +181,36 @@ public class HPListenery {
 	boolean ins = false;
 	boolean ins2 = false;
 	
-	public class HraciPlochaListener implements MouseListener, MouseMotionListener {
+	public class HraciPlochaListener extends MouseAdapter {
 		
 //		private Point startPos = new Point(0,0);
 //		private Point endPos = new Point(0,0);
 //		private boolean dragging = false;
 		private kNN NN = new kNN();
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-		}
-
+		
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			ArrayList<prvekkNN> idx = NN.getkNNindexes(e.getX(), e.getY());
-			sk.updatePosition((int)idx.get(0).getX1(), (int)idx.get(0).getY1());
+			sk.updatePosition(e.getX(), e.getY());
 			if(sk.isConnected&&!sk.isPJ){
 				return;
 			}
 			HraciPlocha t = (HraciPlocha) e.getComponent();
-			t.drawCursor(e.getX(), e.getY());
+			if(t != null){
+				//ArrayList<prvekkNN> idx = NN.getkNNindexes(e.getX(), e.getY());
+				t.drawCursor(e.getX(), e.getY());
+			}	
 		}
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			if (SwingUtilities.isLeftMouseButton(e)) {
-				double x = e.getX();
-				double y = e.getY();
+				int x = e.getX();
+				int y = e.getY();
 				ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
 				HraciPlocha t = (HraciPlocha) e.getComponent();
-				t.drawCursor(e.getX(), e.getY());
-				if (idx.get(0).getVzd() <= sk.c.RADIUS) {
+				t.drawCursor(x, y);
+				Point p = sk.getPosition(x, y);
+				if (p.x <= sk.c.gridRa && p.y <= sk.c.gridSl) {
 					//System.out.println(sk.insertingEntity);
 					if (sk.repeatableInsert) {
 						t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
@@ -227,10 +227,12 @@ public class HPListenery {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (sk.canEvent) {
-				double x = e.getX();
-				double y = e.getY();
+				int x = e.getX();
+				int y = e.getY();
 				ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
-				if (idx.get(0).getVzd() <= sk.c.RADIUS) {
+				Point p = sk.getPosition(x, y);
+				if (p.x <= sk.c.gridRa && p.y <= sk.c.gridSl) {
+				//if (idx.get(0).getVzd() <= sk.c.RADIUS) {
 					HraciPlocha t = (HraciPlocha) e.getComponent();
 					if (e.getButton() == MouseEvent.BUTTON3) {					
 						t.rotateEntity(idx);
@@ -276,14 +278,6 @@ public class HPListenery {
 				HraciPlocha t = (HraciPlocha) e.getComponent();
 				t.releaseEntity(idx.get(0).getIdx());
 			}
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
 		}
 
 	}

@@ -15,13 +15,8 @@ public class PJGUI extends ServerGUI {
 	private ActionListener sendCmd = new ActionListener(){
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			try {
-				cln.send(cmdField.getText(), "clientCmd");
-				cmdField.setText("");
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}			
+			cln.send(cmdField.getText(), "clientCmd");
+			cmdField.setText("");			
 		}		
 	};
 	public PJGUI(CommandClient cln){
