@@ -1,7 +1,7 @@
 package hexapaper.network.server;
 
-import hexapaper.gui.ServerCreateFrame;
-import hexapaper.gui.ServerGUI;
+import hexapaper.gui.frames.ServerCreateFrame;
+import hexapaper.gui.frames.ServerGUI;
 import hexapaper.source.HPSklad;
 
 import java.io.IOException;

@@ -8,14 +8,13 @@ import java.util.ArrayList;
 
 import core.Location;
 
-public class Postava extends HPEntity implements Serializable {
+public class Postava extends EditableEntity implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2929222903743095773L;
 	private boolean PJ;
-	private ArrayList<PropPair> param = new ArrayList<PropPair>();
 
 	/**
 	 * 
@@ -24,14 +23,20 @@ public class Postava extends HPEntity implements Serializable {
 	 * @param PJ
 	 * @param prop
 	 */
-	public Postava(String name, Location loc, boolean PJ, ArrayList<PropPair> prop) {
+	public Postava(String name, Location loc, boolean PJ) {
 		// super(name, loc, Rotatable, Colidable, prvek);
 		super(name, loc, true, false, new Gprvky().entity(loc));
-		if (prop != null) {
-			this.param = prop;
-		}
 		this.PJ = PJ;
 
+	}
+	public Postava(String name, Location loc, boolean PJ, ArrayList<PropPair> prop){
+		this(name,loc,PJ);
+		this.setParam(prop);
+	}
+
+	public Postava(String name, String tag, Location loc, boolean PJ) {
+		this(name,loc,PJ);
+		this.setTag(tag);
 	}
 	
 	public Postava(String name, String tag, Location loc, boolean PJ, ArrayList<PropPair> prop) {
@@ -73,7 +78,7 @@ public class Postava extends HPEntity implements Serializable {
 		param.add(value);
 	}
 
-	public void setNick(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -93,19 +98,6 @@ public class Postava extends HPEntity implements Serializable {
 		param.remove(pos);
 	}
 
-	public Postava clone() {
-		Postava cloned = (Postava) super.clone();
-		cloned.param = (ArrayList<PropPair>) cloned.param.clone();
-		for (int i = 0; i < cloned.param.size(); i++) {
-			try {
-				cloned.param.set(i, cloned.param.get(i).clone());
-			} catch (CloneNotSupportedException e) {
-				e.printStackTrace();
-			}
-		}
-		return cloned;
-	}
-
 	public String toString() {
 		// String ret = "name: " + this.getText() + ", Loc: " + loc.toString() +
 		// ", PJ: " + PJ + ", Param: ";
@@ -123,6 +115,6 @@ public class Postava extends HPEntity implements Serializable {
 		} else {
 			ispj = "";
 		}
-		return ispj + " " + getNick();
+		return ispj + " " + getName();
 	}
 }

@@ -1,7 +1,7 @@
 package hexapaper;
 
 import hexapaper.Listeners.HPListenery;
-import hexapaper.gui.ColorPicker;
+import hexapaper.gui.frames.ColorPicker;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.LabelSystem;
 

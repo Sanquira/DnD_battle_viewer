@@ -1,4 +1,4 @@
-package hexapaper.gui;
+package hexapaper.gui.frames;
 
 import hexapaper.source.HPSklad;
 
@@ -45,7 +45,7 @@ public class ColorPicker extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				sk.color=colorPick.getColor();
-				sk.RMenu.updateColor();
+				sk.RMenu.cpane.updateColor();
 				frame.setVisible(false);
 			}			
 		});

@@ -34,7 +34,8 @@ public class ClientListeners {
 			storage.isConnected = true;
 			storage.client = hexaClient;
 			storage.updateConnect();
-			storage.RMenu.updateCreate();
+			storage.colorJMenu();
+			//storage.RMenu.cpane.updateCreate();
 		}
 	};
 	// Disconnect Listeners
@@ -136,6 +137,7 @@ public class ClientListeners {
 			// System.out.println("Vložena entita");
 			Object[] table = (Object[]) p.getObject();
 			storage.hraciPlocha.insertEntity((int) table[0], ((HPEntity) table[1]), true);
+			storage.hraciPlocha.repaint();
 			storage.setStatus("Získáná entita");
 		}
 	};

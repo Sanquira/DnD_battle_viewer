@@ -1,5 +1,6 @@
-package hexapaper.gui;
+package hexapaper.gui.frames;
 
+import hexapaper.network.server.HexaServer;
 import hexapaper.source.HPSklad;
 
 import java.awt.GridLayout;
@@ -17,35 +18,41 @@ import javax.swing.border.TitledBorder;
 import core.JNumberTextField;
 
 
-public class ClientConnectFrame extends JPanel {
+public class ServerCreateFrame extends JPanel {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	HPSklad sk = HPSklad.getInstance();
+	HexaServer server;
+	boolean GUI=true;
 	JFrame frame;
 
-	public ClientConnectFrame() {
+	public ServerCreateFrame(HexaServer s) {
+		server=s;
 		frame = new JFrame(sk.str.ConnectFrame);
 		frame.setSize(300, 200);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setResizable(false);
-		setLayout(new GridLayout(4, 1, 0, 10));
-		setBorder(new TitledBorder(sk.str.ConnectFrame));
+		setLayout(new GridLayout(3, 1, 0, 10));
+		setBorder(new TitledBorder(sk.str.ServerCreateFrame));
 		init();
 		frame.getContentPane().add(this);
 		frame.setVisible(true);
 	}
-
+	
+	public ServerCreateFrame(boolean GUI,HexaServer s){
+		this(s);
+		this.GUI=GUI;
+	}
 	JTextField ipfield;
 	JNumberTextField portfield;
-	JTextField namefield;
 
 	protected void init() {
 		JPanel first = new JPanel(new GridLayout(1, 2, 10, 0));
 		JLabel polhex = new JLabel(sk.str.ipField);
-		ipfield = new JTextField(sk.c.IP);
+		ipfield = new JTextField(sk.c.serverIP);
 		ipfield.addFocusListener(new Listener());
 		first.add(polhex);
 		first.add(ipfield);
@@ -53,19 +60,12 @@ public class ClientConnectFrame extends JPanel {
 		JPanel second = new JPanel(new GridLayout(1, 2, 10, 0));
 		JLabel numRow = new JLabel(sk.str.portField);
 		portfield = new JNumberTextField();
-		portfield.setNumber(sk.c.port);
+		portfield.setInt(sk.c.serverport);
 		portfield.addFocusListener(new Listener());
 		second.add(numRow);
 		second.add(portfield);
 
-		JPanel third = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel numCol = new JLabel(sk.str.nameField);
-		namefield = new JTextField(sk.c.lastName);
-		namefield.addFocusListener(new Listener());
-		third.add(numCol);
-		third.add(namefield);
-
-		JButton hotovo = new JButton(sk.str.Connect);
+		JButton hotovo = new JButton(sk.str.ServerCreate);
 		hotovo.addActionListener(new ActionListener() {
 
 			@Override
@@ -76,16 +76,14 @@ public class ClientConnectFrame extends JPanel {
 
 		add(first);
 		add(second);
-		add(third);
 		add(hotovo);
 	}
 
 	private void connect() {
-		sk.c.IP = ipfield.getText();
-		sk.c.port = portfield.getInt();
-		sk.c.lastName = namefield.getText();
+		sk.c.serverIP = ipfield.getText();
+		sk.c.serverport = portfield.getInt();
 		sk.c.saveConfig();
-		sk.connect();
+		server.start();
 		frame.setVisible(false);
 	}
 

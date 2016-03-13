@@ -292,10 +292,11 @@ public class Dice {
 		frmKostka.setJMenuBar(menuBar);
 		
 		JMenu Action = new JMenu("Akce");
-		JMenuItem multiple = new JMenuItem("Vícenásobný Hod");
+		JMenuItem regenerate = new JMenuItem("Změnit seed");
+		//JMenuItem multiple = new JMenuItem("Vícenásobný Hod");
 		JMenuItem presets = new JMenuItem("Presets");
 		
-		Action.add(multiple);
+		Action.add(regenerate);
 		Action.add(presets);
 		menuBar.add(Action);
 		

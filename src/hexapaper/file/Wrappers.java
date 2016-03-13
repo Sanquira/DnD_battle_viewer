@@ -43,7 +43,7 @@ public class Wrappers {
 			this.Type = Type;
 			this.Bcg = ent.background.getRGB();
 			this.pos = pos;
-			this.Name = ent.getNick();
+			this.Name = ent.getName();
 			this.Tag = ent.tag;
 			this.loc = ent.loc;
 			this.List = List;
@@ -101,7 +101,7 @@ public class Wrappers {
 			for (EntityWrapper wrap : Entity){
 				loadEntity(wrap,sk);
 			}
-			sk.RMenu.updateDatabase();
+			sk.RMenu.cpane.updateDatabase();
 		}
 		public void loadEntity(EntityWrapper wrap,HPSklad sk){
 			if(wrap.Type.equals("Artefact")){

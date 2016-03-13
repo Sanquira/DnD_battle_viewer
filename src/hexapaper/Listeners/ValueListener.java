@@ -1,8 +1,6 @@
 package hexapaper.Listeners;
 
-import hexapaper.entity.Artefact;
-import hexapaper.entity.Postava;
-
+import hexapaper.entity.EditableEntity;
 import javax.swing.JComponent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -12,26 +10,16 @@ import core.ValueChangedListener;
 
 public class ValueListener implements ValueChangedListener, DocumentListener {
 	private int pos;
-	private Postava man = null;
-	private Artefact art = null;
+	private EditableEntity ent;
 
-	public ValueListener(Postava man, int pos) {
+	public ValueListener(EditableEntity ent, int pos) {
 		this.pos = pos;
-		this.man = man;
-	}
-
-	public ValueListener(Artefact man, int pos) {
-		this.pos = pos;
-		this.art = man;
+		this.ent = ent;
 	}
 
 	@Override
 	public void valueChanged(String value, JComponent source) {
-		if (man != null) {
-			man.setParamName(pos, value);
-			return;
-		}
-		art.setParamName(pos, value);
+		ent.setParamName(pos, value);
 	}
 
 	@Override
@@ -48,12 +36,7 @@ public class ValueListener implements ValueChangedListener, DocumentListener {
 			e1.printStackTrace();
 		}
 		// System.out.println(t);
-		if (man != null) {
-			man.setParamValue(pos, t);
-			return;
-		}
-		art.setParamValue(pos, t);
-
+		ent.setParamValue(pos, t);
 	}
 
 	@Override

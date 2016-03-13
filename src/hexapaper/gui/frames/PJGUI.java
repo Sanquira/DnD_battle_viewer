@@ -1,9 +1,7 @@
-package hexapaper.gui;
+package hexapaper.gui.frames;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-
 import network.command.users.CommandClient;
 
 public class PJGUI extends ServerGUI {

@@ -19,74 +19,74 @@ public class HPStrings {
 	public String No = "No";
 	public String NPC = "NPC";
 	public String Artefact = "Artefact";
-	public String Radius = "Poloměr Hexu";
-	public String LineCount = "Počet řádků";
-	public String CollumnCount = "Počet sloupců";
+	public String Radius = "Hex Radius";
+	public String LineCount = "Number of lines";
+	public String CollumnCount = "Number of collumns";
 
 	public String Hex_ext = "hex";
-	public String Hex_text = "Hexovy papir";
+	public String Hex_text = "HexaPaper";
 	public String Db_ext = "entd";
-	public String Db_text = "Database entit";
+	public String Db_text = "Entity Databaze";
 	public String File_ext = "ent";
-	public String File_text = "Soubory entit";
-	public String desc = "HexaPaper soubory";
+	public String File_text = "Entity";
+	public String desc = "Hexa files";
 
-	public String newPaper = "Nový papír";
-	public String savePaper = "Ulož papír";
-	public String loadPaper = "Načti papír";
-	public String addArt = "Přidej artefakt";
-	public String addPost = "Přidej postavu";
+	public String newPaper = "New paper";
+	public String savePaper = "Save paper";
+	public String loadPaper = "Load paper";
+	public String addArt = "Create artefact";
+	public String addPost = "Create character";
 
 	public String Battlecontrol;
-	public String Objproperties = "Vlastnosti objektu";
+	public String Objproperties = "Properties";
 	public String showPlayerColor = "Skrýt hráče";
 	public String showNPCColor = "Skrýt NPC";
-	public String addWall = "Přidej zeď";
-	public String addFreeSpace = "Odeber";
+	public String addWall = "Add wall";
+	public String addFreeSpace = "Remove";
 
-	public String player = "Hráč";
-	public String LangFileLoaded = "Jazykový soubor načten";
-	public String name = "Jméno";
+	public String player = "Player";
+	public String LangFileLoaded = "Loaded language file";
+	public String name = "Name";
 	public String Tag = "Tag";
-	public String addPropBut = "Přidej";
-	public String delPropBut = "Odeber";
+	public String addPropBut = "Add";
+	public String delPropBut = "Remove";
 
-	public String GameMenu = "Hra";
-	public String EditMenu = "Úpravy";
+	public String GameMenu = "Game";
+	public String EditMenu = "Edit";
 	public String export = "Export";
 	public String exportAP = "Export ...";
 	public String importAP = "Import";
-	public String exportArtDat = "... databáze artefaktů";
-	public String exportPostDat = "... databáze postav";
+	public String exportArtDat = "... artefact database";
+	public String exportPostDat = "... character database";
 	public String exportArtOne = "... jednoho artefaktu";
 	public String exportPostOne = "... jedné postavy";
-	public String utility = "Utility";
-	public String Dice = "Kostka";
+	public String utility = "Utilities";
+	public String Dice = "Dice";
 	public String PJInfo = "PJGUI";
 	public String ExportLang = "ExportLang";
 
-	public String ipField = "IP serveru";
-	public String portField = "Port serveru";
+	public String ipField = "Server IP";
+	public String portField = "Server port";
 	public String nameField = "Nick";
-	public String Connect = "Připojit";
-	public String ConnectFrame = "Připojení k serveru";
-	public String IOError = "Chyba při připojování";
-	public String ConnectError = "Nepodařilo se připojit na server z důvodu: ";
-	public String Position = "Pozice: ";
-	public String ConnectLabel = "Připojeno: ";
-	public String DisconnectMessage = "Odpojeno od serveru z duvodu: ";
-	public String DisconnectWindow = "Odpojeno";
-	public String KickMessage = "Vyhozen ze serveru z duvodu: ";
-	public String KickWindow = "Vyhozen ze serveru";
-	public String Range = "Rozsah";
-	public String Modifier = "Bonus";
+	public String Connect = "Connect";
+	public String ConnectFrame = "Connecting";
+	public String IOError = "Connecting error";
+	public String ConnectError = "Unable to connect to server: ";
+	public String Position = "Position: ";
+	public String ConnectLabel = "Connected: ";
+	public String DisconnectMessage = "Disconnected from server: ";
+	public String DisconnectWindow = "Disconnected";
+	public String KickMessage = "Kick from server: ";
+	public String KickWindow = "Kick from server";
+	public String Range = "Range";
+	public String Modifier = "Modifier";
 	// public static String Player = "Play";
 
 	// Dialogové překlady
-	public String Close = "Zavřít";
+	public String Close = "Close";
 	public String Confirm = "Ok";
 	public String Reset = "Reset";
-	public String End = "Konec";
+	public String End = "End";
 
 	// FileVersionCheck
 	public String OldFileVersionText = "Vybrany soubor je uložen ve starší verzi formátu, chcete se ho přesto pokusit načíst?";

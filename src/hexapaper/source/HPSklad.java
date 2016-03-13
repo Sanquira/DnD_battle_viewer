@@ -6,17 +6,17 @@ import hexapaper.entity.HPEntity;
 import hexapaper.file.Wrappers;
 import hexapaper.file.Wrappers.DatabaseWrapper;
 import hexapaper.file.Wrappers.HexWrapper;
-import hexapaper.gui.ColorPicker;
 import hexapaper.gui.Gprvky;
 import hexapaper.gui.HraciPlocha;
-import hexapaper.gui.HPRightMenu;
-import hexapaper.gui.PJGUI;
+import hexapaper.gui.frames.ColorPicker;
+import hexapaper.gui.frames.PJGUI;
+import hexapaper.gui.panels.HPRightMenu;
 import hexapaper.language.HPStrings;
 import hexapaper.network.server.HexaClient;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -77,6 +77,7 @@ public class HPSklad {
 	public boolean insertingEntity = false;
 	public boolean notServer = false;
 	public boolean colorAdd = false;
+	public boolean clone = false;
 	public boolean multipj = isPJ && isConnected;
 	public boolean singleorPJ = !isConnected || multipj;
 	
@@ -147,6 +148,7 @@ public class HPSklad {
 				break;				
 			}
 			entry.getKey().setEnabled(enabled);
+			entry.getKey().repaint();
 		}
 //		Boolean PJactive = isPJ;
 //		Boolean Connectactive = true;
@@ -198,16 +200,21 @@ public class HPSklad {
 		}
 		return instance;
 	}
-
-	public void setupInserting(HPEntity insert, boolean repeat) {
+	
+	public void setupInserting(HPEntity insert, boolean repeat){
+		setupInserting(insert,repeat,true);
+	}
+	public void setupInserting(HPEntity insert, boolean repeat, boolean clone) {
 		if (insert == null) {
 			insertedEntity = null;
 			insertingEntity = false;
 			repeatableInsert = false;
+			clone = false;
 		} else {
 			insertedEntity = insert;
 			insertingEntity = true;
 			repeatableInsert = repeat;
+			this.clone = clone;
 		}
 	}
 
@@ -235,14 +242,14 @@ public class HPSklad {
 		canEvent = true;
 	}
 
-	public void updatePosition(int x1, int y1) {
-		Point point = getPosition(x1,y1);
-		position.setText(str.Position + point.x + "," + point.y);
+	public void updatePosition(double x1, double y1) {
+		Point2D.Double point = getPosition(x1,y1);
+		position.setText(str.Position + (int) point.getX() + "," + (int) point.getY());
 		//position.repaint();
 	}
-	public Point getPosition(int x1, int y1){
+	public Point2D.Double getPosition(double x1, double y1){
 		double r = Math.cos(Math.toRadians(30)) * c.RADIUS;
-		return new Point((int) Math.round(((x1 / c.RADIUS) - 1) * (2 / 3.) + 1),(int) Math.round(((y1 / r) - ((y1 / r) + 1) % 2 - 1) / 2));
+		return new Point2D.Double((int) Math.round(((x1 / c.RADIUS) - 1) * (2 / 3.) + 1),(int) Math.round(((y1 / r) - ((y1 / r) + 1) % 2 - 1) / 2));
 	}
 	public void updateConnect() {
 		if (isConnected && isPJ) {
@@ -262,12 +269,12 @@ public class HPSklad {
 	}
 	public void setIcon(JFrame frame){
 		try {
-			InputStream stream = hexapaper.class.getResourceAsStream( File.separatorChar+"icon.png" );
+			InputStream stream = hexapaper.class.getResourceAsStream( File.separatorChar+"icon.png"  );
 			BufferedImage image = ImageIO.read( stream );
 			frame.setIconImage(image);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}	
 	}
 	public void connect(){

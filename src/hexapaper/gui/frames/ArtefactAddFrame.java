@@ -1,6 +1,6 @@
-package hexapaper.gui;
+package hexapaper.gui.frames;
 
-import hexapaper.entity.Postava;
+import hexapaper.entity.Artefact;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.PropPair;
 import java.awt.Dimension;
@@ -15,9 +15,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -27,38 +25,38 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JViewport;
 import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import core.EditableJLabel;
 
-public class PostavaAddFrame extends JPanel {
+public class ArtefactAddFrame extends JPanel {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -7870716336621081145L;
 	JFrame frame;
 	HPSklad sk = HPSklad.getInstance();
 	protected String[] defaultProp = { sk.str.name};
 	protected ArrayList<PropPair> param = new ArrayList<PropPair>();
 	JPanel vpg;
 	JPanel spg;
-	// boolean delete = false;
-	boolean isNPC = false, isDel = false, isDelD = false;
+	boolean isDel = false, isDelD = false;
 	JList<Object> list;
 
-	public PostavaAddFrame() {
-		frame = new JFrame(sk.str.CreateCharacter);
+	public ArtefactAddFrame() {
+		frame = new JFrame(sk.str.CreateArtefact);
 		frame.setSize(450, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(new GridLayout(1, 2, 0, 10));
 		for (String str : defaultProp) {
 			param.add(new PropPair(str, ""));
 		}
-		vpg = vytvorPostavu();
-		spg = databazePostav();
+		vpg = vytvorArtefact();
+		spg = databazeArtefactu();
 
 		add(vpg);
 		add(spg);
@@ -66,36 +64,16 @@ public class PostavaAddFrame extends JPanel {
 		frame.setVisible(true);
 	}
 
-	private JPanel vytvorPostavu() {
+	private JPanel vytvorArtefact() {
 		JPanel VP = new JPanel();
 		GridBagLayout gbl = new GridBagLayout();
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		VP.setLayout(gbl);
-		VP.setBorder(new TitledBorder(sk.str.CreateCharacter));
-
-		JPanel prvni = new JPanel(new GridLayout(1, 2, 10, 0));
-		JLabel isNPCL = new JLabel(sk.str.NPC);
-		final JCheckBox isNPSCB = new JCheckBox();
-		isNPSCB.setSelected(isNPC);
-		isNPSCB.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent paramActionEvent) {
-				isNPC = ((JCheckBox) paramActionEvent.getSource()).isSelected();
-
-			}
-		});
-		prvni.add(isNPCL);
-		prvni.add(isNPSCB);
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.weightx = 1;
-		gbl.setConstraints(prvni, gbc);
-		VP.add(prvni);
-		gbc.weightx = 0;
+		VP.setBorder(new TitledBorder(sk.str.CreateArtefact));
 
 		JScrollPane druhySc = new JScrollPane();
+		druhySc.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		int sizeParam;
 		JScrollBar vert = druhySc.getVerticalScrollBar();
 		if (param.size() < 6) {
@@ -140,12 +118,13 @@ public class PostavaAddFrame extends JPanel {
 		}
 		druhySc.setViewportView(druhyIn);
 		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.weightx = 0;
+		gbc.gridy = 0;
+		gbc.weightx = 1;
 		gbc.weighty = 1;
 		gbc.gridheight = 5;
 		gbl.setConstraints(druhySc, gbc);
 		VP.add(druhySc);
+		gbc.weightx = 0;
 
 		JPanel treti = new JPanel(new GridLayout(1, 2, 10, 0));
 		JButton add = new JButton(sk.str.addPropBut);
@@ -176,7 +155,7 @@ public class PostavaAddFrame extends JPanel {
 		gbl.setConstraints(treti, gbc);
 		VP.add(treti);
 
-		JButton hotovo = new JButton(sk.str.CreateCharacter);
+		JButton hotovo = new JButton(sk.str.CreateArtefact);
 		hotovo.addActionListener(new ActionListener() {
 
 			@Override
@@ -188,9 +167,10 @@ public class PostavaAddFrame extends JPanel {
 					JOptionPane.showMessageDialog(vpg, sk.str.WarningNameIsEmpty, sk.str.Warning, JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-				Postava man = new Postava(param.remove(0).value, sk.LocDontCare, isNPSCB.isSelected(), param);
-				sk.databazePostav.add(man.clone());
+				Artefact man = new Artefact(param.remove(0).value, sk.LocDontCare, param);
+				sk.databazeArtefaktu.add(man.clone());
 				updateDatabaze();
+
 				clearChar();
 			}
 		});
@@ -203,7 +183,6 @@ public class PostavaAddFrame extends JPanel {
 
 	protected void clearChar() {
 		param.clear();
-		isNPC = false;
 		isDel = false;
 		for (String str : defaultProp) {
 			param.add(new PropPair(str, ""));
@@ -213,20 +192,20 @@ public class PostavaAddFrame extends JPanel {
 
 	protected void updateDatabaze() {
 		updateCreate();
-		sk.RMenu.updateDatabase();
+		sk.RMenu.cpane.updateDatabase();
 
 	}
 
-	private JPanel databazePostav() {
+	private JPanel databazeArtefactu() {
 		JPanel SP = new JPanel();
-		SP.setBorder(new TitledBorder(sk.str.CreatedCharacters));
+		SP.setBorder(new TitledBorder(sk.str.CreatedArtefacts));
 		GridBagLayout gbl = new GridBagLayout();
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		SP.setLayout(gbl);
 		JScrollPane datPo = new JScrollPane();
 		datPo.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		list = new JList<>(sk.databazePostav.toArray());
+		list = new JList<>(sk.databazeArtefaktu.toArray());
 
 		list.addListSelectionListener(new ListSelectionListener() {
 
@@ -238,8 +217,8 @@ public class PostavaAddFrame extends JPanel {
 					int minIndex = lsm.getMinSelectionIndex();
 					int maxIndex = lsm.getMaxSelectionIndex();
 					if (minIndex == maxIndex && lsm.isSelectedIndex(minIndex) && isDelD && isAdjusting) {
-						sk.databazePostav.remove(minIndex);
-						if (sk.databazePostav.isEmpty()) {
+						sk.databazeArtefaktu.remove(minIndex);
+						if (sk.databazeArtefaktu.isEmpty()) {
 							isDelD = false;
 						}
 						updateDatabaze();
@@ -280,8 +259,8 @@ public class PostavaAddFrame extends JPanel {
 
 	protected void updateCreate() {
 		removeAll();
-		vpg = vytvorPostavu();
-		spg = databazePostav();
+		vpg = vytvorArtefact();
+		spg = databazeArtefactu();
 		add(vpg);
 		add(spg);
 		revalidate();
@@ -289,13 +268,10 @@ public class PostavaAddFrame extends JPanel {
 	}
 
 	protected void readParam() {
-		// ArrayList<PropPair> tmp = new ArrayList<>();
 		for (int i = 0; i < param.size(); i++) {
-			String name = ((EditableJLabel) ((JPanel) ((JPanel) ((JViewport) ((JScrollPane) vpg.getComponent(1)).getComponent(0)).getComponent(0)).getComponent(i)).getComponent(0)).getText();
-			String value = ((JTextField) ((JPanel) ((JPanel) ((JViewport) ((JScrollPane) vpg.getComponent(1)).getComponent(0)).getComponent(0)).getComponent(i)).getComponent(1)).getText();
+			String name = ((EditableJLabel) ((JPanel) ((JPanel) ((JViewport) ((JScrollPane) vpg.getComponent(0)).getComponent(0)).getComponent(0)).getComponent(i)).getComponent(0)).getText();
+			String value = ((JTextField) ((JPanel) ((JPanel) ((JViewport) ((JScrollPane) vpg.getComponent(0)).getComponent(0)).getComponent(0)).getComponent(i)).getComponent(1)).getText();
 			param.set(i, new PropPair(name, value));
 		}
-		// param = new ArrayList<>(tmp);
 	}
-
 }

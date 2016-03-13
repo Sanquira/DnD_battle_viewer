@@ -2,16 +2,17 @@ package hexapaper.Listeners;
 
 import hexapaper.hexapaper;
 import hexapaper.entity.Artefact;
+import hexapaper.entity.EditableEntity;
 import hexapaper.entity.HPEntity;
 import hexapaper.entity.Postava;
 import hexapaper.file.Wrappers.DatabaseWrapper;
 import hexapaper.file.Wrappers.HexWrapper;
-import hexapaper.gui.ArtefactAddFrame;
-import hexapaper.gui.ClientConnectFrame;
-import hexapaper.gui.ExportOneFrame;
 import hexapaper.gui.HraciPlocha;
-import hexapaper.gui.NewPaperFrame;
-import hexapaper.gui.PostavaAddFrame;
+import hexapaper.gui.frames.ArtefactAddFrame;
+import hexapaper.gui.frames.ClientConnectFrame;
+import hexapaper.gui.frames.ExportOneFrame;
+import hexapaper.gui.frames.NewPaperFrame;
+import hexapaper.gui.frames.PostavaAddFrame;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.prvekkNN;
 
@@ -24,6 +25,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -204,13 +207,13 @@ public class HPListenery {
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			if (SwingUtilities.isLeftMouseButton(e)) {
-				int x = e.getX();
-				int y = e.getY();
+				double x = e.getX();
+				double y = e.getY();
 				ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
 				HraciPlocha t = (HraciPlocha) e.getComponent();
 				t.drawCursor(x, y);
-				Point p = sk.getPosition(x, y);
-				if (p.x <= sk.c.gridRa && p.y <= sk.c.gridSl) {
+				//Point2D.Double p = sk.getPosition(x, y);
+				//if (p.x <= sk.c.gridRa && p.y <= sk.c.gridSl) {
 					//System.out.println(sk.insertingEntity);
 					if (sk.repeatableInsert) {
 						t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
@@ -219,27 +222,31 @@ public class HPListenery {
 					if (sk.colorAdd){
 						colorHex(idx);
 					}
-					ins2 = true;
-				}
+					//ins2 = true;
+				//}
 			}
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (sk.canEvent) {
-				int x = e.getX();
-				int y = e.getY();
+				double x = e.getX();
+				double y = e.getY();
 				ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
-				Point p = sk.getPosition(x, y);
-				if (p.x <= sk.c.gridRa && p.y <= sk.c.gridSl) {
+				//Point2D.Double  p = sk.getPosition(x, y);
+				//if (p.x <= sk.c.gridRa && p.y <= sk.c.gridSl) {
 				//if (idx.get(0).getVzd() <= sk.c.RADIUS) {
 					HraciPlocha t = (HraciPlocha) e.getComponent();
 					if (e.getButton() == MouseEvent.BUTTON3) {					
 						t.rotateEntity(idx);
+						sk.hraciPlocha.revalidate();
+						sk.hraciPlocha.repaint();
 					}
 					if(SwingUtilities.isLeftMouseButton(e)){
 						if (sk.insertingEntity) {
 							t.insertEntity(idx.get(0).getIdx(), sk.insertedEntity, true);
+							sk.hraciPlocha.revalidate();
+							sk.hraciPlocha.repaint();
 						}
 						else {
 							if ((sk.isConnected && sk.isPJ) || !sk.isConnected) {
@@ -249,21 +256,28 @@ public class HPListenery {
 	//								Object[] o={idx.get(0).getIdx(),sk.color};
 	//								sk.send(o,"paintEnt",true);
 								}
-								HPEntity en= sk.souradky.get(idx.get(0).getIdx());
-								if(en instanceof Artefact || en instanceof Postava){
-									sk.RMenu.redrawProperities(idx.get(0));
+								HPEntity en = sk.souradky.get(idx.get(0).getIdx());
+								if(en instanceof EditableEntity){
+									sk.RMenu.updateEntity((EditableEntity) en);
+									//sk.RMenu.cpane.redrawProperities(idx.get(0));
 									ins = true;
 									t.saveEntity(idx.get(0).getIdx());
+									//System.out.println("Přesouvám");
 								}	
 							}
 						}
-					}
+					//}
+					//t.revalidate();
+					//t.repaint();
+					//System.out.println("Vloženo, překresleno");
 				}
 			}
 		}
 		
 		private void colorHex(ArrayList<prvekkNN> idx){
 			sk.souradky.get(idx.get(0).getIdx()).setBcg(sk.color);
+			sk.hraciPlocha.revalidate();
+			sk.hraciPlocha.repaint();
 			Object[] o={idx.get(0).getIdx(),sk.color};
 			sk.send(o,"paintEnt",true);	
 		}
@@ -276,7 +290,9 @@ public class HPListenery {
 				double y = e.getY();
 				ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
 				HraciPlocha t = (HraciPlocha) e.getComponent();
-				t.releaseEntity(idx.get(0).getIdx());
+				t.moveEntity(t.oldIdx, idx.get(0).getIdx());
+				//t.releaseEntity(idx.get(0).getIdx());
+				//t.repaint();
 			}
 		}
 

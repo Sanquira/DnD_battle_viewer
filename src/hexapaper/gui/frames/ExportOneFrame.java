@@ -1,4 +1,4 @@
-package hexapaper.gui;
+package hexapaper.gui.frames;
 
 import hexapaper.entity.Artefact;
 import hexapaper.entity.HPEntity;

@@ -3,6 +3,7 @@ package hexapaper.gui;
 import hexapaper.source.BPolygon;
 import hexapaper.source.HPSklad;
 
+import java.awt.Point;
 import java.awt.Polygon;
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ public class Gprvky {
 
 	HPSklad sk = HPSklad.getInstance();
 
-	public BPolygon emptyHexagon(Location loc) {
+	public BPolygon emptyHexagon(Point loc) {
 		Polygon sprite = new Polygon();
 		for (int i = 0; i < 6; i++) {
 			sprite.addPoint((int) Math.round(loc.getX() + Math.cos(Math.toRadians(60 * i)) * sk.c.RADIUS),
@@ -20,6 +21,9 @@ public class Gprvky {
 		}
 
 		return new BPolygon(sprite);
+	}
+	public BPolygon emptyHexagon(Location loc) {
+		return emptyHexagon(loc.getPoint());
 	}
 
 	public ArrayList<BPolygon> entity(Location loc) {

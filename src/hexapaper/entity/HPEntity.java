@@ -78,12 +78,15 @@ public abstract class HPEntity implements Cloneable,Serializable {
 		}
 		return this;
 	}
+	public String getTag() {
+		return tag;
+	}
 
-	public String getNick() {
+	public String getName() {
 		return name;
 	}
 
-	public void setNick(String nick) {
+	public void setName(String nick) {
 		this.name = nick;
 	}
 
