@@ -168,7 +168,7 @@ public class ArtefactAddFrame extends JPanel {
 					return;
 				}
 				Artefact man = new Artefact(param.remove(0).value, sk.LocDontCare, param);
-				sk.databazeArtefaktu.add(man.clone());
+				sk.databazeArtefaktu.add((Artefact) man.clone());
 				updateDatabaze();
 
 				clearChar();

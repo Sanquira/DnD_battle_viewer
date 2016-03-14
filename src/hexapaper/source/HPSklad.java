@@ -2,13 +2,16 @@ package hexapaper.source;
 
 import hexapaper.hexapaper;
 import hexapaper.Listeners.HPListenery;
+import hexapaper.entity.Artefact;
 import hexapaper.entity.HPEntity;
+import hexapaper.entity.Postava;
 import hexapaper.file.Wrappers;
 import hexapaper.file.Wrappers.DatabaseWrapper;
 import hexapaper.file.Wrappers.HexWrapper;
 import hexapaper.gui.Gprvky;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.frames.ColorPicker;
+import hexapaper.gui.frames.EditDatabaseFrame;
 import hexapaper.gui.frames.PJGUI;
 import hexapaper.gui.panels.HPRightMenu;
 import hexapaper.language.HPStrings;
@@ -62,9 +65,10 @@ public class HPSklad {
 	public Wrappers wrappers=new Wrappers();
 
 	public ArrayList<HPEntity> souradky;
-	public ArrayList<HPEntity> databazePostav = new ArrayList<>();
-	public ArrayList<HPEntity> databazeArtefaktu = new ArrayList<>();
+	public ArrayList<Postava> databazePostav = new ArrayList<Postava>();
+	public ArrayList<Artefact> databazeArtefaktu = new ArrayList<Artefact>();
 	private HashMap<Component,LabelSystem> labels= new HashMap<Component,LabelSystem>();
+	public EditDatabaseFrame editDatabase;
 //	public ArrayList<Component> needPJ = new ArrayList<>();
 //	public ArrayList<Component> needConnect = new ArrayList<>();
 

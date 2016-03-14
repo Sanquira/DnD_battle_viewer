@@ -36,10 +36,10 @@ public class ExportOneFrame extends JPanel {
 	JFrame frame;
 	JPanel spg;
 	HPEntity beExported;
-	ArrayList<HPEntity> exportList;
+	ArrayList<? extends HPEntity> exportList;
 	HPSklad sk = HPSklad.getInstance();
 
-	public ExportOneFrame(ArrayList<HPEntity> exportList) {
+	public ExportOneFrame(ArrayList<? extends HPEntity> exportList) {
 		frame = new JFrame(sk.str.export);
 		frame.setSize(225, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

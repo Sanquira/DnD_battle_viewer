@@ -10,9 +10,11 @@ import hexapaper.file.Wrappers.HexWrapper;
 import hexapaper.gui.HraciPlocha;
 import hexapaper.gui.frames.ArtefactAddFrame;
 import hexapaper.gui.frames.ClientConnectFrame;
+import hexapaper.gui.frames.EditDatabaseFrame;
 import hexapaper.gui.frames.ExportOneFrame;
 import hexapaper.gui.frames.NewPaperFrame;
 import hexapaper.gui.frames.PostavaAddFrame;
+import hexapaper.gui.panels.EditDatabasePanel;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.prvekkNN;
 
@@ -111,7 +113,10 @@ public class HPListenery {
 			if (sk.isConnected && !sk.isPJ) {
 				return;
 			}
-			new PostavaAddFrame();
+			if(sk.editDatabase == null){
+				sk.editDatabase = new EditDatabaseFrame();
+			}
+			sk.editDatabase.showFrame();
 		}
 	}
 

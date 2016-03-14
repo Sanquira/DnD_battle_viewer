@@ -68,5 +68,9 @@ public abstract class EditableEntity extends HPEntity {
 		}
 		return cloned;
 	}
+	@Override
+	public String toString() {
+		return name;
+	}
 
 }

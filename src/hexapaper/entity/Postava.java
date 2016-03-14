@@ -1,6 +1,7 @@
 package hexapaper.entity;
 
 import hexapaper.gui.Gprvky;
+import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.PropPair;
 
 import java.io.Serializable;
@@ -23,6 +24,9 @@ public class Postava extends EditableEntity implements Serializable {
 	 * @param PJ
 	 * @param prop
 	 */
+	public Postava(){
+		this("Jmeno", HPSklad.getInstance().LocDontCare, false);
+	}
 	public Postava(String name, Location loc, boolean PJ) {
 		// super(name, loc, Rotatable, Colidable, prvek);
 		super(name, loc, true, false, new Gprvky().entity(loc));

@@ -68,7 +68,7 @@ public class Wrappers {
 			}
 			Entity.add(new EntityWrapper(Type,position,e,List));
 		}
-		public void addEntities(ArrayList<HPEntity> coords){
+		public void addEntities(ArrayList<? extends HPEntity> coords){
 			for(HPEntity e:coords){
 				if(!(e instanceof FreeSpace)||e.getBcg()!=Color.WHITE){
 					addEntity(e,coords.indexOf(e));
@@ -105,10 +105,10 @@ public class Wrappers {
 		}
 		public void loadEntity(EntityWrapper wrap,HPSklad sk){
 			if(wrap.Type.equals("Artefact")){
-				sk.databazeArtefaktu.add(new Artefact(wrap.Name,wrap.Tag,wrap.loc,wrap.List).setBcg(new Color(wrap.Bcg)));
+				sk.databazeArtefaktu.add((Artefact) new Artefact(wrap.Name,wrap.Tag,wrap.loc,wrap.List).setBcg(new Color(wrap.Bcg)));
 			}
 			if(wrap.Type.equals("Postava")){
-				sk.databazePostav.add(new Postava(wrap.Name,wrap.Tag,wrap.loc,false,wrap.List).setBcg(new Color(wrap.Bcg)));
+				sk.databazePostav.add((Postava) new Postava(wrap.Name,wrap.Tag,wrap.loc,false,wrap.List).setBcg(new Color(wrap.Bcg)));
 			}
 		}
 	}

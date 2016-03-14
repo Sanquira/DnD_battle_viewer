@@ -189,7 +189,7 @@ public class PostavaAddFrame extends JPanel {
 					return;
 				}
 				Postava man = new Postava(param.remove(0).value, sk.LocDontCare, isNPSCB.isSelected(), param);
-				sk.databazePostav.add(man.clone());
+				sk.databazePostav.add((Postava) man.clone());
 				updateDatabaze();
 				clearChar();
 			}

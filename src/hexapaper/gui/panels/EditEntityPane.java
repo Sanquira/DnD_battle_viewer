@@ -63,10 +63,11 @@ public class EditEntityPane<T extends EditableEntity> extends JPanel {
 			}			
 		}		
 	};
+	private JButton customBtn;
 	
 	public EditEntityPane(String btnText){
 		this();
-		setButtonText(btnText);
+		customBtn.setText(btnText);
 	}
 	public EditEntityPane(){
 		createFrame();
@@ -77,7 +78,7 @@ public class EditEntityPane<T extends EditableEntity> extends JPanel {
 	}
 	public EditEntityPane(JPanel custom, String btnText, String nameText){
 		this(custom);
-		setButtonText(btnText);
+		customBtn.setText(btnText);
 		setNameText(nameText);
 	}
 	
@@ -93,7 +94,7 @@ public class EditEntityPane<T extends EditableEntity> extends JPanel {
 
 		JPanel prvni = new JPanel(new BorderLayout(10, 10));
 
-		nameLabel = new JLabel("");
+		nameLabel = new JLabel("NPC");
 		JLabel tag = new JLabel("Tag");
 		//JLabel nameLabel = new JLabel(entity instanceof Postava? sk.str.player : sk.str.Artefact);
 		//JLabel tag = new JLabel(sk.str.Tag);
@@ -105,7 +106,7 @@ public class EditEntityPane<T extends EditableEntity> extends JPanel {
 		add(new JSeparator(JSeparator.HORIZONTAL),"growx,wrap");
 		JPanel nameatag = new JPanel();
 
-		nameL = new EditableJLabel("Karel");
+		nameL = new EditableJLabel("Jméno");
 		nameL.setPreferredSize(new Dimension(-1, 35));
 		nameL.addValueChangedListener(new ValueChangedListener(){
 
@@ -204,7 +205,7 @@ public class EditEntityPane<T extends EditableEntity> extends JPanel {
 				}
 			}
 		});
-		JButton customBtn = new JButton(this.btnText);
+		customBtn = new JButton(this.btnText);
 		customBtn.addActionListener(new ActionListener() {
 
 			@Override
@@ -217,16 +218,11 @@ public class EditEntityPane<T extends EditableEntity> extends JPanel {
 		control.add(customBtn, "cell 0 1 2 1,grow");
 		return control;
 	}
-	public String getButtonText() {
-		return btnText;
+	public JButton getCustomButton() {
+		return customBtn;
 	}
 	public void setNameText(String nameText) {
 		this.nameLabel.setText(nameText);
-		this.nameLabel.repaint();
-	}
-
-	public void setButtonText(String btnText) {
-		this.nameLabel.setText(btnText);
 		this.nameLabel.repaint();
 	}
 
