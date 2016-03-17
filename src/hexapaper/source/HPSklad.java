@@ -64,7 +64,7 @@ public class HPSklad {
 	
 	public Wrappers wrappers=new Wrappers();
 
-	public ArrayList<HPEntity> souradky;
+	public HashMap<Point2D,HPEntity> entities;
 	public ArrayList<Postava> databazePostav = new ArrayList<Postava>();
 	public ArrayList<Artefact> databazeArtefaktu = new ArrayList<Artefact>();
 	private HashMap<Component,LabelSystem> labels= new HashMap<Component,LabelSystem>();
@@ -125,7 +125,7 @@ public class HPSklad {
 	}
 	
 	public void reload() {
-		initLoad(souradky);
+		initLoad();
 	}
 
 	protected HPSklad() {
@@ -226,13 +226,13 @@ public class HPSklad {
 		this.colorAdd = isActive;
 	}
 
-	public void initLoad(ArrayList<HPEntity> souradky) {
-		hraciPlocha = new HraciPlocha(c.gridSl,c.gridRa,c.RADIUS);
-		for (int i = 0; i < souradky.size(); i++) {
-			// if (souradky.get(i) instanceof FreeSpace) {
-			hraciPlocha.insertEntity(i, souradky.get(i), true);
-			// }
-		}	
+	public void initLoad() {
+//		hraciPlocha = new HraciPlocha(c.gridSl,c.gridRa,c.RADIUS);
+//		for (int i = 0; i < souradky.size(); i++) {
+//			// if (souradky.get(i) instanceof FreeSpace) {
+//			hraciPlocha.insertEntity(i, souradky.get(i), true);
+//			// }
+//		}	
 		hexapaper.HPfrm.repaint();
 		HPListenery lis = new HPListenery();
 		hraciPlocha.addMouseListener(lis.new HraciPlochaListener());
@@ -337,9 +337,9 @@ public class HPSklad {
 		}
 	}
 	public void saveMap(FileHandler fh) throws IOException{
-		if(souradky.size()>0 && fh!=null){
+		if(entities.size()>0 && fh!=null){
 			HexWrapper HWrapper=wrappers.new HexWrapper(c.gridSl,c.RADIUS,c.gridRa,FILEVERSION);
-			HWrapper.addEntities(souradky);
+			HWrapper.addEntities(entities);
 			fh.write(HWrapper);
 		}
 	}

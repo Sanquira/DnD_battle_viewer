@@ -1,5 +1,6 @@
 package hexapaper.entity;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import core.Location;
@@ -9,16 +10,39 @@ import hexapaper.source.HPSklad.PropPair;
 public abstract class EditableEntity extends HPEntity {
 
 	protected ArrayList<PropPair> param = new ArrayList<PropPair>();
+	protected String tag = null;
+	protected String name;
+	public boolean visible;
 	
-	public EditableEntity(String name, Location loc, boolean Rotatable, boolean Colidable, ArrayList<BPolygon> prvek) {
-		super(name, loc, Rotatable, Colidable, prvek);
-		// TODO Auto-generated constructor stub
+	public EditableEntity(String name){
+		this(name,name);
+	}
+	public EditableEntity(String name, ArrayList<PropPair> param){
+		this(name, name, param);
+	}
+	public EditableEntity(String name, Color background){
+		this(name,name,background);
+	}
+	public EditableEntity(String name, Color background, ArrayList<PropPair> param){
+		this(name,name,background,param);
+	}
+	public EditableEntity(String name, String tag, ArrayList<PropPair> param){
+		this(name, tag);
+		setParam(param);
+	}
+	public EditableEntity(String name, String tag, Color background){
+		this(name,tag);
+		setBcg(background);
+	}
+	public EditableEntity(String name, String tag, Color background, ArrayList<PropPair> param){
+		this(name,tag,param);
+		setBcg(background);
+	}
+	public EditableEntity(String name, String tag) {
+		setTag(tag);
+		setName(name);
 	}
 
-	public EditableEntity(String name, Location loc, boolean Rotatable, boolean Colidable, BPolygon prvek) {
-		super(name, loc, Rotatable, Colidable, prvek);
-		// TODO Auto-generated constructor stub
-	}
 	public void setParamValue(int pos, String newValue) {
 		PropPair p = param.get(pos);
 		p.value = newValue;
@@ -56,21 +80,39 @@ public abstract class EditableEntity extends HPEntity {
 	public void removeParam(int pos) {
 		param.remove(pos);
 	}
-	public EditableEntity clone() {
-		EditableEntity cloned = (EditableEntity) super.clone();
-		cloned.param = (ArrayList<PropPair>) cloned.param.clone();
-		for (int i = 0; i < cloned.param.size(); i++) {
-			try {
-				cloned.param.set(i, cloned.param.get(i).clone());
-			} catch (CloneNotSupportedException e) {
-				e.printStackTrace();
-			}
-		}
-		return cloned;
-	}
+
 	@Override
 	public String toString() {
 		return name;
+	}
+	public HPEntity setTag(String tag) {
+		if (this.tag == null) {
+			try {
+				this.tag = name.substring(0, 2);
+			} catch (StringIndexOutOfBoundsException e) {
+				this.tag = name.substring(0, name.length());
+			}
+		} else {
+			this.tag = tag;
+		}
+		return this;
+	}
+	public String getTag() {
+		return tag;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String nick) {
+		this.name = nick;
+	}
+	public boolean isVisible() {
+		return visible;
+	}
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 
 }
