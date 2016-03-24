@@ -1,11 +1,17 @@
 package hexapaper.network.server;
 
+import hexapaper.entity.EditableEntity;
 import hexapaper.entity.HPEntity;
+import hexapaper.entity.RotatableEntity;
+import hexapaper.graphicCore.GCMath;
 import hexapaper.source.HPSklad;
+import mathLibrary.vector.Vector2D;
 
 import java.awt.Color;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.swing.JOptionPane;
 
 import network.core.annotations.Annotations.ConnectAnnotation;
@@ -33,7 +39,7 @@ public class ClientListeners {
 			System.out.println("Připojeno k serveru");
 			storage.isConnected = true;
 			storage.client = hexaClient;
-			storage.updateConnect();
+			storage.updateConnectInfo();
 			storage.colorJMenu();
 			//storage.RMenu.cpane.updateCreate();
 		}
@@ -45,7 +51,7 @@ public class ClientListeners {
 			e.printStackTrace();
 			storage.isConnected = false;
 			storage.isPJ = false;
-			storage.updateConnect();
+			storage.updateConnectInfo();
 			String message = storage.str.DisconnectMessage;
 			if(kicked){
 				message = storage.str.KickMessage;
@@ -65,34 +71,42 @@ public class ClientListeners {
 			storage.c.gridRa = (int) paper[0];
 			storage.c.gridSl = (int) paper[1];
 			storage.c.RADIUS = (int) paper[2];
-			storage.initLoad(new ArrayList<HPEntity>());
+			storage.entities = new HashMap<Long,HPEntity>();
+			//storage.initLoad(new ArrayList<HPEntity>());
 			storage.setStatus("Rozměry HexaPapaperu přijaty");
 		}
 	};
-	@PacketReceiveAnnotation(header = "EntityHexapaper")
-	private PacketReceiveListener EntityHexapaper = new PacketReceiveListener() {
-		public void packetReceive(MessagePacket p) {
-			storage.setStatus("Přijímání entit HexaPaperu");
-			storage.souradky = (ArrayList<HPEntity>) p.getObject();
-			storage.initLoad(storage.souradky);
-			storage.setStatus("HexaPaperu načten ze serveru");
-		}
-	};
+//	@PacketReceiveAnnotation(header = "EntityHexapaper")
+//	private PacketReceiveListener EntityHexapaper = new PacketReceiveListener() {
+//		public void packetReceive(MessagePacket p) {
+//			storage.setStatus("Přijímání entit HexaPaperu");
+//			storage.souradky = (ArrayList<HPEntity>) p.getObject();
+//			storage.initLoad(storage.souradky);
+//			storage.setStatus("HexaPaperu načten ze serveru");
+//		}
+//	};
 	@PacketReceiveAnnotation(header = "rotateEnt")
 	private PacketReceiveListener rotateEnt = new PacketReceiveListener() {
 		public void packetReceive(MessagePacket p) {
 			Integer[] table = (Integer[]) p.getObject();
 			//System.out.println(table[0] + ":" + table[1] + ":" + table[2]);
-			for (HPEntity ent : storage.souradky) {
-				if (ent.loc.getX().equals(table[0]) && ent.loc.getY().equals(table[1])) {
-					//System.out.println("cool");
-					ent.loc.setDir(table[2]);
-					ent.recreateGraphics();
-					storage.setStatus("Rotována entita");
-					// System.out.println("Předělána entita");
-					storage.hraciPlocha.repaint();
+			long key = GCMath.getLongFromCoords(new Vector2D(table[0],table[1]));
+			if(storage.entities.containsKey(key)){
+				HPEntity ent = storage.entities.get(key);
+				if(ent instanceof RotatableEntity){
+					((RotatableEntity) ent).setRotation(table[2]);
 				}
 			}
+//			for (HPEntity ent : storage.entities.values()) {
+//				if (ent.loc.getX().equals(table[0]) && ent.loc.getY().equals(table[1])) {
+//					//System.out.println("cool");
+//					ent.loc.setDir(table[2]);
+//					ent.recreateGraphics();
+//					storage.setStatus("Rotována entita");
+//					// System.out.println("Předělána entita");
+//					storage.hraciPlocha.repaint();
+//				}
+//			}
 		}
 	};
 	@PacketReceiveAnnotation(header = "paintEnt")
@@ -100,10 +114,11 @@ public class ClientListeners {
 		@Override
 		public void packetReceive(MessagePacket p) {
 			Object[] table=(Object[]) p.getObject();
-			if((Integer) table[0]<storage.souradky.size()){
-				storage.souradky.get((Integer) table[0]).setBcg((Color) table[1]);
-				storage.hraciPlocha.repaint();
-			}
+			
+//			if((Integer) table[0]<storage.souradky.size()){
+//				storage.souradky.get((Integer) table[0]).setBcg((Color) table[1]);
+//				storage.hraciPlocha.repaint();
+//			}
 			//System.out.println(storage.souradky.get((Integer) table[0]).getBcg().getRGB());
 		}		
 	};
@@ -111,7 +126,7 @@ public class ClientListeners {
 	private PacketReceiveListener requestPJInfo = new PacketReceiveListener() {
 		public void packetReceive(MessagePacket p) {
 			storage.isPJ = true;
-			storage.updateConnect();
+			storage.updateConnectInfo();
 			// System.out.println("Requested PJ info");
 			hexaClient.radiusHexapaper();
 			hexaClient.updateHexapaper();
@@ -126,7 +141,7 @@ public class ClientListeners {
 			storage.isPJ = false;
 			storage.PJInfo.setVisible(false);
 			// System.out.println("No longer PJ");
-			storage.updateConnect();
+			storage.updateConnectInfo();
 			storage.setStatus("Odebrán PJ");
 		}
 	};
@@ -141,23 +156,24 @@ public class ClientListeners {
 			storage.setStatus("Získáná entita");
 		}
 	};
-	@PacketReceiveAnnotation(header = "EntChangeTag")
-	PacketReceiveListener EntChangeName = new PacketReceiveListener() {
-		@Override
-		public void packetReceive(MessagePacket p) {
-			Object[] table = (Object[]) p.getObject();
-			// System.out.println("přijato"+(Integer) table[0]+","+(Integer)
-			// table[1]);
-			// System.out.println(table[0]+":"+table[1]+":"+table[2]+":"+table[3]);
-			for (HPEntity ent : storage.souradky) {
-				if (ent.loc.getX().equals((Integer) table[0]) && ent.loc.getY().equals((Integer) table[1])) {
-					ent.setTag((String) table[2]);
-					storage.hraciPlocha.repaint();
-					// System.out.println("Změnen nick a tag Entity");
-				}
-			}
-		}
-	};
+//	@PacketReceiveAnnotation(header = "EntChangeTag")
+//	PacketReceiveListener EntChangeName = new PacketReceiveListener() {
+//		@Override
+//		public void packetReceive(MessagePacket p) {
+//			Object[] table = (Object[]) p.getObject();
+//			// System.out.println("přijato"+(Integer) table[0]+","+(Integer)
+//			// table[1]);
+//			// System.out.println(table[0]+":"+table[1]+":"+table[2]+":"+table[3]);
+//			//System.out.println(table[0] + ":" + table[1] + ":" + table[2]);
+//			long key = GCMath.getLongFromCoords(new Vector2D((Integer) table[0],(Integer) table[1]));
+//			if(storage.entities.containsKey(key)){
+//				HPEntity ent = storage.entities.get(key);
+//				if(ent instanceof EditableEntity){
+//					((EditableEntity) ent).setTag((String) table[2]);
+//				}
+//			}
+//		}
+//	};
 	@PacketReceiveAnnotation(header = "kick")
 	PacketReceiveListener kick = new PacketReceiveListener() {
 		@Override

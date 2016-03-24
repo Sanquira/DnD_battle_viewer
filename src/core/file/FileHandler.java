@@ -1,23 +1,51 @@
 package core.file;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import hexapaper.entity.EditableEntity;
+import hexapaper.entity.HPEntity;
+import hexapaper.file.XmlAbstractWrapper;
+import hexapaper.file.XmlDatabaseWrapper;
+import hexapaper.file.XmlMapWrapper;
 
 public class FileHandler {
-	private String name;
-	private GsonBuilder build=new GsonBuilder().setPrettyPrinting();
-	private Gson gson;
+	private String path;
+	private static JAXBContext context;
+	private static Marshaller m;
+	private static Unmarshaller u;
 	
+	static {
+		try {
+			context = JAXBContext.newInstance(HPEntity[].class, Config.class, XmlAbstractWrapper.class);
+			m = context.createMarshaller();
+			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			u = context.createUnmarshaller();
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public FileHandler(String name){
-		this.name=name;		
+		this.path=name;		
+	}
+	public FileHandler(File file){
+		this(file.getAbsolutePath());
 	}
 	public static FileHandler showDialog(String ext,String desc,boolean save){
 		JFileChooser fc = new JFileChooser();	
@@ -43,32 +71,25 @@ public class FileHandler {
 		return null;
 	}
 	
-	public void write(Object obj) throws IOException{
-		FileWriter fw=new FileWriter(name);
-		gson=build.create();
-		gson.toJson(obj,fw);
-		fw.flush();
-		fw.close();
+	public void write(Object obj) throws JAXBException, IOException{
+	    try(FileOutputStream stream = new FileOutputStream(new File(path))){
+	    	m.marshal(obj, stream);
+	    }
 	}
-//	public <T extends JsonDeserializer> T load(Class<T> type, JsonDeserializer json) {
-//	    build.registerTypeAdapter(type, type.cast(json));
-//	    gson=build.create();
-//		return gson.fromJson(fr, type);
-//	}
-	public <T> T load(Class<T> type) {
-	    //build.registerTypeAdapter(type, type.cast(json));
-	    FileReader fr;
-	    T t=null;
-		try {
-			fr = new FileReader(name);
-			gson=build.create();
-		    t=gson.fromJson(fr,type);
-		    fr.close();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return t;
+	public <T> T load(Class<T> type) throws JAXBException {
+		return u.unmarshal(new StreamSource(path), type).getValue();
+	}
+	public ArrayList<EditableEntity> loadDB() throws JAXBException {
+		return load(XmlDatabaseWrapper.class).getList();
+	}
+	public HashMap<Long,HPEntity> loadMap() throws JAXBException {
+		return load(XmlMapWrapper.class).getMap();
+	}
+	public void saveDB(ArrayList<EditableEntity> list) throws JAXBException, IOException{
+		write(new XmlDatabaseWrapper(list));
+	}
+	public void saveMap(HashMap<Long,HPEntity> map) throws JAXBException, IOException{
+		write(new XmlMapWrapper(map));
 	}
 
 

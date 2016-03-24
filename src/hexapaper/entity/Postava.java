@@ -1,15 +1,14 @@
 package hexapaper.entity;
 
-import hexapaper.gui.Gprvky;
-import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.PropPair;
 
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import core.Location;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 public class Postava extends EditableEntity implements Serializable {
 
 	/**
@@ -25,6 +24,9 @@ public class Postava extends EditableEntity implements Serializable {
 	 * @param prop
 	 */
 
+	public Postava(){
+		
+	}
 	public Postava(String name, ArrayList<PropPair> param) {
 		super(name, param);
 		// TODO Auto-generated constructor stub
@@ -63,11 +65,6 @@ public class Postava extends EditableEntity implements Serializable {
 	public Postava(String name) {
 		super(name);
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public void recreateGraphics() {
-		
 	}
 	
 }

@@ -19,10 +19,10 @@ public class EditDatabaseFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		JTabbedPane pane = new JTabbedPane();
 		
-		characters = new EditDatabasePanel<Postava>(sk.databazePostav,new Postava());
+		characters = new EditDatabasePanel<Postava>(sk.databazePostav,new Postava("Nová"));
 		pane.add("Postavy", characters);
 		
-		artefacts = new EditDatabasePanel<Artefact>(sk.databazeArtefaktu, new Artefact());
+		artefacts = new EditDatabasePanel<Artefact>(sk.databazeArtefaktu, new Artefact("Nová"));
 		pane.add("Artefakty", artefacts);
 		
 		setContentPane(pane);

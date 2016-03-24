@@ -7,7 +7,7 @@ import hexapaper.entity.HPEntity;
 import hexapaper.entity.Postava;
 import hexapaper.file.Wrappers.DatabaseWrapper;
 import hexapaper.file.Wrappers.HexWrapper;
-import hexapaper.gui.HraciPlocha;
+import hexapaper.graphicCore.Canvas;
 import hexapaper.gui.frames.ArtefactAddFrame;
 import hexapaper.gui.frames.ClientConnectFrame;
 import hexapaper.gui.frames.EditDatabaseFrame;
@@ -194,7 +194,7 @@ public class HPListenery {
 //		private Point startPos = new Point(0,0);
 //		private Point endPos = new Point(0,0);
 //		private boolean dragging = false;
-		private kNN NN = new kNN();
+		//private kNN NN = new kNN();
 		
 		@Override
 		public void mouseMoved(MouseEvent e) {
@@ -202,7 +202,7 @@ public class HPListenery {
 			if(sk.isConnected&&!sk.isPJ){
 				return;
 			}
-			HraciPlocha t = (HraciPlocha) e.getComponent();
+			Canvas t = (Canvas) e.getComponent();
 			if(t != null){
 				//ArrayList<prvekkNN> idx = NN.getkNNindexes(e.getX(), e.getY());
 				t.drawCursor(e.getX(), e.getY());
@@ -215,7 +215,7 @@ public class HPListenery {
 				double x = e.getX();
 				double y = e.getY();
 				ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
-				HraciPlocha t = (HraciPlocha) e.getComponent();
+				Canvas t = (Canvas) e.getComponent();
 				t.drawCursor(x, y);
 				//Point2D.Double p = sk.getPosition(x, y);
 				//if (p.x <= sk.c.gridRa && p.y <= sk.c.gridSl) {
@@ -241,7 +241,7 @@ public class HPListenery {
 				//Point2D.Double  p = sk.getPosition(x, y);
 				//if (p.x <= sk.c.gridRa && p.y <= sk.c.gridSl) {
 				//if (idx.get(0).getVzd() <= sk.c.RADIUS) {
-					HraciPlocha t = (HraciPlocha) e.getComponent();
+					Canvas t = (Canvas) e.getComponent();
 					if (e.getButton() == MouseEvent.BUTTON3) {					
 						t.rotateEntity(idx);
 						sk.hraciPlocha.revalidate();
@@ -294,7 +294,7 @@ public class HPListenery {
 				double x = e.getX();
 				double y = e.getY();
 				ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
-				HraciPlocha t = (HraciPlocha) e.getComponent();
+				Canvas t = (Canvas) e.getComponent();
 				t.moveEntity(t.oldIdx, idx.get(0).getIdx());
 				//t.releaseEntity(idx.get(0).getIdx());
 				//t.repaint();

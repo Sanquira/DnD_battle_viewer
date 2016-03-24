@@ -6,15 +6,14 @@ import core.file.Config;
 import hexapaper.hexapaper;
 import hexapaper.network.server.HexaServer;
 import hexapaper.source.HPSklad;
-import dungeonmapper.dungeonMapper;
 
 public class mainClass {
 
 	static Thread th;
 	static CmdLineParser parser = new CmdLineParser(new mainClass());
 	
-	@Option(name="-dm",usage="Runs dungeonMapper")
-	private static boolean dm;
+//	@Option(name="-dm",usage="Runs dungeonMapper")
+//	private static boolean dm;
 	
 	@Option(name="-s",usage="Runs HexaServer")
 	private static boolean server;
@@ -57,10 +56,6 @@ public class mainClass {
 		if(name!=null){cfg.lastName=name;}
 		if(server){
 			new HexaServer(console,s);
-			return;
-		}
-		if(dm){
-			new dungeonMapper();
 			return;
 		}
 		else{

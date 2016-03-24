@@ -40,7 +40,7 @@ public class HPStrings {
 	public String Battlecontrol;
 	public String Objproperties = "Properties";
 	public String showPlayerColor = "Skrýt hráče";
-	public String showNPCColor = "Skrýt NPC";
+	public String showNPCColor = "Hide NPC";
 	public String addWall = "Add wall";
 	public String addFreeSpace = "Remove";
 
@@ -58,12 +58,11 @@ public class HPStrings {
 	public String importAP = "Import";
 	public String exportArtDat = "... artefact database";
 	public String exportPostDat = "... character database";
-	public String exportArtOne = "... jednoho artefaktu";
-	public String exportPostOne = "... jedné postavy";
+	public String exportArtOne = "... artefact";
+	public String exportPostOne = "... character";
 	public String utility = "Utilities";
 	public String Dice = "Dice";
 	public String PJInfo = "PJGUI";
-	public String ExportLang = "ExportLang";
 
 	public String ipField = "Server IP";
 	public String portField = "Server port";
@@ -89,24 +88,23 @@ public class HPStrings {
 	public String End = "End";
 
 	// FileVersionCheck
-	public String OldFileVersionText = "Vybrany soubor je uložen ve starší verzi formátu, chcete se ho přesto pokusit načíst?";
-	public String OldFileVersionYes = "Ano";
-	public String OldFileVersionNo = "Ne";
-	public String OldFileVersionHeader = "Detekována stará verze";
+	public String OldFileVersionText = "Selected file is in older version of fileformat, do you still want to load it?";
+	public String OldFileVersionYes = "Yes";
+	public String OldFileVersionNo = "No";
+	public String OldFileVersionHeader = "Old version detected";
 
 	// CreateServerFrame
-	public String ServerCreate = "Vytvořit";
-	public String ServerCreateFrame = "Vytváření serveru";
-	public String ServerIOError = "Chyba při vytváření";
-	public String ServerError = "Nepodařilo se vytvořit server z důvodu: ";
+	public String ServerCreate = "Start";
+	public String ServerCreateFrame = "Start a server";
+	public String ServerIOError = "Error while starting server";
+	public String ServerError = "Unable to start server due to: ";
 
 	// Server
-	public String ServerVersion = "Verze serveru %Version, verze jádra %coreVersion";
-	public String ClientConnected = "Hráč připojen %name";
-	public String ClientDisconnected = "Odpojen %pj %name z důvodu: %error";
-	public String ClientKicked = "Vyhozen %pj %name z důvodu: %error";
-	public String PJDisconnected = "Odpojen %pj %name z důvodu: %error";
-	public String RadiusReceived = "Radius hexapaperu přijat";
+	public String ServerVersion = "Server version %Version, core version %coreVersion";
+	public String ClientConnected = "Player connected %name";
+	public String ClientDisconnected = "%pj %name was disconnected due to: %error";
+	public String ClientKicked = "Kicked %pj %name because of: %error";
+	public String RadiusReceived = "Radius accepted";
 	public String EntityReceived = "Entity Hexapaperu přijaty";
 	public String ArtefactsReceived = "Artefacty přijaty";
 	public String CharactersReceived = "Postavy přijaty";
@@ -140,6 +138,10 @@ public class HPStrings {
 	
 	public String LangBar = "Jazyky";
 	public String disconnect = "Odpojit se";
+	
+	// GC Strings
+	public String GCsetPosition = "Nastav pozici";
+	public String GCsetPositionMessage = "Zadej pozici hexy na kterou chceš přejít.";
 
 	public static <T extends HPStrings> T loadFile(String name) throws InstantiationException, ClassNotFoundException, IllegalAccessException{
 		Class<T> type = (Class<T>) Class.forName("hexapaper.language."+name);

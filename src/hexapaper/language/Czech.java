@@ -61,7 +61,6 @@ public class Czech extends HPStrings {
 		super.utility = "Utility";
 		super.Dice = "Kostka";
 		super.PJInfo = "PJGUI";
-		super.ExportLang = "ExportLang";
 
 		super.ipField = "IP serveru";
 		super.portField = "Port serveru";
@@ -103,7 +102,6 @@ public class Czech extends HPStrings {
 		super.ClientConnected = "Hráč připojen %name";
 		super.ClientDisconnected = "Odpojen %pj %name z důvodu: %error";
 		super.ClientKicked = "Vyhozen %pj %name z důvodu: %error";
-		super.PJDisconnected = "Odpojen %pj %name z důvodu: %error";
 		super.RadiusReceived = "Radius hexapaperu přijat";
 		super.EntityReceived = "Entity Hexapaperu přijaty";
 		super.ArtefactsReceived = "Artefacty přijaty";

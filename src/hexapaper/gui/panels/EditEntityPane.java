@@ -233,7 +233,7 @@ public class EditEntityPane<T extends EditableEntity> extends JPanel {
 	public void setEntity(T entity) {
 		this.entity = entity;
 		setNameText( entity instanceof Postava? sk.str.player : sk.str.Artefact);
-		tagL.setText(entity.tag);
+		tagL.setText(entity.getTag());
 		nameL.setText(entity.getName());
 		updateProperties();
 	}

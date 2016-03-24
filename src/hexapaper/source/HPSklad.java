@@ -3,13 +3,13 @@ package hexapaper.source;
 import hexapaper.hexapaper;
 import hexapaper.Listeners.HPListenery;
 import hexapaper.entity.Artefact;
+import hexapaper.entity.EditableEntity;
 import hexapaper.entity.HPEntity;
 import hexapaper.entity.Postava;
 import hexapaper.file.Wrappers;
 import hexapaper.file.Wrappers.DatabaseWrapper;
-import hexapaper.file.Wrappers.HexWrapper;
-import hexapaper.gui.Gprvky;
-import hexapaper.gui.HraciPlocha;
+import hexapaper.graphicCore.Canvas;
+import hexapaper.graphicCore.GraphicElements;
 import hexapaper.gui.frames.ColorPicker;
 import hexapaper.gui.frames.EditDatabaseFrame;
 import hexapaper.gui.frames.PJGUI;
@@ -24,7 +24,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -36,6 +38,11 @@ import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
+import org.objenesis.Objenesis;
+import org.objenesis.ObjenesisStd;
+
+import com.rits.cloning.Cloner;
+
 import addons.dice.LogWindow;
 import core.Location;
 import core.file.Config;
@@ -45,11 +52,14 @@ public class HPSklad {
 
 	private static HPSklad instance = null;
 
-	public Gprvky prvky;
-	public HraciPlocha hraciPlocha;
+	static{
+		instance = new HPSklad();
+	}
+	public GraphicElements prvky;
+	public Canvas hraciPlocha;
 	public HPRightMenu RMenu;
 	public Config c = Config.getInstance();
-	
+
 	public JScrollPane scroll;
 	public Location LocDontCare = new Location(c.RADIUS, c.RADIUS, 0);
 	public HPEntity insertedEntity;
@@ -61,16 +71,16 @@ public class HPSklad {
 	public JLabel statusBar;
 	public ColorPicker clr;
 	public Color color = Color.WHITE;
-	
-	public Wrappers wrappers=new Wrappers();
 
-	public HashMap<Point2D,HPEntity> entities;
+	public Wrappers wrappers = new Wrappers();
+
+	public HashMap<Long, HPEntity> entities;
 	public ArrayList<Postava> databazePostav = new ArrayList<Postava>();
 	public ArrayList<Artefact> databazeArtefaktu = new ArrayList<Artefact>();
-	private HashMap<Component,LabelSystem> labels= new HashMap<Component,LabelSystem>();
+	private HashMap<Component, LabelSystem> labels = new HashMap<Component, LabelSystem>();
 	public EditDatabaseFrame editDatabase;
-//	public ArrayList<Component> needPJ = new ArrayList<>();
-//	public ArrayList<Component> needConnect = new ArrayList<>();
+	// public ArrayList<Component> needPJ = new ArrayList<>();
+	// public ArrayList<Component> needConnect = new ArrayList<>();
 
 	public boolean hidePlayerColor = false;
 	public boolean hideNPCColor = false;
@@ -84,17 +94,20 @@ public class HPSklad {
 	public boolean clone = false;
 	public boolean multipj = isPJ && isConnected;
 	public boolean singleorPJ = !isConnected || multipj;
+	public Cloner cloner = new Cloner();
+	public Objenesis objenesis = new ObjenesisStd();
 	
 	public HexaClient client;
 	public HPStrings str;
-	
+
 	public final static String VERSION = "v0.5d";
-	public final static String FILEVERSION = "0.2";
-	public final static String[] Languages = {"HPStrings","Czech"};
-	
-	public enum LabelSystem{
-		SingleOnly,MultiOnly,SingleOrPJ,MultiAndPJ
+	public final static String FILEVERSION = "0.3";
+	public final static String[] Languages = { "HPStrings", "Czech" };
+
+	public enum LabelSystem {
+		SingleOnly, MultiOnly, SingleOrPJ, MultiAndPJ
 	}
+
 	public void send(Serializable o, String header, boolean PJ) {
 		if (isConnected) {
 			if (PJ && isPJ) {
@@ -107,37 +120,41 @@ public class HPSklad {
 			}
 		}
 	}
-	
-	public boolean checkVersion(String Version){
-		if(Version!=null){
-			if(Version.equals(HPSklad.FILEVERSION)){
+
+	public boolean checkVersion(String Version) {
+		if (Version != null) {
+			if (Version.equals(HPSklad.FILEVERSION)) {
 				return true;
 			}
 		}
-		Object[] options = {str.OldFileVersionYes,str.OldFileVersionNo};
+		Object[] options = { str.OldFileVersionYes, str.OldFileVersionNo };
 		int n = JOptionPane.showOptionDialog(null, str.OldFileVersionText,
-					str.OldFileVersionHeader,
-					JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,null);
-		if(n==JOptionPane.YES_OPTION){
+				str.OldFileVersionHeader,
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
+		if (n == JOptionPane.YES_OPTION) {
 			return true;
 		}
 		return false;
 	}
-	
-	public void reload() {
-		initLoad();
-	}
+
+//	public void reload() {
+//		initLoad();
+//	}
 
 	protected HPSklad() {
+		entities = new HashMap<>();
+
+		System.out.println(c.Language);
+		SetupLang(c.Language);
 	}
 
 	public void colorJMenu() {
 		boolean singleonly = !isConnected;
 		multipj = isConnected && isPJ;
 		singleorPJ = singleonly || multipj;
-		for(Entry<Component, LabelSystem> entry: labels.entrySet()){
+		for (Entry<Component, LabelSystem> entry : labels.entrySet()) {
 			boolean enabled = false;
-			switch(entry.getValue()){
+			switch (entry.getValue()) {
 			case SingleOnly:
 				enabled = singleonly;
 				break;
@@ -149,65 +166,66 @@ public class HPSklad {
 				break;
 			case SingleOrPJ:
 				enabled = singleorPJ;
-				break;				
+				break;
 			}
 			entry.getKey().setEnabled(enabled);
 			entry.getKey().repaint();
 		}
-//		Boolean PJactive = isPJ;
-//		Boolean Connectactive = true;
-//		if (notServer) {
-//			PJactive = true;
-//		}
-//		if (!isConnected){
-//			Connectactive = false;
-//		}
-//		for (Component item : needPJ) {
-//			item.setEnabled(PJactive);
-//			item.repaint();
-//		}
-//		for (Component item : needConnect) {
-//			item.setEnabled(Connectactive);
-//			item.repaint();
-//		}
+		// Boolean PJactive = isPJ;
+		// Boolean Connectactive = true;
+		// if (notServer) {
+		// PJactive = true;
+		// }
+		// if (!isConnected){
+		// Connectactive = false;
+		// }
+		// for (Component item : needPJ) {
+		// item.setEnabled(PJactive);
+		// item.repaint();
+		// }
+		// for (Component item : needConnect) {
+		// item.setEnabled(Connectactive);
+		// item.repaint();
+		// }
 	}
-	public void addButton(Component c,LabelSystem l){
+
+	public void addButton(Component c, LabelSystem l) {
 		labels.put(c, l);
 	}
-	public void SetupLang(String lang){
-//		str = new English();
+
+	public void SetupLang(String lang) {
+		// str = new English();
 		try {
 			str = HPStrings.loadFile(lang);
 		} catch (InstantiationException | ClassNotFoundException
 				| IllegalAccessException e) {
 			e.printStackTrace();
 			str = new HPStrings();
-			System.out.println("Unable to load "+lang+" localization");
+			System.out.println("Unable to load " + lang + " localization");
 		}
 	}
+
 	public void init() {
 		System.out.println(c.Language);
 		SetupLang(c.Language);
-		hraciPlocha = new HraciPlocha();
+		hraciPlocha = new Canvas();
 
-		prvky = new Gprvky();
+		prvky = new GraphicElements();
 		RMenu = new HPRightMenu();
 	}
-	
-//	public void initLang(){
-//		HPStrings.load();
-//	}
-	
+
+	// public void initLang(){
+	// HPStrings.load();
+	// }
+
 	public static HPSklad getInstance() {
-		if (instance == null) {
-			instance = new HPSklad();
-		}
 		return instance;
 	}
-	
-	public void setupInserting(HPEntity insert, boolean repeat){
-		setupInserting(insert,repeat,true);
+
+	public void setupInserting(HPEntity insert, boolean repeat) {
+		setupInserting(insert, repeat, true);
 	}
+
 	public void setupInserting(HPEntity insert, boolean repeat, boolean clone) {
 		if (insert == null) {
 			insertedEntity = null;
@@ -226,36 +244,38 @@ public class HPSklad {
 		this.colorAdd = isActive;
 	}
 
-	public void initLoad() {
-//		hraciPlocha = new HraciPlocha(c.gridSl,c.gridRa,c.RADIUS);
-//		for (int i = 0; i < souradky.size(); i++) {
-//			// if (souradky.get(i) instanceof FreeSpace) {
-//			hraciPlocha.insertEntity(i, souradky.get(i), true);
-//			// }
-//		}	
-		hexapaper.HPfrm.repaint();
-		HPListenery lis = new HPListenery();
-		hraciPlocha.addMouseListener(lis.new HraciPlochaListener());
-		hraciPlocha.addMouseMotionListener(lis.new HraciPlochaListener());
-		scroll.setViewportView(hraciPlocha);
-		scroll.getViewport().addChangeListener(lis.new ScrollListener());
-		odblokujListenery();
-	}
+//	public void initLoad() {
+//		// hraciPlocha = new HraciPlocha(c.gridSl,c.gridRa,c.RADIUS);
+//		// for (int i = 0; i < souradky.size(); i++) {
+//		// // if (souradky.get(i) instanceof FreeSpace) {
+//		// hraciPlocha.insertEntity(i, souradky.get(i), true);
+//		// // }
+//		// }
+//		hexapaper.HPfrm.repaint();
+//		HPListenery lis = new HPListenery();
+//		hraciPlocha.addMouseListener(lis.new HraciPlochaListener());
+//		hraciPlocha.addMouseMotionListener(lis.new HraciPlochaListener());
+//		scroll.setViewportView(hraciPlocha);
+//		scroll.getViewport().addChangeListener(lis.new ScrollListener());
+//		odblokujListenery();
+//	}
 
 	public void odblokujListenery() {
 		canEvent = true;
 	}
 
 	public void updatePosition(double x1, double y1) {
-		Point2D.Double point = getPosition(x1,y1);
+		Point2D.Double point = getPosition(x1, y1);
 		position.setText(str.Position + (int) point.getX() + "," + (int) point.getY());
-		//position.repaint();
+		// position.repaint();
 	}
-	public Point2D.Double getPosition(double x1, double y1){
+
+	public Point2D.Double getPosition(double x1, double y1) {
 		double r = Math.cos(Math.toRadians(30)) * c.RADIUS;
-		return new Point2D.Double((int) Math.round(((x1 / c.RADIUS) - 1) * (2 / 3.) + 1),(int) Math.round(((y1 / r) - ((y1 / r) + 1) % 2 - 1) / 2));
+		return new Point2D.Double((int) Math.round(((x1 / c.RADIUS) - 1) * (2 / 3.) + 1), (int) Math.round(((y1 / r) - ((y1 / r) + 1) % 2 - 1) / 2));
 	}
-	public void updateConnect() {
+
+	public void updateConnectInfo() {
 		if (isConnected && isPJ) {
 			connected.setForeground(Color.BLUE);
 			notServer = false;
@@ -271,41 +291,44 @@ public class HPSklad {
 		connected.setText(str.ConnectLabel + "{" + isConnected + "," + isPJ + "}");
 		colorJMenu();
 	}
-	public void setIcon(JFrame frame){
+
+	public void setIcon(JFrame frame) {
 		try {
-			InputStream stream = hexapaper.class.getResourceAsStream( File.separatorChar+"icon.png"  );
-			BufferedImage image = ImageIO.read( stream );
+			InputStream stream = hexapaper.class.getResourceAsStream(File.separatorChar + "icon.png");
+			BufferedImage image = ImageIO.read(stream);
 			frame.setIconImage(image);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		}	
+			// e.printStackTrace();
+		}
 	}
-	public void connect(){
-		if(client!=null){
+
+	public void connect() {
+		if (client != null) {
 			try {
-				System.out.println("trying to disc");
+				//System.out.println("trying to disc");
 				client.disconnect();
-				System.out.println("Dsc");
+				//System.out.println("Dsc");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			client=null;
+			client = null;
 		}
 		client = new HexaClient();
 		try {
 			client.connect(c.IP, c.port, c.lastName);
-			isConnected=true;
-			updateConnect();			
+			isConnected = true;
+			updateConnectInfo();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null,
-				    str.ConnectError+e.getMessage(),
-				    str.IOError,
-				    JOptionPane.ERROR_MESSAGE);		
+					str.ConnectError + e.getMessage(),
+					str.IOError,
+					JOptionPane.ERROR_MESSAGE);
 		}
-		PJInfo = new PJGUI(client);	
+		PJInfo = new PJGUI(client);
 	}
+
 	public LogWindow getDiceLog() {
 		return PJInfo.getDice();
 	}
@@ -317,32 +340,46 @@ public class HPSklad {
 	public void setStatus(String Message) {
 		statusBar.setText(Message);
 	}
-	
-	public void saveArtefacts(FileHandler fh) throws IOException{
-		if(databazeArtefaktu.size()>0 && fh!=null){
+
+	public void saveArtefacts(FileHandler fh) throws IOException {
+		if (databazeArtefaktu.size() > 0 && fh != null) {
 			DatabaseWrapper db = wrappers.new DatabaseWrapper();
-			db.Version=FILEVERSION;
+			db.Version = FILEVERSION;
 			db.addEntities(databazeArtefaktu);
-			if(fh!=null){
+			if (fh != null) {
 				fh.write(db);
 			}
 		}
 	}
-	public void saveCharacters(FileHandler fh) throws IOException{
-		if(databazePostav.size()>0 && fh!=null){
+
+	public void saveCharacters(FileHandler fh) throws IOException {
+		if (databazePostav.size() > 0 && fh != null) {
 			DatabaseWrapper db = wrappers.new DatabaseWrapper();
-			db.Version=FILEVERSION;
+			db.Version = FILEVERSION;
 			db.addEntities(databazePostav);
 			fh.write(db);
 		}
 	}
-	public void saveMap(FileHandler fh) throws IOException{
-		if(entities.size()>0 && fh!=null){
-			HexWrapper HWrapper=wrappers.new HexWrapper(c.gridSl,c.RADIUS,c.gridRa,FILEVERSION);
-			HWrapper.addEntities(entities);
-			fh.write(HWrapper);
+
+	public void saveMap(FileHandler fh) throws IOException {
+		if (entities.size() > 0 && fh != null) {
+			// HexWrapper HWrapper=wrappers.new HexWrapper(c.gridSl,c.RADIUS,c.gridRa,FILEVERSION);
+			// HWrapper.addEntities(entities);
+			// fh.write(HWrapper);
 		}
 	}
+	
+	public static String shortenedStackTrace(Exception e, int maxLines) {
+	    StringWriter writer = new StringWriter();
+	    e.printStackTrace(new PrintWriter(writer));
+	    String[] lines = writer.toString().split("\n");
+	    StringBuilder sb = new StringBuilder();
+	    for (int i = 0; i < Math.min(lines.length, maxLines); i++) {
+	        sb.append(lines[i]).append("\n");
+	    }
+	    return sb.toString();
+	}
+
 	public static class prvekkNN implements Cloneable {
 		private double x1, y1, vzd;
 		private int idx;
@@ -418,6 +455,12 @@ public class HPSklad {
 			return (PropPair) super.clone();
 		}
 
+	}
+
+	public void loadDB(ArrayList<EditableEntity> list) {
+		for(EditableEntity e: list){
+			switch()
+		}
 	}
 
 }

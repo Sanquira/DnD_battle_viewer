@@ -1,7 +1,11 @@
 package hexapaper.network.server;
 
+import hexapaper.entity.EditableEntity;
 import hexapaper.entity.HPEntity;
+import hexapaper.entity.RotatableEntity;
+import hexapaper.graphicCore.GCMath;
 import hexapaper.source.HPSklad;
+import mathLibrary.vector.Vector2D;
 
 import java.awt.Color;
 import java.util.HashMap;
@@ -29,8 +33,7 @@ public class ServerListeners {
 	private HexaServer hexa;
 	private HPSklad storage=HPSklad.getInstance();
 	private int gridSl,gridRa,RADIUS;
-	private ConcurrentMap<Integer,HPEntity> entity;
-	private ConcurrentMap<Integer,Color> colors = new ConcurrentHashMap<Integer,Color>();
+	private ConcurrentMap<Long,HPEntity> entity;
 	private ClientInfo PJ=null;
 	private String[] allowedVersions={HPSklad.VERSION};
 	//ClientConnectListeners
@@ -50,15 +53,18 @@ public class ServerListeners {
 		}
 
 		private void sendColors(ClientInfo c) {
-			for(Entry<Integer, Color> entry:colors.entrySet()){
-				Object[] o = {entry.getKey(),entry.getValue()};
-				c.send(o, "paintEnt");
+			for(Entry<Long, HPEntity> entry: entity.entrySet()){
+				Color bcg = entry.getValue().getBcg();
+				if(!bcg.equals(Color.WHITE)){
+					Object[] o = {entry.getKey(),entry.getValue().getBcg()};
+					c.send(o, "paintEnt");
+				}
 			}
 			
 		}
 
 		private void sendEntities(ClientInfo cln) {
-			for(Entry<Integer,HPEntity> entry:entity.entrySet()){
+			for(Entry<Long,HPEntity> entry:entity.entrySet()){
 				Object[] o = {entry.getKey(),entry.getValue()};
 				cln.send(o, "insertEnt");
 			}
@@ -82,7 +88,7 @@ public class ServerListeners {
 			gridSl=(int) List[0];
 			gridRa=(int) List[1];
 			RADIUS=(int) List[2];
-			entity = new ConcurrentHashMap<Integer,HPEntity>();
+			entity = new ConcurrentHashMap<Long,HPEntity>();
 			server.rebroadcast(p.getNick(), List,"RadiusHexapaper");
 		}		
 	};
@@ -92,8 +98,8 @@ public class ServerListeners {
 		public void packetReceive(MessagePacket p) {
 			//System.out.println("Test ent!");
 			Object[] table=(Object[]) p.getObject();
-			Integer i = (Integer) table[0];
-			entity.put(i,((HPEntity) table[1]).clone());
+			Long i = (Long) table[0];
+			entity.put(i,(HPEntity) table[1]);
 			server.rebroadcast(p);
 		}		
 	};
@@ -102,9 +108,12 @@ public class ServerListeners {
 		@Override
 		public void packetReceive(MessagePacket p) {
 			Object[] table=(Object[]) p.getObject();
-			Integer pos = (Integer) table[0];
+			Long pos = (Long) table[0];
 			Color clr = (Color) table[1];
-			colors.put(pos, clr);
+			HPEntity en = entity.get(pos);
+			if(en != null){
+				en.setBcg(clr);
+			}
 			server.rebroadcast(p);
 		}		
 	};
@@ -115,13 +124,21 @@ public class ServerListeners {
 		public void packetReceive(MessagePacket p) {
 			Integer[] table=(Integer[]) p.getObject();
 			//System.out.println(table[0]+":"+table[1]+":"+table[2]);
-			System.out.println("rotace");
-			for(HPEntity ent:entity.values()){
-				if(ent.loc.getX()==table[0]&&ent.loc.getY()==table[1]){
-					ent.loc.setDir(table[2]);
-					//System.out.println("Předělána entita");
+			//System.out.println(table[0] + ":" + table[1] + ":" + table[2]);
+			long key = GCMath.getLongFromCoords(new Vector2D(table[0],table[1]));
+			if(entity.containsKey(key)){
+				HPEntity ent = entity.get(key);
+				if(ent instanceof RotatableEntity){
+					((RotatableEntity) ent).setRotation(table[2]);
 				}
 			}
+//			System.out.println("rotace");
+//			for(HPEntity ent:entity.values()){
+//				if(ent.loc.getX()==table[0]&&ent.loc.getY()==table[1]){
+//					ent.loc.setDir(table[2]);
+//					//System.out.println("Předělána entita");
+//				}
+//			}
 			server.rebroadcast(p);
 		}
 		

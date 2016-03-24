@@ -3,17 +3,24 @@ package hexapaper.entity;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import core.Location;
-import hexapaper.source.BPolygon;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import hexapaper.source.HPSklad.PropPair;
 
-public abstract class EditableEntity extends HPEntity {
+@XmlSeeAlso({Postava.class,Artefact.class})
+public abstract class EditableEntity extends RotatableEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4866601385389286073L;
 	protected ArrayList<PropPair> param = new ArrayList<PropPair>();
 	protected String tag = null;
 	protected String name;
 	public boolean visible;
 	
+	public EditableEntity(){
+		
+	}
 	public EditableEntity(String name){
 		this(name,name);
 	}
@@ -38,11 +45,15 @@ public abstract class EditableEntity extends HPEntity {
 		this(name,tag,param);
 		setBcg(background);
 	}
+	public EditableEntity(String name, String tag, Color background, ArrayList<PropPair> param, boolean visible){
+		this(name,tag,background,param);
+		setVisible(visible);
+	}
 	public EditableEntity(String name, String tag) {
 		setTag(tag);
 		setName(name);
 	}
-
+	
 	public void setParamValue(int pos, String newValue) {
 		PropPair p = param.get(pos);
 		p.value = newValue;
@@ -85,17 +96,12 @@ public abstract class EditableEntity extends HPEntity {
 	public String toString() {
 		return name;
 	}
-	public HPEntity setTag(String tag) {
-		if (this.tag == null) {
-			try {
-				this.tag = name.substring(0, 2);
-			} catch (StringIndexOutOfBoundsException e) {
-				this.tag = name.substring(0, name.length());
-			}
-		} else {
-			this.tag = tag;
+	public void setTag(String tag) {
+		try {
+			this.tag = tag.substring(0, 2);
+		} catch (StringIndexOutOfBoundsException e) {
+			this.tag = tag.substring(0, name.length());
 		}
-		return this;
 	}
 	public String getTag() {
 		return tag;

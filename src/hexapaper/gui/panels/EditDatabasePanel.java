@@ -37,7 +37,7 @@ public class EditDatabasePanel<T extends EditableEntity> extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				T entity = (T) pane.getEntity().clone();
+				T entity = sk.cloner.deepClone(pane.getEntity());
 				array.add(entity);
 				model.addElement(entity);
 				sk.RMenu.cpane.updateDatabase();

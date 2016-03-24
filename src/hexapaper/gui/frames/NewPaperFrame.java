@@ -89,7 +89,7 @@ public class NewPaperFrame extends JPanel {
 		sk.c.gridSl = Integer.valueOf(numColValue.getText());
 		frame.dispose();
 		sk.c.saveConfig();
-		sk.hraciPlocha.init(sk.c.gridSl,sk.c.gridRa,sk.c.RADIUS);
+		//sk.hraciPlocha.init(sk.c.gridSl,sk.c.gridRa,sk.c.RADIUS);
 		sk.hraciPlocha.revalidate();
 		sk.hraciPlocha.repaint();
 		if(sk.isConnected&&sk.isPJ){

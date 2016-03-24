@@ -14,8 +14,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.Timer;
 
-import dungeonmapper.gui.DMRightMenu;
-
 public class EE {
 
 	public class HaGay extends JFrame implements Runnable {
@@ -48,7 +46,7 @@ public class EE {
 			setDefaultCloseOperation(EXIT_ON_CLOSE);
 			ImageIcon img = null;
 			try {
-				img = new ImageIcon(ImageIO.read(DMRightMenu.class.getResourceAsStream("/images/HG.png")));
+				img = new ImageIcon(ImageIO.read(this.getClass().getResourceAsStream("/images/HG.png")));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
