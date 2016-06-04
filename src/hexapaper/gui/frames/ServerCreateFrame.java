@@ -60,7 +60,7 @@ public class ServerCreateFrame extends JPanel {
 		JPanel second = new JPanel(new GridLayout(1, 2, 10, 0));
 		JLabel numRow = new JLabel(sk.str.portField);
 		portfield = new JNumberTextField();
-		portfield.setInt(sk.c.serverport);
+		portfield.setInt(sk.c.serverPort);
 		portfield.addFocusListener(new Listener());
 		second.add(numRow);
 		second.add(portfield);
@@ -81,7 +81,7 @@ public class ServerCreateFrame extends JPanel {
 
 	private void connect() {
 		sk.c.serverIP = ipfield.getText();
-		sk.c.serverport = portfield.getInt();
+		sk.c.serverPort = portfield.getInt();
 		sk.c.saveConfig();
 		server.start();
 		frame.setVisible(false);

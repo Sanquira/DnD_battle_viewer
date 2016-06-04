@@ -41,20 +41,27 @@ public class XMLTest {
 		entities.put((long) 23,new FreeSpace());
 		entities.put((long) 24,new Postava("Deserd"));
 //		XmlMapWrapper test = new XmlMapWrapper( entities);
-//		Config c = new Config();
+		Config c = new Config();
 		
 		ArrayList<EditableEntity> ent = new ArrayList<EditableEntity>();
 		ent.add(new Artefact("Bedna"));
 		ent.add(new Artefact("Karel"));
 		ent.add(new Postava("Deserd"));
-		FileHandler fh = new FileHandler("text.xml");
+		FileHandler fhdb = new FileHandler("db.xml");
+		FileHandler fhc = new FileHandler("config.xml");
+		FileHandler fhm = new FileHandler("map.xml");
 		//fh.saveDB(ent);
 		//m.marshal(db, new File("test.xml"));
 		HashMap<String,String> map = new HashMap<String,String>();
 		map.put("test", "testík");
-		fh.saveMap(entities);
+		fhm.saveMap(entities);
+		fhdb.saveDB(ent);
+		fhc.saveConfig(c);
+		
 		//m.marshal(w, new File("test.xml"));
-		HashMap<Long, HPEntity> loaded = fh.loadMap();
+		HashMap<Long, HPEntity> loaded = fhm.loadMap();
+		c = fhc.loadConfig();
+		System.out.println(c.lastName);
 		System.out.println(loaded.get((long) 21));
 		//System.out.println(loaded.get(2).getClass());
 

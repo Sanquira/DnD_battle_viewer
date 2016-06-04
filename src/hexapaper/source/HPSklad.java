@@ -6,8 +6,6 @@ import hexapaper.entity.Artefact;
 import hexapaper.entity.EditableEntity;
 import hexapaper.entity.HPEntity;
 import hexapaper.entity.Postava;
-import hexapaper.file.Wrappers;
-import hexapaper.file.Wrappers.DatabaseWrapper;
 import hexapaper.graphicCore.Canvas;
 import hexapaper.graphicCore.GraphicElements;
 import hexapaper.gui.frames.ColorPicker;
@@ -54,14 +52,15 @@ public class HPSklad {
 
 	static{
 		instance = new HPSklad();
+		instance.SetupLang("Czech");
 	}
 	public GraphicElements prvky;
 	public Canvas hraciPlocha;
 	public HPRightMenu RMenu;
-	public Config c = Config.getInstance();
+	public Config c;
 
 	public JScrollPane scroll;
-	public Location LocDontCare = new Location(c.RADIUS, c.RADIUS, 0);
+	//public Location LocDontCare = new Location(c.RADIUS, c.RADIUS, 0);
 	public HPEntity insertedEntity;
 	public JMenu GameMenu;
 	public JMenu ExportMenu;
@@ -71,8 +70,6 @@ public class HPSklad {
 	public JLabel statusBar;
 	public ColorPicker clr;
 	public Color color = Color.WHITE;
-
-	public Wrappers wrappers = new Wrappers();
 
 	public HashMap<Long, HPEntity> entities;
 	public ArrayList<Postava> databazePostav = new ArrayList<Postava>();
@@ -144,8 +141,8 @@ public class HPSklad {
 	protected HPSklad() {
 		entities = new HashMap<>();
 
-		System.out.println(c.Language);
-		SetupLang(c.Language);
+		//System.out.println(c.Language);
+		//SetupLang(c.Language);
 	}
 
 	public void colorJMenu() {
@@ -207,7 +204,6 @@ public class HPSklad {
 
 	public void init() {
 		System.out.println(c.Language);
-		SetupLang(c.Language);
 		hraciPlocha = new Canvas();
 
 		prvky = new GraphicElements();
@@ -459,8 +455,23 @@ public class HPSklad {
 
 	public void loadDB(ArrayList<EditableEntity> list) {
 		for(EditableEntity e: list){
-			switch()
+			if(e instanceof Artefact){
+				databazeArtefaktu.add((Artefact) e);
+			}
+			if(e instanceof Postava){
+				databazePostav.add((Postava) e);
+			}
 		}
+	}
+
+	public void loadMap(HashMap<Long, HPEntity> loadMap) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void loadConfig(Config loadConfig) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

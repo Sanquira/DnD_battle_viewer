@@ -1,10 +1,7 @@
 package hexapaper.language;
 
-import com.google.gson.annotations.Expose;
-
 public class HPStrings {
 
-	@Expose
 	public static HPStrings instance;
 	public static String lang_name = "English";
 	

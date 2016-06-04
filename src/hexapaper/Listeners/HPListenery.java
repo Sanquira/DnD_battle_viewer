@@ -5,15 +5,10 @@ import hexapaper.entity.Artefact;
 import hexapaper.entity.EditableEntity;
 import hexapaper.entity.HPEntity;
 import hexapaper.entity.Postava;
-import hexapaper.file.Wrappers.DatabaseWrapper;
-import hexapaper.file.Wrappers.HexWrapper;
 import hexapaper.graphicCore.Canvas;
-import hexapaper.gui.frames.ArtefactAddFrame;
 import hexapaper.gui.frames.ClientConnectFrame;
 import hexapaper.gui.frames.EditDatabaseFrame;
-import hexapaper.gui.frames.ExportOneFrame;
 import hexapaper.gui.frames.NewPaperFrame;
-import hexapaper.gui.frames.PostavaAddFrame;
 import hexapaper.gui.panels.EditDatabasePanel;
 import hexapaper.source.HPSklad;
 import hexapaper.source.HPSklad.prvekkNN;
@@ -40,7 +35,6 @@ import javax.swing.event.ChangeListener;
 
 import network.command.users.CommandClient;
 import addons.dice.Dice;
-import core.kNN;
 import core.file.FileHandler;
 
 public class HPListenery {
@@ -321,7 +315,7 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			new ExportOneFrame(sk.databazeArtefaktu);
+			//new ExportOneFrame(sk.databazeArtefaktu);
 		}
 	}
 
@@ -343,7 +337,7 @@ public class HPListenery {
 
 		@Override
 		public void actionPerformed(ActionEvent paramActionEvent) {
-			new ExportOneFrame(sk.databazePostav);
+			//new ExportOneFrame(sk.databazePostav);
 		}
 	}
 

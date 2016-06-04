@@ -1,7 +1,5 @@
 package core.file;
 
-import hexapaper.file.Wrappers.DatabaseWrapper;
-import hexapaper.file.Wrappers.HexWrapper;
 import hexapaper.file.XmlAbstractWrapper;
 import hexapaper.source.HPSklad;
 
@@ -12,11 +10,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.google.gson.annotations.Expose;
-
-@XmlRootElement
+@XmlRootElement(name="Config")
 public class Config extends XmlAbstractWrapper{
-	@XmlTransient private static Config instance = new Config();
 	@XmlTransient private static String configDir = "hex";
 	@XmlTransient private static String cnfFile = "config.cnf";
 	@XmlTransient private static String mapFile = "map.hex";
@@ -29,7 +24,7 @@ public class Config extends XmlAbstractWrapper{
 	public int port = 10555;
 	public String IP = "212.96.186.28";
 	public String serverIP = "192.168.0.100";
-	public int serverport = 5222;
+	public int serverPort = 5222;
 	public String Language = "Czech";
 	
 	private static String configDirectory(String name)
@@ -72,14 +67,20 @@ public class Config extends XmlAbstractWrapper{
 		}
 	}
 
-	public static void loadConfig() throws JAXBException{
+	public static Config loadConfig(){
 		if(new File(getConfigFile()).exists()){
-			instance = new FileHandler(getConfigFile()).load(Config.class);
 			System.out.println("Config načten");
+			try{
+				return new FileHandler(getConfigFile()).loadConfig();
+			}
+			catch(JAXBException e){
+				return new Config();
+			}
 		}
 		else{
 			System.out.println("Config nenalezen");
 		}
+		return new Config();
 	}
 //	public void saveDb() throws IOException{
 //		HPSklad.getInstance().saveCharacters(new FileHandler(getConfigDir()+File.separatorChar+dbcFile));
@@ -131,15 +132,21 @@ public class Config extends XmlAbstractWrapper{
 	public static void loadTmp(){
 		File db = getConfigFile(dbFile);
 		File map = getConfigFile(mapFile);
-		if(db.exists()){
-			HPSklad.loadDB(new FileHandler(db).loadDB());
+//		File cnf = getConfigFile(cnfFile);
+		try{
+			if(db.exists()){
+				HPSklad.getInstance().loadDB(new FileHandler(db).loadDB());
+			}
+			if(map.exists()){
+				HPSklad.getInstance().loadMap(new FileHandler(map).loadMap());
+			}
+//			if(cnf.exists()){
+//				HPSklad.getInstance().loadConfig(new FileHandler(cnf).loadConfig());
+//			}
+		}	
+		catch( JAXBException e){
+			
 		}
 		
-	}
-	public static Config getInstance() {
-//		if (instance == null) {
-//			instance = new Config();
-//		}
-		return instance;
 	}
 }

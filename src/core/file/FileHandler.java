@@ -85,12 +85,16 @@ public class FileHandler {
 	public HashMap<Long,HPEntity> loadMap() throws JAXBException {
 		return load(XmlMapWrapper.class).getMap();
 	}
+	public Config loadConfig() throws JAXBException{
+		return load(Config.class);
+	}
 	public void saveDB(ArrayList<EditableEntity> list) throws JAXBException, IOException{
 		write(new XmlDatabaseWrapper(list));
 	}
 	public void saveMap(HashMap<Long,HPEntity> map) throws JAXBException, IOException{
 		write(new XmlMapWrapper(map));
 	}
-
-
+	public void saveConfig(Config c) throws JAXBException, IOException{
+		write(c);
+	}
 }

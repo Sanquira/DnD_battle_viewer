@@ -39,7 +39,7 @@ public class HexaServer {
 				//System.out.println("test");
 				//gui.getInfo().insertMessage("test");
 			}
-			server.create(storage.c.serverIP,storage.c.serverport);
+			server.create(storage.c.serverIP,storage.c.serverPort);
 			HashMap<String,String> map = new HashMap<String,String>();
 			map.put("Version", HPSklad.VERSION);
 			map.put("coreVersion", NetworkStorage.version);

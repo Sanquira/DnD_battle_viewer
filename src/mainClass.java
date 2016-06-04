@@ -16,7 +16,10 @@ public class mainClass {
 //	private static boolean dm;
 	
 	@Option(name="-s",usage="Runs HexaServer")
-	private static boolean server;
+	private static boolean server = false;
+	
+	@Option(name="-c",usage="Connects to server")
+	private static boolean connect = false;
 	
 	@Option(name="-ip",usage="Specifies IP")
 	private static String ip;
@@ -30,12 +33,11 @@ public class mainClass {
 	@Option(name="-console",usage="No gui for server")
 	private static boolean console = false;
 	
-	public static void main(String[] args) throws CloneNotSupportedException {
+	public static void main_old(String[] args) throws CloneNotSupportedException{
 		// TODO Vlastni vlakno pro kazdou aplikaci (mozna)
 		ParseArgument(args);
 		System.out.println(Config.getConfigFile());
-		Config.loadConfig();
-		Config cfg = Config.getInstance();
+		Config cfg = Config.loadConfig();
 		boolean s=(ip!=null && port!=null);
 		boolean connect=(s && name!=null);
 		if (ip != null) {
@@ -48,7 +50,7 @@ public class mainClass {
 		if (port != null) {
 			System.out.println(port);
 			if (server) {
-				cfg.serverport = port;
+				cfg.serverPort = port;
 			} else {
 				cfg.port = port;
 			}
@@ -69,7 +71,33 @@ public class mainClass {
 		
 		//new dungeonMapper();
 	}
-
+	public static void main(String[] args) throws CloneNotSupportedException{
+		// TODO Vlastni vlakno pro kazdou aplikaci (mozna)
+		ParseArgument(args);
+		System.out.println(Config.getConfigFile());
+		Config cfg = Config.loadConfig();
+		if(server){
+			cfg.serverIP = (ip != null) ? cfg.serverIP : ip;
+			cfg.serverPort = (port != null) ? cfg.serverPort : port;
+		}
+		else{
+			cfg.IP = (ip != null) ? cfg.IP : ip ;
+			cfg.port = (port != null) ? cfg.port : port;
+		}
+		cfg.lastName = (name != null) ? cfg.lastName : name ;
+		HPSklad.getInstance().c = cfg;
+		HPSklad.getInstance().SetupLang(cfg.Language);
+		if(server){
+			new HexaServer(console,(ip!=null && port!=null));
+		}
+		else{
+			new hexapaper();
+			
+			if(connect){
+				HPSklad.getInstance().connect();
+			}
+		}
+	}
 	private static void ParseArgument(String[] args) {
 		try {
 			parser.parseArgument(removeChars(args));
