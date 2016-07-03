@@ -82,57 +82,9 @@ public class Config extends XmlAbstractWrapper{
 		}
 		return new Config();
 	}
-//	public void saveDb() throws IOException{
-//		HPSklad.getInstance().saveCharacters(new FileHandler(getConfigDir()+File.separatorChar+dbcFile));
-//		HPSklad.getInstance().saveArtefacts(new FileHandler(getConfigDir()+File.separatorChar+dbaFile));
-//		System.out.println("Dočasná databáze uložena");
-//	}
-//	public void saveMap() throws IOException{
-//		if(HPSklad.getInstance().souradky.size()>0){
-//			HPSklad.getInstance().saveMap(new FileHandler(getConfigDir()+File.separatorChar+mapFile));
-//			System.out.println("Dočasná mapa uložena");
-//		}	
-//	}
-//	public static void loadTmp(){
-//		try {
-//			if (new File(getConfigDir() + File.separatorChar + dbcFile)
-//					.exists()) {
-//				new FileHandler(getConfigDir() + File.separatorChar + dbcFile)
-//						.load(DatabaseWrapper.class).loadDatabase();
-//			}
-//			if (new File(getConfigDir() + File.separatorChar + dbaFile)
-//					.exists()) {
-//				new FileHandler(getConfigDir() + File.separatorChar + dbaFile)
-//						.load(DatabaseWrapper.class).loadDatabase();
-//			}
-//			if (new File(getConfigDir() + File.separatorChar + mapFile)
-//					.exists()) {
-//				System.out.println("Dočasná mapa načtena");
-//				HPSklad sk = HPSklad.getInstance();
-//				HexWrapper HWrapper = new FileHandler(getConfigDir()
-//						+ File.separatorChar + mapFile).load(HexWrapper.class);
-//				if (HWrapper != null) {
-//					sk.c.RADIUS = HWrapper.Radius;
-//					sk.c.gridRa = HWrapper.GridRA;
-//					sk.c.gridSl = HWrapper.GridSl;
-//					//sk.initLoad(HWrapper.load());
-//					if (sk.isConnected && sk.isPJ) {
-//						sk.client.radiusHexapaper();
-//						sk.client.updateHexapaper();
-//					}
-//				}
-//			}
-//		} catch (NullPointerException | JAXBException e) {
-//			new File(getConfigDir() + File.separatorChar + dbcFile).delete();
-//			new File(getConfigDir() + File.separatorChar + dbaFile).delete();
-//			new File(getConfigDir() + File.separatorChar + mapFile).delete();
-//		}
-//
-//	}
 	public static void loadTmp(){
 		File db = getConfigFile(dbFile);
 		File map = getConfigFile(mapFile);
-//		File cnf = getConfigFile(cnfFile);
 		try{
 			if(db.exists()){
 				HPSklad.getInstance().loadDB(new FileHandler(db).loadDB());
@@ -140,9 +92,6 @@ public class Config extends XmlAbstractWrapper{
 			if(map.exists()){
 				HPSklad.getInstance().loadMap(new FileHandler(map).loadMap());
 			}
-//			if(cnf.exists()){
-//				HPSklad.getInstance().loadConfig(new FileHandler(cnf).loadConfig());
-//			}
 		}	
 		catch( JAXBException e){
 			

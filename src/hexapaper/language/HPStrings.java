@@ -1,9 +1,11 @@
 package hexapaper.language;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name="LanguageStrings")
 public class HPStrings {
 
-	public static HPStrings instance;
-	public static String lang_name = "English";
+	public String lang_name = "English";
 	
 	public String Warning = "Warning";
 	public String WarningNameIsEmpty = "Name field must be filled!";

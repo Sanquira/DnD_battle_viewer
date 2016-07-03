@@ -95,7 +95,7 @@ public class HPSklad {
 	public Objenesis objenesis = new ObjenesisStd();
 	
 	public HexaClient client;
-	public HPStrings str;
+	public HPStrings str = new HPStrings();
 
 	public final static String VERSION = "v0.5d";
 	public final static String FILEVERSION = "0.3";
@@ -188,18 +188,6 @@ public class HPSklad {
 
 	public void addButton(Component c, LabelSystem l) {
 		labels.put(c, l);
-	}
-
-	public void SetupLang(String lang) {
-		// str = new English();
-		try {
-			str = HPStrings.loadFile(lang);
-		} catch (InstantiationException | ClassNotFoundException
-				| IllegalAccessException e) {
-			e.printStackTrace();
-			str = new HPStrings();
-			System.out.println("Unable to load " + lang + " localization");
-		}
 	}
 
 	public void init() {

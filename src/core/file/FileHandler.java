@@ -23,6 +23,7 @@ import hexapaper.entity.HPEntity;
 import hexapaper.file.XmlAbstractWrapper;
 import hexapaper.file.XmlDatabaseWrapper;
 import hexapaper.file.XmlMapWrapper;
+import hexapaper.language.HPStrings;
 
 public class FileHandler {
 	private String path;
@@ -32,7 +33,7 @@ public class FileHandler {
 	
 	static {
 		try {
-			context = JAXBContext.newInstance(HPEntity[].class, Config.class, XmlAbstractWrapper.class);
+			context = JAXBContext.newInstance(Config.class, XmlAbstractWrapper.class, HPStrings.class);
 			m = context.createMarshaller();
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			u = context.createUnmarshaller();
@@ -88,6 +89,9 @@ public class FileHandler {
 	public Config loadConfig() throws JAXBException{
 		return load(Config.class);
 	}
+	public HPStrings loadLang() throws JAXBException{
+		return load(HPStrings.class);
+	}
 	public void saveDB(ArrayList<EditableEntity> list) throws JAXBException, IOException{
 		write(new XmlDatabaseWrapper(list));
 	}
@@ -96,5 +100,11 @@ public class FileHandler {
 	}
 	public void saveConfig(Config c) throws JAXBException, IOException{
 		write(c);
+	}
+	public void saveLang(HPStrings str) throws JAXBException, IOException{
+		write(str);
+	}
+	public void saveDefaultLang() throws JAXBException, IOException{
+		write(new HPStrings());
 	}
 }

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<LanguageStrings>
+    <lang_name>Czech</lang_name>
+    <Warning>Varování­</Warning>
+    <WarningNameIsEmpty>Hodnota jméno nesmí být prázdná!!!</WarningNameIsEmpty>
+    <CreateCharacter>Vytvoř postavu</CreateCharacter>
+    <CreatedCharacters>Vytvořené postavy</CreatedCharacters>
+    <CreateArtefact>Vytvoř artefakt</CreateArtefact>
+    <CreatedArtefacts>Vytvořené artefakty</CreatedArtefacts>
+    <CreateHex>Vytvoř hexu</CreateHex>
+    <Yes>Ano</Yes>
+    <No>Ne</No>
+    <NPC>NPC</NPC>
+    <Artefact>Artefakt</Artefact>
+    <Radius>Poloměr Hexu</Radius>
+    <LineCount>Počet řádků</LineCount>
+    <CollumnCount>Počet sloupců</CollumnCount>
+    <Hex_ext>hex</Hex_ext>
+    <Hex_text>Hexovy papir</Hex_text>
+    <Db_ext>entd</Db_ext>
+    <Db_text>Database entit</Db_text>
+    <File_ext>ent</File_ext>
+    <File_text>Soubory entit</File_text>
+    <desc>HexaPaper soubory</desc>
+    <newPaper>Nový papír</newPaper>
+    <savePaper>Ulož papír</savePaper>
+    <loadPaper>Načti papír</loadPaper>
+    <addArt>Přidej artefakt</addArt>
+    <addPost>Přidej postavu</addPost>
+    <Battlecontrol>Ovládání bitvy</Battlecontrol>
+    <Objproperties>Vlastnosti objektu</Objproperties>
+    <showPlayerColor>Skrýt hráče</showPlayerColor>
+    <showNPCColor>Skrýt NPC</showNPCColor>
+    <addWall>Přidej zeď</addWall>
+    <addFreeSpace>Odeber</addFreeSpace>
+    <player>Hráč</player>
+    <LangFileLoaded>Jazykový soubor načten</LangFileLoaded>
+    <name>Jméno</name>
+    <Tag>Tag</Tag>
+    <addPropBut>Přidej</addPropBut>
+    <delPropBut>Odeber</delPropBut>
+    <GameMenu>Hra</GameMenu>
+    <EditMenu>Úpravy</EditMenu>
+    <export>Export</export>
+    <exportAP>Export ...</exportAP>
+    <importAP>Import</importAP>
+    <exportArtDat>... databáze artefaktů</exportArtDat>
+    <exportPostDat>... databáze postav</exportPostDat>
+    <exportArtOne>... jednoho artefaktu</exportArtOne>
+    <exportPostOne>... jedné postavy</exportPostOne>
+    <utility>Utility</utility>
+    <Dice>Kostka</Dice>
+    <PJInfo>PJGUI</PJInfo>
+    <ipField>IP serveru</ipField>
+    <portField>Port serveru</portField>
+    <nameField>Nick</nameField>
+    <Connect>Připojit</Connect>
+    <ConnectFrame>Připojení k serveru</ConnectFrame>
+    <IOError>Chyba při připojování</IOError>
+    <ConnectError>Nepodařilo se připojit na server z důvodu: </ConnectError>
+    <Position>Pozice: </Position>
+    <ConnectLabel>Připojeno: </ConnectLabel>
+    <DisconnectMessage>Odpojeno od serveru z duvodu: </DisconnectMessage>
+    <DisconnectWindow>Odpojeno</DisconnectWindow>
+    <KickMessage>Vyhozen ze serveru z duvodu: </KickMessage>
+    <KickWindow>Vyhozen ze serveru</KickWindow>
+    <Range>Rozsah</Range>
+    <Modifier>Bonus</Modifier>
+    <Close>Zavřít</Close>
+    <Confirm>Ok</Confirm>
+    <Reset>Reset</Reset>
+    <End>Konec</End>
+    <OldFileVersionText>Vybrany soubor je uložen ve starší verzi formátu, chcete se ho přesto pokusit načíst?</OldFileVersionText>
+    <OldFileVersionYes>Ano</OldFileVersionYes>
+    <OldFileVersionNo>Ne</OldFileVersionNo>
+    <OldFileVersionHeader>Detekována stará verze</OldFileVersionHeader>
+    <ServerCreate>Vytvořit</ServerCreate>
+    <ServerCreateFrame>Vytváření serveru</ServerCreateFrame>
+    <ServerIOError>Chyba při vytváření</ServerIOError>
+    <ServerError>Nepodařilo se vytvořit server z důvodu: </ServerError>
+    <ServerVersion>Verze serveru %Version, verze jádra %coreVersion</ServerVersion>
+    <ClientConnected>Hráč připojen %name</ClientConnected>
+    <ClientDisconnected>Odpojen %pj %name z důvodu: %error</ClientDisconnected>
+    <ClientKicked>Vyhozen %pj %name z důvodu: %error</ClientKicked>
+    <RadiusReceived>Radius hexapaperu přijat</RadiusReceived>
+    <EntityReceived>Entity Hexapaperu přijaty</EntityReceived>
+    <ArtefactsReceived>Artefacty přijaty</ArtefactsReceived>
+    <CharactersReceived>Postavy přijaty</CharactersReceived>
+    <DiceRolled>%name si hodil %roll na %range kostce.</DiceRolled>
+    <DiceRolledModifier>%name si hodil %modifier na %range kostce se základním hodem %roll</DiceRolledModifier>
+    <ClientVersion>%name má verzi %version</ClientVersion>
+    <ClientsetPJ>Hráči %name byl nastaven PJ</ClientsetPJ>
+    <ClientNoPlayer>Hráč %name není připojen</ClientNoPlayer>
+    <ServerNoPJ>PJ není zvolen</ServerNoPJ>
+    <ServerPJ>PJ je %name</ServerPJ>
+    <ServerDice>(Příkaz)%name si hodil %roll na %range kostce.</ServerDice>
+    <DataLoss>Ztráta dat</DataLoss>
+    <DataLossMessage>Pozor program automaticky NEUKLÁDÁ změny v databázích. 
+Všechny neuložené změny budou ztraceny. 
+Chcete opravdu skončit?</DataLossMessage>
+    <LanguageChange>Změna jazyka</LanguageChange>
+    <LanguageChangeMessage>Změna se projeví až po restartu aplikace.</LanguageChangeMessage>
+    <diceTitle>Kostka Log</diceTitle>
+    <colorPickerTitle>Color Picker</colorPickerTitle>
+    <pjHelp>Zkontroluje, zda je hráč PJ</pjHelp>
+    <pjUsage>pj &lt;Name&gt;</pjUsage>
+    <setpjUsage>setpj &lt;Name&gt;</setpjUsage>
+    <setpjHelp>Nastaví PJ</setpjHelp>
+    <kickUsage>Kick &lt;Name&gt; &lt;Reason&gt;</kickUsage>
+    <kickHelp>Vykopne hráče ze srveru</kickHelp>
+    <diceUsage>Dice &lt;Roll&gt; &lt;Side&gt; &lt;Player&gt;</diceUsage>
+    <diceHelp>Hodí za hráče</diceHelp>
+    <versionUsage>Version &lt;Name&gt;</versionUsage>
+    <versionHelp>Požádá hráče o verzi clienta</versionHelp>
+    <LangBar>Jazyky</LangBar>
+    <disconnect>Odpojit se</disconnect>
+    <GCsetPosition>Nastav pozici</GCsetPosition>
+    <GCsetPositionMessage>Zadej pozici hexy na kterou chceš přejít.</GCsetPositionMessage>
+</LanguageStrings>
