@@ -24,7 +24,7 @@ public class PolygonD {
 		ypoints = ypoints.mul(scale);
 	}
 
-	public int[] getXPointsIWithTranslation(int trX) {
+	public int[] getXPointsIWithTranslationAndScale(int trX) {
 		int[] ret = new int[xpoints.dimension];
 		for (int i = 0; i < ret.length; i++) {
 			ret[i] = (int) Math.round(xpoints.elements[i]) + trX;

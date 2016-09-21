@@ -52,7 +52,7 @@ public class HPSklad {
 
 	static{
 		instance = new HPSklad();
-		instance.SetupLang("Czech");
+		instance.str = new HPStrings();
 	}
 	public GraphicElements prvky;
 	public Canvas hraciPlocha;
@@ -95,7 +95,7 @@ public class HPSklad {
 	public Objenesis objenesis = new ObjenesisStd();
 	
 	public HexaClient client;
-	public HPStrings str = new HPStrings();
+	public HPStrings str;
 
 	public final static String VERSION = "v0.5d";
 	public final static String FILEVERSION = "0.3";
@@ -190,8 +190,21 @@ public class HPSklad {
 		labels.put(c, l);
 	}
 
+	public void SetupLang(String lang) {
+		// str = new English();
+		try {
+			str = HPStrings.loadFile(lang);
+		} catch (InstantiationException | ClassNotFoundException
+				| IllegalAccessException e) {
+			e.printStackTrace();
+			str = new HPStrings();
+			System.out.println("Unable to load " + lang + " localization");
+		}
+	}
+
 	public void init() {
 		System.out.println(c.Language);
+		SetupLang(c.Language);
 		hraciPlocha = new Canvas();
 
 		prvky = new GraphicElements();

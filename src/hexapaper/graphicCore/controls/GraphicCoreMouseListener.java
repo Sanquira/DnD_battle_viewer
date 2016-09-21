@@ -1,4 +1,4 @@
-package hexapaper.graphicCore.listeners;
+package hexapaper.graphicCore.controls;
 
 import hexapaper.graphicCore.Canvas;
 
@@ -23,17 +23,20 @@ public class GraphicCoreMouseListener implements MouseListener, MouseMotionListe
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		canvas.addZoom(-e.getPreciseWheelRotation());
+		canvas.getZoom().addZoom((int) Math.round(-e.getPreciseWheelRotation()));
 		canvas.repaint();
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		Vector2D dragPoint = new Vector2D(e.getX(), e.getY());
 		if (SwingUtilities.isMiddleMouseButton(e)) {
-			Vector2D dragPoint = new Vector2D(e.getX(), e.getY());
 			canvas.addPosition(pressPoint.add(dragPoint.mul(-1)));
 			pressPoint = dragPoint;
 			canvas.repaint();
+		}else
+		if(SwingUtilities.isLeftMouseButton(e)){
+			canvas.setDraggedPoints(pressPoint,dragPoint);
 		}
 	}
 

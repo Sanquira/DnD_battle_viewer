@@ -1,16 +1,13 @@
 package hexapaper.graphicCore;
 
-import hexapaper.entity.HPEntity;
-import hexapaper.entity.Wall;
-import hexapaper.graphicCore.listeners.GraphicCoreMouseListener;
-import hexapaper.source.HPSklad;
-import hexapaper.source.HPSklad.prvekkNN;
-
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 import javax.swing.AbstractAction;
 import javax.swing.JMenuItem;
@@ -18,21 +15,35 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
-import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
-
+import hexapaper.entity.HPEntity;
+import hexapaper.entity.Wall;
+import hexapaper.graphicCore.controls.GraphicCoreMouseListener;
+import hexapaper.graphicCore.primitives.DrawShape;
+import hexapaper.graphicCore.primitives.MyPopupMenu;
+import hexapaper.graphicCore.primitives.Zoom;
+import hexapaper.language.HPStrings;
+import hexapaper.source.HPSklad;
+import hexapaper.source.HPSklad.prvekkNN;
 import mathLibrary.vector.Vector2D;
 
 public class Canvas extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final float MIN_RADIUS = 10;
 	HPSklad sk = HPSklad.getInstance();
+	HPStrings strings = HPSklad.getInstance().str;
+	private static final boolean DEBUG_DRAW_ENABLED = true;
 
 	private static PolygonD emptyHexagon;
 
 	// int fontSize = (int) Math.round(sk.c.RADIUS * 0.75);
 
 	private Vector2D viewportCoor;
-	private double zoom;
+	private Zoom zoom;
+	private Vector2D[] dragPoints = new Vector2D[2];
+
+	private DrawShape drawShape = null;
 
 	private JPopupMenu popupMenu;
 
@@ -42,44 +53,51 @@ public class Canvas extends JPanel {
 
 	public Canvas(int coorX, int coorY, int zoom) {
 		viewportCoor = new Vector2D(coorX, coorY);
-		this.zoom = zoom;
+		this.zoom = new Zoom(zoom, zoomChandedCallback());
 		init();
 	}
 
 	private void init() {
-		GraphicCoreMouseListener lis = new GraphicCoreMouseListener(this);
+		GraphicCoreMouseListener listener = new GraphicCoreMouseListener(this);
 		setBackground(Color.YELLOW);
-		addMouseWheelListener(lis);
-		addMouseMotionListener(lis);
-		addMouseListener(lis);
+		addMouseWheelListener(listener);
+		addMouseMotionListener(listener);
+		addMouseListener(listener);
 
 		popupMenu = new JPopupMenu();
-		setupPopupMenu();
+		initPopupMenu();
 
 		Vector2D tmp = new Vector2D(0, 0);
 		long lng = GCMath.getLongFromCoords(tmp);
 		sk.entities.put(lng, new Wall());
 
-		sk.entities.put(GCMath.getLongFromCoords(new Vector2D(3, 2)), new Wall());
+		sk.entities.put(GCMath.getLongFromCoords(new Vector2D(3, 2)),
+				new Wall());
 
-		changeZoom();
+		try {
+			zoomChandedCallback().call();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
-	private void setupPopupMenu() {
+	private void initPopupMenu() {
 		// Set position
-		popupMenu.add(new JMenuItem(new AbstractAction(sk.str.GCsetPosition) {
+		popupMenu.add(new JMenuItem(new AbstractAction(strings.GCsetPosition) {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Vector2D poloha = GCMath.getHexaCoordinates(viewportCoor, zoom);
-				String ret = JOptionPane.showInputDialog(sk.str.GCsetPositionMessage, (int) poloha.u1 + ", " + (int) poloha.u2);
+				Vector2D poloha = GCMath.getHexaCoordinates(viewportCoor, zoom.getZoomValue());
+				String ret = JOptionPane.showInputDialog(
+						sk.str.GCsetPositionMessage, (int) poloha.u1 + ", "
+								+ (int) poloha.u2);
 				if (ret != null) {
 					String[] tmpf = ret.split(",");
 					try {
 						int x = Integer.parseInt(tmpf[0].trim());
 						int y = Integer.parseInt(tmpf[1].trim());
-						viewportCoor = GCMath.getPixelCoordinates(new Vector2D(x, y), zoom);
+						viewportCoor = GCMath.getPixelCoordinates(new Vector2D(x, y), zoom.getZoomValue());
 						repaint();
 					} catch (NumberFormatException er) {
 						System.err.println(HPSklad.shortenedStackTrace(er, 5));
@@ -97,8 +115,8 @@ public class Canvas extends JPanel {
 		Vector2D maxPC = viewportCoor.add(panelSize.mul(0.5));
 		Vector2D minPC = viewportCoor.add(panelSize.mul(-0.5));
 
-		Vector2D minHC = GCMath.getHexaCoordinates(minPC, zoom);
-		Vector2D maxHC = GCMath.getHexaCoordinates(maxPC, zoom);
+		Vector2D minHC = GCMath.getHexaCoordinates(minPC, zoom.getZoomValue());
+		Vector2D maxHC = GCMath.getHexaCoordinates(maxPC, zoom.getZoomValue());
 
 		Graphics2D g2 = (Graphics2D) g;
 		// g2.setStroke(new BasicStroke(2));
@@ -107,43 +125,68 @@ public class Canvas extends JPanel {
 				Vector2D hashHC = new Vector2D(x, y);
 				long hashLong = GCMath.getLongFromCoords(hashHC);
 				HPEntity value = sk.entities.get(hashLong);
-				Vector2D hashPC = GCMath.getPixelCoordinates(hashHC, zoom).sub(minPC);
+				Vector2D hashPC = GCMath.getPixelCoordinates(hashHC, zoom.getZoomValue()).sub(
+						minPC);
 				if (value != null) {
 					g2.fillRect(hashPC.getU1I(), hashPC.getU2I(), 10, 10);
+				} else {
+					g2.fillRect(hashPC.getU1I(), hashPC.getU2I(), 5, 5);
 				}
-				g2.fillRect(hashPC.getU1I(), hashPC.getU2I(), 5, 5);
-				g2.drawPolyline(
-						emptyHexagon.getXPointsIWithTranslation(hashPC.getU1I()),
-						emptyHexagon.getYPointsIWithTranslation(hashPC.getU2I()),
+				g2.drawPolyline(emptyHexagon.getXPointsIWithTranslationAndScale(hashPC
+						.getU1I()), emptyHexagon
+						.getYPointsIWithTranslation(hashPC.getU2I()),
 						emptyHexagon.getNPoints());
 			}
 		}
+
+		if (DEBUG_DRAW_ENABLED)
+			debugDraw(g2);
+
+		if (drawShape != null)
+			drawMouseShape(g2);
 	}
 
-	private void changeZoom() {
-		emptyHexagon = GraphicElements.emptyHexagon();
-		emptyHexagon.setScale(zoom);
+	private void drawMouseShape(Graphics2D g2) {
+		if (drawShape == DrawShape.RECTANLGE) {
+			g2.drawRect(dragPoints[0].getU1I(), dragPoints[0].getU2I(), dragPoints[1].getU1I(), dragPoints[1].getU2I());
+		}
 	}
 
-	public void setZoom(double zoom) {
-		this.zoom = zoom;
-		changeZoom();
+	private void debugDraw(Graphics2D g2) {
+		g2.setFont(g2.getFont().deriveFont(Font.BOLD));
+		g2.setColor(Color.BLACK);
+		g2.fillRect(0, this.getHeight() - 20, 300, 20);
+		g2.setColor(Color.WHITE);
+		g2.drawString(GCMath.getHexaCoordinates(viewportCoor, zoom.getZoomValue()).toString(), 10,
+				this.getHeight() - 5);
 	}
 
-	public double getZoom() {
+	private Callable<?> zoomChandedCallback() {
+		return new Callable<Integer>() {
+			@Override
+			public Integer call() {
+				emptyHexagon = GraphicElements.emptyHexagon();
+				emptyHexagon.setScale(zoom.getZoomValue());
+				return zoom.getZoomValue();
+			}
+		};
+	}
+
+	public Zoom getZoom(){
 		return zoom;
 	}
-
-	public void addZoom(double addZoom) {
-		zoom += addZoom;
-		if (zoom < 1) {
-			zoom = 1;
-		}
-		changeZoom();
-	}
+	
+//	public void addZoom(double addZoom) {
+//		zoom += addZoom;
+//		if (zoom < MIN_RADIUS) {
+//			zoom = MIN_RADIUS;
+//		}
+//		changeZoom();
+//	}
 
 	/**
-	 * Set position of viewport to <code>position</code>. <code>Position</code> is in <b>pixels</b>. Viewport position is in the middle of component.
+	 * Set position of viewport to <code>position</code>. <code>Position</code>
+	 * is in <b>pixels</b>. Viewport position is in the middle of component.
 	 * 
 	 * @param position
 	 */
@@ -152,7 +195,8 @@ public class Canvas extends JPanel {
 	}
 
 	/**
-	 * Get position of viewport in pixels. Viewport position is in the middle of component.
+	 * Get position of viewport in pixels. Viewport position is in the middle of
+	 * component.
 	 * 
 	 * @return
 	 */
@@ -161,7 +205,8 @@ public class Canvas extends JPanel {
 	}
 
 	/**
-	 * Add pixel value to viewport position. Viewport position is in the middle of component.
+	 * Add pixel value to viewport position. Viewport position is in the middle
+	 * of component.
 	 * 
 	 * @param position
 	 */
@@ -170,34 +215,48 @@ public class Canvas extends JPanel {
 	}
 
 	/**
-	 * Set position of viewport to <code>position</code>. <code>Position</code> is in <b>hexa coordinates</b>. Viewport position is in the middle of component.
+	 * Set position of viewport to <code>position</code>. <code>Position</code>
+	 * is in <b>hexa coordinates</b>. Viewport position is in the middle of
+	 * component.
 	 * 
 	 * @param position
 	 */
 	public void setPositionHC(Vector2D position) {
-		viewportCoor = GCMath.getPixelCoordinates(position, zoom);
+		viewportCoor = GCMath.getPixelCoordinates(position, zoom.getZoomValue());
 	}
 
 	/**
-	 * Get position of viewport in hexa coordinates. Viewport position is in the middle of component.
+	 * Get position of viewport in hexa coordinates. Viewport position is in the
+	 * middle of component.
 	 * 
 	 * @return
 	 */
 	public Vector2D getPositionHC() {
-		return GCMath.getHexaCoordinates(viewportCoor, zoom);
+		return GCMath.getHexaCoordinates(viewportCoor, zoom.getZoomValue());
 	}
 
 	/**
-	 * Add hexa coordinates value to viewport position. Viewport position is in the middle of component.
+	 * Add hexa coordinates value to viewport position. Viewport position is in
+	 * the middle of component.
 	 * 
 	 * @param position
 	 */
 	public void addPositionHC(Vector2D position) {
-		viewportCoor = viewportCoor.add(GCMath.getPixelCoordinates(position, zoom));
+		viewportCoor = viewportCoor.add(GCMath.getPixelCoordinates(position, zoom.getZoomValue()));
 	}
 
+	/**
+	 * Return popup menu object.
+	 * 
+	 * @return
+	 */
 	public JPopupMenu getPopupMenu() {
 		return popupMenu;
+	}
+
+	public void setDraggedPoints(Vector2D firstPoint, Vector2D secondPoint) {
+		dragPoints[0] = firstPoint;
+		dragPoints[1] = secondPoint;
 	}
 
 	// TODO
