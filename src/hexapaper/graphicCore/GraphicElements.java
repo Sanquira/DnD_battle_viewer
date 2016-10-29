@@ -52,15 +52,5 @@ public class GraphicElements {
 	// return arr;
 	// }
 
-	private int pol2kar(int uh, int rad, int xy) {
-		if (xy == 0) {
-			return (int) Math.round(rad * Math.cos(Math.toRadians(uh)));
-		} else if (xy == 1) {
-			return (int) Math.round(rad * Math.sin(Math.toRadians(uh)));
-		}
-		System.err.println("Gprvky.pol2kal(uhel, radius, souradnice) Chyba je v souradnici.");
-		System.exit(-1);
-		return -1;
-	}
 
 }

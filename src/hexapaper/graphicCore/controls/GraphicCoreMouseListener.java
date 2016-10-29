@@ -1,6 +1,6 @@
 package hexapaper.graphicCore.controls;
 
-import hexapaper.graphicCore.Canvas;
+import hexapaper.graphicCore.MyCanvas;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -14,10 +14,12 @@ import mathLibrary.vector.Vector2D;
 
 public class GraphicCoreMouseListener implements MouseListener, MouseMotionListener, MouseWheelListener {
 
-	private Canvas canvas;
+
+	private MyCanvas canvas;
 	private Vector2D pressPoint;
 
-	public GraphicCoreMouseListener(Canvas canvas) {
+	public GraphicCoreMouseListener(MyCanvas canvas) {
+
 		this.canvas = canvas;
 	}
 
@@ -25,7 +27,16 @@ public class GraphicCoreMouseListener implements MouseListener, MouseMotionListe
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		canvas.getZoom().addZoom((int) Math.round(-e.getPreciseWheelRotation()));
 		canvas.repaint();
+//		OnMouseWheelEvent(new MyMouseWheelEvent(e));
 	}
+	
+//	private void OnMouseWheelEvent(MyMouseWheelEvent myMVEvent){
+//		if(m_wheelCallBacks==null)
+//			return;
+//		foreach(var handler in m_wheelCallBacks){
+//			handler.Call(myMVEvent);
+//		}
+//	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {

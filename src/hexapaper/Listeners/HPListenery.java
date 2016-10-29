@@ -5,7 +5,7 @@ import hexapaper.entity.Artefact;
 import hexapaper.entity.EditableEntity;
 import hexapaper.entity.HPEntity;
 import hexapaper.entity.Postava;
-import hexapaper.graphicCore.Canvas;
+import hexapaper.graphicCore.MyCanvas;
 import hexapaper.gui.frames.ClientConnectFrame;
 import hexapaper.gui.frames.EditDatabaseFrame;
 import hexapaper.gui.frames.NewPaperFrame;
@@ -196,7 +196,7 @@ public class HPListenery {
 			if(sk.isConnected&&!sk.isPJ){
 				return;
 			}
-			Canvas t = (Canvas) e.getComponent();
+			MyCanvas t = (MyCanvas) e.getComponent();
 			if(t != null){
 				//ArrayList<prvekkNN> idx = NN.getkNNindexes(e.getX(), e.getY());
 				t.drawCursor(e.getX(), e.getY());
@@ -209,7 +209,7 @@ public class HPListenery {
 				double x = e.getX();
 				double y = e.getY();
 				ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
-				Canvas t = (Canvas) e.getComponent();
+				MyCanvas t = (MyCanvas) e.getComponent();
 				t.drawCursor(x, y);
 				//Point2D.Double p = sk.getPosition(x, y);
 				//if (p.x <= sk.c.gridRa && p.y <= sk.c.gridSl) {
@@ -235,7 +235,7 @@ public class HPListenery {
 				//Point2D.Double  p = sk.getPosition(x, y);
 				//if (p.x <= sk.c.gridRa && p.y <= sk.c.gridSl) {
 				//if (idx.get(0).getVzd() <= sk.c.RADIUS) {
-					Canvas t = (Canvas) e.getComponent();
+					MyCanvas t = (MyCanvas) e.getComponent();
 					if (e.getButton() == MouseEvent.BUTTON3) {					
 						t.rotateEntity(idx);
 						sk.hraciPlocha.revalidate();
@@ -288,7 +288,7 @@ public class HPListenery {
 				double x = e.getX();
 				double y = e.getY();
 				ArrayList<prvekkNN> idx = NN.getkNNindexes(x, y);
-				Canvas t = (Canvas) e.getComponent();
+				MyCanvas t = (MyCanvas) e.getComponent();
 				t.moveEntity(t.oldIdx, idx.get(0).getIdx());
 				//t.releaseEntity(idx.get(0).getIdx());
 				//t.repaint();

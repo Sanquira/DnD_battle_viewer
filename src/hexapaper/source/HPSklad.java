@@ -6,7 +6,7 @@ import hexapaper.entity.Artefact;
 import hexapaper.entity.EditableEntity;
 import hexapaper.entity.HPEntity;
 import hexapaper.entity.Postava;
-import hexapaper.graphicCore.Canvas;
+import hexapaper.graphicCore.MyCanvas;
 import hexapaper.graphicCore.GraphicElements;
 import hexapaper.gui.frames.ColorPicker;
 import hexapaper.gui.frames.EditDatabaseFrame;
@@ -55,7 +55,7 @@ public class HPSklad {
 		instance.str = new HPStrings();
 	}
 	public GraphicElements prvky;
-	public Canvas hraciPlocha;
+	public MyCanvas hraciPlocha;
 	public HPRightMenu RMenu;
 	public Config c;
 
@@ -95,7 +95,7 @@ public class HPSklad {
 	public Objenesis objenesis = new ObjenesisStd();
 	
 	public HexaClient client;
-	public HPStrings str;
+	public HPStrings str ;
 
 	public final static String VERSION = "v0.5d";
 	public final static String FILEVERSION = "0.3";
@@ -200,12 +200,28 @@ public class HPSklad {
 			str = new HPStrings();
 			System.out.println("Unable to load " + lang + " localization");
 		}
+		// Boolean PJactive = isPJ;
+		// Boolean Connectactive = true;
+		// if (notServer) {
+		// PJactive = true;
+		// }
+		// if (!isConnected){
+		// Connectactive = false;
+		// }
+		// for (Component item : needPJ) {
+		// item.setEnabled(PJactive);
+		// item.repaint();
+		// }
+		// for (Component item : needConnect) {
+		// item.setEnabled(Connectactive);
+		// item.repaint();
+		// }
 	}
 
 	public void init() {
 		System.out.println(c.Language);
 		SetupLang(c.Language);
-		hraciPlocha = new Canvas();
+		hraciPlocha = new MyCanvas();
 
 		prvky = new GraphicElements();
 		RMenu = new HPRightMenu();
@@ -329,7 +345,7 @@ public class HPSklad {
 	public LogWindow getDiceLog() {
 		return PJInfo.getDice();
 	}
-
+	
 	public LogWindow getPJLog() {
 		return PJInfo.getInfo();
 	}

@@ -7,7 +7,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
-import hexapaper.graphicCore.Canvas;
+import hexapaper.graphicCore.MyCanvas;
 import hexapaper.graphicCore.GCMath;
 import hexapaper.language.HPStrings;
 import hexapaper.source.HPSklad;
@@ -16,11 +16,11 @@ import mathLibrary.vector.Vector2D;
 
 public class MyPopupMenu extends JPopupMenu {
 
-	private Canvas canvas;
+	private MyCanvas canvas;
 
 	private HPStrings strings = HPSklad.getInstance().str;
 
-	public MyPopupMenu(Canvas canvas) {
+	public MyPopupMenu(MyCanvas canvas) {
 		this.canvas = canvas;
 		setupPopupMenu();
 	}

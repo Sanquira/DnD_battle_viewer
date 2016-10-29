@@ -3,7 +3,7 @@ package Demos;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import hexapaper.graphicCore.Canvas;
+import hexapaper.graphicCore.MyCanvas;
 
 import javax.swing.JFrame;
 import javax.swing.Timer;
@@ -22,7 +22,7 @@ public class MainGCTest extends JFrame {
 		setSize(800, 600);
 		setUndecorated(true);
 
-		Canvas plocha = new Canvas();
+		MyCanvas plocha = new MyCanvas();
 
 		add(plocha);
 
