@@ -1,16 +1,5 @@
 package hexapaper.gui;
 
-import hexapaper.Listeners.ValueListener;
-import hexapaper.entity.Artefact;
-import hexapaper.entity.FreeSpace;
-import hexapaper.entity.HPEntity;
-import hexapaper.entity.Postava;
-import hexapaper.entity.Wall;
-import hexapaper.source.HPSklad;
-import hexapaper.source.HPSklad.LabelSystem;
-import hexapaper.source.HPSklad.PropPair;
-import hexapaper.source.HPSklad.prvekkNN;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -39,9 +28,19 @@ import javax.swing.JToggleButton;
 import javax.swing.JViewport;
 import javax.swing.border.TitledBorder;
 
-import net.miginfocom.swing.MigLayout;
 import core.EditableJLabel;
 import core.ValueChangedListener;
+import hexapaper.Listeners.ValueListener;
+import hexapaper.entity.Artefact;
+import hexapaper.entity.FreeSpace;
+import hexapaper.entity.HPEntity;
+import hexapaper.entity.Postava;
+import hexapaper.entity.Wall;
+import hexapaper.source.HPSklad;
+import hexapaper.source.HPSklad.LabelSystem;
+import hexapaper.source.HPSklad.PropPair;
+import hexapaper.source.HPSklad.prvekkNN;
+import net.miginfocom.swing.MigLayout;
 
 public class HPRightMenu extends JPanel {
 
@@ -289,7 +288,7 @@ public class HPRightMenu extends JPanel {
 			addPB.setSelected(false);
 			freespace.setSelected(false);
 			if (addAC.getSelectedItem() != null) {
-				sk.setupInserting(art.clone(), repeat);
+				sk.setupInserting(new Artefact(art), repeat);
 			}
 		}
 		else{
@@ -303,7 +302,7 @@ public class HPRightMenu extends JPanel {
 			freespace.setSelected(false);
 			addAB.setSelected(false);
 			if (addPC.getSelectedItem() != null) {
-				sk.setupInserting(pos.clone(), repeat);
+				sk.setupInserting(new Postava(pos), repeat);
 			}
 		}
 		else{

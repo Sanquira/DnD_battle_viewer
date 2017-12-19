@@ -1,14 +1,14 @@
 package hexapaper.entity;
 
-import hexapaper.source.BPolygon;
-
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 import core.Location;
+import hexapaper.source.BPolygon;
 
-public abstract class HPEntity implements Cloneable,Serializable {
+public abstract class HPEntity implements Serializable
+{
 
 	/**
 	 * 
@@ -22,68 +22,77 @@ public abstract class HPEntity implements Cloneable,Serializable {
 	public String tag = null;
 	protected String name;
 
-	public HPEntity(String name, Location loc, boolean Rotatable, boolean Colidable, ArrayList<BPolygon> prvek) {
+	public HPEntity(String name, Location loc, boolean Rotatable, boolean Colidable, ArrayList<BPolygon> prvek)
+	{
 		this.name = name;
-		this.loc = loc;
+		this.loc = new Location(loc);
 		this.isRotateable = Rotatable;
 		this.isColidable = Colidable;
-		this.prvek = prvek;
+		this.prvek = ClonePrvek(prvek);
 		setTag(name);
 	}
 
-	public HPEntity(String name, Location loc, boolean Rotatable, boolean Colidable, BPolygon prvek) {
+	public HPEntity(String name, Location loc, boolean Rotatable, boolean Colidable, BPolygon prvek)
+	{
 		this.name = name;
-		this.loc = loc;
+		this.loc = new Location(loc);
 		this.isRotateable = Rotatable;
 		this.isColidable = Colidable;
-		this.prvek.add(prvek);
+		this.prvek.add(new BPolygon(prvek));
 		setTag(name);
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public HPEntity clone() {
-		try {
-			HPEntity cloned = (HPEntity) super.clone();
-			cloned.loc = cloned.loc.clone();
-			cloned.prvek = (ArrayList<BPolygon>) cloned.prvek.clone();
-			for (int i = 0; i < cloned.prvek.size(); i++) {
-				cloned.prvek.set(i, cloned.prvek.get(i).clone());
-			}
-			return cloned;
-		} catch (CloneNotSupportedException e) {
-			System.err.println(e);
+	public HPEntity(HPEntity entity)
+	{
+		this(entity.name, entity.loc, entity.isRotateable, entity.isColidable, entity.prvek);
+	}
+
+	private static ArrayList<BPolygon> ClonePrvek(ArrayList<BPolygon> value)
+	{
+		ArrayList<BPolygon> ret = new ArrayList<BPolygon>();
+		for (int i = 0; i < value.size(); i++)
+		{
+			ret.add(new BPolygon(value.get(i)));
 		}
-		return null;
+		return ret;
 	}
 
-	public Color getBcg() {
+	public Color getBcg()
+	{
 		return background;
 	}
 
-	public HPEntity setBcg(Color clr) {
+	public HPEntity setBcg(Color clr)
+	{
 		this.background = clr;
 		return this;
 	}
 
-	public HPEntity setTag(String tag) {
-		if (this.tag == null) {
-			try {
+	public HPEntity setTag(String tag)
+	{
+		if (this.tag == null)
+		{
+			try
+			{
 				this.tag = name.substring(0, 2);
-			} catch (StringIndexOutOfBoundsException e) {
+			} catch (StringIndexOutOfBoundsException e)
+			{
 				this.tag = name.substring(0, name.length());
 			}
-		} else {
+		} else
+		{
 			this.tag = tag;
 		}
 		return this;
 	}
 
-	public String getNick() {
+	public String getNick()
+	{
 		return name;
 	}
 
-	public void setNick(String nick) {
+	public void setNick(String nick)
+	{
 		this.name = nick;
 	}
 

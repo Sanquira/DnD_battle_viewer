@@ -167,8 +167,7 @@ public class ArtefactAddFrame extends JPanel {
 					JOptionPane.showMessageDialog(vpg, sk.str.WarningNameIsEmpty, sk.str.Warning, JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-				Artefact man = new Artefact(param.remove(0).value, sk.LocDontCare, param);
-				sk.databazeArtefaktu.add(man.clone());
+				sk.databazeArtefaktu.add(new Artefact(param.remove(0).value, sk.LocDontCare, param));
 				updateDatabaze();
 
 				clearChar();

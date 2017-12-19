@@ -35,7 +35,7 @@ public class ExportOneFrame extends JPanel {
 	private static final long serialVersionUID = 1L;
 	JFrame frame;
 	JPanel spg;
-	HPEntity beExported;
+	int beExported = -1;
 	ArrayList<HPEntity> exportList;
 	HPSklad sk = HPSklad.getInstance();
 
@@ -87,7 +87,7 @@ public class ExportOneFrame extends JPanel {
 					int minIndex = lsm.getMinSelectionIndex();
 					int maxIndex = lsm.getMaxSelectionIndex();
 					if (minIndex == maxIndex && lsm.isSelectedIndex(minIndex) && isAdjusting) {
-						beExported = exportList.get(minIndex).clone();
+						beExported = minIndex;//exportList.get(minIndex);
 					}
 				}
 			}
@@ -108,11 +108,11 @@ public class ExportOneFrame extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (beExported != null) {
+				if (beExported != -1) {
 					FileHandler fh=FileHandler.showDialog(sk.str.Db_ext, sk.str.Db_text, true);
 					DatabaseWrapper db=sk.wrappers.new DatabaseWrapper();
 					db.Version=HPSklad.FILEVERSION;
-					db.addEntity(beExported, null);
+					db.addEntity(exportList.get(beExported), null);
 					try {
 						if(fh!=null){
 							fh.write(db);
@@ -121,7 +121,7 @@ public class ExportOneFrame extends JPanel {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					beExported = null;
+					beExported = -1;
 				}
 			}
 		});

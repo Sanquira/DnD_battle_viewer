@@ -188,8 +188,7 @@ public class PostavaAddFrame extends JPanel {
 					JOptionPane.showMessageDialog(vpg, sk.str.WarningNameIsEmpty, sk.str.Warning, JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-				Postava man = new Postava(param.remove(0).value, sk.LocDontCare, isNPSCB.isSelected(), param);
-				sk.databazePostav.add(man.clone());
+				sk.databazePostav.add(new Postava(param.remove(0).value, sk.LocDontCare, isNPSCB.isSelected(), param));
 				updateDatabaze();
 				clearChar();
 			}

@@ -3,7 +3,7 @@ package core;
 import java.awt.Point;
 import java.io.Serializable;
 
-public class Location implements Cloneable, Serializable {
+public class Location implements Serializable {
 
 	/**
 	 * 
@@ -17,11 +17,10 @@ public class Location implements Cloneable, Serializable {
 		this.x = x;
 		this.y = y;
 		this.direction = dir;
-
 	}
-
-	public Location clone() throws CloneNotSupportedException {
-		return (Location) super.clone();
+	
+	public Location(Location loc){
+		this(loc.x,loc.y,loc.direction);
 	}
 
 	public Integer getX() {

@@ -93,7 +93,7 @@ public class ServerListeners {
 			//System.out.println("Test ent!");
 			Object[] table=(Object[]) p.getObject();
 			Integer i = (Integer) table[0];
-			entity.put(i,((HPEntity) table[1]).clone());
+			entity.put(i,((HPEntity) table[1]));
 			server.rebroadcast(p);
 		}		
 	};
