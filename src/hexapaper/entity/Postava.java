@@ -47,7 +47,15 @@ public class Postava extends HPEntity implements Serializable
 
 	public Postava(Postava postava)
 	{
-		this(postava.name, postava.tag, postava.loc, postava.PJ, postava.param);
+		super(postava);
+		if (postava.param != null)
+		{
+			for (int i = 0; i < postava.param.size(); i++)
+			{
+				addParam(postava.param.get(i));
+			}
+		}
+		this.PJ = postava.PJ;
 	}
 
 	@Override

@@ -33,7 +33,11 @@ public class Artefact extends HPEntity implements Serializable
 
 	public Artefact(Artefact artefact)
 	{
-		this(artefact.name, artefact.tag, artefact.loc, artefact.param);
+		super(artefact);
+		for (int i = 0; i < artefact.param.size(); i++)
+		{
+			addParam(artefact.param.get(i));
+		}
 	}
 
 	@Override

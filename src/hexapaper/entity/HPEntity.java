@@ -45,6 +45,7 @@ public abstract class HPEntity implements Serializable
 	public HPEntity(HPEntity entity)
 	{
 		this(entity.name, entity.loc, entity.isRotateable, entity.isColidable, entity.prvek);
+		this.background = entity.background;
 	}
 
 	private static ArrayList<BPolygon> ClonePrvek(ArrayList<BPolygon> value)

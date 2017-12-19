@@ -170,16 +170,14 @@ public class HraciPlocha extends JPanel
 					ent.loc.setDir(smer);
 					ent.recreateGraphics();
 					Integer[] obj = { ent.loc.getX(), ent.loc.getY(), ent.loc.getDir() };
-					// System.out.println(obj[0]+":"+obj[1]+":"+obj[2]);
 					sk.send(obj, "rotateEnt", true);
-					// System.out.println(ent.loc.getDir());
+					repaint();
 					return;
 				}
 				System.out.println("No permission: Rotate");
 				break;
 			}
 		}
-		this.repaint();
 	}
 
 	public boolean insertEntity(Integer idx, HPEntity type, Boolean hard)
