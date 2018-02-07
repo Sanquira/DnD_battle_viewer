@@ -1,4 +1,4 @@
-package logic.API;
+package com.github.sanquira.logic.API;
 
 import java.util.List;
 import java.awt.geom.Rectangle2D;

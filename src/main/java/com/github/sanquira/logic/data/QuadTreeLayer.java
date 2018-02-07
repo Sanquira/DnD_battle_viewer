@@ -1,4 +1,4 @@
-package logic.data;
+package com.github.sanquira.logic.data;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -6,13 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.lang.model.element.Element;
-
 import java.util.TreeMap;
-import java.util.stream.Collectors;
-
-import logic.API.IMyDataElement;
-import logic.API.IMyDataStructure;
+import com.github.sanquira.logic.API.IMyDataElement;
+import com.github.sanquira.logic.API.IMyDataStructure;
 
 public class QuadTreeLayer implements IMyDataStructure
 {

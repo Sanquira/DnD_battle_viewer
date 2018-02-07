@@ -1,4 +1,4 @@
-package logic.API;
+package com.github.sanquira.logic.API;
 
 public interface IMyDataElement
 {
