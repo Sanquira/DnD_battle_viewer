@@ -6,17 +6,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import java.util.TreeMap;
-import com.github.sanquira.logic.API.IMyDataElement;
-import com.github.sanquira.logic.API.IMyDataStructure;
+import com.github.sanquira.logic.api.IDataElement;
+import com.github.sanquira.logic.api.IDataStructure;
 
-public class QuadTreeLayer implements IMyDataStructure
+import java.util.TreeMap;
+
+public class LayeredQuadTree implements IDataStructure
 {
 	TreeMap<Integer, QuadTree> quadTreeLayer;
 
 	protected int rootWidth, rootHeight;
 
-	public QuadTreeLayer(int rootWidth, int rootHeight)
+	public LayeredQuadTree(int rootWidth, int rootHeight)
 	{
 		this.rootWidth = rootWidth;
 		this.rootHeight = rootHeight;
@@ -24,7 +25,7 @@ public class QuadTreeLayer implements IMyDataStructure
 	}
 
 	@Override
-	public void insert(IMyDataElement element)
+	public void insert(IDataElement element)
 	{
 		if (!quadTreeLayer.containsKey(element.getLayer()))
 			quadTreeLayer.put(element.getLayer(), new QuadTree(rootWidth, rootHeight));
@@ -33,7 +34,7 @@ public class QuadTreeLayer implements IMyDataStructure
 	}
 
 	@Override
-	public void remove(IMyDataElement element)
+	public void remove(IDataElement element)
 	{
 		if (quadTreeLayer.containsKey(element.getLayer()))
 		{
@@ -58,9 +59,9 @@ public class QuadTreeLayer implements IMyDataStructure
 	}
 
 	@Override
-	public List<IMyDataElement> retrieve(Rectangle2D rect, int layer)
+	public List<IDataElement> retrieve(Rectangle2D rect, int layer)
 	{
-		ArrayList<IMyDataElement> ret = new ArrayList<>();
+		ArrayList<IDataElement> ret = new ArrayList<>();
 		if (quadTreeLayer.containsKey(layer))
 		{
 			quadTreeLayer.get(layer).retrieve(ret, rect);
@@ -75,7 +76,7 @@ public class QuadTreeLayer implements IMyDataStructure
 		private QuadTree parent;
 		private QuadTree[] nodes;
 		private int posX, posY, width, height;
-		private List<IMyDataElement> objects;
+		private List<IDataElement> objects;
 
 		public QuadTree(int width, int height)
 		{
@@ -123,7 +124,7 @@ public class QuadTreeLayer implements IMyDataStructure
 			nodes[3] = new QuadTree(this, posX + subWidth, posY + subHeight, subWidth, subHeight);
 		}
 
-		protected int getQuadrantIndex(IMyDataElement element)
+		protected int getQuadrantIndex(IDataElement element)
 		{
 			return getQuadrantIndex(element.getX(), element.getY());
 		}
@@ -184,7 +185,7 @@ public class QuadTreeLayer implements IMyDataStructure
 			return -1;
 		}
 
-		protected List<IMyDataElement> getAll(List<IMyDataElement> returnList)
+		protected List<IDataElement> getAll(List<IDataElement> returnList)
 		{
 			if (!isLeaf())
 			{
@@ -197,7 +198,7 @@ public class QuadTreeLayer implements IMyDataStructure
 			return returnList;
 		}
 
-		public void insert(IMyDataElement element)
+		public void insert(IDataElement element)
 		{
 			if (!isLeaf())
 			{
@@ -235,7 +236,7 @@ public class QuadTreeLayer implements IMyDataStructure
 			}
 		}
 
-		public void remove(IMyDataElement element)
+		public void remove(IDataElement element)
 		{
 			if (!isLeaf())
 			{
@@ -287,7 +288,7 @@ public class QuadTreeLayer implements IMyDataStructure
 			}
 		}
 
-		public void retrieve(List<IMyDataElement> returnList, Rectangle2D rect)
+		public void retrieve(List<IDataElement> returnList, Rectangle2D rect)
 		{
 			int index = getQuadrantFitIndex(rect);
 			if (index != -1 && !isLeaf())
